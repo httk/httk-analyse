@@ -1,0 +1,11 @@
+[site]
+slug = "httk-placeholder"
+repository-url = "https://github.com/httk/httk-module-template"
+main-branch = "main"
+import-roots = ["httk/placeholder"]
+
+[[internal-dependency]]
+distribution = "httk-core"
+slug = "httk-core"
+repository-url = "https://github.com/httk/httk-core"
+main-branch = "main"
