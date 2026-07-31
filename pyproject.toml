@@ -3,16 +3,19 @@ requires = ["setuptools>=77", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "httk-placeholder"
+name = "httk-analyse"
 version = "0.1.0"
-description = "httk₂ module providing placeholder functionality."
+description = "Analysis algorithms for httk₂, with generic lower-convex-hull construction and materials-science phase diagrams."
 readme = "README.md"
 license = "AGPL-3.0-or-later"
 license-files = ["LICENSE"]
 requires-python = ">=3.12"
 authors = [{ name = "Rickard Armiento", email = "gitcommits@armiento.net" }]
 dependencies = [
-  "httk-core>=2.0.0,<3",
+  "httk-core>=2.0.2,<3",
+  "httk-atomistic>=0.2.0,<1",
+  "numpy",
+  "matplotlib",
 ]
 keywords = [
   "Materials Discovery",
@@ -33,9 +36,9 @@ classifiers = [
 
 [project.urls]
 Homepage = "https://httk.org"
-Documentation = "https://docs.httk.org/httk-placeholder/"
-Repository = "https://github.com/httk/httk-placeholder"
-Issues = "https://github.com/httk/httk-placeholder/issues"
+Documentation = "https://docs.httk.org/httk-analyse/"
+Repository = "https://github.com/httk/httk-analyse"
+Issues = "https://github.com/httk/httk-analyse/issues"
 
 [project.optional-dependencies]
 dev = [
@@ -67,11 +70,7 @@ where = ["src"]
 namespaces = true
 
 [tool.setuptools.package-data]
-"httk.placeholder" = ["py.typed"]
-# Add registry package data when this module grows registry shims, for example:
-# "httk.registry.placeholder" = ["py.typed"]
-# "httk.registry.entries.placeholder" = ["py.typed"]
-# "httk.registry.schemas.placeholder" = ["*.json", "LICENSE*", "README.md"]
+"httk.analyse" = ["py.typed"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
@@ -98,7 +97,9 @@ quote-style = "preserve"
 [tool.pyright]
 pythonVersion = "3.12"
 include = ["src", "examples"]
-extraPaths = ["src"]  
+extraPaths = ["src"]
+venvPath = ".."
+venv = ".venv"
 reportMissingImports = true
 
 [tool.mypy]

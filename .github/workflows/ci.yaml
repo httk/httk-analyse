@@ -1,4 +1,4 @@
-name: httk CI
+name: httk-analyse CI
 
 on:
   push:

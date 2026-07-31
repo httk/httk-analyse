@@ -1,11 +1,17 @@
 [site]
-slug = "httk-placeholder"
-repository-url = "https://github.com/httk/httk-module-template"
+slug = "httk-analyse"
+repository-url = "https://github.com/httk/httk-analyse"
 main-branch = "main"
-import-roots = ["httk/placeholder"]
+import-roots = ["httk/analyse"]
 
 [[internal-dependency]]
 distribution = "httk-core"
 slug = "httk-core"
 repository-url = "https://github.com/httk/httk-core"
+main-branch = "main"
+
+[[internal-dependency]]
+distribution = "httk-atomistic"
+slug = "httk-atomistic"
+repository-url = "https://github.com/httk/httk-atomistic"
 main-branch = "main"

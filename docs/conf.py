@@ -5,8 +5,8 @@ from datetime import date
 from sphinx.deprecation import RemovedInSphinx10Warning
 warnings.filterwarnings("ignore", category=RemovedInSphinx10Warning)
 
-project = "httk-placeholder"
-author = "The httk-placeholder AUTHORS"
+project = "httk-analyse"
+author = "The httk-analyse AUTHORS"
 copyright = f"{date.today().year}, {author}"
 
 extensions = [
@@ -61,10 +61,13 @@ myst_enable_extensions = [
 ]
 myst_heading_anchors = 3
 
-# myst-nb config: don't execute notebooks during docs build by default
-nb_execution_mode = "off"
-# Allow heavier example notebooks up to five minutes to execute.
-nb_execution_timeout = 300
+# Execute notebooks during the docs build and cache the results, so a notebook
+# is verified rather than merely rendered: a cell that raises fails the build.
+# Everything this needs (jupyter-cache, nbclient, ipykernel) already comes with
+# myst-nb, so the "docs" extra needs nothing added. The cache lives under
+# docs/_build, which `make docs-clean` removes.
+nb_execution_mode = "cache"
+nb_execution_raise_on_error = True
 
 html_theme = "furo"
 html_theme_options = {
@@ -76,16 +79,21 @@ html_theme_options = {
 # so docs builds need no network access; link targets still point at the live
 # sites. Refresh the committed inventories with `make docs-inventories`.
 #
-# When this module cross-references public objects from another httk
-# distribution (e.g. httk.core), add it here against the published httk docs
-# site. The base URL comes from the DOCS_BASE_URL Makefile variable (exported as
-# HTTK_DOCS_BASE_URL); the default below keeps bare sphinx invocations working.
-# Vendor each dependency inventory alongside python.inv, for example:
-#     "httk-core": (f"{_docs_base_url}/httk-core/", "_inventories/httk-core.inv"),
+# *httk-analyse* works with httk-core's generic contracts and adapts
+# httk-atomistic structures for materials-science phase diagrams. Both
+# cross-project references resolve against the published httk documentation
+# sites. The base URL comes from the DOCS_BASE_URL Makefile variable (exported
+# as HTTK_DOCS_BASE_URL); the default below keeps bare sphinx invocations
+# working.
 _docs_base_url = os.environ.get("HTTK_DOCS_BASE_URL", "https://docs.httk.org")
 
 intersphinx_mapping = {
     "python": ("https://docs.python.org/3", "_inventories/python.inv"),
+    "httk-core": (f"{_docs_base_url}/httk-core/", "_inventories/httk-core.inv"),
+    "httk-atomistic": (
+        f"{_docs_base_url}/httk-atomistic/",
+        "_inventories/httk-atomistic.inv",
+    ),
 }
 
 autoapi_options = [
@@ -117,7 +125,12 @@ nitpick_ignore = [
 copybutton_prompt_text = r">>> |\.\.\. |\$ "
 copybutton_prompt_is_regexp = True
 
-suppress_warnings = ["myst.xref_missing"]
+# httk-analyse shares the PEP 420 ``httk`` namespace with httk-core and
+# httk-atomistic, but those live in separate distributions. AutoAPI's static
+# parser cannot follow their imports outside this source tree, so this specific
+# notice is suppressed while all actual cross-project references remain strict
+# and resolve through the vendored intersphinx inventories above.
+suppress_warnings = ["myst.xref_missing", "autoapi.python_import_resolution"]
 
 def skip_member(app, what, name, obj, skip, options):
     # Skip private members (those starting with _)
