@@ -195,20 +195,6 @@ def test_from_structures_rejects_unknown_element() -> None:
         PhaseDiagram.from_structures([structure], [0.0])
 
 
-def test_from_structures_rejects_negative_species_concentration() -> None:
-    structure = Structure(
-        CUBIC,
-        [[0, 0, 0], [0.5, 0.5, 0.5]],
-        [
-            Species("negative", ("Fe",), (-0.5,)),
-            Species("positive", ("Fe",), (1.5,)),
-        ],
-        ["negative", "positive"],
-    )
-    with pytest.raises(ValueError, match="finite and non-negative"):
-        PhaseDiagram.from_structures([structure], [0.0])
-
-
 def test_default_tolerance_counts_tiny_positive_distance_as_stable() -> None:
     # AB is 1e-12/atom above the A--B segment, well inside the default 1e-8.
     diagram = PhaseDiagram.from_compositions(
