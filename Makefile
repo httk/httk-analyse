@@ -5,7 +5,7 @@ DIST_DIR ?= dist
 # between httk repositories (read by docs/conf.py via HTTK_DOCS_BASE_URL).
 DOCS_BASE_URL ?= https://docs.httk.org
 
-.PHONY: docs docs-live docs-clean docs-inventories docs-lock docs-lock-check clean dist-clean dist dist-check release-check format format-check typecheck typecheck_pyright lint test test_fastfail test-extended test-extended-fastfail audit
+.PHONY: docs docs-live docs-clean docs-inventories docs-lock docs-lock-check clean dist-clean dist dist-check release-check format format-check typecheck typecheck_pyright lint test test_fastfail test-extended test-extended-fastfail benchmark audit
 
 docs: docs-clean
 	HTTK_DOCS_BASE_URL=$(DOCS_BASE_URL) $(PYTHON) -m sphinx -E -a -b html -W --keep-going docs docs/_build/html
@@ -49,14 +49,14 @@ clean: docs-clean dist-clean
 	find . -name "__pycache__" -print0 | xargs -0 rm -rf
 
 format:
-	$(PYTHON) -m ruff check src examples --fix
-	$(PYTHON) -m ruff format src examples
+	$(PYTHON) -m ruff check src examples benchmarks --fix
+	$(PYTHON) -m ruff format src examples benchmarks
 
 format-check: lint
-	$(PYTHON) -m ruff format --check src examples
+	$(PYTHON) -m ruff format --check src examples benchmarks
 
 lint:
-	$(PYTHON) -m ruff check src examples
+	$(PYTHON) -m ruff check src examples benchmarks
 
 typecheck_pyright:
 	$(PYTHON) -m pyright
@@ -75,6 +75,9 @@ test-extended:
 
 test-extended-fastfail:
 	HTTK_TEST_PROFILE=extended $(PYTHON) -m pytest -q -m "" -x
+
+benchmark:
+	$(PYTHON) benchmarks/run_phase_diagram_benchmarks.py
 
 check: format-check typecheck typecheck_pyright test
 
