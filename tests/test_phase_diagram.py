@@ -5,7 +5,7 @@ import pytest
 
 matplotlib.use("Agg")
 
-from httk.atomistic import Species, Structure
+from httk.atomistic import Species, UnitcellStructure
 
 from httk.analyse.matsci import PhaseDiagram
 
@@ -161,13 +161,13 @@ def test_nonfinite_energy_per_atom_is_rejected() -> None:
 
 
 def test_from_structures_weights_disorder_and_ignores_vacancy() -> None:
-    mixed = Structure(
+    mixed = UnitcellStructure(
         CUBIC,
         [[0, 0, 0]],
         [Species("mix", ("Fe", "Ni"), (0.5, 0.5))],
         ["mix"],
     )
-    lithium_with_vacancy = Structure(
+    lithium_with_vacancy = UnitcellStructure(
         CUBIC,
         [[0, 0, 0], [0.5, 0.5, 0.5]],
         [
@@ -185,7 +185,7 @@ def test_from_structures_weights_disorder_and_ignores_vacancy() -> None:
 
 
 def test_from_structures_rejects_unknown_element() -> None:
-    structure = Structure(
+    structure = UnitcellStructure(
         CUBIC,
         [[0, 0, 0]],
         [Species("unknown", ("X",), (1.0,))],
