@@ -2,15 +2,14 @@
 
 import math
 from collections.abc import Sequence
-from typing import Any
+
+import numpy as np
 
 _PIVOT_TOLERANCE = 1e-11
 
 
-def _reduced_cost_tolerances(matrix: Any, costs: Any, multipliers: Any) -> Any:
+def _reduced_cost_tolerances(matrix: np.ndarray, costs: np.ndarray, multipliers: np.ndarray) -> np.ndarray:
     """Return local float64 roundoff bounds for reduced-cost subtractions."""
-    import numpy as np
-
     multiplication_terms = np.sum(np.abs(matrix) * np.abs(multipliers)[:, None], axis=0)
     return 32.0 * np.finfo(np.float64).eps * (np.abs(costs) + multiplication_terms)
 
@@ -23,10 +22,8 @@ class _LPUnboundedError(ValueError):
     """The equality-constrained linear program is unbounded below."""
 
 
-def _basis_is_well_conditioned(matrix: Any, basis: Sequence[int], tolerance: float) -> bool:
+def _basis_is_well_conditioned(matrix: np.ndarray, basis: Sequence[int], tolerance: float) -> bool:
     """Return whether a candidate basis is numerically safe enough to solve."""
-    import numpy as np
-
     if not basis:
         return True
     condition = float(np.linalg.cond(matrix[:, basis]))
@@ -34,10 +31,8 @@ def _basis_is_well_conditioned(matrix: Any, basis: Sequence[int], tolerance: flo
     return math.isfinite(condition) and condition <= limit
 
 
-def _matrix_rank(matrix: Any, threshold: float) -> int:
+def _matrix_rank(matrix: np.ndarray, threshold: float) -> int:
     """Return the SVD rank against one absolute singular-value threshold."""
-    import numpy as np
-
     if matrix.size == 0:
         return 0
     singular_values = np.linalg.svd(matrix, compute_uv=False)
@@ -45,13 +40,11 @@ def _matrix_rank(matrix: Any, threshold: float) -> int:
 
 
 def _scaled_independent_equalities(
-    matrix: Any,
-    rhs: Any,
+    matrix: np.ndarray,
+    rhs: np.ndarray,
     tolerance: float,
-) -> tuple[Any, Any, Any, Any]:
+) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
     """Scale equalities, reject inconsistency, and retain independent rows."""
-    import numpy as np
-
     if matrix.shape[0] == 0:
         return matrix.copy(), rhs.copy(), matrix.copy(), rhs.copy()
 
@@ -92,17 +85,15 @@ def _scaled_independent_equalities(
 
 
 def _simplex_iterations(
-    matrix: Any,
-    rhs: Any,
-    costs: Any,
+    matrix: np.ndarray,
+    rhs: np.ndarray,
+    costs: np.ndarray,
     basis: list[int],
     tolerance: float,
     *,
     local_objective_tolerance: bool = False,
-) -> tuple[list[int], Any]:
+) -> tuple[list[int], np.ndarray]:
     """Run revised-simplex pivots from a feasible basis using Bland's rule."""
-    import numpy as np
-
     row_count, variable_count = matrix.shape
     if row_count == 0:
         if np.any(costs < 0.0):
@@ -172,9 +163,9 @@ def _simplex_iterations(
 
 
 def _solve_equality_lp(
-    costs: Any,
-    matrix: Any,
-    rhs: Any,
+    costs: Sequence[float],
+    matrix: Sequence[Sequence[float]],
+    rhs: Sequence[float],
     *,
     pivot_tolerance: float = _PIVOT_TOLERANCE,
 ) -> tuple[float, tuple[float, ...]]:
@@ -189,8 +180,6 @@ def _solve_equality_lp(
         _LPInfeasibleError: If the equality constraints cannot be satisfied.
         _LPUnboundedError: If the objective is unbounded below.
     """
-    import numpy as np
-
     tolerance = float(pivot_tolerance)
     if not math.isfinite(tolerance) or tolerance <= 0.0:
         raise ValueError("pivot_tolerance must be a finite positive number")
@@ -273,7 +262,7 @@ def _solve_equality_lp(
         del basis[artificial_row]
 
     phase_two_matrix = phase_one_matrix[:, :variable_count]
-    basis, solution = _simplex_iterations(
+    _, solution = _simplex_iterations(
         phase_two_matrix,
         target,
         objective,
@@ -281,7 +270,6 @@ def _solve_equality_lp(
         tolerance,
         local_objective_tolerance=True,
     )
-    del basis
     residual = scaled_coefficients @ solution - scaled_target
     if np.any(np.abs(residual) > 100.0 * tolerance):
         raise _LPInfeasibleError("linear program did not reach a feasible point")

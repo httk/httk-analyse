@@ -112,30 +112,37 @@ class LowerConvexHull:
         """Return the number of input points."""
         return len(self._points)
 
-    def _mixture(
+    def _mixture_lp(
         self,
         indices: Sequence[int],
-        target: tuple[float, ...],
+        origin: tuple[float, ...],
+        offsets: Sequence[float],
     ) -> tuple[float, tuple[float, ...]]:
         # These origin-relative rows are equivalent to coordinate equality together
         # with sum(weights) == 1, but do not lose precision when every point is
         # translated far from the origin. Every coordinate is still represented.
-        # Use a candidate origin rather than the target itself: that leaves the
-        # simplex a nonzero right-hand side on ordinary mixtures and avoids a
-        # needless degenerate phase-I path.
-        origin = self._points[indices[0]] if indices else target
-        matrix = [[self._points[index][axis] - origin[axis] for index in indices] for axis in range(len(target))]
+        matrix = [[self._points[index][axis] - origin[axis] for index in indices] for axis in range(len(origin))]
         matrix.append([1.0] * len(indices))
-        rhs = [target[axis] - origin[axis] for axis in range(len(target))]
-        rhs.append(1.0)
         costs = [self._values[index] for index in indices]
         baseline = min(costs, default=0.0)
         value, weights = _solve_equality_lp(
             [cost - baseline for cost in costs],
             matrix,
-            rhs,
+            [*offsets, 1.0],
         )
         return baseline + value, weights
+
+    def _mixture(
+        self,
+        indices: Sequence[int],
+        target: tuple[float, ...],
+    ) -> tuple[float, tuple[float, ...]]:
+        # Use a candidate origin rather than the target itself: that leaves the
+        # simplex a nonzero right-hand side on ordinary mixtures and avoids a
+        # needless degenerate phase-I path.
+        origin = self._points[indices[0]] if indices else target
+        offsets = [target[axis] - origin[axis] for axis in range(len(target))]
+        return self._mixture_lp(indices, origin, offsets)
 
     def _analyze(self) -> None:
         point_count = len(self)
@@ -179,7 +186,9 @@ class LowerConvexHull:
                 second_point = self._points[second]
                 if first_point == second_point:
                     continue
-                value, _ = self._midpoint_mixture(hull, first, second)
+                # Evaluate the hull at the pair midpoint without forming it absolutely.
+                midpoint_offsets = [(second_point[axis] - first_point[axis]) / 2.0 for axis in range(len(first_point))]
+                value, _ = self._mixture_lp(hull, first_point, midpoint_offsets)
                 pair_value = (self._values[first] + self._values[second]) / 2.0
                 if pair_value > value + self._tolerance:
                     continue
@@ -187,28 +196,6 @@ class LowerConvexHull:
                     continue
                 segments.append((first, second))
         object.__setattr__(self, "_supported_segments", tuple(segments))
-
-    def _midpoint_mixture(
-        self,
-        indices: Sequence[int],
-        first: int,
-        second: int,
-    ) -> tuple[float, tuple[float, ...]]:
-        """Return the lower-hull value at a pair midpoint without forming it absolutely."""
-        origin = self._points[first]
-        endpoint = self._points[second]
-        matrix = [[self._points[index][axis] - origin[axis] for index in indices] for axis in range(len(origin))]
-        matrix.append([1.0] * len(indices))
-        rhs = [(endpoint[axis] - origin[axis]) / 2.0 for axis in range(len(origin))]
-        rhs.append(1.0)
-        costs = [self._values[index] for index in indices]
-        baseline = min(costs, default=0.0)
-        value, weights = _solve_equality_lp(
-            [cost - baseline for cost in costs],
-            matrix,
-            rhs,
-        )
-        return baseline + value, weights
 
     def _is_subsumed(self, first: int, second: int, hull: Sequence[int]) -> bool:
         left = self._points[first]
