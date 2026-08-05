@@ -7,6 +7,7 @@ from dataclasses import dataclass
 from typing import Any, Self
 
 from httk.atomistic import StructureLike, UnitcellStructureView
+from httk.core import register_citation
 
 from httk.analyse.generic import LowerConvexHull
 
@@ -242,6 +243,20 @@ class PhaseDiagram:
             import matplotlib.pyplot as plt
         except ImportError as exc:
             raise ImportError("PhaseDiagram.plot() requires matplotlib; install matplotlib") from exc
+        register_citation(
+            applies_to="Phase-diagram plotting uses Matplotlib",
+            references={
+                "authors": ({"name": "John D. Hunter"},),
+                "title": "Matplotlib: A 2D graphics environment",
+                "journal": "Computing in Science & Engineering",
+                "volume": "9",
+                "number": "3",
+                "pages": "90-95",
+                "year": "2007",
+                "doi": "10.1109/MCSE.2007.55",
+                "bib_type": "article",
+            },
+        )
 
         if ax is None:
             _, ax = plt.subplots()
