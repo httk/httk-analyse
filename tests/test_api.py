@@ -3,7 +3,7 @@
 from httk import analyse
 from httk.analyse import generic, matsci
 from httk.analyse.generic import LowerConvexHull
-from httk.analyse.matsci import PhaseDiagram
+from httk.analyse.matsci import PhaseDiagram, PhaseDiagramBuilder
 
 
 def test_root_exposes_only_analysis_submodules() -> None:
@@ -16,3 +16,4 @@ def test_root_exposes_only_analysis_submodules() -> None:
 def test_submodules_export_their_canonical_classes() -> None:
     assert generic.LowerConvexHull is LowerConvexHull
     assert matsci.PhaseDiagram is PhaseDiagram
+    assert matsci.PhaseDiagramBuilder is PhaseDiagramBuilder

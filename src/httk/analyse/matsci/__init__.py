@@ -1,5 +1,5 @@
 """Materials-science analysis built on generic numerical primitives."""
 
-from .phase_diagrams import PhaseDiagram
+from .phase_diagrams import PhaseDiagram, PhaseDiagramBuilder
 
-__all__ = ["PhaseDiagram"]
+__all__ = ["PhaseDiagram", "PhaseDiagramBuilder"]

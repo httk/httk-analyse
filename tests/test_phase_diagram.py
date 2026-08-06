@@ -1,5 +1,7 @@
 """Tests for float-LP phase-diagram construction and plotting."""
 
+import math
+
 import matplotlib
 import pytest
 
@@ -7,7 +9,7 @@ matplotlib.use("Agg")
 
 from httk.atomistic import Species, UnitcellStructure
 
-from httk.analyse.matsci import PhaseDiagram
+from httk.analyse.matsci import PhaseDiagram, PhaseDiagramBuilder
 
 CUBIC = [[4, 0, 0], [0, 4, 0], [0, 0, 4]]
 
@@ -266,3 +268,215 @@ def test_binary_and_ternary_plot_smoke() -> None:
     plt.close(binary_axes.figure)
     plt.close(supplied_figure)
     plt.close(ternary_axes.figure)
+
+
+def test_unknown_phases_plot_as_one_marker_line_in_binary_and_polygon() -> None:
+    def none_lines(axes):
+        return [line for line in axes.lines if line.get_linestyle() == "None"]
+
+    binary_known = PhaseDiagram.from_compositions(
+        [{"A": 1}, {"B": 1}, {"A": 1, "B": 1}],
+        [0.0, 0.0, -2.0],
+    )
+    binary_unknown = PhaseDiagram.from_compositions(
+        [{"A": 1}, {"B": 1}, {"A": 1, "B": 1}, {"A": 1, "B": 2}, {"A": 2, "B": 1}],
+        [0.0, 0.0, -2.0, None, None],
+        ids=["A", "B", "AB", "unknown-AB2", "unknown-A2B"],
+    )
+    binary_known_axes = binary_known.plot()
+    binary_axes = binary_unknown.plot()
+    binary_marker_lines = none_lines(binary_axes)
+    assert len(binary_marker_lines) == len(none_lines(binary_known_axes)) + 1
+    binary_unknown_line = [line for line in binary_marker_lines if line.get_marker() == "s"]
+    assert len(binary_unknown_line) == 1
+    assert tuple(binary_unknown_line[0].get_xdata()) == pytest.approx((2.0 / 3.0, 1.0 / 3.0))
+    assert tuple(binary_unknown_line[0].get_ydata()) == pytest.approx((0.0, 0.0))
+    assert binary_unknown_line[0].get_markerfacecolor() == "none"
+
+    polygon_known = PhaseDiagram.from_compositions(
+        [{"A": 1}, {"B": 1}, {"C": 1}],
+        [0.0, 0.0, 0.0],
+    )
+    polygon_unknown = PhaseDiagram.from_compositions(
+        [{"A": 1}, {"B": 1}, {"C": 1}, {"A": 1, "B": 1}, {"B": 1, "C": 1}],
+        [0.0, 0.0, 0.0, None, None],
+        ids=["A", "B", "C", "unknown-AB", "unknown-BC"],
+    )
+    polygon_known_axes = polygon_known.plot()
+    polygon_axes = polygon_unknown.plot()
+    polygon_marker_lines = none_lines(polygon_axes)
+    assert len(polygon_marker_lines) == len(none_lines(polygon_known_axes)) + 1
+    polygon_unknown_line = [line for line in polygon_marker_lines if line.get_marker() == "s"]
+    assert len(polygon_unknown_line) == 1
+    assert tuple(polygon_unknown_line[0].get_xdata()) == pytest.approx((0.25, -0.5))
+    assert tuple(polygon_unknown_line[0].get_ydata()) == pytest.approx((math.sqrt(3.0) / 4.0, 0.0))
+    assert polygon_unknown_line[0].get_markerfacecolor() == "none"
+
+    import matplotlib.pyplot as plt
+
+    for axes in (binary_known_axes, binary_axes, polygon_known_axes, polygon_axes):
+        plt.close(axes.figure)
+
+
+def test_unknown_plot_visibility_and_labels() -> None:
+    diagram = PhaseDiagram.from_compositions(
+        [{"A": 1}, {"B": 1}, {"A": 1, "B": 1}, {"A": 1, "B": 2}],
+        [0.0, 0.0, -2.0, None],
+        ids=["A", "B", "AB", "unknown-AB2"],
+    )
+
+    with_unknown = diagram.plot()
+    without_unknown = diagram.plot(show_unknown=False)
+    no_unknown_diagram = PhaseDiagram.from_compositions(
+        [{"A": 1}, {"B": 1}, {"A": 1, "B": 1}],
+        [0.0, 0.0, -2.0],
+    )
+    no_unknown_default = no_unknown_diagram.plot()
+    no_unknown_hidden = no_unknown_diagram.plot(show_unknown=False)
+
+    def marker_lines(axes):
+        return [line for line in axes.lines if line.get_linestyle() == "None"]
+
+    assert len(marker_lines(with_unknown)) == len(marker_lines(without_unknown)) + 1
+    assert any(annotation.get_text() == "unknown-AB2" for annotation in with_unknown.texts)
+    assert len(no_unknown_default.lines) == len(no_unknown_hidden.lines)
+
+    import matplotlib.pyplot as plt
+
+    for axes in (with_unknown, without_unknown, no_unknown_default, no_unknown_hidden):
+        plt.close(axes.figure)
+
+
+def test_unknown_energy_phases_use_separate_channel_and_widen_elements() -> None:
+    diagram = PhaseDiagram.from_compositions(
+        [{"A": 1}, {"C": 2}, {"B": 1}, {"A": 1, "C": 1}],
+        [0.0, None, 0.0, None],
+        ["A-phase", "C2-phase", "B-phase", "AC-phase"],
+    )
+
+    assert diagram.elements == ("A", "B", "C")
+    assert diagram.ids == ("A-phase", "B-phase")
+    assert diagram.compositions == ((1.0, 0.0, 0.0), (0.0, 1.0, 0.0))
+    assert diagram.energies_per_atom == (0.0, 0.0)
+    assert diagram.unknown_ids == ("C2-phase", "AC-phase")
+    assert diagram.unknown_compositions == ((0.0, 0.0, 1.0), (0.5, 0.0, 0.5))
+    assert len(diagram) == 2
+    assert diagram.hull_indices == (0, 1)
+    assert diagram.energy_above_hull == (0.0, 0.0)
+    assert diagram.phase_lines == ((0, 1),)
+    assert diagram.decomposition(0) is None
+    assert diagram.is_stable(1)
+
+
+def test_interleaved_unknown_energy_preserves_known_phase_alignment() -> None:
+    diagram = PhaseDiagram.from_compositions(
+        [{"A": 1}, {"A": 1, "B": 1}, {"B": 1}, {"A": 1, "B": 1}, {"A": 1, "B": 3}],
+        [2.0, None, 5.0, -2.0, 10.0],
+        ["A", "unknown-AB", "B", "AB", "AB3"],
+    )
+
+    assert diagram.ids == ("A", "B", "AB", "AB3")
+    assert diagram.energies_per_atom == pytest.approx((2.0, 5.0, -1.0, 2.5))
+    assert tuple(diagram.decomposition(index) for index in range(len(diagram))) == (
+        None,
+        None,
+        None,
+        ((1, 0.5), (2, 0.5)),
+    )
+    assert tuple(diagram.is_stable(index) for index in range(len(diagram))) == (True, True, True, False)
+
+
+def test_from_structures_accepts_unknown_energies() -> None:
+    mixed = UnitcellStructure(
+        CUBIC,
+        [[0, 0, 0]],
+        [Species("mix", ("Fe", "Ni"), (0.5, 0.5))],
+        ["mix"],
+    )
+    lithium = UnitcellStructure(
+        CUBIC,
+        [[0, 0, 0]],
+        [Species("Li", ("Li",), (1.0,))],
+        ["Li"],
+    )
+
+    diagram = PhaseDiagram.from_structures([mixed, lithium], [None, 0.0])
+
+    assert diagram.elements == ("Fe", "Li", "Ni")
+    assert diagram.ids == ("Li",)
+    assert diagram.unknown_ids == ("Fe0.5Ni0.5",)
+    assert diagram.unknown_compositions == ((0.5, 0.0, 0.5),)
+
+
+def test_phase_diagram_builder_matches_one_shot_factory() -> None:
+    mixed = UnitcellStructure(
+        CUBIC,
+        [[0, 0, 0]],
+        [Species("ab", ("Fe", "Ni"), (1.0, 1.0))],
+        ["ab"],
+    )
+    builder = PhaseDiagramBuilder(tolerance=2e-8)
+    assert builder.add_phase({"Fe": 1}, 0.0, "pure-A") is builder
+    assert builder.add_structure(mixed, -2.0) is builder
+    builder.add_phase({"Ni": 1}, 0.0)
+    builder.add_phase({"C": 1}, None, "unknown-C")
+
+    built = builder.build()
+    expected = PhaseDiagram.from_compositions(
+        [{"Fe": 1}, {"Fe": 1, "Ni": 1}, {"Ni": 1}, {"C": 1}],
+        [0.0, -2.0, 0.0, None],
+        ["pure-A", "FeNi", "Ni", "unknown-C"],
+        tolerance=2e-8,
+    )
+
+    assert built.elements == expected.elements
+    assert built.ids == expected.ids
+    assert built.compositions == expected.compositions
+    assert built.energies_per_atom == expected.energies_per_atom
+    assert built.hull_indices == expected.hull_indices
+    assert built.energy_above_hull == expected.energy_above_hull
+    assert built.phase_lines == expected.phase_lines
+    assert built.unknown_ids == expected.unknown_ids
+    assert built.unknown_compositions == expected.unknown_compositions
+    assert len(built) == len(expected)
+    for index in range(len(built)):
+        assert built.decomposition(index) == expected.decomposition(index)
+        assert built.is_stable(index) == expected.is_stable(index)
+
+
+def test_phase_diagram_builder_builds_independent_snapshots() -> None:
+    builder = PhaseDiagramBuilder().add_phase({"A": 1}, 0.0)
+    first = builder.build()
+
+    builder.add_phase({"B": 1}, 0.0)
+    second = builder.build()
+
+    assert first.ids == ("A",)
+    assert first.elements == ("A",)
+    assert len(first) == 1
+    assert second.ids == ("A", "B")
+    assert second.elements == ("A", "B")
+    assert len(second) == 2
+
+
+def test_phase_diagram_builder_copies_compositions_on_add() -> None:
+    composition = {"A": 1}
+    builder = PhaseDiagramBuilder().add_phase(composition, 0.0, "A")
+    composition["B"] = 1
+    builder.add_phase({"B": 1}, 0.0, "B")
+
+    built = builder.build()
+
+    assert built.ids == ("A", "B")
+    assert built.compositions == ((1.0, 0.0), (0.0, 1.0))
+
+
+def test_phase_diagram_factory_and_builder_error_paths() -> None:
+    with pytest.raises(ValueError, match="a phase diagram requires at least one phase$"):
+        PhaseDiagram.from_compositions([], [])
+    with pytest.raises(ValueError, match="a phase diagram requires at least one phase with known energy"):
+        PhaseDiagram.from_compositions([{"A": 1}, {"B": 1}], [None, None])
+    with pytest.raises(ValueError, match="ids must have the same length as compositions"):
+        PhaseDiagram.from_compositions([{"A": 1}], [0.0], [])
+    with pytest.raises(ValueError, match="tolerance must be a finite non-negative number"):
+        PhaseDiagramBuilder(tolerance=-1.0)
