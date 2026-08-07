@@ -1,0 +1,103 @@
+httk.analyse.generic.lower_hull
+===============================
+
+.. py:module:: httk.analyse.generic.lower_hull
+
+.. autoapi-nested-parse::
+
+   Generic lower convex-hull analysis for finite point-and-value collections.
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   httk.analyse.generic.lower_hull.LowerConvexHull
+
+
+Module Contents
+---------------
+
+.. py:class:: LowerConvexHull(points, values, *, tolerance = 1e-08)
+
+   The lower convex hull of scalar values over arbitrary finite coordinates.
+
+   A point belongs to the hull when its value is no greater than the cheapest
+   leave-one-out convex mixture at the same coordinates, within ``tolerance``.
+   The input order is retained throughout, including for tied duplicate points.
+
+   Coordinates and values are converted through ``numpy.float64`` and exposed as
+   ordinary :class:`float` values. Every coordinate equality is retained in the
+   mixture LP, together with the affine ``sum(weights) == 1`` equality.
+
+   :param points: Coordinate rows for the input points.
+   :param values: Scalar values corresponding to ``points``.
+   :param tolerance: Maximum value excess treated as on the lower hull.
+   :raises ValueError: If the points, values, or tolerance are invalid.
+
+
+   .. py:property:: points
+      :type: tuple[tuple[float, Ellipsis], Ellipsis]
+
+
+      Return input coordinates in their original order as float tuples.
+
+      :return: The immutable input coordinate rows.
+
+
+   .. py:property:: values
+      :type: tuple[float, Ellipsis]
+
+
+      Return input scalar values in the same order as :attr:`points`.
+
+      :return: The immutable input values.
+
+
+   .. py:property:: hull_indices
+      :type: tuple[int, Ellipsis]
+
+
+      Return indices of points on the lower hull in input order.
+
+      :return: The immutable lower-hull indices.
+
+
+   .. py:property:: value_above_hull
+      :type: tuple[float, Ellipsis]
+
+
+      Return non-negative leave-one-out value excesses for every input point.
+
+      :return: The immutable value excesses in input order.
+
+
+   .. py:property:: supported_segments
+      :type: tuple[tuple[int, int], Ellipsis]
+
+
+      Return midpoint-supported pairs of distinct lower-hull points.
+
+      :return: The immutable supported index pairs in input order.
+
+
+   .. py:method:: decomposition(index)
+
+      Return lower-hull mixture ``(index, weight)`` pairs, or ``None`` on hull.
+
+      :param index: Input point index.
+      :return: The stable-point mixture, or ``None`` when the point is on the hull.
+
+
+
+   .. py:method:: is_on_hull(index)
+
+      Return whether ``index`` belongs to :attr:`hull_indices`.
+
+      :param index: Input point index.
+      :return: Whether the point is on the lower hull.
+
+
+
