@@ -34,6 +34,14 @@ class PhaseDiagram:
     polymorph tied within the requested energy ``tolerance`` is stable. ``None``
     decompositions identify stable phases, including uncontested phases outside the convex
     hull of every other input.
+
+    :param elements: Element-coordinate labels in sorted order.
+    :param ids: Identifiers for energy-known phases in input order.
+    :param compositions: Normalized composition rows for energy-known phases.
+    :param energies_per_atom: Per-atom energies for energy-known phases.
+    :param tolerance: Maximum energy excess treated as stable.
+    :param unknown_ids: Identifiers for phases without known energy.
+    :param unknown_compositions: Normalized composition rows for phases without known energy.
     """
 
     _elements: tuple[str, ...]
@@ -52,11 +60,6 @@ class PhaseDiagram:
         unknown_ids: tuple[str, ...],
         unknown_compositions: tuple[tuple[float, ...], ...],
     ) -> None:
-        """Build a diagram from normalized internal data.
-
-        Public callers normally use one of the factories, which establish material
-        composition coordinates and per-atom energies.
-        """
         object.__setattr__(self, "_elements", elements)
         object.__setattr__(self, "_ids", ids)
         object.__setattr__(self, "_unknown_ids", unknown_ids)
@@ -86,6 +89,13 @@ class PhaseDiagram:
         atomic fractions. At least one energy must be known; inputs whose energies are all
         ``None`` are rejected. ``ids`` entries may individually be ``None`` to derive the
         default formula label for that phase.
+
+        :param compositions: Formula-unit element counts for each phase.
+        :param energies: Total formula-unit energies corresponding to ``compositions``.
+        :param ids: Optional phase identifiers, with ``None`` entries using formula labels.
+        :param tolerance: Maximum energy excess treated as stable.
+        :return: The normalized phase diagram.
+        :raises ValueError: If the phase data, energies, identifiers, or tolerance are invalid.
         """
         composition_rows = tuple(compositions)
         energy_values = tuple(None if energy is None else float(energy) for energy in energies)
@@ -183,6 +193,13 @@ class PhaseDiagram:
         using the (possibly fractional) unit-cell counts without reducing them, and ``ids``
         entries may individually be ``None`` to derive that default label. At least one energy
         must be known; inputs whose energies are all ``None`` are rejected.
+
+        :param structures: Structures supplying the phase compositions.
+        :param energies: Total unit-cell energies corresponding to ``structures``.
+        :param ids: Optional phase identifiers, with ``None`` entries using formula labels.
+        :param tolerance: Maximum energy excess treated as stable.
+        :return: The normalized phase diagram.
+        :raises ValueError: If the structures, energies, identifiers, or tolerance are invalid.
         """
         structure_values = tuple(structures)
         composition_rows = tuple(_structure_composition(structure_like) for structure_like in structure_values)
@@ -198,59 +215,97 @@ class PhaseDiagram:
 
     @property
     def elements(self) -> tuple[str, ...]:
-        """Element-coordinate order used by :attr:`compositions`."""
+        """Return the element-coordinate order used by :attr:`compositions`.
+
+        :return: The immutable element labels.
+        """
         return self._elements
 
     @property
     def ids(self) -> tuple[str, ...]:
-        """Identifiers of energy-known phases in input order."""
+        """Return identifiers of energy-known phases in input order.
+
+        :return: The immutable phase identifiers.
+        """
         return self._ids
 
     @property
     def unknown_ids(self) -> tuple[str, ...]:
-        """Phase identifiers for phases without known energy, in input order."""
+        """Return identifiers for phases without known energy in input order.
+
+        :return: The immutable unknown-energy phase identifiers.
+        """
         return self._unknown_ids
 
     @property
     def compositions(self) -> tuple[tuple[float, ...], ...]:
-        """Composition-fraction rows for energy-known phases in :attr:`elements` order."""
+        """Return composition-fraction rows for energy-known phases in :attr:`elements` order.
+
+        :return: The immutable normalized composition rows.
+        """
         return self._hull.points
 
     @property
     def unknown_compositions(self) -> tuple[tuple[float, ...], ...]:
-        """Composition-fraction rows for phases without known energy in :attr:`elements` order."""
+        """Return composition-fraction rows for phases without known energy in :attr:`elements` order.
+
+        :return: The immutable normalized composition rows.
+        """
         return self._unknown_compositions
 
     @property
     def energies_per_atom(self) -> tuple[float, ...]:
-        """Energies per atom for energy-known phases in input order."""
+        """Return energies per atom for energy-known phases in input order.
+
+        :return: The immutable per-atom energies.
+        """
         return self._hull.values
 
     @property
     def hull_indices(self) -> tuple[int, ...]:
-        """Stable phase indices in input order."""
+        """Return stable phase indices in input order.
+
+        :return: The immutable stable phase indices.
+        """
         return self._hull.hull_indices
 
     @property
     def energy_above_hull(self) -> tuple[float, ...]:
-        """Non-negative energy distance from the lower hull in per-atom units."""
+        """Return non-negative energy distances from the lower hull in per-atom units.
+
+        :return: The immutable energy distances in input order.
+        """
         return self._hull.value_above_hull
 
     @property
     def phase_lines(self) -> tuple[tuple[int, int], ...]:
-        """Sorted midpoint-supported stable tie-lines as ``(smaller, larger)`` indices."""
+        """Return sorted midpoint-supported stable tie-lines as ``(smaller, larger)`` indices.
+
+        :return: The immutable stable phase-index pairs.
+        """
         return self._hull.supported_segments
 
     def decomposition(self, index: int) -> tuple[tuple[int, float], ...] | None:
-        """Optimal stable-phase ``(index, weight)`` pairs, or ``None`` when stable."""
+        """Return optimal stable-phase ``(index, weight)`` pairs, or ``None`` when stable.
+
+        :param index: Energy-known phase index.
+        :return: The stable-phase mixture, or ``None`` when the phase is stable.
+        """
         return self._hull.decomposition(index)
 
     def is_stable(self, index: int) -> bool:
-        """Return whether the phase at ``index`` is stable within the energy tolerance."""
+        """Return whether the phase at ``index`` is stable within the energy tolerance.
+
+        :param index: Energy-known phase index.
+        :return: Whether the phase is stable.
+        """
         return self._hull.is_on_hull(index)
 
     def __len__(self) -> int:
-        """Return the number of energy-known phases."""
+        """Return the number of energy-known phases.
+
+        :return: The number of energy-known phases.
+        """
         return len(self._hull)
 
     def plot(
@@ -275,6 +330,13 @@ class PhaseDiagram:
         phases are filled, unstable phases are open, and unknown-energy phases are open gray
         squares. Matplotlib is imported only here and this method never calls ``show`` or writes
         a file.
+
+        :param ax: Matplotlib axes to draw on, or ``None`` to create one.
+        :param show_unstable: Whether to plot unstable energy-known phases.
+        :param label_stable: Whether to label stable and unknown-energy phases.
+        :param show_unknown: Whether to plot phases without known energy.
+        :return: The ``matplotlib.axes.Axes`` containing the diagram.
+        :raises ImportError: If Matplotlib is unavailable.
         """
         try:
             import matplotlib.pyplot as plt
@@ -511,7 +573,10 @@ class PhaseDiagram:
 
 
 class PhaseDiagramBuilder:
-    """Mutable, not-thread-safe accumulator for incrementally building a phase diagram."""
+    """Mutable, not-thread-safe accumulator for incrementally building a phase diagram.
+
+    :param tolerance: Maximum energy excess treated as stable when building the diagram.
+    """
 
     __slots__ = ("_phases", "_tolerance")
 
@@ -525,7 +590,14 @@ class PhaseDiagramBuilder:
         energy: float | None,
         id: str | None = None,
     ) -> Self:
-        """Add a formula-unit composition and return this builder for chaining."""
+        """Add a formula-unit composition and return this builder for chaining.
+
+        :param composition: Formula-unit element counts for the phase.
+        :param energy: Total formula-unit energy, or ``None`` when unknown.
+        :param id: Optional phase identifier.
+        :return: This builder.
+        :raises TypeError: If ``composition`` is not a mapping.
+        """
         if not isinstance(composition, Mapping):
             raise TypeError("composition must be a mapping")
         self._phases.append((dict(composition), energy, id))
@@ -537,7 +609,13 @@ class PhaseDiagramBuilder:
         energy: float | None,
         id: str | None = None,
     ) -> Self:
-        """Convert and add a structure, returning this builder for chaining."""
+        """Convert and add a structure, returning this builder for chaining.
+
+        :param structure: Structure supplying the phase composition.
+        :param energy: Total unit-cell energy, or ``None`` when unknown.
+        :param id: Optional phase identifier.
+        :return: This builder.
+        """
         self._phases.append((_structure_composition(structure), energy, id))
         return self
 
@@ -546,6 +624,9 @@ class PhaseDiagramBuilder:
 
         The builder may contain unknown-energy phases, but an all-``None`` energy collection
         is rejected by the factory validation used to create the snapshot.
+
+        :return: An independent phase-diagram snapshot.
+        :raises ValueError: If no phase has a known energy or the phase data is invalid.
         """
         compositions = tuple(composition for composition, _, _ in self._phases)
         energies = tuple(energy for _, energy, _ in self._phases)

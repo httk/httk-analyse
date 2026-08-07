@@ -176,9 +176,18 @@ def _solve_equality_lp(
     genuinely tied leaving variables follow Bland's anti-cycling rule. Candidate
     pivots whose bases are too ill-conditioned are skipped.
 
-    Raises:
-        _LPInfeasibleError: If the equality constraints cannot be satisfied.
-        _LPUnboundedError: If the objective is unbounded below.
+    The caller may express coordinate constraints relative to an origin. Phase-two
+    reduced-cost tests use local ``float64`` roundoff bounds for each objective
+    subtraction.
+
+    :param costs: Objective coefficients to minimize.
+    :param matrix: Equality-constraint coefficient rows.
+    :param rhs: Target values for the equality constraints.
+    :param pivot_tolerance: Positive threshold for rank, feasibility, and pivot tests.
+    :return: The minimum objective value and corresponding non-negative variable values.
+
+    :raises _LPInfeasibleError: If the equality constraints cannot be satisfied.
+    :raises _LPUnboundedError: If the objective is unbounded below.
     """
     tolerance = float(pivot_tolerance)
     if not math.isfinite(tolerance) or tolerance <= 0.0:

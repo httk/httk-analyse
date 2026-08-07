@@ -21,6 +21,15 @@ class LowerConvexHull:
     A point belongs to the hull when its value is no greater than the cheapest
     leave-one-out convex mixture at the same coordinates, within ``tolerance``.
     The input order is retained throughout, including for tied duplicate points.
+
+    Coordinates and values are converted through ``numpy.float64`` and exposed as
+    ordinary :class:`float` values. Every coordinate equality is retained in the
+    mixture LP, together with the affine ``sum(weights) == 1`` equality.
+
+    :param points: Coordinate rows for the input points.
+    :param values: Scalar values corresponding to ``points``.
+    :param tolerance: Maximum value excess treated as on the lower hull.
+    :raises ValueError: If the points, values, or tolerance are invalid.
     """
 
     _points: tuple[tuple[float, ...], ...]
@@ -38,12 +47,6 @@ class LowerConvexHull:
         *,
         tolerance: float = 1e-8,
     ) -> None:
-        """Construct and analyze a lower hull.
-
-        Coordinates and values are converted through ``numpy.float64`` and exposed as
-        ordinary :class:`float` values. Every coordinate equality is retained in the
-        mixture LP, together with the affine ``sum(weights) == 1`` equality.
-        """
         point_rows = tuple(points)
         value_rows = tuple(values)
         if not point_rows:
@@ -77,39 +80,65 @@ class LowerConvexHull:
 
     @property
     def points(self) -> tuple[tuple[float, ...], ...]:
-        """Input coordinates, preserved in their original order as float tuples."""
+        """Return input coordinates in their original order as float tuples.
+
+        :return: The immutable input coordinate rows.
+        """
         return self._points
 
     @property
     def values(self) -> tuple[float, ...]:
-        """Input scalar values in the same order as :attr:`points`."""
+        """Return input scalar values in the same order as :attr:`points`.
+
+        :return: The immutable input values.
+        """
         return self._values
 
     @property
     def hull_indices(self) -> tuple[int, ...]:
-        """Indices of points on the lower hull, in input order."""
+        """Return indices of points on the lower hull in input order.
+
+        :return: The immutable lower-hull indices.
+        """
         return self._hull_indices
 
     @property
     def value_above_hull(self) -> tuple[float, ...]:
-        """Non-negative leave-one-out value excess for every input point."""
+        """Return non-negative leave-one-out value excesses for every input point.
+
+        :return: The immutable value excesses in input order.
+        """
         return self._value_above_hull
 
     @property
     def supported_segments(self) -> tuple[tuple[int, int], ...]:
-        """Midpoint-supported pairs of distinct lower-hull points."""
+        """Return midpoint-supported pairs of distinct lower-hull points.
+
+        :return: The immutable supported index pairs in input order.
+        """
         return self._supported_segments
 
     def decomposition(self, index: int) -> tuple[tuple[int, float], ...] | None:
-        """Return lower-hull mixture ``(index, weight)`` pairs, or ``None`` on hull."""
+        """Return lower-hull mixture ``(index, weight)`` pairs, or ``None`` on hull.
+
+        :param index: Input point index.
+        :return: The stable-point mixture, or ``None`` when the point is on the hull.
+        """
         return self._decompositions[index]
 
     def is_on_hull(self, index: int) -> bool:
-        """Return whether ``index`` belongs to :attr:`hull_indices`."""
+        """Return whether ``index`` belongs to :attr:`hull_indices`.
+
+        :param index: Input point index.
+        :return: Whether the point is on the lower hull.
+        """
         return index in self._hull_indices
 
     def __len__(self) -> int:
-        """Return the number of input points."""
+        """Return the number of input points.
+
+        :return: The number of input points.
+        """
         return len(self._points)
 
     def _mixture_lp(
