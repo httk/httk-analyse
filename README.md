@@ -1,5 +1,13 @@
 # httk-analyse
 
+![Status: Early beta](https://img.shields.io/badge/status-early--beta-orange)
+
+> **⚠️ EARLY BETA**
+>
+> This is an early beta release of *httk₂*. The organization of the packages
+> and their APIs should not yet be regarded as stable, and may change between
+> releases.
+
 *httk-analyse* is a [*httk₂*](https://github.com/httk/httk2) module for analysis
 algorithms: generic lower-convex-hull construction and materials-science phase
 diagrams. Its Python package is `httk.analyse`.
