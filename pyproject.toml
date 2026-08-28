@@ -41,6 +41,7 @@ Repository = "https://github.com/httk/httk-analyse"
 Issues = "https://github.com/httk/httk-analyse/issues"
 
 [project.optional-dependencies]
+crysviz = ["crysviz>=0.1,<1"]
 dev = [
   "pytest>=8.0",
   "ruff>=0.16,<0.17",
