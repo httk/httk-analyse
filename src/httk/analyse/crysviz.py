@@ -2,7 +2,7 @@
 
 import os
 import tempfile
-from pathlib import Path
+from pathlib import Path, PureWindowsPath
 from typing import Any
 
 from httk.core import register_citation, save
@@ -14,6 +14,19 @@ def _import_crysviz() -> Any:
     except ImportError as exc:
         raise ImportError("httk.analyse.crysviz requires crysviz; install httk-analyse[crysviz]") from exc
     return crysviz
+
+
+def _safe_filename(name: str) -> bool:
+    """Return whether ``name`` is a non-path filename usable on every platform."""
+    return bool(
+        name
+        and name not in {".", ".."}
+        and not any(character in name for character in "/\\")
+        and not Path(name).is_absolute()
+        and not PureWindowsPath(name).is_absolute()
+        and not PureWindowsPath(name).drive
+        and all(character.isprintable() for character in name)
+    )
 
 
 def to_payload(
@@ -36,17 +49,19 @@ def to_payload(
 
     crysviz = _import_crysviz()
     suffix = ".vasp" if format == "vasp-poscar" else ".cif"
-    if not name:
+    if name:
+        if not _safe_filename(name):
+            raise ValueError("name must be a nonempty filename without a path")
+        filename = name
+    else:
         formula = getattr(structure, "formula", None)
         formula_text = str(formula) if formula is not None else ""
-        filename = formula_text or "structure"
-    else:
-        filename = name
+        filename = formula_text if _safe_filename(formula_text) else "structure"
     if not filename.casefold().endswith(suffix):
         filename += suffix
 
     with tempfile.TemporaryDirectory() as directory:
-        destination = Path(directory) / filename
+        destination = Path(directory) / f"structure{suffix}"
         save(structure, destination, format=format)
         text = destination.read_text(encoding="utf-8")
     return crysviz.Payload(filename, text)

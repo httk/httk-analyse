@@ -7,8 +7,9 @@ from typing import Any
 import crysviz as crysviz_package
 import httk.core
 import pytest
-from httk.analyse import crysviz
 from httk.atomistic import Cell, Sites, Species, UnitcellStructure
+
+from httk.analyse import crysviz
 
 
 @pytest.fixture
@@ -39,6 +40,37 @@ def test_to_payload_can_write_cif(si_structure: UnitcellStructure) -> None:
 
     assert payload.name == "si.cif"
     assert "_cell_length_a" in payload.data
+
+
+@pytest.mark.parametrize(
+    "name",
+    ("../outside", r"..\\outside", "/tmp/outside", r"C:\\outside", r"C:outside", ".", "..", "bad\nname"),
+)
+def test_to_payload_rejects_pathlike_names(si_structure: UnitcellStructure, name: str) -> None:
+    with pytest.raises(ValueError, match="filename without a path"):
+        crysviz.to_payload(si_structure, name=name)
+
+
+def test_to_payload_uses_a_fixed_temporary_filename_and_safe_automatic_name(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    written: list[Path] = []
+
+    class Structure:
+        formula = "../outside"
+
+    def fake_save(structure: object, destination: Path, *, format: str) -> None:
+        written.append(destination)
+        destination.write_text("serialized", encoding="utf-8")
+
+    monkeypatch.setattr(crysviz, "save", fake_save)
+
+    payload = crysviz.to_payload(Structure(), name="")
+
+    assert payload.name == "structure.vasp"
+    assert payload.data == "serialized"
+    assert written[0].name == "structure.vasp"
+    assert not written[0].parent.exists()
 
 
 def test_to_payload_rejects_unsupported_formats(si_structure: UnitcellStructure) -> None:
