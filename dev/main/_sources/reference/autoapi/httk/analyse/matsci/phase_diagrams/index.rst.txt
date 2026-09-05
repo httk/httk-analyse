@@ -1,0 +1,266 @@
+httk.analyse.matsci.phase_diagrams
+==================================
+
+.. py:module:: httk.analyse.matsci.phase_diagrams
+
+.. autoapi-nested-parse::
+
+   Materials-science phase diagrams built on generic lower convex hulls.
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   httk.analyse.matsci.phase_diagrams.PhaseDiagram
+   httk.analyse.matsci.phase_diagrams.PhaseDiagramBuilder
+
+
+Module Contents
+---------------
+
+.. py:class:: PhaseDiagram(elements, ids, compositions, energies_per_atom, tolerance, unknown_ids, unknown_compositions)
+
+   A normalized float convex-hull phase diagram.
+
+   Construct with :meth:`from_compositions` or :meth:`from_structures`. Energies supplied
+   to either factory are total formula-unit or unit-cell energies and are divided by the
+   corresponding atom count. An energy of ``None`` marks an unknown-energy phase, which is
+   retained in the separate :attr:`unknown_ids`/:attr:`unknown_compositions` channel and
+   contributes elements to :attr:`elements`, potentially widening the composition space, but
+   takes no part in hull construction or the indexed hull API. At least one supplied phase must
+   have a known energy; an input whose energies are all ``None`` is rejected. All exposed
+   compositions and energies are plain floats.
+
+   Hull membership is delegated to :class:`~httk.analyse.generic.LowerConvexHull`. At
+   duplicated compositions only the lower-energy polymorph is stable, except that every
+   polymorph tied within the requested energy ``tolerance`` is stable. ``None``
+   decompositions identify stable phases, including uncontested phases outside the convex
+   hull of every other input.
+
+   :param elements: Element-coordinate labels in sorted order.
+   :param ids: Identifiers for energy-known phases in input order.
+   :param compositions: Normalized composition rows for energy-known phases.
+   :param energies_per_atom: Per-atom energies for energy-known phases.
+   :param tolerance: Maximum energy excess treated as stable.
+   :param unknown_ids: Identifiers for phases without known energy.
+   :param unknown_compositions: Normalized composition rows for phases without known energy.
+
+
+   .. py:method:: from_compositions(compositions, energies, ids = None, *, tolerance = 1e-08)
+      :classmethod:
+
+
+      Build a diagram from formula-unit compositions and total energies.
+
+      Each composition maps an element label to its count in the formula unit to which
+      the matching total energy refers. An energy of ``None`` retains the phase in the
+      unknown-energy channel without including it in the hull or indexed hull API. Counts
+      must be finite and non-negative, with a strictly positive total atom count. Elements
+      are sorted independently of mapping insertion order before rows are normalized to
+      atomic fractions. At least one energy must be known; inputs whose energies are all
+      ``None`` are rejected. ``ids`` entries may individually be ``None`` to derive the
+      default formula label for that phase.
+
+      :param compositions: Formula-unit element counts for each phase.
+      :param energies: Total formula-unit energies corresponding to ``compositions``.
+      :param ids: Optional phase identifiers, with ``None`` entries using formula labels.
+      :param tolerance: Maximum energy excess treated as stable.
+      :return: The normalized phase diagram.
+      :raises ValueError: If the phase data, energies, identifiers, or tolerance are invalid.
+
+
+
+   .. py:method:: from_structures(structures, energies, ids = None, *, tolerance = 1e-08)
+      :classmethod:
+
+
+      Build a diagram from structures and their total unit-cell energies.
+
+      Each site contributes its named species' ``chemical_symbols`` weighted by
+      ``concentration``. ``"vacancy"`` contributes no atoms; ``"X"`` is rejected because
+      an unknown element cannot define a composition coordinate. An energy of ``None``
+      retains the phase in the unknown-energy channel without including it in the hull or
+      indexed hull API. Default identifiers are deterministic alphabetically sorted labels
+      using the (possibly fractional) unit-cell counts without reducing them, and ``ids``
+      entries may individually be ``None`` to derive that default label. At least one energy
+      must be known; inputs whose energies are all ``None`` are rejected.
+
+      :param structures: Structures supplying the phase compositions.
+      :param energies: Total unit-cell energies corresponding to ``structures``.
+      :param ids: Optional phase identifiers, with ``None`` entries using formula labels.
+      :param tolerance: Maximum energy excess treated as stable.
+      :return: The normalized phase diagram.
+      :raises ValueError: If the structures, energies, identifiers, or tolerance are invalid.
+
+
+
+   .. py:property:: elements
+      :type: tuple[str, ...]
+
+
+      Return the element-coordinate order used by :attr:`compositions`.
+
+      :return: The immutable element labels.
+
+
+   .. py:property:: ids
+      :type: tuple[str, ...]
+
+
+      Return identifiers of energy-known phases in input order.
+
+      :return: The immutable phase identifiers.
+
+
+   .. py:property:: unknown_ids
+      :type: tuple[str, ...]
+
+
+      Return identifiers for phases without known energy in input order.
+
+      :return: The immutable unknown-energy phase identifiers.
+
+
+   .. py:property:: compositions
+      :type: tuple[tuple[float, ...], ...]
+
+
+      Return composition-fraction rows for energy-known phases in :attr:`elements` order.
+
+      :return: The immutable normalized composition rows.
+
+
+   .. py:property:: unknown_compositions
+      :type: tuple[tuple[float, ...], ...]
+
+
+      Return composition-fraction rows for phases without known energy in :attr:`elements` order.
+
+      :return: The immutable normalized composition rows.
+
+
+   .. py:property:: energies_per_atom
+      :type: tuple[float, ...]
+
+
+      Return energies per atom for energy-known phases in input order.
+
+      :return: The immutable per-atom energies.
+
+
+   .. py:property:: hull_indices
+      :type: tuple[int, ...]
+
+
+      Return stable phase indices in input order.
+
+      :return: The immutable stable phase indices.
+
+
+   .. py:property:: energy_above_hull
+      :type: tuple[float, ...]
+
+
+      Return non-negative energy distances from the lower hull in per-atom units.
+
+      :return: The immutable energy distances in input order.
+
+
+   .. py:property:: phase_lines
+      :type: tuple[tuple[int, int], ...]
+
+
+      Return sorted midpoint-supported stable tie-lines as ``(smaller, larger)`` indices.
+
+      :return: The immutable stable phase-index pairs.
+
+
+   .. py:method:: decomposition(index)
+
+      Return optimal stable-phase ``(index, weight)`` pairs, or ``None`` when stable.
+
+      :param index: Energy-known phase index.
+      :return: The stable-phase mixture, or ``None`` when the phase is stable.
+
+
+
+   .. py:method:: is_stable(index)
+
+      Return whether the phase at ``index`` is stable within the energy tolerance.
+
+      :param index: Energy-known phase index.
+      :return: Whether the phase is stable.
+
+
+
+   .. py:method:: plot(*, ax = None, show_unstable = True, label_stable = True, show_unknown = True)
+
+      Plot the phase diagram and return its matplotlib Axes.
+
+      Binary diagrams use the fraction of the second element on the x axis. The y axis is
+      formation energy relative to the lowest stable pure-element endpoints when both are
+      present, and raw energy per atom otherwise. One-element diagrams use raw energy at a
+      single composition point. Unknown-energy phases are shown as open gray squares at
+      ``y=0.0`` in binary diagrams (including raw-energy mode) when ``show_unknown`` is true;
+      they do not affect the energy reference or hull geometry.
+
+      Diagrams with three or more elements use a regular composition polygon whose corner
+      ``k`` is at angle ``2*pi*k/N``. Phase lines are drawn individually in black; stable
+      phases are filled, unstable phases are open, and unknown-energy phases are open gray
+      squares. Matplotlib is imported only here and this method never calls ``show`` or writes
+      a file.
+
+      :param ax: Matplotlib axes to draw on, or ``None`` to create one.
+      :param show_unstable: Whether to plot unstable energy-known phases.
+      :param label_stable: Whether to label stable and unknown-energy phases.
+      :param show_unknown: Whether to plot phases without known energy.
+      :return: The ``matplotlib.axes.Axes`` containing the diagram.
+      :raises ImportError: If Matplotlib is unavailable.
+
+
+
+.. py:class:: PhaseDiagramBuilder(*, tolerance = 1e-08)
+
+   Mutable, not-thread-safe accumulator for incrementally building a phase diagram.
+
+   :param tolerance: Maximum energy excess treated as stable when building the diagram.
+
+
+   .. py:method:: add_phase(composition, energy, id = None)
+
+      Add a formula-unit composition and return this builder for chaining.
+
+      :param composition: Formula-unit element counts for the phase.
+      :param energy: Total formula-unit energy, or ``None`` when unknown.
+      :param id: Optional phase identifier.
+      :return: This builder.
+      :raises TypeError: If ``composition`` is not a mapping.
+
+
+
+   .. py:method:: add_structure(structure, energy, id = None)
+
+      Convert and add a structure, returning this builder for chaining.
+
+      :param structure: Structure supplying the phase composition.
+      :param energy: Total unit-cell energy, or ``None`` when unknown.
+      :param id: Optional phase identifier.
+      :return: This builder.
+
+
+
+   .. py:method:: build()
+
+      Build an independent snapshot, requiring at least one known phase energy.
+
+      The builder may contain unknown-energy phases, but an all-``None`` energy collection
+      is rejected by the factory validation used to create the snapshot.
+
+      :return: An independent phase-diagram snapshot.
+      :raises ValueError: If no phase has a known energy or the phase data is invalid.
+
+
+

@@ -1,0 +1,1048 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../../../../">
+  <head><meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../../genindex.html"><link rel="search" title="Search" href="../../../../search.html">
+
+    <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
+        <title>httk.analyse.matsci.phase_diagrams - httk-analyse dev:main documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=d111a655" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=7bdb33bb" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/selector.css?v=626bada3" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f2f2f2;
+  --color-code-foreground: #1e1e1e;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle site navigation sidebar">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc" aria-label="Toggle table of contents sidebar">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+<div class="announcement">
+  <aside class="announcement-content">
+     Development documentation (dev:main) — content may differ from any release. 
+  </aside>
+</div>
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <span class="icon"><svg><use href="#svg-menu"></use></svg></span>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../../../index.html"><div class="brand">httk-analyse dev:main documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+        <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../../index.html">
+  
+  <span class="sidebar-brand-text">httk-analyse dev:main documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../../../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../generic-hulls.html">Generic lower convex hulls</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../phase-diagrams.html">Materials phase diagrams</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../crysviz.html">CrysViz structure viewer</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../reference/index.html">Reference</a><input aria-label="Toggle navigation of Reference" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../../reference/autoapi/httk/analyse/index.html">httk.analyse</a><input aria-label="Toggle navigation of httk.analyse" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../reference/autoapi/httk/analyse/crysviz/index.html">httk.analyse.crysviz</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../../reference/autoapi/httk/analyse/generic/index.html">httk.analyse.generic</a><input aria-label="Toggle navigation of httk.analyse.generic" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../reference/autoapi/httk/analyse/generic/lower_hull/index.html">httk.analyse.generic.lower_hull</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../../reference/autoapi/httk/analyse/matsci/index.html">httk.analyse.matsci</a><input aria-label="Toggle navigation of httk.analyse.matsci" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../reference/autoapi/httk/analyse/matsci/phase_diagrams/index.html">httk.analyse.matsci.phase_diagrams</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../notebooks/examples.html">Convex-hull and phase-diagram examples</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../reference/autoapi/index.html">API Reference</a><input aria-label="Toggle navigation of API Reference" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../../reference/autoapi/httk/analyse/index.html">httk.analyse</a><input aria-label="Toggle navigation of httk.analyse" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../reference/autoapi/httk/analyse/crysviz/index.html">httk.analyse.crysviz</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../../reference/autoapi/httk/analyse/generic/index.html">httk.analyse.generic</a><input aria-label="Toggle navigation of httk.analyse.generic" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../reference/autoapi/httk/analyse/generic/lower_hull/index.html">httk.analyse.generic.lower_hull</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../../reference/autoapi/httk/analyse/matsci/index.html">httk.analyse.matsci</a><input aria-label="Toggle navigation of httk.analyse.matsci" class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../reference/autoapi/httk/analyse/matsci/phase_diagrams/index.html">httk.analyse.matsci.phase_diagrams</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+            <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <h1>Source code for httk.analyse.matsci.phase_diagrams</h1><div class="highlight"><pre>
+<span></span><span class="sd">"""Materials-science phase diagrams built on generic lower convex hulls."""</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">fractions</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Mapping</span><span class="p">,</span> <span class="n">Sequence</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Self</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">httk.atomistic</span><span class="w"> </span><span class="kn">import</span> <span class="n">StructureLike</span><span class="p">,</span> <span class="n">UnitcellStructureView</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">httk.core</span><span class="w"> </span><span class="kn">import</span> <span class="n">register_citation</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">httk.analyse.generic</span><span class="w"> </span><span class="kn">import</span> <span class="n">LowerConvexHull</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"PhaseDiagram"</span><span class="p">,</span> <span class="s2">"PhaseDiagramBuilder"</span><span class="p">]</span>
+
+<span class="n">_COMPOSITION_TOLERANCE</span> <span class="o">=</span> <span class="mf">1e-9</span>
+
+
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">slots</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<div class="viewcode-block" id="PhaseDiagram">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/phase_diagrams/index.html#httk.analyse.matsci.PhaseDiagram">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">PhaseDiagram</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""A normalized float convex-hull phase diagram.</span>
+
+<span class="sd">    Construct with :meth:`from_compositions` or :meth:`from_structures`. Energies supplied</span>
+<span class="sd">    to either factory are total formula-unit or unit-cell energies and are divided by the</span>
+<span class="sd">    corresponding atom count. An energy of ``None`` marks an unknown-energy phase, which is</span>
+<span class="sd">    retained in the separate :attr:`unknown_ids`/:attr:`unknown_compositions` channel and</span>
+<span class="sd">    contributes elements to :attr:`elements`, potentially widening the composition space, but</span>
+<span class="sd">    takes no part in hull construction or the indexed hull API. At least one supplied phase must</span>
+<span class="sd">    have a known energy; an input whose energies are all ``None`` is rejected. All exposed</span>
+<span class="sd">    compositions and energies are plain floats.</span>
+
+<span class="sd">    Hull membership is delegated to :class:`~httk.analyse.generic.LowerConvexHull`. At</span>
+<span class="sd">    duplicated compositions only the lower-energy polymorph is stable, except that every</span>
+<span class="sd">    polymorph tied within the requested energy ``tolerance`` is stable. ``None``</span>
+<span class="sd">    decompositions identify stable phases, including uncontested phases outside the convex</span>
+<span class="sd">    hull of every other input.</span>
+
+<span class="sd">    :param elements: Element-coordinate labels in sorted order.</span>
+<span class="sd">    :param ids: Identifiers for energy-known phases in input order.</span>
+<span class="sd">    :param compositions: Normalized composition rows for energy-known phases.</span>
+<span class="sd">    :param energies_per_atom: Per-atom energies for energy-known phases.</span>
+<span class="sd">    :param tolerance: Maximum energy excess treated as stable.</span>
+<span class="sd">    :param unknown_ids: Identifiers for phases without known energy.</span>
+<span class="sd">    :param unknown_compositions: Normalized composition rows for phases without known energy.</span>
+<span class="sd">    """</span>
+
+    <span class="n">_elements</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
+    <span class="n">_ids</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
+    <span class="n">_hull</span><span class="p">:</span> <span class="n">LowerConvexHull</span>
+    <span class="n">_unknown_ids</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
+    <span class="n">_unknown_compositions</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="o">...</span><span class="p">]</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">elements</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span>
+        <span class="n">ids</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span>
+        <span class="n">compositions</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="o">...</span><span class="p">],</span>
+        <span class="n">energies_per_atom</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span>
+        <span class="n">tolerance</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">unknown_ids</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span>
+        <span class="n">unknown_compositions</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="o">...</span><span class="p">],</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">"_elements"</span><span class="p">,</span> <span class="n">elements</span><span class="p">)</span>
+        <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">"_ids"</span><span class="p">,</span> <span class="n">ids</span><span class="p">)</span>
+        <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">"_unknown_ids"</span><span class="p">,</span> <span class="n">unknown_ids</span><span class="p">)</span>
+        <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">"_unknown_compositions"</span><span class="p">,</span> <span class="n">unknown_compositions</span><span class="p">)</span>
+        <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="s2">"_hull"</span><span class="p">,</span>
+            <span class="n">LowerConvexHull</span><span class="p">(</span><span class="n">compositions</span><span class="p">,</span> <span class="n">energies_per_atom</span><span class="p">,</span> <span class="n">tolerance</span><span class="o">=</span><span class="n">tolerance</span><span class="p">),</span>
+        <span class="p">)</span>
+
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="PhaseDiagram.from_compositions">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/phase_diagrams/index.html#httk.analyse.matsci.PhaseDiagram.from_compositions">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">from_compositions</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span>
+        <span class="n">compositions</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">fractions</span><span class="o">.</span><span class="n">Fraction</span><span class="p">]],</span>
+        <span class="n">energies</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span><span class="p">],</span>
+        <span class="n">ids</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">tolerance</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-8</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Self</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Build a diagram from formula-unit compositions and total energies.</span>
+
+<span class="sd">        Each composition maps an element label to its count in the formula unit to which</span>
+<span class="sd">        the matching total energy refers. An energy of ``None`` retains the phase in the</span>
+<span class="sd">        unknown-energy channel without including it in the hull or indexed hull API. Counts</span>
+<span class="sd">        must be finite and non-negative, with a strictly positive total atom count. Elements</span>
+<span class="sd">        are sorted independently of mapping insertion order before rows are normalized to</span>
+<span class="sd">        atomic fractions. At least one energy must be known; inputs whose energies are all</span>
+<span class="sd">        ``None`` are rejected. ``ids`` entries may individually be ``None`` to derive the</span>
+<span class="sd">        default formula label for that phase.</span>
+
+<span class="sd">        :param compositions: Formula-unit element counts for each phase.</span>
+<span class="sd">        :param energies: Total formula-unit energies corresponding to ``compositions``.</span>
+<span class="sd">        :param ids: Optional phase identifiers, with ``None`` entries using formula labels.</span>
+<span class="sd">        :param tolerance: Maximum energy excess treated as stable.</span>
+<span class="sd">        :return: The normalized phase diagram.</span>
+<span class="sd">        :raises ValueError: If the phase data, energies, identifiers, or tolerance are invalid.</span>
+<span class="sd">        """</span>
+        <span class="n">composition_rows</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">compositions</span><span class="p">)</span>
+        <span class="n">energy_values</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="kc">None</span> <span class="k">if</span> <span class="n">energy</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="nb">float</span><span class="p">(</span><span class="n">energy</span><span class="p">)</span> <span class="k">for</span> <span class="n">energy</span> <span class="ow">in</span> <span class="n">energies</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">composition_rows</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"a phase diagram requires at least one phase"</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">composition_rows</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">energy_values</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"compositions and energies must have the same length"</span><span class="p">)</span>
+        <span class="n">energy_tolerance</span> <span class="o">=</span> <span class="n">_validate_tolerance</span><span class="p">(</span><span class="n">tolerance</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="n">energy</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">math</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">energy</span><span class="p">)</span> <span class="k">for</span> <span class="n">energy</span> <span class="ow">in</span> <span class="n">energy_values</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"energies must be finite"</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">all</span><span class="p">(</span><span class="n">energy</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">for</span> <span class="n">energy</span> <span class="ow">in</span> <span class="n">energy_values</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"a phase diagram requires at least one phase with known energy"</span><span class="p">)</span>
+
+        <span class="n">elements</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">sorted</span><span class="p">({</span><span class="n">element</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">composition_rows</span> <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">row</span><span class="p">}))</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">elements</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"compositions must contain at least one element"</span><span class="p">)</span>
+
+        <span class="n">normalized</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="o">...</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">per_atom</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">row</span><span class="p">,</span> <span class="n">energy</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">composition_rows</span><span class="p">,</span> <span class="n">energy_values</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+            <span class="n">counts</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">row</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">element</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">))</span> <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">elements</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">count</span><span class="p">)</span> <span class="ow">and</span> <span class="n">count</span> <span class="o">&gt;=</span> <span class="mf">0.0</span> <span class="k">for</span> <span class="n">count</span> <span class="ow">in</span> <span class="n">counts</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"composition counts must be finite and non-negative"</span><span class="p">)</span>
+            <span class="n">atom_count</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">counts</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">math</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">atom_count</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"a phase composition must have a finite atom count"</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">atom_count</span> <span class="o">&lt;=</span> <span class="mf">0.0</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"a phase composition must have a positive atom count"</span><span class="p">)</span>
+            <span class="n">largest_count</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">counts</span><span class="p">)</span>
+            <span class="n">scaled_total</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">count</span> <span class="o">/</span> <span class="n">largest_count</span> <span class="k">for</span> <span class="n">count</span> <span class="ow">in</span> <span class="n">counts</span><span class="p">)</span>
+            <span class="n">fraction_row</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">((</span><span class="n">count</span> <span class="o">/</span> <span class="n">largest_count</span><span class="p">)</span> <span class="o">/</span> <span class="n">scaled_total</span> <span class="k">for</span> <span class="n">count</span> <span class="ow">in</span> <span class="n">counts</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">fraction</span><span class="p">)</span> <span class="k">for</span> <span class="n">fraction</span> <span class="ow">in</span> <span class="n">fraction_row</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"normalized composition fractions must be finite"</span><span class="p">)</span>
+            <span class="n">normalized</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fraction_row</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">energy</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">normalized_energy</span> <span class="o">=</span> <span class="n">energy</span> <span class="o">/</span> <span class="n">atom_count</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">math</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">normalized_energy</span><span class="p">):</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"energy per atom must be finite"</span><span class="p">)</span>
+                <span class="n">per_atom</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">normalized_energy</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">ids</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">normalized_ids</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">_formula_label</span><span class="p">(</span><span class="n">row</span><span class="p">)</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">composition_rows</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">identifier_rows</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">ids</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">identifier_rows</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">composition_rows</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"ids must have the same length as compositions"</span><span class="p">)</span>
+            <span class="n">normalized_ids</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span>
+                <span class="n">_formula_label</span><span class="p">(</span><span class="n">row</span><span class="p">)</span> <span class="k">if</span> <span class="n">identifier</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="nb">str</span><span class="p">(</span><span class="n">identifier</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">row</span><span class="p">,</span> <span class="n">identifier</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">composition_rows</span><span class="p">,</span> <span class="n">identifier_rows</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="p">)</span>
+
+        <span class="n">known_ids</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">known_compositions</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="o">...</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">unknown_ids</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">unknown_compositions</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="o">...</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">identifier</span><span class="p">,</span> <span class="n">energy</span><span class="p">,</span> <span class="n">fraction_row</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span>
+            <span class="n">normalized_ids</span><span class="p">,</span>
+            <span class="n">energy_values</span><span class="p">,</span>
+            <span class="n">normalized</span><span class="p">,</span>
+            <span class="n">strict</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="p">):</span>
+            <span class="k">if</span> <span class="n">energy</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">unknown_ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">identifier</span><span class="p">)</span>
+                <span class="n">unknown_compositions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fraction_row</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">known_ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">identifier</span><span class="p">)</span>
+                <span class="n">known_compositions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fraction_row</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
+            <span class="n">elements</span><span class="p">,</span>
+            <span class="nb">tuple</span><span class="p">(</span><span class="n">known_ids</span><span class="p">),</span>
+            <span class="nb">tuple</span><span class="p">(</span><span class="n">known_compositions</span><span class="p">),</span>
+            <span class="nb">tuple</span><span class="p">(</span><span class="n">per_atom</span><span class="p">),</span>
+            <span class="n">energy_tolerance</span><span class="p">,</span>
+            <span class="nb">tuple</span><span class="p">(</span><span class="n">unknown_ids</span><span class="p">),</span>
+            <span class="nb">tuple</span><span class="p">(</span><span class="n">unknown_compositions</span><span class="p">),</span>
+        <span class="p">)</span></div>
+
+
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="PhaseDiagram.from_structures">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/phase_diagrams/index.html#httk.analyse.matsci.PhaseDiagram.from_structures">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">from_structures</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span>
+        <span class="n">structures</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">StructureLike</span><span class="p">],</span>
+        <span class="n">energies</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span><span class="p">],</span>
+        <span class="n">ids</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">tolerance</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-8</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Self</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Build a diagram from structures and their total unit-cell energies.</span>
+
+<span class="sd">        Each site contributes its named species' ``chemical_symbols`` weighted by</span>
+<span class="sd">        ``concentration``. ``"vacancy"`` contributes no atoms; ``"X"`` is rejected because</span>
+<span class="sd">        an unknown element cannot define a composition coordinate. An energy of ``None``</span>
+<span class="sd">        retains the phase in the unknown-energy channel without including it in the hull or</span>
+<span class="sd">        indexed hull API. Default identifiers are deterministic alphabetically sorted labels</span>
+<span class="sd">        using the (possibly fractional) unit-cell counts without reducing them, and ``ids``</span>
+<span class="sd">        entries may individually be ``None`` to derive that default label. At least one energy</span>
+<span class="sd">        must be known; inputs whose energies are all ``None`` are rejected.</span>
+
+<span class="sd">        :param structures: Structures supplying the phase compositions.</span>
+<span class="sd">        :param energies: Total unit-cell energies corresponding to ``structures``.</span>
+<span class="sd">        :param ids: Optional phase identifiers, with ``None`` entries using formula labels.</span>
+<span class="sd">        :param tolerance: Maximum energy excess treated as stable.</span>
+<span class="sd">        :return: The normalized phase diagram.</span>
+<span class="sd">        :raises ValueError: If the structures, energies, identifiers, or tolerance are invalid.</span>
+<span class="sd">        """</span>
+        <span class="n">structure_values</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">structures</span><span class="p">)</span>
+        <span class="n">composition_rows</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">_structure_composition</span><span class="p">(</span><span class="n">structure_like</span><span class="p">)</span> <span class="k">for</span> <span class="n">structure_like</span> <span class="ow">in</span> <span class="n">structure_values</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">ids</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">ids</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">_formula_label</span><span class="p">(</span><span class="n">row</span><span class="p">)</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">composition_rows</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_compositions</span><span class="p">(</span>
+            <span class="n">composition_rows</span><span class="p">,</span>
+            <span class="n">energies</span><span class="p">,</span>
+            <span class="n">ids</span><span class="p">,</span>
+            <span class="n">tolerance</span><span class="o">=</span><span class="n">tolerance</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="PhaseDiagram.elements">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/phase_diagrams/index.html#httk.analyse.matsci.PhaseDiagram.elements">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">elements</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""Return the element-coordinate order used by :attr:`compositions`.</span>
+
+<span class="sd">        :return: The immutable element labels.</span>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_elements</span></div>
+
+
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="PhaseDiagram.ids">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/phase_diagrams/index.html#httk.analyse.matsci.PhaseDiagram.ids">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">ids</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""Return identifiers of energy-known phases in input order.</span>
+
+<span class="sd">        :return: The immutable phase identifiers.</span>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ids</span></div>
+
+
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="PhaseDiagram.unknown_ids">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/phase_diagrams/index.html#httk.analyse.matsci.PhaseDiagram.unknown_ids">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">unknown_ids</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""Return identifiers for phases without known energy in input order.</span>
+
+<span class="sd">        :return: The immutable unknown-energy phase identifiers.</span>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_unknown_ids</span></div>
+
+
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="PhaseDiagram.compositions">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/phase_diagrams/index.html#httk.analyse.matsci.PhaseDiagram.compositions">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">compositions</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="o">...</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""Return composition-fraction rows for energy-known phases in :attr:`elements` order.</span>
+
+<span class="sd">        :return: The immutable normalized composition rows.</span>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hull</span><span class="o">.</span><span class="n">points</span></div>
+
+
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="PhaseDiagram.unknown_compositions">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/phase_diagrams/index.html#httk.analyse.matsci.PhaseDiagram.unknown_compositions">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">unknown_compositions</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="o">...</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""Return composition-fraction rows for phases without known energy in :attr:`elements` order.</span>
+
+<span class="sd">        :return: The immutable normalized composition rows.</span>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_unknown_compositions</span></div>
+
+
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="PhaseDiagram.energies_per_atom">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/phase_diagrams/index.html#httk.analyse.matsci.PhaseDiagram.energies_per_atom">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">energies_per_atom</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""Return energies per atom for energy-known phases in input order.</span>
+
+<span class="sd">        :return: The immutable per-atom energies.</span>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hull</span><span class="o">.</span><span class="n">values</span></div>
+
+
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="PhaseDiagram.hull_indices">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/phase_diagrams/index.html#httk.analyse.matsci.PhaseDiagram.hull_indices">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">hull_indices</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""Return stable phase indices in input order.</span>
+
+<span class="sd">        :return: The immutable stable phase indices.</span>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hull</span><span class="o">.</span><span class="n">hull_indices</span></div>
+
+
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="PhaseDiagram.energy_above_hull">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/phase_diagrams/index.html#httk.analyse.matsci.PhaseDiagram.energy_above_hull">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">energy_above_hull</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""Return non-negative energy distances from the lower hull in per-atom units.</span>
+
+<span class="sd">        :return: The immutable energy distances in input order.</span>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hull</span><span class="o">.</span><span class="n">value_above_hull</span></div>
+
+
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="PhaseDiagram.phase_lines">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/phase_diagrams/index.html#httk.analyse.matsci.PhaseDiagram.phase_lines">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">phase_lines</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="o">...</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""Return sorted midpoint-supported stable tie-lines as ``(smaller, larger)`` indices.</span>
+
+<span class="sd">        :return: The immutable stable phase-index pairs.</span>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hull</span><span class="o">.</span><span class="n">supported_segments</span></div>
+
+
+<div class="viewcode-block" id="PhaseDiagram.decomposition">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/phase_diagrams/index.html#httk.analyse.matsci.PhaseDiagram.decomposition">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">decomposition</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span> <span class="o">...</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Return optimal stable-phase ``(index, weight)`` pairs, or ``None`` when stable.</span>
+
+<span class="sd">        :param index: Energy-known phase index.</span>
+<span class="sd">        :return: The stable-phase mixture, or ``None`` when the phase is stable.</span>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hull</span><span class="o">.</span><span class="n">decomposition</span><span class="p">(</span><span class="n">index</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="PhaseDiagram.is_stable">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/phase_diagrams/index.html#httk.analyse.matsci.PhaseDiagram.is_stable">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_stable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Return whether the phase at ``index`` is stable within the energy tolerance.</span>
+
+<span class="sd">        :param index: Energy-known phase index.</span>
+<span class="sd">        :return: Whether the phase is stable.</span>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hull</span><span class="o">.</span><span class="n">is_on_hull</span><span class="p">(</span><span class="n">index</span><span class="p">)</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Return the number of energy-known phases.</span>
+
+<span class="sd">        :return: The number of energy-known phases.</span>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_hull</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PhaseDiagram.plot">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/phase_diagrams/index.html#httk.analyse.matsci.PhaseDiagram.plot">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">plot</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">ax</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">show_unstable</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">label_stable</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">show_unknown</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Plot the phase diagram and return its matplotlib Axes.</span>
+
+<span class="sd">        Binary diagrams use the fraction of the second element on the x axis. The y axis is</span>
+<span class="sd">        formation energy relative to the lowest stable pure-element endpoints when both are</span>
+<span class="sd">        present, and raw energy per atom otherwise. One-element diagrams use raw energy at a</span>
+<span class="sd">        single composition point. Unknown-energy phases are shown as open gray squares at</span>
+<span class="sd">        ``y=0.0`` in binary diagrams (including raw-energy mode) when ``show_unknown`` is true;</span>
+<span class="sd">        they do not affect the energy reference or hull geometry.</span>
+
+<span class="sd">        Diagrams with three or more elements use a regular composition polygon whose corner</span>
+<span class="sd">        ``k`` is at angle ``2*pi*k/N``. Phase lines are drawn individually in black; stable</span>
+<span class="sd">        phases are filled, unstable phases are open, and unknown-energy phases are open gray</span>
+<span class="sd">        squares. Matplotlib is imported only here and this method never calls ``show`` or writes</span>
+<span class="sd">        a file.</span>
+
+<span class="sd">        :param ax: Matplotlib axes to draw on, or ``None`` to create one.</span>
+<span class="sd">        :param show_unstable: Whether to plot unstable energy-known phases.</span>
+<span class="sd">        :param label_stable: Whether to label stable and unknown-energy phases.</span>
+<span class="sd">        :param show_unknown: Whether to plot phases without known energy.</span>
+<span class="sd">        :return: The ``matplotlib.axes.Axes`` containing the diagram.</span>
+<span class="sd">        :raises ImportError: If Matplotlib is unavailable.</span>
+<span class="sd">        """</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+        <span class="k">except</span> <span class="ne">ImportError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span><span class="s2">"PhaseDiagram.plot() requires matplotlib; install matplotlib"</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">exc</span>
+        <span class="n">register_citation</span><span class="p">(</span>
+            <span class="n">applies_to</span><span class="o">=</span><span class="s2">"Phase-diagram plotting uses Matplotlib"</span><span class="p">,</span>
+            <span class="n">references</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">"authors"</span><span class="p">:</span> <span class="p">({</span><span class="s2">"name"</span><span class="p">:</span> <span class="s2">"John D. Hunter"</span><span class="p">},),</span>
+                <span class="s2">"title"</span><span class="p">:</span> <span class="s2">"Matplotlib: A 2D graphics environment"</span><span class="p">,</span>
+                <span class="s2">"journal"</span><span class="p">:</span> <span class="s2">"Computing in Science &amp; Engineering"</span><span class="p">,</span>
+                <span class="s2">"volume"</span><span class="p">:</span> <span class="s2">"9"</span><span class="p">,</span>
+                <span class="s2">"number"</span><span class="p">:</span> <span class="s2">"3"</span><span class="p">,</span>
+                <span class="s2">"pages"</span><span class="p">:</span> <span class="s2">"90-95"</span><span class="p">,</span>
+                <span class="s2">"year"</span><span class="p">:</span> <span class="s2">"2007"</span><span class="p">,</span>
+                <span class="s2">"doi"</span><span class="p">:</span> <span class="s2">"10.1109/MCSE.2007.55"</span><span class="p">,</span>
+                <span class="s2">"bib_type"</span><span class="p">:</span> <span class="s2">"article"</span><span class="p">,</span>
+            <span class="p">},</span>
+        <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">ax</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">_</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_elements</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_plot_binary</span><span class="p">(</span>
+                <span class="n">ax</span><span class="p">,</span>
+                <span class="n">show_unstable</span><span class="o">=</span><span class="n">show_unstable</span><span class="p">,</span>
+                <span class="n">label_stable</span><span class="o">=</span><span class="n">label_stable</span><span class="p">,</span>
+                <span class="n">show_unknown</span><span class="o">=</span><span class="n">show_unknown</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_plot_polygon</span><span class="p">(</span>
+                <span class="n">ax</span><span class="p">,</span>
+                <span class="n">show_unstable</span><span class="o">=</span><span class="n">show_unstable</span><span class="p">,</span>
+                <span class="n">label_stable</span><span class="o">=</span><span class="n">label_stable</span><span class="p">,</span>
+                <span class="n">show_unknown</span><span class="o">=</span><span class="n">show_unknown</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="n">ax</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_plot_binary</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">ax</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">show_unstable</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+        <span class="n">label_stable</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+        <span class="n">show_unknown</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">binary</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_elements</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span>
+        <span class="n">compositions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compositions</span>
+        <span class="n">energies</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">energies_per_atom</span>
+        <span class="n">xs</span> <span class="o">=</span> <span class="p">[</span><span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="n">binary</span> <span class="k">else</span> <span class="mf">0.0</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">compositions</span><span class="p">]</span>
+        <span class="n">ys</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">energies</span><span class="p">)</span>
+        <span class="n">formation</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="n">binary</span><span class="p">:</span>
+            <span class="n">left</span> <span class="o">=</span> <span class="p">[</span><span class="n">index</span> <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">hull_indices</span> <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">xs</span><span class="p">[</span><span class="n">index</span><span class="p">])</span> <span class="o">&lt;=</span> <span class="n">_COMPOSITION_TOLERANCE</span><span class="p">]</span>
+            <span class="n">right</span> <span class="o">=</span> <span class="p">[</span><span class="n">index</span> <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">hull_indices</span> <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">xs</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">-</span> <span class="mf">1.0</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">_COMPOSITION_TOLERANCE</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">left</span> <span class="ow">and</span> <span class="n">right</span><span class="p">:</span>
+                <span class="n">left_energy</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">energies</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">left</span><span class="p">)</span>
+                <span class="n">right_energy</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">energies</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">right</span><span class="p">)</span>
+                <span class="n">ys</span> <span class="o">=</span> <span class="p">[</span>
+                    <span class="n">energy</span> <span class="o">-</span> <span class="p">((</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">x</span><span class="p">)</span> <span class="o">*</span> <span class="n">left_energy</span> <span class="o">+</span> <span class="n">x</span> <span class="o">*</span> <span class="n">right_energy</span><span class="p">)</span>
+                    <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">energy</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">energies</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                <span class="p">]</span>
+                <span class="n">formation</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="n">binary_lines</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">phase_lines</span><span class="p">,</span>
+            <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">pair</span><span class="p">:</span> <span class="p">(</span>
+                <span class="nb">min</span><span class="p">(</span><span class="n">xs</span><span class="p">[</span><span class="n">pair</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="n">xs</span><span class="p">[</span><span class="n">pair</span><span class="p">[</span><span class="mi">1</span><span class="p">]]),</span>
+                <span class="nb">max</span><span class="p">(</span><span class="n">xs</span><span class="p">[</span><span class="n">pair</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="n">xs</span><span class="p">[</span><span class="n">pair</span><span class="p">[</span><span class="mi">1</span><span class="p">]]),</span>
+                <span class="n">pair</span><span class="p">,</span>
+            <span class="p">),</span>
+        <span class="p">)</span>
+        <span class="k">for</span> <span class="n">first</span><span class="p">,</span> <span class="n">second</span> <span class="ow">in</span> <span class="n">binary_lines</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">xs</span><span class="p">[</span><span class="n">first</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">xs</span><span class="p">[</span><span class="n">second</span><span class="p">]:</span>
+                <span class="n">first</span><span class="p">,</span> <span class="n">second</span> <span class="o">=</span> <span class="n">second</span><span class="p">,</span> <span class="n">first</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+                <span class="p">[</span><span class="n">xs</span><span class="p">[</span><span class="n">first</span><span class="p">],</span> <span class="n">xs</span><span class="p">[</span><span class="n">second</span><span class="p">]],</span>
+                <span class="p">[</span><span class="n">ys</span><span class="p">[</span><span class="n">first</span><span class="p">],</span> <span class="n">ys</span><span class="p">[</span><span class="n">second</span><span class="p">]],</span>
+                <span class="n">color</span><span class="o">=</span><span class="s2">"black"</span><span class="p">,</span>
+                <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="n">stable_set</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hull_indices</span><span class="p">)</span>
+        <span class="n">stable</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hull_indices</span><span class="p">)</span>
+        <span class="n">unstable</span> <span class="o">=</span> <span class="p">[</span><span class="n">index</span> <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span> <span class="k">if</span> <span class="n">index</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">stable_set</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">stable</span><span class="p">:</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+                <span class="p">[</span><span class="n">xs</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">stable</span><span class="p">],</span>
+                <span class="p">[</span><span class="n">ys</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">stable</span><span class="p">],</span>
+                <span class="n">linestyle</span><span class="o">=</span><span class="s2">"none"</span><span class="p">,</span>
+                <span class="n">marker</span><span class="o">=</span><span class="s2">"o"</span><span class="p">,</span>
+                <span class="n">color</span><span class="o">=</span><span class="s2">"black"</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="n">show_unstable</span> <span class="ow">and</span> <span class="n">unstable</span><span class="p">:</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+                <span class="p">[</span><span class="n">xs</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">unstable</span><span class="p">],</span>
+                <span class="p">[</span><span class="n">ys</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">unstable</span><span class="p">],</span>
+                <span class="n">linestyle</span><span class="o">=</span><span class="s2">"none"</span><span class="p">,</span>
+                <span class="n">marker</span><span class="o">=</span><span class="s2">"o"</span><span class="p">,</span>
+                <span class="n">markerfacecolor</span><span class="o">=</span><span class="s2">"none"</span><span class="p">,</span>
+                <span class="n">markeredgecolor</span><span class="o">=</span><span class="s2">"black"</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="n">unknown_xs</span> <span class="o">=</span> <span class="p">[</span><span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="n">binary</span> <span class="k">else</span> <span class="mf">0.0</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">unknown_compositions</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">show_unknown</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_unknown_compositions</span><span class="p">:</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+                <span class="n">unknown_xs</span><span class="p">,</span>
+                <span class="p">[</span><span class="mf">0.0</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">unknown_xs</span><span class="p">),</span>
+                <span class="n">linestyle</span><span class="o">=</span><span class="s2">"none"</span><span class="p">,</span>
+                <span class="n">marker</span><span class="o">=</span><span class="s2">"s"</span><span class="p">,</span>
+                <span class="n">markerfacecolor</span><span class="o">=</span><span class="s2">"none"</span><span class="p">,</span>
+                <span class="n">markeredgecolor</span><span class="o">=</span><span class="s2">"gray"</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="n">label_stable</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">stable</span><span class="p">:</span>
+                <span class="n">ax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_ids</span><span class="p">[</span><span class="n">index</span><span class="p">],</span>
+                    <span class="p">(</span><span class="n">xs</span><span class="p">[</span><span class="n">index</span><span class="p">],</span> <span class="n">ys</span><span class="p">[</span><span class="n">index</span><span class="p">]),</span>
+                    <span class="n">xytext</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span>
+                    <span class="n">textcoords</span><span class="o">=</span><span class="s2">"offset points"</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="k">if</span> <span class="n">show_unknown</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">identifier</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">unknown_ids</span><span class="p">,</span> <span class="n">unknown_xs</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+                    <span class="n">ax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span>
+                        <span class="n">identifier</span><span class="p">,</span>
+                        <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">),</span>
+                        <span class="n">xytext</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span>
+                        <span class="n">textcoords</span><span class="o">=</span><span class="s2">"offset points"</span><span class="p">,</span>
+                    <span class="p">)</span>
+        <span class="k">if</span> <span class="n">binary</span><span class="p">:</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mf">0.03</span><span class="p">,</span> <span class="mf">1.03</span><span class="p">)</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">f</span><span class="s2">"fraction of </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_elements</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">([</span><span class="mf">0.0</span><span class="p">],</span> <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_elements</span><span class="p">[</span><span class="mi">0</span><span class="p">]])</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">"composition"</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">"formation energy / atom"</span> <span class="k">if</span> <span class="n">formation</span> <span class="k">else</span> <span class="s2">"energy / atom"</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_plot_polygon</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">ax</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">show_unstable</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+        <span class="n">label_stable</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+        <span class="n">show_unknown</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">corners</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span>
+            <span class="p">(</span>
+                <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">index</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_elements</span><span class="p">)),</span>
+                <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">index</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_elements</span><span class="p">)),</span>
+            <span class="p">)</span>
+            <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_elements</span><span class="p">))</span>
+        <span class="p">)</span>
+        <span class="n">positions</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span>
+            <span class="p">(</span>
+                <span class="nb">sum</span><span class="p">(</span><span class="n">weight</span> <span class="o">*</span> <span class="n">corner</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">weight</span><span class="p">,</span> <span class="n">corner</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">corners</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">True</span><span class="p">)),</span>
+                <span class="nb">sum</span><span class="p">(</span><span class="n">weight</span> <span class="o">*</span> <span class="n">corner</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">weight</span><span class="p">,</span> <span class="n">corner</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">corners</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">True</span><span class="p">)),</span>
+            <span class="p">)</span>
+            <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">compositions</span>
+        <span class="p">)</span>
+        <span class="n">unknown_positions</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span>
+            <span class="p">(</span>
+                <span class="nb">sum</span><span class="p">(</span><span class="n">weight</span> <span class="o">*</span> <span class="n">corner</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">weight</span><span class="p">,</span> <span class="n">corner</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">corners</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">True</span><span class="p">)),</span>
+                <span class="nb">sum</span><span class="p">(</span><span class="n">weight</span> <span class="o">*</span> <span class="n">corner</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">weight</span><span class="p">,</span> <span class="n">corner</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">corners</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">True</span><span class="p">)),</span>
+            <span class="p">)</span>
+            <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">unknown_compositions</span>
+        <span class="p">)</span>
+        <span class="n">boundary</span> <span class="o">=</span> <span class="p">(</span><span class="o">*</span><span class="n">corners</span><span class="p">,</span> <span class="n">corners</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+            <span class="p">[</span><span class="n">point</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">boundary</span><span class="p">],</span>
+            <span class="p">[</span><span class="n">point</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">boundary</span><span class="p">],</span>
+            <span class="n">color</span><span class="o">=</span><span class="s2">"black"</span><span class="p">,</span>
+            <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">for</span> <span class="n">element</span><span class="p">,</span> <span class="n">corner</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_elements</span><span class="p">,</span> <span class="n">corners</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span>
+                <span class="mf">1.12</span> <span class="o">*</span> <span class="n">corner</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                <span class="mf">1.12</span> <span class="o">*</span> <span class="n">corner</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+                <span class="n">element</span><span class="p">,</span>
+                <span class="n">horizontalalignment</span><span class="o">=</span><span class="s2">"center"</span><span class="p">,</span>
+                <span class="n">verticalalignment</span><span class="o">=</span><span class="s2">"center"</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">for</span> <span class="n">first</span><span class="p">,</span> <span class="n">second</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">phase_lines</span><span class="p">:</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+                <span class="p">[</span><span class="n">positions</span><span class="p">[</span><span class="n">first</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">positions</span><span class="p">[</span><span class="n">second</span><span class="p">][</span><span class="mi">0</span><span class="p">]],</span>
+                <span class="p">[</span><span class="n">positions</span><span class="p">[</span><span class="n">first</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="n">positions</span><span class="p">[</span><span class="n">second</span><span class="p">][</span><span class="mi">1</span><span class="p">]],</span>
+                <span class="n">color</span><span class="o">=</span><span class="s2">"black"</span><span class="p">,</span>
+                <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="n">stable_set</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hull_indices</span><span class="p">)</span>
+        <span class="n">stable</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hull_indices</span><span class="p">)</span>
+        <span class="n">unstable</span> <span class="o">=</span> <span class="p">[</span><span class="n">index</span> <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span> <span class="k">if</span> <span class="n">index</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">stable_set</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">stable</span><span class="p">:</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+                <span class="p">[</span><span class="n">positions</span><span class="p">[</span><span class="n">index</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">stable</span><span class="p">],</span>
+                <span class="p">[</span><span class="n">positions</span><span class="p">[</span><span class="n">index</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">stable</span><span class="p">],</span>
+                <span class="n">linestyle</span><span class="o">=</span><span class="s2">"none"</span><span class="p">,</span>
+                <span class="n">marker</span><span class="o">=</span><span class="s2">"o"</span><span class="p">,</span>
+                <span class="n">color</span><span class="o">=</span><span class="s2">"black"</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="n">show_unstable</span> <span class="ow">and</span> <span class="n">unstable</span><span class="p">:</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+                <span class="p">[</span><span class="n">positions</span><span class="p">[</span><span class="n">index</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">unstable</span><span class="p">],</span>
+                <span class="p">[</span><span class="n">positions</span><span class="p">[</span><span class="n">index</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">unstable</span><span class="p">],</span>
+                <span class="n">linestyle</span><span class="o">=</span><span class="s2">"none"</span><span class="p">,</span>
+                <span class="n">marker</span><span class="o">=</span><span class="s2">"o"</span><span class="p">,</span>
+                <span class="n">markerfacecolor</span><span class="o">=</span><span class="s2">"none"</span><span class="p">,</span>
+                <span class="n">markeredgecolor</span><span class="o">=</span><span class="s2">"black"</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="n">show_unknown</span> <span class="ow">and</span> <span class="n">unknown_positions</span><span class="p">:</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+                <span class="p">[</span><span class="n">point</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">unknown_positions</span><span class="p">],</span>
+                <span class="p">[</span><span class="n">point</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">unknown_positions</span><span class="p">],</span>
+                <span class="n">linestyle</span><span class="o">=</span><span class="s2">"none"</span><span class="p">,</span>
+                <span class="n">marker</span><span class="o">=</span><span class="s2">"s"</span><span class="p">,</span>
+                <span class="n">markerfacecolor</span><span class="o">=</span><span class="s2">"none"</span><span class="p">,</span>
+                <span class="n">markeredgecolor</span><span class="o">=</span><span class="s2">"gray"</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="n">label_stable</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">stable</span><span class="p">:</span>
+                <span class="n">ax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_ids</span><span class="p">[</span><span class="n">index</span><span class="p">],</span>
+                    <span class="n">positions</span><span class="p">[</span><span class="n">index</span><span class="p">],</span>
+                    <span class="n">xytext</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span>
+                    <span class="n">textcoords</span><span class="o">=</span><span class="s2">"offset points"</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="k">if</span> <span class="n">show_unknown</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">identifier</span><span class="p">,</span> <span class="n">position</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">unknown_ids</span><span class="p">,</span> <span class="n">unknown_positions</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+                    <span class="n">ax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span>
+                        <span class="n">identifier</span><span class="p">,</span>
+                        <span class="n">position</span><span class="p">,</span>
+                        <span class="n">xytext</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span>
+                        <span class="n">textcoords</span><span class="o">=</span><span class="s2">"offset points"</span><span class="p">,</span>
+                    <span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">"equal"</span><span class="p">,</span> <span class="n">adjustable</span><span class="o">=</span><span class="s2">"box"</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_axis_off</span><span class="p">()</span></div>
+
+
+
+<div class="viewcode-block" id="PhaseDiagramBuilder">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/phase_diagrams/index.html#httk.analyse.matsci.PhaseDiagramBuilder">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">PhaseDiagramBuilder</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Mutable, not-thread-safe accumulator for incrementally building a phase diagram.</span>
+
+<span class="sd">    :param tolerance: Maximum energy excess treated as stable when building the diagram.</span>
+<span class="sd">    """</span>
+
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"_phases"</span><span class="p">,</span> <span class="s2">"_tolerance"</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">tolerance</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-8</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_tolerance</span> <span class="o">=</span> <span class="n">_validate_tolerance</span><span class="p">(</span><span class="n">tolerance</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_phases</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">fractions</span><span class="o">.</span><span class="n">Fraction</span><span class="p">],</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
+
+<div class="viewcode-block" id="PhaseDiagramBuilder.add_phase">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/phase_diagrams/index.html#httk.analyse.matsci.PhaseDiagramBuilder.add_phase">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_phase</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">composition</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">fractions</span><span class="o">.</span><span class="n">Fraction</span><span class="p">],</span>
+        <span class="n">energy</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="nb">id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Self</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Add a formula-unit composition and return this builder for chaining.</span>
+
+<span class="sd">        :param composition: Formula-unit element counts for the phase.</span>
+<span class="sd">        :param energy: Total formula-unit energy, or ``None`` when unknown.</span>
+<span class="sd">        :param id: Optional phase identifier.</span>
+<span class="sd">        :return: This builder.</span>
+<span class="sd">        :raises TypeError: If ``composition`` is not a mapping.</span>
+<span class="sd">        """</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">composition</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">"composition must be a mapping"</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_phases</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="nb">dict</span><span class="p">(</span><span class="n">composition</span><span class="p">),</span> <span class="n">energy</span><span class="p">,</span> <span class="nb">id</span><span class="p">))</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+
+<div class="viewcode-block" id="PhaseDiagramBuilder.add_structure">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/phase_diagrams/index.html#httk.analyse.matsci.PhaseDiagramBuilder.add_structure">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_structure</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">structure</span><span class="p">:</span> <span class="n">StructureLike</span><span class="p">,</span>
+        <span class="n">energy</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="nb">id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Self</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Convert and add a structure, returning this builder for chaining.</span>
+
+<span class="sd">        :param structure: Structure supplying the phase composition.</span>
+<span class="sd">        :param energy: Total unit-cell energy, or ``None`` when unknown.</span>
+<span class="sd">        :param id: Optional phase identifier.</span>
+<span class="sd">        :return: This builder.</span>
+<span class="sd">        """</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_phases</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">_structure_composition</span><span class="p">(</span><span class="n">structure</span><span class="p">),</span> <span class="n">energy</span><span class="p">,</span> <span class="nb">id</span><span class="p">))</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+
+<div class="viewcode-block" id="PhaseDiagramBuilder.build">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/phase_diagrams/index.html#httk.analyse.matsci.PhaseDiagramBuilder.build">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">build</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PhaseDiagram</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Build an independent snapshot, requiring at least one known phase energy.</span>
+
+<span class="sd">        The builder may contain unknown-energy phases, but an all-``None`` energy collection</span>
+<span class="sd">        is rejected by the factory validation used to create the snapshot.</span>
+
+<span class="sd">        :return: An independent phase-diagram snapshot.</span>
+<span class="sd">        :raises ValueError: If no phase has a known energy or the phase data is invalid.</span>
+<span class="sd">        """</span>
+        <span class="n">compositions</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">composition</span> <span class="k">for</span> <span class="n">composition</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_phases</span><span class="p">)</span>
+        <span class="n">energies</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">energy</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">energy</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_phases</span><span class="p">)</span>
+        <span class="n">ids</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">identifier</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">identifier</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_phases</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">PhaseDiagram</span><span class="o">.</span><span class="n">from_compositions</span><span class="p">(</span>
+            <span class="n">compositions</span><span class="p">,</span>
+            <span class="n">energies</span><span class="p">,</span>
+            <span class="n">ids</span><span class="p">,</span>
+            <span class="n">tolerance</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_tolerance</span><span class="p">,</span>
+        <span class="p">)</span></div>
+</div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_validate_tolerance</span><span class="p">(</span><span class="n">tolerance</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+    <span class="n">energy_tolerance</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">tolerance</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">math</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">energy_tolerance</span><span class="p">)</span> <span class="ow">or</span> <span class="n">energy_tolerance</span> <span class="o">&lt;</span> <span class="mf">0.0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"tolerance must be a finite non-negative number"</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">energy_tolerance</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_structure_composition</span><span class="p">(</span><span class="n">structure_like</span><span class="p">:</span> <span class="n">StructureLike</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">"""Convert a structure to its unit-cell composition counts."""</span>
+    <span class="n">structure</span> <span class="o">=</span> <span class="n">UnitcellStructureView</span><span class="p">(</span><span class="n">structure_like</span><span class="p">)</span>
+    <span class="n">species_by_name</span> <span class="o">=</span> <span class="p">{</span><span class="n">species</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="n">species</span> <span class="k">for</span> <span class="n">species</span> <span class="ow">in</span> <span class="n">structure</span><span class="o">.</span><span class="n">species</span><span class="p">}</span>
+    <span class="n">composition</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">structure</span><span class="o">.</span><span class="n">species_at_sites</span><span class="p">:</span>
+        <span class="n">species</span> <span class="o">=</span> <span class="n">species_by_name</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">symbol</span><span class="p">,</span> <span class="n">concentration</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span>
+            <span class="n">species</span><span class="o">.</span><span class="n">chemical_symbols</span><span class="p">,</span>
+            <span class="n">species</span><span class="o">.</span><span class="n">concentration</span><span class="p">,</span>
+            <span class="n">strict</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">math</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">concentration</span><span class="p">)</span> <span class="ow">or</span> <span class="n">concentration</span> <span class="o">&lt;</span> <span class="mf">0.0</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"species concentrations must be finite and non-negative"</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">symbol</span> <span class="o">==</span> <span class="s2">"vacancy"</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="n">symbol</span> <span class="o">==</span> <span class="s2">"X"</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"cannot build a phase diagram from unknown chemical symbol 'X'"</span><span class="p">)</span>
+            <span class="n">composition</span><span class="p">[</span><span class="n">symbol</span><span class="p">]</span> <span class="o">=</span> <span class="n">composition</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">symbol</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span> <span class="o">+</span> <span class="nb">float</span><span class="p">(</span><span class="n">concentration</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">composition</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_formula_label</span><span class="p">(</span><span class="n">composition</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">fractions</span><span class="o">.</span><span class="n">Fraction</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Return a compact deterministic unit-cell formula label."""</span>
+    <span class="n">parts</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">composition</span><span class="p">):</span>
+        <span class="n">count</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">composition</span><span class="p">[</span><span class="n">element</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">count</span> <span class="o">&lt;=</span> <span class="mf">0.0</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="n">parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">element</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">math</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">count</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">rel_tol</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">abs_tol</span><span class="o">=</span><span class="mf">1e-12</span><span class="p">):</span>
+            <span class="n">parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">count</span><span class="si">:</span><span class="s2">.12g</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="k">return</span> <span class="s2">""</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">"empty"</span>
+</pre></div>
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          
+          
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2026, The httk-analyse AUTHORS
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer no-toc">
+      
+      
+      
+    </aside>
+  </div>
+</div><script src="../../../../_static/documentation_options.js?v=fe42cd0d"></script>
+    <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../../../_static/scripts/furo.js?v=46bd48cc"></script>
+    <script src="../../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../../_static/copybutton.js?v=fd10adb8"></script>
+    <script src="../../../../_static/selector.js?v=e591e119"></script>
+    <script>window.HTTK_DOCS_VERSIONING = {"channel":"dev","version":"dev:main","versionPathDepth":2};</script>
+    </body>
+</html>

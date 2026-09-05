@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "project": "httk-analyse",
+  "url": "https://docs.httk.org/httk-analyse",
+  "source_commit": "7b195855e6025ee0671f459e3c0fb40f3db70ca0",
+  "default": {
+    "name": "dev:main",
+    "path": "dev/main/",
+    "channel": "dev"
+  },
+  "versions": [
+    {
+      "name": "dev:main",
+      "path": "dev/main/",
+      "channel": "dev"
+    }
+  ]
+}
