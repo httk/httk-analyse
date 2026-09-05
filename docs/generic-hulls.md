@@ -35,7 +35,10 @@ presentation.
 For an input point `i`, `decomposition(i)` gives its convex decomposition on
 the lower hull. The decomposition contains the contributing hull points and
 their convex weights. `supported_segments` exposes the geometric support
-segments of the hull for plotting or further analysis.
+segments of the hull for plotting or further analysis. Segment discovery is
+deferred until that property is first requested. Its geometric collinearity
+checks normalize each coordinate axis, so coordinate units do not alter segment
+topology.
 
 In more than one coordinate dimension, decompositions are found using every
 coordinate constraint as well as the convex-weight constraint. Consequently,

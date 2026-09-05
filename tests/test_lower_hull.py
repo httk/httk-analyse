@@ -142,6 +142,28 @@ def test_supported_midpoint_uses_endpoint_relative_coordinates() -> None:
     assert hull.supported_segments == ((0, 1),)
 
 
+def test_supported_segments_are_computed_on_first_access_only(monkeypatch: pytest.MonkeyPatch) -> None:
+    calls = 0
+    original = LowerConvexHull._compute_supported_segments
+
+    def compute(self: LowerConvexHull) -> tuple[tuple[int, int], ...]:
+        nonlocal calls
+        calls += 1
+        return original(self)
+
+    monkeypatch.setattr(LowerConvexHull, "_compute_supported_segments", compute)
+    hull = LowerConvexHull([(0.0,), (0.5,), (1.0,)], [0.0, -1.0, 0.0])
+    before = repr(hull), hash(hull)
+
+    assert calls == 0
+    assert hull.supported_segments == ((0, 1), (1, 2))
+    assert calls == 1
+    assert hull.supported_segments == ((0, 1), (1, 2))
+    assert calls == 1
+    assert (repr(hull), hash(hull)) == before
+    assert hull == LowerConvexHull([(0.0,), (0.5,), (1.0,)], [0.0, -1.0, 0.0])
+
+
 def test_translated_segment_topology_matches_the_origin_topology() -> None:
     points = ((0.1, 0.2), (0.3, 0.4), (0.2, 0.3))
     values = (0.0, 0.0, 0.0)
@@ -160,6 +182,34 @@ def test_translated_segment_topology_matches_the_origin_topology() -> None:
 
         assert translated.hull_indices == reference.hull_indices
         assert translated.supported_segments == reference.supported_segments
+
+
+@pytest.mark.parametrize(
+    ("origin", "scale"),
+    [((0.0, 0.0), (1e-12, 1e-12)), ((1_000_000.0, -1_000_000.0), (0.125, 1024.0))],
+)
+def test_segment_topology_is_scale_and_translation_invariant(
+    origin: tuple[float, float], scale: tuple[float, float]
+) -> None:
+    points = ((0.0, 0.0), (1.0, 1.0), (0.5, 0.5))
+    transformed = [tuple(origin[axis] + scale[axis] * coordinate[axis] for axis in range(2)) for coordinate in points]
+
+    assert LowerConvexHull(transformed, [0.0, 0.0, 0.0]).supported_segments == ((0, 2), (1, 2))
+
+
+@pytest.mark.parametrize(
+    "points",
+    [
+        [(0.0, 5.0), (100_000.0, 5.0), (50_000.0, 5.0)],
+        [(0.0, 0.0), (100_000.0, 100_000.0), (50_000.0, 50_000.00005)],
+    ],
+)
+def test_segment_geometry_handles_constant_axes_and_near_collinearity(
+    points: list[tuple[float, float]],
+) -> None:
+    hull = LowerConvexHull(points, [0.0, 0.0, 0.0])
+
+    assert hull.supported_segments == ((0, 2), (1, 2))
 
 
 def test_lower_hull_distances_decomposition_and_subsumed_segment() -> None:
@@ -312,6 +362,11 @@ def test_distinct_nearby_coordinates_receive_a_supported_segment() -> None:
     assert hull.supported_segments == ((0, 1),)
 
 
+def test_distant_point_does_not_erase_local_subsumption() -> None:
+    hull = LowerConvexHull([(0.0,), (1.0,), (2.0,), (1e12,)], [0.0] * 4)
+    assert (0, 2) not in hull.supported_segments
+
+
 def test_subsumption_requires_middle_point_on_value_segment() -> None:
     hull = LowerConvexHull(
         [(0.0,), (1.0,), (0.25,)],
@@ -355,3 +410,24 @@ def test_lower_hull_is_immutable_and_tuple_backed() -> None:
     assert hull.values == (0.0, 0.0)
     with pytest.raises(AttributeError):
         hull._points = ()  # type: ignore[misc]
+
+
+def test_lower_hull_matches_scipy_linprog_when_available() -> None:
+    scipy_optimize = pytest.importorskip("scipy.optimize")
+    points = numpy.asarray([(0.0, 0.0), (1.0, 0.0), (0.0, 1.0), (1.0, 1.0), (0.5, 0.5)])
+    values = numpy.asarray([0.0, 0.0, 0.0, 0.0, 0.5])
+    hull = LowerConvexHull(points, values)
+
+    for index in range(len(points)):
+        competitors = [candidate for candidate in range(len(points)) if candidate != index]
+        result = scipy_optimize.linprog(
+            values[competitors],
+            A_eq=numpy.vstack((points[competitors].T, numpy.ones(len(competitors)))),
+            b_eq=[*points[index], 1.0],
+            bounds=(0.0, None),
+            method="highs",
+        )
+        expected_excess = 0.0 if not result.success else max(0.0, values[index] - result.fun)
+
+        assert hull.value_above_hull[index] == pytest.approx(expected_excess)
+        assert hull.is_on_hull(index) == (not result.success or expected_excess <= 1e-8)

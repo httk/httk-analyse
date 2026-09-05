@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
 """Compare httk and ASE phase-diagram construction across scale and dimension.
 
-The two implementations do different amounts of eager work.  The httk timing
-includes stability, energy-above-hull values, decompositions for every unstable
-phase, and supported phase lines.  ASE's constructor only builds the lower
-simplices, so this script reports both that constructor and a second ASE timing
-that also requests a decomposition for every unstable input phase.  Stable
-phases need no query because ASE's hull mask already identifies them.
+The two implementations do different amounts of eager work. The httk timing
+includes stability, energy-above-hull values, and decompositions for every
+unstable phase; supported phase lines are timed separately on first access.
+ASE's constructor only builds the lower simplices, so this script reports both
+that constructor and a second ASE timing that also requests a decomposition for
+every unstable input phase. Stable phases need no query because ASE's hull mask
+already identifies them.
 
 Inputs are deterministic synthetic compositions.  Every dataset includes all
 pure-element endpoints, followed by unique random integer compositions and
@@ -64,6 +65,7 @@ class BenchmarkResult:
     species: int
     phases: int
     httk_seconds: float | None
+    httk_first_phase_lines_seconds: float | None
     ase_construct_seconds: float | None
     ase_construct_and_decompose_unstable_seconds: float | None
     httk_over_ase_construct: float | None
@@ -157,6 +159,24 @@ def _ase_construct_and_decompose(
     return diagram
 
 
+def _measure_first_phase_lines(
+    operation: Callable[[], HttkPhaseDiagram],
+    *,
+    repeats: int,
+    warmups: int,
+) -> float:
+    """Measure a cold supported-phase-line query without charging construction."""
+    for _ in range(warmups):
+        _ = operation().phase_lines
+    timings: list[float] = []
+    for _ in range(repeats):
+        diagram = operation()
+        started = time.perf_counter()
+        _ = diagram.phase_lines
+        timings.append(time.perf_counter() - started)
+    return statistics.median(timings)
+
+
 def _error_text(exc: Exception) -> str:
     return f"{type(exc).__name__}: {exc}"
 
@@ -178,10 +198,16 @@ def _run_case(
     references = tuple(zip(compositions, energies, strict=True))
 
     httk_seconds: float | None = None
+    httk_first_phase_lines_seconds: float | None = None
     httk_diagram: HttkPhaseDiagram | None = None
     httk_error: str | None = None
     try:
         httk_seconds, httk_diagram = _measure(
+            lambda: HttkPhaseDiagram.from_compositions(compositions, energies),
+            repeats=repeats,
+            warmups=warmups,
+        )
+        httk_first_phase_lines_seconds = _measure_first_phase_lines(
             lambda: HttkPhaseDiagram.from_compositions(compositions, energies),
             repeats=repeats,
             warmups=warmups,
@@ -228,6 +254,7 @@ def _run_case(
         species=case.species,
         phases=case.phases,
         httk_seconds=httk_seconds,
+        httk_first_phase_lines_seconds=httk_first_phase_lines_seconds,
         ase_construct_seconds=ase_construct_seconds,
         ase_construct_and_decompose_unstable_seconds=ase_full_seconds,
         httk_over_ase_construct=_ratio(httk_seconds, ase_construct_seconds),
@@ -337,10 +364,10 @@ def _print_results(results: Sequence[BenchmarkResult]) -> None:
     print("\nTimings are medians; lower is better.  Times are milliseconds.")
     print("S=species, N=phases, H=httk stable phases, LPs=httk equality-LP solves.")
     print(
-        f"{'sweep':8} {'S':>3} {'N':>5} {'httk':>11} {'ASE hull':>11} {'ratio':>9} "
+        f"{'sweep':8} {'S':>3} {'N':>5} {'httk':>11} {'H lines':>11} {'ASE hull':>11} {'ratio':>9} "
         f"{'ASE hull+unstable':>20} {'ratio':>9} {'H':>5} {'LPs':>7} {'facets':>8} {'lines':>7} {'match':>7}"
     )
-    print("-" * 134)
+    print("-" * 146)
     for result in results:
         match = "yes" if result.stable_membership_matches else "NO"
         if result.stable_membership_matches is None:
@@ -348,6 +375,7 @@ def _print_results(results: Sequence[BenchmarkResult]) -> None:
         print(
             f"{result.sweep:8} {result.species:3d} {result.phases:5d} "
             f"{_milliseconds(result.httk_seconds):>11} "
+            f"{_milliseconds(result.httk_first_phase_lines_seconds):>11} "
             f"{_milliseconds(result.ase_construct_seconds):>11} "
             f"{_number(result.httk_over_ase_construct):>9} "
             f"{_milliseconds(result.ase_construct_and_decompose_unstable_seconds):>20} "
@@ -425,8 +453,8 @@ def main() -> int:
         f"NumPy {packages['numpy']}, ASE {packages['ase']}, SciPy {packages['scipy']}"
     )
     print(
-        "httk construction is eager; ASE hull+unstable includes construction and one "
-        "decomposition query per unstable input phase."
+        "httk construction is eager except phase lines; ASE hull+unstable includes construction "
+        "and one decomposition query per unstable input phase."
     )
 
     results: list[BenchmarkResult] = []

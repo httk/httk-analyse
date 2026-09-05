@@ -2,7 +2,7 @@
 
 import math
 from collections.abc import Sequence
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Any
 
 import numpy as np
@@ -38,7 +38,9 @@ class LowerConvexHull:
     _hull_indices: tuple[int, ...]
     _value_above_hull: tuple[float, ...]
     _decompositions: tuple[tuple[tuple[int, float], ...] | None, ...]
-    _supported_segments: tuple[tuple[int, int], ...]
+    _supported_segments: tuple[tuple[int, int], ...] | None = field(
+        init=False, default=None, compare=False, hash=False, repr=False
+    )
 
     def __init__(
         self,
@@ -76,6 +78,7 @@ class LowerConvexHull:
         object.__setattr__(self, "_points", tuple(normalized_points))
         object.__setattr__(self, "_values", normalized_values)
         object.__setattr__(self, "_tolerance", numeric_tolerance)
+        object.__setattr__(self, "_supported_segments", None)
         self._analyze()
 
     @property
@@ -116,7 +119,11 @@ class LowerConvexHull:
 
         :return: The immutable supported index pairs in input order.
         """
-        return self._supported_segments
+        segments = self._supported_segments
+        if segments is None:
+            segments = self._compute_supported_segments()
+            object.__setattr__(self, "_supported_segments", segments)
+        return segments
 
     def decomposition(self, index: int) -> tuple[tuple[int, float], ...] | None:
         """Return lower-hull mixture ``(index, weight)`` pairs, or ``None`` on hull.
@@ -208,6 +215,9 @@ class LowerConvexHull:
             )
         object.__setattr__(self, "_decompositions", tuple(decompositions))
 
+    def _compute_supported_segments(self) -> tuple[tuple[int, int], ...]:
+        geometric_points = _normalized_geometry(self._points)
+        hull = self._hull_indices
         segments: list[tuple[int, int]] = []
         for position, first in enumerate(hull):
             for second in hull[position + 1 :]:
@@ -221,32 +231,42 @@ class LowerConvexHull:
                 pair_value = (self._values[first] + self._values[second]) / 2.0
                 if pair_value > value + self._tolerance:
                     continue
-                if self._is_subsumed(first, second, hull):
+                if self._is_subsumed(first, second, hull, geometric_points):
                     continue
                 segments.append((first, second))
-        object.__setattr__(self, "_supported_segments", tuple(segments))
+        return tuple(segments)
 
-    def _is_subsumed(self, first: int, second: int, hull: Sequence[int]) -> bool:
-        left = self._points[first]
-        right = self._points[second]
+    def _is_subsumed(
+        self,
+        first: int,
+        second: int,
+        hull: Sequence[int],
+        geometric_points: Sequence[Sequence[float]],
+    ) -> bool:
+        left = geometric_points[first]
+        right = geometric_points[second]
         difference = tuple(a - b for a, b in zip(left, right, strict=True))
         if not difference:
             return False
         axis = max(range(len(difference)), key=lambda index: abs(difference[index]))
-        if abs(difference[axis]) <= _COORDINATE_TOLERANCE:
+        length_scale = abs(difference[axis])
+        if length_scale == 0.0:
             return False
+        coordinate_tolerance = _COORDINATE_TOLERANCE * length_scale
         for middle in hull:
             if middle == first or middle == second:
                 continue
-            candidate = self._points[middle]
-            if _rows_close(candidate, left) or _rows_close(candidate, right):
+            candidate = geometric_points[middle]
+            if _rows_close(candidate, left, coordinate_tolerance) or _rows_close(
+                candidate, right, coordinate_tolerance
+            ):
                 continue
             fraction = (candidate[axis] - right[axis]) / difference[axis]
             if not _COORDINATE_TOLERANCE < fraction < 1.0 - _COORDINATE_TOLERANCE:
                 continue
             candidate_offset = tuple(value - base for value, base in zip(candidate, right, strict=True))
             segment_offset = tuple(fraction * value for value in difference)
-            if not _rows_close(candidate_offset, segment_offset):
+            if not _rows_close(candidate_offset, segment_offset, coordinate_tolerance):
                 continue
             energy = self._values[second] + fraction * (self._values[first] - self._values[second])
             if abs(self._values[middle] - energy) <= self._tolerance:
@@ -272,3 +292,18 @@ def _rows_close(
 ) -> bool:
     """Return whether coordinate rows are close at the segment tolerance."""
     return all(abs(left - right) <= tolerance for left, right in zip(first, second, strict=True))
+
+
+def _normalized_geometry(points: Sequence[Sequence[float]]) -> tuple[tuple[float, ...], ...]:
+    """Return origin-relative, per-axis normalized coordinates for geometric predicates."""
+    if not points:
+        return ()
+    origins = tuple(min(point[axis] for point in points) for axis in range(len(points[0])))
+    ranges = tuple(max(point[axis] for point in points) - origin for axis, origin in enumerate(origins))
+    return tuple(
+        tuple(
+            (coordinate - origins[axis]) / ranges[axis] if ranges[axis] else 0.0
+            for axis, coordinate in enumerate(point)
+        )
+        for point in points
+    )
