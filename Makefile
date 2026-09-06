@@ -1,5 +1,6 @@
 PYTHON ?= python3
 DIST_DIR ?= dist
+BENCHMARK_ARGS ?=
 
 # Base URL of the published httk documentation site, used for cross-linking docs
 # between httk repositories (read by docs/conf.py via HTTK_DOCS_BASE_URL).
@@ -78,7 +79,7 @@ test-extended-fastfail:
 	HTTK_TEST_PROFILE=extended $(PYTHON) -m pytest -q -m "" -x
 
 benchmark:
-	$(PYTHON) benchmarks/run_phase_diagram_benchmarks.py
+	$(PYTHON) benchmarks/run_phase_diagram_benchmarks.py $(BENCHMARK_ARGS)
 
 check: format-check typecheck typecheck_pyright test
 
