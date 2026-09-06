@@ -42,6 +42,7 @@ Issues = "https://github.com/httk/httk-analyse/issues"
 
 [project.optional-dependencies]
 crysviz = ["crysviz>=0.1,<1"]
+highs = ["highspy>=1.15.1,<2"]
 dev = [
   "pytest>=8.0",
   "ruff>=0.16,<0.17",
@@ -62,8 +63,7 @@ release = [
   "build>=1.2",
   "twine>=6.0",
 ]
-# Every feature of this module works from the hard dependencies alone; the empty
-# extra keeps the uniform httk-<module>[default] install form working.
+# The built-in solver needs no optional dependencies; retain the uniform install form.
 default = []
 benchmark = [
   "ase>=3.26,<4",

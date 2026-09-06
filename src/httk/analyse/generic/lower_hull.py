@@ -1,13 +1,17 @@
 """Generic lower convex-hull analysis for finite point-and-value collections."""
 
+import importlib
 import math
 from collections.abc import Sequence
 from dataclasses import dataclass, field
-from typing import Any
+from typing import TYPE_CHECKING, Any, Literal
 
 import numpy as np
 
 from ._simplex import _LPInfeasibleError, _solve_equality_lp
+
+if TYPE_CHECKING:
+    from ._highs import _HighsMixtureSolver
 
 __all__ = ["LowerConvexHull"]
 
@@ -29,12 +33,15 @@ class LowerConvexHull:
     :param points: Coordinate rows for the input points.
     :param values: Scalar values corresponding to ``points``.
     :param tolerance: Maximum value excess treated as on the lower hull.
+    :param solver: ``"simplex"`` for the built-in solver or ``"highs"`` for the optional
+        HiGHS candidate-basis accelerator.
     :raises ValueError: If the points, values, or tolerance are invalid.
     """
 
     _points: tuple[tuple[float, ...], ...]
     _values: tuple[float, ...]
     _tolerance: float
+    _solver: Literal["simplex", "highs"] = field(compare=False, hash=False)
     _hull_indices: tuple[int, ...]
     _value_above_hull: tuple[float, ...]
     _decompositions: tuple[tuple[tuple[int, float], ...] | None, ...]
@@ -48,7 +55,10 @@ class LowerConvexHull:
         values: Sequence[float],
         *,
         tolerance: float = 1e-8,
+        solver: Literal["simplex", "highs"] = "simplex",
     ) -> None:
+        if solver not in ("simplex", "highs"):
+            raise ValueError("solver must be 'simplex' or 'highs'")
         point_rows = tuple(points)
         value_rows = tuple(values)
         if not point_rows:
@@ -78,6 +88,7 @@ class LowerConvexHull:
         object.__setattr__(self, "_points", tuple(normalized_points))
         object.__setattr__(self, "_values", normalized_values)
         object.__setattr__(self, "_tolerance", numeric_tolerance)
+        object.__setattr__(self, "_solver", solver)
         object.__setattr__(self, "_supported_segments", None)
         self._analyze()
 
@@ -96,6 +107,11 @@ class LowerConvexHull:
         :return: The immutable input values.
         """
         return self._values
+
+    @property
+    def solver(self) -> Literal["simplex", "highs"]:
+        """Return the requested mixture-solver backend."""
+        return self._solver
 
     @property
     def hull_indices(self) -> tuple[int, ...]:
@@ -153,7 +169,12 @@ class LowerConvexHull:
         indices: Sequence[int],
         origin: tuple[float, ...],
         offsets: Sequence[float],
+        solver: "_HighsMixtureSolver | None" = None,
     ) -> tuple[float, tuple[float, ...]]:
+        if solver is not None:
+            result = solver.solve(indices, origin, offsets)
+            if result is not None:
+                return result
         # These origin-relative rows are equivalent to coordinate equality together
         # with sum(weights) == 1, but do not lose precision when every point is
         # translated far from the origin. Every coordinate is still represented.
@@ -172,22 +193,24 @@ class LowerConvexHull:
         self,
         indices: Sequence[int],
         target: tuple[float, ...],
+        solver: "_HighsMixtureSolver | None" = None,
     ) -> tuple[float, tuple[float, ...]]:
         # Use a candidate origin rather than the target itself: that leaves the
         # simplex a nonzero right-hand side on ordinary mixtures and avoids a
         # needless degenerate phase-I path.
         origin = self._points[indices[0]] if indices else target
         offsets = [target[axis] - origin[axis] for axis in range(len(target))]
-        return self._mixture_lp(indices, origin, offsets)
+        return self._mixture_lp(indices, origin, offsets, solver)
 
     def _analyze(self) -> None:
+        solver = _highs_solver(self._points, self._values) if self._solver == "highs" else None
         point_count = len(self)
         hull: list[int] = []
         above_hull: list[float] = []
         for index in range(point_count):
             competitors = tuple(candidate for candidate in range(point_count) if candidate != index)
             try:
-                value, _ = self._mixture(competitors, self._points[index])
+                value, _ = self._mixture(competitors, self._points[index], solver)
             except _LPInfeasibleError:
                 hull.append(index)
                 above_hull.append(0.0)
@@ -207,7 +230,7 @@ class LowerConvexHull:
                 decompositions.append(None)
                 continue
             try:
-                _, weights = self._mixture(hull, self._points[index])
+                _, weights = self._mixture(hull, self._points[index], solver)
             except _LPInfeasibleError as exc:
                 raise RuntimeError("lower-hull points do not span a non-hull point") from exc
             decompositions.append(
@@ -218,6 +241,7 @@ class LowerConvexHull:
     def _compute_supported_segments(self) -> tuple[tuple[int, int], ...]:
         geometric_points = _normalized_geometry(self._points)
         hull = self._hull_indices
+        solver = _highs_solver(self._points, self._values) if self._solver == "highs" else None
         segments: list[tuple[int, int]] = []
         for position, first in enumerate(hull):
             for second in hull[position + 1 :]:
@@ -227,7 +251,7 @@ class LowerConvexHull:
                     continue
                 # Evaluate the hull at the pair midpoint without forming it absolutely.
                 midpoint_offsets = [(second_point[axis] - first_point[axis]) / 2.0 for axis in range(len(first_point))]
-                value, _ = self._mixture_lp(hull, first_point, midpoint_offsets)
+                value, _ = self._mixture_lp(hull, first_point, midpoint_offsets, solver)
                 pair_value = (self._values[first] + self._values[second]) / 2.0
                 if pair_value > value + self._tolerance:
                     continue
@@ -283,6 +307,17 @@ def _finite_float(value: Any, label: str) -> float:
     if not math.isfinite(result):
         raise ValueError(f"{label} must be finite")
     return result
+
+
+def _highs_solver(points: tuple[tuple[float, ...], ...], values: tuple[float, ...]) -> "_HighsMixtureSolver":
+    """Load the optional HiGHS accelerator only when it is selected."""
+    try:
+        module = importlib.import_module("._highs", __package__)
+    except ModuleNotFoundError as exc:
+        if exc.name == "highspy":
+            raise ImportError("solver='highs' requires highspy; install httk-analyse[highs]") from None
+        raise
+    return module._HighsMixtureSolver(points, values)
 
 
 def _rows_close(

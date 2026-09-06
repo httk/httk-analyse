@@ -14,6 +14,34 @@ from httk.analyse.matsci import PhaseDiagram, PhaseDiagramBuilder
 CUBIC = [[4, 0, 0], [0, 4, 0], [0, 0, 4]]
 
 
+def test_highs_selection_reaches_factories_and_builder() -> None:
+    pytest.importorskip("highspy")
+    compositions = [{"A": 1}, {"B": 1}, {"A": 1, "B": 1}]
+    energies = [0.0, 0.0, 2.0]
+    reference = PhaseDiagram.from_compositions(compositions, energies)
+    diagram = PhaseDiagram.from_compositions(compositions, energies, solver="highs")
+    builder = PhaseDiagramBuilder(solver="highs")
+    for composition, energy in zip(compositions, energies, strict=True):
+        builder.add_phase(composition, energy)
+    snapshot = builder.build()
+    builder.add_phase({"A": 1, "B": 1}, -2.0)
+
+    assert reference.solver == "simplex"
+    for accelerated in (diagram, snapshot):
+        assert accelerated.solver == "highs"
+        assert accelerated.hull_indices == reference.hull_indices
+        assert accelerated.energy_above_hull == pytest.approx(reference.energy_above_hull)
+        assert accelerated.phase_lines == reference.phase_lines
+    assert snapshot.hull_indices == (0, 1)
+    assert builder.build().hull_indices == (0, 1, 3)
+
+    structure = UnitcellStructure(CUBIC, [[0, 0, 0]], [Species("Li", ("Li",), (1.0,))], ["Li"])
+    from_structures = PhaseDiagram.from_structures([structure, structure], [0.0, None], solver="highs")
+    assert from_structures.solver == "highs"
+    assert from_structures.hull_indices == (0,)
+    assert from_structures.unknown_ids == ("Li",)
+
+
 @pytest.mark.parametrize("epsilon", [2e-10, 1e-9, 2e-9])
 def test_phase_diagram_near_degenerate_ternary_regression(epsilon: float) -> None:
     points = [

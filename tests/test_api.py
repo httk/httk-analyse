@@ -21,8 +21,26 @@ def test_crysviz_submodule_is_imported_without_optional_dependency() -> None:
         [
             sys.executable,
             "-c",
-            "import sys; import httk.analyse; assert httk.analyse.crysviz.__name__ == 'httk.analyse.crysviz'; "
-            "assert 'crysviz' not in sys.modules",
+            (
+                "import sys; import httk.analyse; assert httk.analyse.crysviz.__name__ == 'httk.analyse.crysviz'; "
+                "assert 'crysviz' not in sys.modules"
+            ),
+        ],
+        check=True,
+    )
+
+
+def test_default_hull_does_not_import_highspy() -> None:
+    subprocess.run(
+        [
+            sys.executable,
+            "-c",
+            (
+                "import sys; from httk.analyse.generic import LowerConvexHull; "
+                "h = LowerConvexHull([(0.0,), (1.0,)], [0.0, 0.0]); "
+                "assert h.supported_segments == ((0, 1),); "
+                "assert h.solver == 'simplex'; assert 'highspy' not in sys.modules"
+            ),
         ],
         check=True,
     )

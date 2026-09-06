@@ -25,8 +25,15 @@ analysis. See [the example](examples/example.py) for a deterministic,
 headless invocation.
 
 The module depends on *httk-core*, *httk-atomistic*, NumPy, and Matplotlib.
+Optional `httk-analyse[highs]` adds HiGHS acceleration: pass `solver="highs"`
+to `LowerConvexHull`, either `PhaseDiagram` factory, or `PhaseDiagramBuilder`.
+The default stays `solver="simplex"`. The accelerated route refines HiGHS bases
+with the built-in numerical checks and falls back when a basis is unsuitable.
 
 ## Performance benchmarks
+
+See the [optional HiGHS measurements](benchmarks/HIGHS_REPORT.md) for a
+guarded comparison of both solver routes, including few-element cases.
 
 The opt-in benchmark compares httk with ASE across phase count and species
 count. It requires Linux with `/proc`, GNU `timeout`, and the benchmark extra.
@@ -38,6 +45,12 @@ limit, and a 60-second timeout. No measurements run concurrently.
 python -m pip install -e '.[benchmark]'
 make benchmark
 ```
+
+To measure the optional solver, install `.[benchmark,highs]` and pass
+`--httk-solver highs` with a new `--json` path. Run the same cases with
+`--httk-solver simplex` for the built-in baseline. Solver choice and the
+HiGHS package version are recorded; ASE measurements are unchanged. HiGHS
+uses one solver thread independently of the BLAS `--threads` setting.
 
 Start with a small pilot:
 

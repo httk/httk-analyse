@@ -54,6 +54,12 @@ def _parse_args(argv=None):
     parser.add_argument('--repeats', type=_positive, default=3, help='fresh timed workers; report median')
     parser.add_argument('--warmups', type=int, default=0, help='untimed runs within each fresh worker (default: 0)')
     parser.add_argument('--phase-lines', action='store_true', help='also time first lazy httk phase-line access')
+    parser.add_argument(
+        '--httk-solver',
+        choices=('simplex', 'highs'),
+        default='simplex',
+        help='HTTK solver (highs requires the highs extra; one solver thread)',
+    )
     parser.add_argument('--max-rss-gb', type=_positive_float, default=1.0, help='sampled group RSS limit in GiB')
     parser.add_argument(
         '--as-gb', type=_positive_float, default=2.0, help='hard per-process address-space limit in GiB'
@@ -132,6 +138,13 @@ def _metadata(args):
             packages[name] = importlib.metadata.version(name)
         except importlib.metadata.PackageNotFoundError as exc:
             raise RuntimeError(f"{name} missing; install this checkout with pip install -e '.[benchmark]'") from exc
+    if args.httk_solver == 'highs':
+        try:
+            packages['highspy'] = importlib.metadata.version('highspy')
+        except importlib.metadata.PackageNotFoundError as exc:
+            raise RuntimeError(
+                "highspy missing; install this checkout with pip install -e '.[benchmark,highs]'"
+            ) from exc
     cpu = next(
         (
             line.split(':', 1)[1].strip()
@@ -282,6 +295,8 @@ def _report(payload):
         'Times are medians of successful fresh-worker trials, in milliseconds. RSS is the maximum',
         'successful worker peak in MiB, INCLUDING imports, input generation, warmups and validation.',
         'Timeout includes that setup; phase-line timing excludes construction but its RSS does not.',
+        f"HTTK solver: {metadata.get('parameters', {}).get('httk_solver', 'simplex')}.",
+        'The HTTK HiGHS solver uses one solver thread; --threads controls NumPy/BLAS environment variables only.',
         'Failures are not timings. Partial medians are labelled by the completed/expected count.',
         '',
         'httk includes hull membership, energy above hull and unstable decompositions. `ase_construct`',
@@ -420,7 +435,13 @@ def _execute(args):
                         f"{case['sweep']} S={case['species']} N={case['phases']} {metric} {repeat + 1}/{args.repeats}",
                         flush=True,
                     )
-                    request = {'case': case, 'metric': metric, 'atom_count': args.atom_count, 'warmups': args.warmups}
+                    request = {
+                        'case': case,
+                        'metric': metric,
+                        'atom_count': args.atom_count,
+                        'warmups': args.warmups,
+                        'solver': args.httk_solver,
+                    }
                     result = _run_measurement(request, args)
                     changed = _source_state() != metadata['sources']
                     if changed:

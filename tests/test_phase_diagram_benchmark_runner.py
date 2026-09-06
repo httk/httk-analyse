@@ -55,6 +55,7 @@ def _arguments(tmp_path: Path, *, phase_lines: bool = False, resume: bool = Fals
         as_gb=1.0,
         timeout=1.0,
         threads=1,
+        httk_solver="simplex",
     )
 
 
@@ -155,6 +156,56 @@ print('LOADED:' + ','.join(sorted(name for name in sys.modules if name == 'numpy
 
     assert completed.returncode == 0, completed.stderr
     assert completed.stdout.splitlines()[-1] == "LOADED:"
+
+
+def test_parse_args_defaults_to_simplex_and_rejects_unknown_solver(runner) -> None:
+    assert runner._parse_args([]).httk_solver == "simplex"
+    with pytest.raises(SystemExit):
+        runner._parse_args(["--httk-solver", "unknown"])
+
+
+def test_execute_propagates_httk_solver_in_worker_request(
+    tmp_path: Path, runner, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    arguments = _arguments(tmp_path)
+    arguments.httk_solver = "highs"
+    _allow_execute(monkeypatch, runner)
+    case = {"sweep": "tiny", "species": 2, "phases": 3, "seed": 1}
+    metadata = _metadata(arguments.repeats)
+    requests: list[dict[str, object]] = []
+    monkeypatch.setattr(runner, "_cases", lambda args: [case])
+    monkeypatch.setattr(runner, "_metadata", lambda args: metadata)
+    monkeypatch.setattr(runner, "_source_state", lambda: metadata["sources"])
+    monkeypatch.setattr(runner, "_run_measurement", lambda request, args: requests.append(request) or _result())
+
+    assert runner._execute(arguments) == 0
+    assert requests and all(request["solver"] == "highs" for request in requests)
+
+
+def test_metadata_only_requires_highspy_for_highs(runner, monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> None:
+    arguments = _arguments(tmp_path)
+    arguments.httk_solver = "highs"
+    monkeypatch.setattr(runner, "_source_state", lambda: {"source": "fixed"})
+
+    def missing_highspy(name: str) -> str:
+        if name == "highspy":
+            raise runner.importlib.metadata.PackageNotFoundError(name)
+        return "installed"
+
+    monkeypatch.setattr(runner.importlib.metadata, "version", missing_highspy)
+    with pytest.raises(RuntimeError, match=r"highspy.*benchmark,highs"):
+        runner._metadata(arguments)
+
+
+def test_report_old_metadata_defaults_solver_to_simplex(runner) -> None:
+    payload = {
+        "started_at": "now",
+        "metadata": {"parameters": {}, "sources": {}},
+        "cases": [],
+        "metrics": [],
+        "results": [],
+    }
+    assert "HTTK solver: simplex." in runner._report(payload)
 
 
 def test_measurement_timeout_kills_worker_descendants(tmp_path: Path, runner, monkeypatch: pytest.MonkeyPatch) -> None:

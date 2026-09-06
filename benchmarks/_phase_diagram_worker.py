@@ -1,6 +1,7 @@
 """Run one bounded phase-diagram benchmark measurement in a child process."""
 
 import gc
+import importlib
 import json
 import math
 import random
@@ -11,6 +12,7 @@ from pathlib import Path
 from typing import Any
 
 _METRICS = frozenset({"httk", "httk_phase_lines", "ase_construct", "ase_full"})
+_SOLVERS = frozenset({"simplex", "highs"})
 _HTTK_TOLERANCE = 1e-8
 
 
@@ -156,11 +158,14 @@ def _run_httk(
     compositions: tuple[dict[str, int], ...],
     energies: tuple[float, ...],
     warmups: int,
+    solver: str = "simplex",
 ) -> tuple[float, dict[str, object]]:
     """Measure httk construction or the cold phase-line query."""
     from httk.analyse.matsci import PhaseDiagram
 
-    construct = lambda: PhaseDiagram.from_compositions(compositions, energies)
+    if solver == "highs":
+        importlib.import_module("httk.analyse.generic._highs")
+    construct = lambda: PhaseDiagram.from_compositions(compositions, energies, solver=solver)
     if metric == "httk_phase_lines":
 
         def construct_and_phase_lines() -> Any:
@@ -262,6 +267,14 @@ def _request_value(request: Mapping[str, object], name: str) -> int:
     return value
 
 
+def _solver_value(request: Mapping[str, object]) -> str:
+    """Return the requested HTTK solver, defaulting old requests to simplex."""
+    solver = request.get("solver", "simplex")
+    if not isinstance(solver, str) or solver not in _SOLVERS:
+        raise ValueError("solver must be one of simplex, highs")
+    return solver
+
+
 def _run_request(request: object) -> tuple[float, dict[str, object]]:
     """Validate and execute a single worker request."""
     if not isinstance(request, dict):
@@ -271,6 +284,7 @@ def _run_request(request: object) -> tuple[float, dict[str, object]]:
     if atom_count == 0:
         raise ValueError("atom_count must be a positive integer")
     warmups = _request_value(request, "warmups")
+    solver = _solver_value(request)
     metric = request.get("metric")
     if not isinstance(metric, str) or metric not in _METRICS:
         raise ValueError(f"metric must be one of {', '.join(sorted(_METRICS))}")
@@ -279,7 +293,7 @@ def _run_request(request: object) -> tuple[float, dict[str, object]]:
     validate_case(case, atom_count)
     compositions, energies = _dataset(case, atom_count)
     if metric in {"httk", "httk_phase_lines"}:
-        return _run_httk(metric, compositions, energies, warmups)
+        return _run_httk(metric, compositions, energies, warmups, solver=solver)
     return _run_ase(metric, compositions, energies, warmups)
 
 

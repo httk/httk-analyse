@@ -48,3 +48,29 @@ for generic optimization problems with several conserved quantities.
 
 For a materials-science wrapper that normalizes compositions and supplies
 phase-diagram plotting, see {doc}`phase-diagrams`.
+
+## Optional HiGHS acceleration
+
+The default `solver="simplex"` uses the built-in NumPy solver. To opt into
+HiGHS, install `httk-analyse[highs]` and pass `solver="highs"`:
+
+```python
+hull = LowerConvexHull(
+    [(0.0,), (0.5,), (1.0,)],
+    [0.0, -1.0, 0.0],
+    solver="highs",
+)
+```
+
+This route reuses a HiGHS model and basis across related mixture problems.
+The existing solver then refines that basis against the original constraints
+and numerical tolerances. If HiGHS cannot provide a suitable basis, the
+built-in solver solves that mixture instead. This is an acceleration option,
+not a weaker-precision mode; `tolerance` retains its value-excess meaning.
+Non-unique decompositions can use different valid contributing points.
+
+HiGHS runs with one solver thread. Models are local to each calculation and
+are not retained on the immutable hull. Supported segments remain lazy and
+use their own temporary model on first access. No HiGHS import is needed for
+the default solver; explicitly selecting it without the extra raises
+`ImportError`. The selected name is available as `hull.solver`.

@@ -20,6 +20,52 @@ def test_validate_case_rejects_impossible_unique_compositions() -> None:
         worker.validate_case({"sweep": "tiny", "species": 2, "phases": 4, "seed": 1}, 2)
 
 
+def test_worker_solver_defaults_and_propagates(monkeypatch: pytest.MonkeyPatch) -> None:
+    calls: list[str] = []
+    monkeypatch.setattr(worker, "_dataset", lambda case, atom_count: (({"H": 1}, {"He": 1}), (0.0, 0.0)))
+    monkeypatch.setattr(
+        worker,
+        "_run_httk",
+        lambda metric, compositions, energies, warmups, *, solver: calls.append(solver) or (0.0, {}),
+    )
+
+    worker._run_request(_request())
+    request = _request()
+    request["solver"] = "highs"
+    worker._run_request(request)
+
+    assert calls == ["simplex", "highs"]
+
+
+def test_worker_rejects_invalid_solver() -> None:
+    request = _request()
+    request["solver"] = "bogus"
+    with pytest.raises(ValueError, match="solver must be one of"):
+        worker._run_request(request)
+
+
+def test_httk_worker_passes_solver_keyword_to_public_factory(monkeypatch: pytest.MonkeyPatch) -> None:
+    from httk.analyse.matsci import PhaseDiagram
+
+    original = PhaseDiagram.from_compositions
+    calls: list[dict[str, object]] = []
+
+    def wrapped(compositions, energies, **kwargs):
+        calls.append(kwargs)
+        return original(compositions, energies, **kwargs)
+
+    monkeypatch.setattr(PhaseDiagram, "from_compositions", staticmethod(wrapped))
+    worker._run_httk("httk", ({"H": 2}, {"He": 2}, {"H": 1, "He": 1}), (0.0, 0.0, -2.0), 0, solver="simplex")
+    worker._run_httk(
+        "httk_phase_lines",
+        ({"H": 2}, {"He": 2}, {"H": 1, "He": 1}),
+        (0.0, 0.0, -2.0),
+        0,
+        solver="simplex",
+    )
+    assert [call["solver"] for call in calls] == ["simplex", "simplex"]
+
+
 def test_httk_summary_validates_duplicate_coplanar_and_near_degenerate_inputs(monkeypatch: pytest.MonkeyPatch) -> None:
     compositions = (
         {"H": 4},

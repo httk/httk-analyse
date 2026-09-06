@@ -6,6 +6,12 @@ with differently sized formula units can be compared directly. Inputs may be
 composition mappings or compatible `StructureLike` objects from
 *httk-atomistic*.
 
+The default solver needs only the normal dependencies. Installing
+`httk-analyse[highs]` enables the optional `solver="highs"` argument on both
+factories and on `PhaseDiagramBuilder`. It reuses HiGHS models while retaining
+the built-in numerical checks and fallback; see {doc}`generic-hulls` for the
+solver contract. `diagram.solver` reports the selected route.
+
 ## Build a binary diagram
 
 Use `from_compositions` when the compositions are already known. The optional

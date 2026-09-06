@@ -21,6 +21,9 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        extras: [dev, 'dev,highs']
 
     steps:
       - uses: actions/checkout@v4
@@ -34,7 +37,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install -e .[dev]
+          pip install -e '.[${{ matrix.extras }}]'
 
       - name: Run CI
         run: make ci
