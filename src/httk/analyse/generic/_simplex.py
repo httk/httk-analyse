@@ -57,10 +57,11 @@ def _scaled_independent_equalities(
     scaled_matrix = matrix / row_sizes[:, None]
     scaled_rhs = rhs / row_sizes
     augmented = np.column_stack((scaled_matrix, scaled_rhs))
-    largest = float(np.linalg.svd(augmented, compute_uv=False)[0])
+    singular_values = np.linalg.svd(augmented, compute_uv=False)
+    largest = float(singular_values[0])
     rank_threshold = tolerance * max(1.0, largest)
     coefficient_rank = _matrix_rank(scaled_matrix, rank_threshold)
-    augmented_rank = _matrix_rank(augmented, rank_threshold)
+    augmented_rank = int(np.count_nonzero(singular_values > rank_threshold))
     if augmented_rank > coefficient_rank:
         raise _LPInfeasibleError("linear program is infeasible")
 
@@ -116,16 +117,12 @@ def _simplex_iterations(
 
         reduced_costs = costs - matrix.T @ multipliers
         reduced_costs[basis] = 0.0
-        basis_set = set(basis)
+        reduced_cost_tolerances: float | np.ndarray
         if local_objective_tolerance:
             reduced_cost_tolerances = _reduced_cost_tolerances(matrix, costs, multipliers)
         else:
-            reduced_cost_tolerances = np.full(variable_count, tolerance, dtype=np.float64)
-        entering_candidates = [
-            index
-            for index in range(variable_count)
-            if index not in basis_set and reduced_costs[index] < -reduced_cost_tolerances[index]
-        ]
+            reduced_cost_tolerances = tolerance
+        entering_candidates = np.flatnonzero(reduced_costs < -reduced_cost_tolerances).tolist()
         if not entering_candidates:
             solution = np.zeros(variable_count, dtype=np.float64)
             solution[basis] = basic_values
