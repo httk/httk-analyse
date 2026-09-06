@@ -30,14 +30,14 @@ def test_crysviz_submodule_is_imported_without_optional_dependency() -> None:
     )
 
 
-def test_default_hull_does_not_import_highspy() -> None:
+def test_explicit_simplex_does_not_import_highspy() -> None:
     subprocess.run(
         [
             sys.executable,
             "-c",
             (
                 "import sys; from httk.analyse.generic import LowerConvexHull; "
-                "h = LowerConvexHull([(0.0,), (1.0,)], [0.0, 0.0]); "
+                "h = LowerConvexHull([(0.0,), (1.0,)], [0.0, 0.0], solver='simplex'); "
                 "assert h.supported_segments == ((0, 1),); "
                 "assert h.solver == 'simplex'; assert 'highspy' not in sys.modules"
             ),

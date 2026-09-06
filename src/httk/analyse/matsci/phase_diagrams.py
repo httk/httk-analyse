@@ -42,7 +42,8 @@ class PhaseDiagram:
     :param tolerance: Maximum energy excess treated as stable.
     :param unknown_ids: Identifiers for phases without known energy.
     :param unknown_compositions: Normalized composition rows for phases without known energy.
-    :param solver: ``"simplex"`` (default), or ``"highs"`` with the optional ``highs`` extra.
+    :param solver: ``"auto"`` (default) selects HiGHS when installed, ``"simplex"`` selects
+        the built-in solver, or ``"highs"`` selects the optional ``highs`` extra.
     """
 
     _elements: tuple[str, ...]
@@ -61,7 +62,7 @@ class PhaseDiagram:
         unknown_ids: tuple[str, ...],
         unknown_compositions: tuple[tuple[float, ...], ...],
         *,
-        solver: Literal["simplex", "highs"] = "simplex",
+        solver: Literal["auto", "simplex", "highs"] = "auto",
     ) -> None:
         object.__setattr__(self, "_elements", elements)
         object.__setattr__(self, "_ids", ids)
@@ -81,7 +82,7 @@ class PhaseDiagram:
         ids: Sequence[str | None] | None = None,
         *,
         tolerance: float = 1e-8,
-        solver: Literal["simplex", "highs"] = "simplex",
+        solver: Literal["auto", "simplex", "highs"] = "auto",
     ) -> Self:
         """Build a diagram from formula-unit compositions and total energies.
 
@@ -98,7 +99,7 @@ class PhaseDiagram:
         :param energies: Total formula-unit energies corresponding to ``compositions``.
         :param ids: Optional phase identifiers, with ``None`` entries using formula labels.
         :param tolerance: Maximum energy excess treated as stable.
-        :param solver: ``"simplex"`` (default), or the optional ``"highs"`` solver.
+        :param solver: ``"auto"`` (default), ``"simplex"``, or the optional ``"highs"`` solver.
         :return: The normalized phase diagram.
         :raises ValueError: If the phase data, energies, identifiers, or tolerance are invalid.
         """
@@ -188,7 +189,7 @@ class PhaseDiagram:
         ids: Sequence[str | None] | None = None,
         *,
         tolerance: float = 1e-8,
-        solver: Literal["simplex", "highs"] = "simplex",
+        solver: Literal["auto", "simplex", "highs"] = "auto",
     ) -> Self:
         """Build a diagram from structures and their total unit-cell energies.
 
@@ -205,7 +206,7 @@ class PhaseDiagram:
         :param energies: Total unit-cell energies corresponding to ``structures``.
         :param ids: Optional phase identifiers, with ``None`` entries using formula labels.
         :param tolerance: Maximum energy excess treated as stable.
-        :param solver: ``"simplex"`` (default), or the optional ``"highs"`` solver.
+        :param solver: ``"auto"`` (default), ``"simplex"``, or the optional ``"highs"`` solver.
         :return: The normalized phase diagram.
         :raises ValueError: If the structures, energies, identifiers, or tolerance are invalid.
         """
@@ -224,7 +225,7 @@ class PhaseDiagram:
 
     @property
     def solver(self) -> Literal["simplex", "highs"]:
-        """Return the selected lower-hull solver.
+        """Return the resolved lower-hull solver.
 
         :return: ``"simplex"`` or ``"highs"``.
         """
@@ -593,14 +594,16 @@ class PhaseDiagramBuilder:
     """Mutable, not-thread-safe accumulator for incrementally building a phase diagram.
 
     :param tolerance: Maximum energy excess treated as stable when building the diagram.
-    :param solver: ``"simplex"`` (default), or the optional ``"highs"`` solver used by :meth:`build`.
+    :param solver: ``"auto"`` (default), ``"simplex"``, or the optional ``"highs"`` solver used by :meth:`build`.
     """
 
     __slots__ = ("_phases", "_solver", "_tolerance")
 
-    def __init__(self, *, tolerance: float = 1e-8, solver: Literal["simplex", "highs"] = "simplex") -> None:
+    def __init__(self, *, tolerance: float = 1e-8, solver: Literal["auto", "simplex", "highs"] = "auto") -> None:
         self._tolerance = _validate_tolerance(tolerance)
-        self._solver: Literal["simplex", "highs"] = solver
+        if solver not in ("auto", "simplex", "highs"):
+            raise ValueError("solver must be 'auto', 'simplex', or 'highs'")
+        self._solver: Literal["auto", "simplex", "highs"] = solver
         self._phases: list[tuple[Mapping[str, int | float | fractions.Fraction], float | None, str | None]] = []
 
     def add_phase(

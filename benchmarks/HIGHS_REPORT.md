@@ -2,8 +2,11 @@
 
 Measured September 6, 2026. The optional `solver="highs"` route improves the
 few-element cases tested here, but does not eliminate ASE's binary/ternary
-advantage. Keep `solver="simplex"` as the default; HiGHS is an opt-in accelerator,
-not a replacement for the existing numerical contract.
+advantage. These measurements used explicit solver choices. Following this
+evaluation, the library default became `solver="auto"`: HiGHS when installed,
+otherwise the built-in solver. The `[default]` extra now includes HiGHS.
+This selection change does not replace the existing numerical contract or
+change the historical measurements below.
 
 ## Few elements: three fresh workers per timing
 

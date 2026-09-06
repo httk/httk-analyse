@@ -23,7 +23,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        extras: [dev, 'dev,highs']
+        extras: [dev, 'dev,default']
 
     steps:
       - uses: actions/checkout@v4
@@ -38,6 +38,12 @@ jobs:
       - name: Install dependencies
         run: |
           pip install -e '.[${{ matrix.extras }}]'
+
+      - name: Verify default extra selects HiGHS
+        if: matrix.extras == 'dev,default'
+        run: >-
+          python -c 'from httk.analyse.generic import LowerConvexHull;
+          assert LowerConvexHull([(0.0,)], [0.0]).solver == "highs"'
 
       - name: Run CI
         run: make ci

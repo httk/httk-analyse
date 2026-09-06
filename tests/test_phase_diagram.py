@@ -9,6 +9,7 @@ matplotlib.use("Agg")
 
 from httk.atomistic import Species, UnitcellStructure
 
+from httk.analyse.generic import lower_hull
 from httk.analyse.matsci import PhaseDiagram, PhaseDiagramBuilder
 
 CUBIC = [[4, 0, 0], [0, 4, 0], [0, 0, 4]]
@@ -18,7 +19,7 @@ def test_highs_selection_reaches_factories_and_builder() -> None:
     pytest.importorskip("highspy")
     compositions = [{"A": 1}, {"B": 1}, {"A": 1, "B": 1}]
     energies = [0.0, 0.0, 2.0]
-    reference = PhaseDiagram.from_compositions(compositions, energies)
+    reference = PhaseDiagram.from_compositions(compositions, energies, solver="simplex")
     diagram = PhaseDiagram.from_compositions(compositions, energies, solver="highs")
     builder = PhaseDiagramBuilder(solver="highs")
     for composition, energy in zip(compositions, energies, strict=True):
@@ -40,6 +41,25 @@ def test_highs_selection_reaches_factories_and_builder() -> None:
     assert from_structures.solver == "highs"
     assert from_structures.hull_indices == (0,)
     assert from_structures.unknown_ids == ("Li",)
+
+
+def test_auto_without_highspy_uses_simplex_for_factories_and_builder(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setattr(lower_hull.importlib.util, "find_spec", lambda name: None)
+    compositions = [{"A": 1}, {"B": 1}, {"A": 1, "B": 1}]
+    energies = [0.0, 0.0, 2.0]
+
+    hull = lower_hull.LowerConvexHull([(0.0,), (1.0,), (0.5,)], [0.0, 0.0, 1.0])
+    diagram = PhaseDiagram.from_compositions(compositions, energies)
+    builder = PhaseDiagramBuilder()
+    for composition, energy in zip(compositions, energies, strict=True):
+        builder.add_phase(composition, energy)
+
+    assert hull.solver == "simplex"
+    assert hull.supported_segments == ((0, 1),)
+    assert diagram.solver == "simplex"
+    assert builder.build().solver == "simplex"
 
 
 @pytest.mark.parametrize("epsilon", [2e-10, 1e-9, 2e-9])

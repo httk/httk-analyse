@@ -49,10 +49,12 @@ for generic optimization problems with several conserved quantities.
 For a materials-science wrapper that normalizes compositions and supplies
 phase-diagram plotting, see {doc}`phase-diagrams`.
 
-## Optional HiGHS acceleration
+## Solver selection
 
-The default `solver="simplex"` uses the built-in NumPy solver. To opt into
-HiGHS, install `httk-analyse[highs]` and pass `solver="highs"`:
+The default `solver="auto"` uses HiGHS when `highspy` is installed and the
+built-in NumPy solver otherwise. Install `httk-analyse[default]` to include
+HiGHS; the narrower `[highs]` extra remains available. Pass `solver="simplex"`
+to force the built-in solver, or `solver="highs"` to require HiGHS:
 
 ```python
 hull = LowerConvexHull(
@@ -71,6 +73,9 @@ Non-unique decompositions can use different valid contributing points.
 
 HiGHS runs with one solver thread. Models are local to each calculation and
 are not retained on the immutable hull. Supported segments remain lazy and
-use their own temporary model on first access. No HiGHS import is needed for
-the default solver; explicitly selecting it without the extra raises
-`ImportError`. The selected name is available as `hull.solver`.
+use their own temporary model on first access. Explicit `solver="simplex"`
+does not import HiGHS; explicitly selecting `"highs"` without the dependency
+raises `ImportError`. A broken installed HiGHS package reports its import
+error rather than silently selecting another solver. Automatic selection is
+resolved when the hull is constructed; `hull.solver` reports `"simplex"` or
+`"highs"`, not `"auto"`.

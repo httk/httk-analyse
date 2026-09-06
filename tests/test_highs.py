@@ -13,7 +13,7 @@ def _require_highs() -> None:
 
 def _assert_matching_hulls(points: list[tuple[float, ...]], values: list[float], tolerance: float = 1e-8) -> None:
     _require_highs()
-    simplex = LowerConvexHull(points, values, tolerance=tolerance)
+    simplex = LowerConvexHull(points, values, tolerance=tolerance, solver="simplex")
     highs = LowerConvexHull(points, values, tolerance=tolerance, solver="highs")
     before = repr(highs), hash(highs)
 
@@ -78,7 +78,7 @@ def test_highs_polishes_a_real_candidate_basis(monkeypatch: pytest.MonkeyPatch) 
 
 def test_solver_choice_is_excluded_from_exact_identity() -> None:
     _require_highs()
-    simplex = LowerConvexHull([(0.0,), (1.0,)], [0.0, 0.0])
+    simplex = LowerConvexHull([(0.0,), (1.0,)], [0.0, 0.0], solver="simplex")
     highs = LowerConvexHull([(0.0,), (1.0,)], [0.0, 0.0], solver="highs")
 
     assert highs == simplex
@@ -126,12 +126,42 @@ def test_highs_solver_falls_back_when_candidate_is_unavailable(monkeypatch: pyte
         calls += 1
 
     monkeypatch.setattr(highs._HighsMixtureSolver, "solve", unavailable)
-    simplex = LowerConvexHull([(0.0,), (1.0,), (0.5,)], [0.0, 0.0, 1.0])
+    simplex = LowerConvexHull([(0.0,), (1.0,), (0.5,)], [0.0, 0.0, 1.0], solver="simplex")
     fallback = LowerConvexHull([(0.0,), (1.0,), (0.5,)], [0.0, 0.0, 1.0], solver="highs")
 
     assert calls > 0
     assert fallback.hull_indices == simplex.hull_indices
     assert fallback.value_above_hull == simplex.value_above_hull
+
+
+def test_auto_selects_highs_when_installed() -> None:
+    _require_highs()
+    hull = LowerConvexHull([(0.0,), (1.0,)], [0.0, 0.0])
+
+    assert hull.solver == "highs"
+
+
+def test_auto_surfaces_broken_highs_import(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setattr(lower_hull.importlib.util, "find_spec", lambda name: object())
+    original = lower_hull.importlib.import_module
+
+    def broken(name: str, package: str | None = None) -> object:
+        if name == "._highs":
+            raise ImportError("broken HiGHS installation")
+        return original(name, package)
+
+    monkeypatch.setattr(lower_hull.importlib, "import_module", broken)
+    with pytest.raises(ImportError, match="broken HiGHS installation"):
+        LowerConvexHull([(0.0,)], [0.0])
+
+
+def test_explicit_solver_overrides_auto_detection(monkeypatch: pytest.MonkeyPatch) -> None:
+    _require_highs()
+    monkeypatch.setattr(lower_hull.importlib.util, "find_spec", lambda name: object())
+    assert LowerConvexHull([(0.0,), (1.0,)], [0.0, 0.0], solver="simplex").solver == "simplex"
+
+    monkeypatch.setattr(lower_hull.importlib.util, "find_spec", lambda name: None)
+    assert LowerConvexHull([(0.0,), (1.0,)], [0.0, 0.0], solver="highs").solver == "highs"
 
 
 @pytest.mark.parametrize("status", ["kInfeasible", "kUnbounded"])

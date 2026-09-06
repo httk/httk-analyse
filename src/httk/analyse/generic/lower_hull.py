@@ -1,6 +1,7 @@
 """Generic lower convex-hull analysis for finite point-and-value collections."""
 
 import importlib
+import importlib.util
 import math
 from collections.abc import Sequence
 from dataclasses import dataclass, field
@@ -33,8 +34,9 @@ class LowerConvexHull:
     :param points: Coordinate rows for the input points.
     :param values: Scalar values corresponding to ``points``.
     :param tolerance: Maximum value excess treated as on the lower hull.
-    :param solver: ``"simplex"`` for the built-in solver or ``"highs"`` for the optional
-        HiGHS candidate-basis accelerator.
+    :param solver: ``"auto"`` (default) selects HiGHS when installed, while ``"simplex"``
+        selects the built-in solver and ``"highs"`` selects the optional HiGHS
+        candidate-basis accelerator.
     :raises ValueError: If the points, values, or tolerance are invalid.
     """
 
@@ -55,10 +57,16 @@ class LowerConvexHull:
         values: Sequence[float],
         *,
         tolerance: float = 1e-8,
-        solver: Literal["simplex", "highs"] = "simplex",
+        solver: Literal["auto", "simplex", "highs"] = "auto",
     ) -> None:
-        if solver not in ("simplex", "highs"):
-            raise ValueError("solver must be 'simplex' or 'highs'")
+        if solver not in ("auto", "simplex", "highs"):
+            raise ValueError("solver must be 'auto', 'simplex', or 'highs'")
+        if solver == "auto":
+            resolved_solver: Literal["simplex", "highs"] = (
+                "highs" if importlib.util.find_spec("highspy") is not None else "simplex"
+            )
+        else:
+            resolved_solver = solver
         point_rows = tuple(points)
         value_rows = tuple(values)
         if not point_rows:
@@ -88,7 +96,7 @@ class LowerConvexHull:
         object.__setattr__(self, "_points", tuple(normalized_points))
         object.__setattr__(self, "_values", normalized_values)
         object.__setattr__(self, "_tolerance", numeric_tolerance)
-        object.__setattr__(self, "_solver", solver)
+        object.__setattr__(self, "_solver", resolved_solver)
         object.__setattr__(self, "_supported_segments", None)
         self._analyze()
 
@@ -110,7 +118,7 @@ class LowerConvexHull:
 
     @property
     def solver(self) -> Literal["simplex", "highs"]:
-        """Return the requested mixture-solver backend."""
+        """Return the resolved mixture-solver backend."""
         return self._solver
 
     @property

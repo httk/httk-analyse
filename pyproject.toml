@@ -63,8 +63,8 @@ release = [
   "build>=1.2",
   "twine>=6.0",
 ]
-# The built-in solver needs no optional dependencies; retain the uniform install form.
-default = []
+# Install the preferred accelerator while keeping the bare distribution usable without it.
+default = ["httk-analyse[highs]"]
 benchmark = [
   "ase>=3.26,<4",
 ]
