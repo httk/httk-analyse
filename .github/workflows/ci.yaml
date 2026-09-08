@@ -23,7 +23,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        extras: [dev, 'dev,default']
+        extras: [dev, 'dev,default', 'dev,crysviz']
 
     steps:
       - uses: actions/checkout@v4
@@ -46,4 +46,11 @@ jobs:
           assert LowerConvexHull([(0.0,)], [0.0]).solver == "highs"'
 
       - name: Run CI
+        if: matrix.extras != 'dev,crysviz'
         run: make ci
+
+      - name: Run CrysViz integration tests
+        if: matrix.extras == 'dev,crysviz'
+        run: |
+          python -c 'from crysviz import Payload, show; assert callable(Payload) and callable(show)'
+          python -m pytest -q tests/test_crysviz.py

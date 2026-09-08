@@ -4,12 +4,13 @@ from fractions import Fraction as F
 from pathlib import Path
 from typing import Any
 
-import crysviz as crysviz_package
 import httk.core
 import pytest
 from httk.atomistic import Cell, Sites, Species, UnitcellStructure
 
 from httk.analyse import crysviz
+
+crysviz_package = pytest.importorskip("crysviz")
 
 
 @pytest.fixture
