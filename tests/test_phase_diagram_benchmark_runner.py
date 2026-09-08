@@ -7,7 +7,6 @@ import shutil
 import signal
 import subprocess
 import sys
-import threading
 import time
 from pathlib import Path
 from types import SimpleNamespace
@@ -272,22 +271,23 @@ def test_measurement_interrupt_terminates_worker_group(tmp_path: Path, runner, m
     pid_path = tmp_path / "interrupt-child.pid"
     worker = _write_worker(
         tmp_path / "interrupt.py",
-        f"""import subprocess
+        f"""import os
+import signal
+import subprocess
 import sys
 import time
 from pathlib import Path
 child = subprocess.Popen([sys.executable, '-c', 'import time; time.sleep(30)'])
 Path({str(pid_path)!r}).write_text(str(child.pid), encoding='utf-8')
+os.kill({os.getpid()}, signal.SIGINT)
 time.sleep(30)
 """,
     )
     monkeypatch.setattr(runner, "WORKER", worker)
     arguments = _arguments(tmp_path)
     arguments.timeout = 30.0
-    interrupt = threading.Timer(0.3, lambda: os.kill(os.getpid(), signal.SIGINT))
     child_pid = None
     try:
-        interrupt.start()
         with pytest.raises(KeyboardInterrupt):
             runner._run_measurement({}, arguments)
         child_pid = int(pid_path.read_text(encoding="utf-8"))
@@ -296,7 +296,6 @@ time.sleep(30)
             time.sleep(0.01)
         assert not _process_is_running(child_pid)
     finally:
-        interrupt.cancel()
         if child_pid is None and pid_path.exists():
             child_pid = int(pid_path.read_text(encoding="utf-8"))
         if child_pid is not None and _process_is_running(child_pid):
