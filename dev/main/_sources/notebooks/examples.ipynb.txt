@@ -1,0 +1,133 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "id": "overview",
+   "metadata": {},
+   "source": [
+    "# Convex-hull and phase-diagram examples\n",
+    "\n",
+    "This notebook exercises the public generic and materials-science APIs. It uses Matplotlib's non-interactive Agg backend and closes its figure, so it performs no display or file-writing side effects."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "generic-lower-hull",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "from httk.analyse.generic import LowerConvexHull\n",
+    "\n",
+    "hull = LowerConvexHull(\n",
+    "    [(0.0,), (0.5,), (1.0,)],\n",
+    "    [0.0, -1.0, 0.0],\n",
+    ")\n",
+    "\n",
+    "hull_indices = tuple(hull.hull_indices)\n",
+    "above_hull = hull.value_above_hull\n",
+    "middle_decomposition = hull.decomposition(1)\n",
+    "segments = hull.supported_segments\n",
+    "\n",
+    "assert hull_indices == (0, 1, 2)\n",
+    "assert above_hull[1] == 0.0"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "phase-diagram-heading",
+   "metadata": {},
+   "source": [
+    "## A binary phase diagram\n",
+    "\n",
+    "`PhaseDiagram` normalizes these formula-unit compositions and compares their per-atom energies."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "binary-phase-diagram",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import matplotlib\n",
+    "\n",
+    "matplotlib.use(\"Agg\")\n",
+    "import matplotlib.pyplot as plt\n",
+    "\n",
+    "from httk.analyse.matsci import PhaseDiagram\n",
+    "\n",
+    "diagram = PhaseDiagram.from_compositions(\n",
+    "    [{\"A\": 1}, {\"B\": 1}, {\"A\": 1, \"B\": 1}],\n",
+    "    [0.0, 0.0, -2.0],\n",
+    "    ids=[\"A\", \"B\", \"AB\"],\n",
+    ")\n",
+    "\n",
+    "phase_indices = tuple(diagram.hull_indices)\n",
+    "above_hull = diagram.energy_above_hull\n",
+    "phase_lines = diagram.phase_lines\n",
+    "\n",
+    "assert phase_indices == (0, 1, 2)\n",
+    "assert above_hull[2] == 0.0\n",
+    "\n",
+    "ax = diagram.plot()\n",
+    "plt.close(ax.figure)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "incremental-phase-diagram-heading",
+   "metadata": {},
+   "source": [
+    "## Incremental building and unknown energy\n",
+    "\n",
+    "`PhaseDiagramBuilder` supports chained additions. A phase with `energy=None` is retained for plotting but does not affect the known-energy hull."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "incremental-phase-diagram",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "from httk.analyse.matsci import PhaseDiagramBuilder\n",
+    "\n",
+    "builder = (\n",
+    "    PhaseDiagramBuilder()\n",
+    "    .add_phase({\"A\": 1}, 0.0, \"A\")\n",
+    "    .add_phase({\"B\": 1}, 0.0, \"B\")\n",
+    "    .add_phase({\"A\": 1, \"B\": 1}, -2.0, \"AB\")\n",
+    "    .add_phase({\"A\": 1, \"B\": 2}, None, \"unknown-AB2\")\n",
+    ")\n",
+    "built = builder.build()\n",
+    "\n",
+    "assert built.unknown_ids == (\"unknown-AB2\",)\n",
+    "ax = built.plot()\n",
+    "assert any(line.get_marker() == \"s\" for line in ax.lines)\n",
+    "plt.close(ax.figure)"
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.12"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}

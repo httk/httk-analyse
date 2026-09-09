@@ -1,0 +1,48 @@
+httk.analyse.crysviz
+====================
+
+.. py:module:: httk.analyse.crysviz
+
+.. autoapi-nested-parse::
+
+   Open httk structures in the CrysViz viewer.
+
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   httk.analyse.crysviz.to_payload
+   httk.analyse.crysviz.show
+
+
+Module Contents
+---------------
+
+.. py:function:: to_payload(structure, *, name = None, format = 'vasp-poscar')
+
+   Serialize an httk structure as an in-memory CrysViz payload.
+
+   :param structure: Structure to serialize.
+   :param name: Optional filename for the payload, without a path.
+   :param format: Serialization format, either ``"vasp-poscar"`` or ``"cif"``.
+   :return: A CrysViz payload containing the serialized structure.
+   :raises ImportError: If CrysViz is not installed.
+   :raises ValueError: If ``format`` is not supported.
+
+
+.. py:function:: show(*structures, **viewer_kwargs)
+
+   Open structures in CrysViz and return when its window is ready.
+
+   :param \*structures: CrysViz payloads, source paths, or httk structures to display.
+   :param \**viewer_kwargs: Keyword arguments forwarded to ``crysviz.show``.
+   :return: The ready CrysViz viewer, which also supports the context-manager protocol.
+   :raises ImportError: If CrysViz is not installed.
+
+   The call is non-blocking after the window is ready. Call ``viewer.wait()`` to
+   block until the window closes.
+
+
