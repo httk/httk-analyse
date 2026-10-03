@@ -49,6 +49,7 @@ equations-of-state
 energetics
 time-series
 mlip-validation
+lammps-analysis
 crysviz
 reference/index
 notebooks/examples
