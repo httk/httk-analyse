@@ -50,3 +50,16 @@ def test_submodules_export_their_canonical_classes() -> None:
     assert generic.LowerConvexHull is LowerConvexHull
     assert matsci.PhaseDiagram is PhaseDiagram
     assert matsci.PhaseDiagramBuilder is PhaseDiagramBuilder
+
+
+def test_toolbox_exports_use_canonical_defining_modules() -> None:
+    from httk.analyse.generic.timeseries import BlockAverage, autocorrelation, block_average
+    from httk.analyse.matsci.eos import BirchMurnaghanFit, fit_birch_murnaghan
+
+    assert generic.BlockAverage is BlockAverage
+    assert generic.autocorrelation is autocorrelation
+    assert generic.block_average is block_average
+    assert matsci.BirchMurnaghanFit is BirchMurnaghanFit
+    assert matsci.fit_birch_murnaghan is fit_birch_murnaghan
+    assert not hasattr(analyse, "fit_birch_murnaghan")
+    assert not hasattr(analyse, "block_average")

@@ -9,20 +9,29 @@
 > releases.
 
 *httk-analyse* is a [*httk₂*](https://github.com/httk/httk2) module for analysis
-algorithms: generic lower-convex-hull construction and materials-science phase
-diagrams. Its Python package is `httk.analyse`.
+algorithms: convex hulls, materials phase diagrams, static equation-of-state
+fitting, and scalar time-series statistics. Its Python package is `httk.analyse`.
 
 ## Usage
 
 ```python
-from httk.analyse.generic import LowerConvexHull
-from httk.analyse.matsci import PhaseDiagram
+from httk.analyse.generic import LowerConvexHull, autocorrelation, block_average
+from httk.analyse.matsci import PhaseDiagram, fit_birch_murnaghan
 ```
 
 `LowerConvexHull` provides the generic geometric construction. `PhaseDiagram`
 applies it to compositions and energies for materials-science phase-diagram
 analysis. See [the example](examples/example.py) for a deterministic,
 headless invocation.
+
+`fit_birch_murnaghan` fits static energies in eV against volumes in angstrom³
+on the same cell or per-atom basis, returning equilibrium energy/volume, bulk
+modulus, its pressure derivative, residuals, and energy/pressure evaluators.
+`block_average` and `autocorrelation` analyze regularly sampled stationary
+scalar series with explicit block and lag conventions. These NumPy routines
+add no dependencies. See [EOS fitting](docs/equations-of-state.md),
+[time series](docs/time-series.md), and the executable
+[toolbox example](examples/materials_toolbox.py).
 
 The module depends on *httk-core*, *httk-atomistic*, NumPy, and Matplotlib.
 Install `httk-analyse[default]` to include HiGHS acceleration (`[highs]` also
