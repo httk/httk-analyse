@@ -1,12 +1,13 @@
 """Portable analysis summaries with explicit source and numerical provenance."""
 
-import hashlib
 import json
 from collections.abc import Mapping, Sequence
 from dataclasses import asdict, dataclass, is_dataclass
 from importlib.metadata import version
 from pathlib import Path
 from typing import Any
+
+from httk.core.digests import sha256_file
 
 __all__ = ["AnalysisSummary", "analysis_summary"]
 
@@ -79,13 +80,9 @@ def analysis_summary(
     files = []
     for source in sources:
         path = Path(source).resolve()
-        digest = hashlib.sha256()
-        size = 0
-        with path.open("rb") as stream:
-            for chunk in iter(lambda: stream.read(1024 * 1024), b""):
-                digest.update(chunk)
-                size += len(chunk)
-        files.append({"url": path.as_uri(), "name": path.name, "size": size, "sha256": digest.hexdigest()})
+        files.append(
+            {"url": path.as_uri(), "name": path.name, "size": path.stat().st_size, "sha256": sha256_file(path)}
+        )
     payload = {
         "algorithm": algorithm,
         "software": {"httk-analyse": version("httk-analyse"), "numpy": version("numpy")},

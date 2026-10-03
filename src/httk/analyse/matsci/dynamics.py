@@ -209,10 +209,14 @@ def velocity_autocorrelation(
     C_ij(k)=mean[v_i(t)*v_j(t+k)] over origins and atoms. The lagged tensor need
     not be symmetric. This pair-count estimator is not a power spectral density.
 
+    Removing each atom's own time mean also removes Δr/T, the diffusive signal. It biases the
+    integral estimate of D low by about t_plateau/T and drives the full-length integral to zero,
+    so use ``remove_mean=True`` only for non-diffusive (solid) systems.
+
     :param velocities: Array (frames, atoms, 3) in angstrom/ps.
     :param timestep: Uniform frame spacing in ps.
     :param max_lag: Largest inclusive lag.
-    :param remove_mean: Subtract each atom/component time mean before correlation.
+    :param remove_mean: Subtract each atom/component time mean before correlation; only for non-diffusive systems.
     :return: Correlation tensors in (angstrom/ps)².
     :raises ValueError: If data, lag or results are invalid.
     """
@@ -407,7 +411,7 @@ def velocity_spectrum(
     timestep: float,
     *,
     window: Literal["none", "hann"] = "hann",
-    remove_mean: bool = True,
+    remove_mean: bool = False,
 ) -> VelocitySpectrum:
     """Compute a one-sided periodogram whose discrete integral obeys Parseval.
 
@@ -415,10 +419,15 @@ def velocity_spectrum(
     It averages equally over atoms and Cartesian components. Multiplying power
     by frequency spacing and summing gives the window-weighted mean square.
 
+    The default keeps each atom's time-averaged velocity. For a diffusing atom that mean is
+    Δr/T, the diffusive signal: removing it zeroes the rectangular-window ω=0 bin, which is
+    proportional to the diffusion coefficient. Per-atom mean removal is appropriate only for
+    non-diffusive (solid) systems.
+
     :param velocities: Array (frames, atoms, 3) in angstrom/ps.
     :param timestep: Uniform positive frame spacing in ps.
     :param window: Rectangular (none) or Hann window.
-    :param remove_mean: Remove each atom/component time mean before windowing.
+    :param remove_mean: Remove each atom/component time mean before windowing; only for non-diffusive systems.
     :return: THz frequencies and dimensionful velocity power density.
     :raises ValueError: If input, window or spectral values are invalid.
     """

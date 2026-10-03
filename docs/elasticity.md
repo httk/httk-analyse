@@ -53,9 +53,34 @@ eigenvalues and the caller’s absolute eigenvalue tolerance. `pressure_stabilit
 B_ijkl = C_ijkl + P*(delta_ij*delta_kl - delta_ik*delta_jl - delta_il*delta_jk)
 ```
 
-with hydrostatic compression positive and pressure in eV/angstrom³. This is a
-hydrostatic incremental criterion; it does not claim general finite-strain
-stability for arbitrary prestress.
+with hydrostatic compression positive and pressure in eV/angstrom³. This is
+Wallace's stress-strain coefficient tensor B for `sigma = -P*I`; in Voigt form
+a cubic crystal gives `C11-P, C12+P, C44-P`. It is a hydrostatic incremental
+criterion; it does not claim general finite-strain stability for arbitrary
+prestress.
+
+The correction is correct only when the input is the thermodynamic stiffness
+`C`: the second derivative of energy with respect to Lagrangian strain about
+the pressurised reference state. Stress-strain coefficients are already B.
+That covers the output of `fit_stress_strain` and elastic constants a code
+computes from stresses under pressure. Test those with `is_stable()`;
+applying the pressure correction to them double-counts the pressure and can
+report a stable crystal as unstable.
+
+## Source stress conventions
+
+This module is tensile-positive, in eV/angstrom³, with components ordered
+`xx, yy, zz, yz, xz, xy`. VASP OUTCAR "in kB" stresses are compressive-positive,
+in kBar and ordered `XX YY ZZ XY YZ ZX`. To convert them, flip the sign,
+multiply kBar by 0.1 to get GPa, divide by 160.2176634 to get eV/angstrom³,
+and reorder with the index list `[0, 1, 2, 4, 5, 3]`. LAMMPS pressure tensors
+are also compressive-positive.
+
+Raw code output is rarely exactly symmetric: for example the VASP "TOTAL
+ELASTIC MODULI" matrix is asymmetric at about 0.1 kBar. `ElasticTensor` checks
+symmetry to relative and absolute tolerance 1e-12 and rejects such input. Inspect the
+asymmetry magnitude and symmetrize explicitly with `(C + C.T)/2` before
+constructing an `ElasticTensor`.
 
 ## Fitting
 
@@ -75,6 +100,11 @@ angstrom³. The default fits a constant energy and six linear stress terms. Set
 `fit_offset=False` only when the energy reference and stress are explicitly
 zero; that option fixes both offsets to zero. Neither fit infers strain from
 cell changes.
+
+`fit_stress_strain` returns the stress-strain coefficient tensor, which at
+finite pressure is B rather than the thermodynamic stiffness C. At finite
+pressure `fit_energy_strain` recovers C only from Lagrangian strains; small
+linear strains give neither C nor B.
 
 Both functions return the tensor, fitted offsets, input-order observed-minus-
 fitted residuals, RMSE, condition number and per-component strain range. The

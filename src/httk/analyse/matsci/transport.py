@@ -96,8 +96,10 @@ def thermal_conductivity(
 ) -> TransportResult:
     """Integrate total heat-current correlations into a conductivity tensor.
 
-    Supply the EXTENSIVE microscopic heat current J in eV*angstrom/ps, not flux
-    density J/V. The tensor is integral <J_i(0)J_j(t)>/(kB*T²*V). Results retain
+    Supply the EXTENSIVE total heat current J of the whole cell in eV*angstrom/ps,
+    not flux density J/V. LAMMPS ``compute heat/flux`` in ``metal`` units is
+    directly usable; in ``real`` units (kcal/mol*angstrom/fs) multiply by
+    43.3641 (0.0433641 eV per kcal/mol times 1000 fs/ps). The tensor is integral <J_i(0)J_j(t)>/(kB*T²*V). Results retain
     off-diagonal asymmetry of finite sampling. Equilibrium stationarity and the
     physical current definition must be established upstream, especially for
     many-body MLIPs; energies and velocities alone do not define that current.
@@ -133,8 +135,12 @@ def viscosity(
     """Integrate off-diagonal stress fluctuations into three shear viscosities.
 
     Uses xy, xz and yz auto-correlations times V/(kB*T), with a fixed volume and
-    equilibrium temperature. The isotropic result averages these three shear
-    responses. It is not a complete anisotropic fourth-rank viscosity tensor.
+    equilibrium temperature. The isotropic result averages only these three
+    shear components; the five-component traceless (Daivis-Evans) estimator is
+    not implemented, and the result is not a complete anisotropic fourth-rank
+    viscosity tensor. Stress must be tensile-positive in eV/angstrom³. The LAMMPS
+    pressure tensor is compressive-positive and in bar: negate it and multiply by
+    1e5/(1.602176634e-19*1e30) = 6.241509e-7 to get eV/angstrom³.
 
     :param stresses: Symmetric tensile-positive (samples,3,3) stress in eV/angstrom³.
     :param timestep: Uniform sample spacing in ps.

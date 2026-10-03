@@ -181,6 +181,10 @@ def defect_formation_energy(
     The expression is ``Edef-Ehost-sum(delta_n*mu)+q*(EF+VBM+alignment)+correction``.
     Positive atom deltas add atoms; positive charge removes electrons.
 
+    ``alignment`` is the potential alignment ΔV = V_def(far from defect) - V_host(far)
+    (Van de Walle-Neugebauer), added as written. Freysoldt/Kumagai-type ``correction`` values
+    often already include the -q*ΔV alignment term; do not count it twice.
+
     :param defect_energy: Defect supercell total energy in eV.
     :param host_energy: Matching host supercell total energy in eV.
     :param atom_deltas: Exact signed integer atom changes by element.
@@ -188,8 +192,8 @@ def defect_formation_energy(
     :param charge: Exact integer charge state.
     :param fermi_level: Fermi energy in eV relative to the supplied reference.
     :param vbm: Valence-band reference energy in eV.
-    :param alignment: Explicit potential alignment term in eV.
-    :param correction: Explicit finite-size or other correction in eV.
+    :param alignment: Potential alignment ΔV = V_def(far) - V_host(far) in eV.
+    :param correction: Explicit finite-size or other correction in eV, excluding alignment already counted.
     :return: Immutable total and signed term decomposition.
     :raises ValueError: If atom deltas, references, or energies are invalid.
     """

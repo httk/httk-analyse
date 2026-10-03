@@ -67,6 +67,11 @@ Force errors are sensitive to physical atom pairing and to whether reference
 and predicted forces use the same coordinate frame, constraints, electronic
 convergence, and force convention. Do those checks before comparing metrics.
 
+`rms_vector_error` is the root mean square Euclidean norm of the per-atom
+residual vectors. The pooled per-component force RMSE common in the literature
+equals `rms_vector_error / sqrt(3)` for `weighting="atom"` (every atom equal),
+so compare `rms_vector_error` with published values only after that division.
+
 ## Stress
 
 `stress_errors` accepts matching `(configurations, 3, 3)` symmetric tensors. It
@@ -75,6 +80,12 @@ components in `xx, yy, zz, yz, xz, xy` order. It checks symmetry within a
 relative and absolute tolerance of `1e-12`, reads the listed upper-triangle
 shear components, and does not symmetrize tensors. Convert virials, pressure
 signs, and unit conventions in the source adapter before calling it.
+
+The `1e-12` symmetry check is intentional and strict. Typical float32 model
+outputs and virial (`-sum(r (x) F)`) stresses carry asymmetry of order `1e-8`
+eV/angstrom³ and are rejected. Inspect the asymmetry magnitude, then
+symmetrize explicitly, for example `(stress + stress.swapaxes(1, 2)) / 2`,
+before calling `stress_errors`.
 
 ```python
 import numpy as np

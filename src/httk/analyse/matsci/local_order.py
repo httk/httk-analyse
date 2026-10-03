@@ -46,6 +46,12 @@ def bond_order(
     ``sqrt(4*pi/(2*l+1) * sum_m abs(mean(Y_lm))**2)``. No neighbor-of-neighbor
     averaging or crystalline/liquid classification is implied.
 
+    The global Q_l pools directed bonds, so each pair contributes both r and -r. Since
+    Y_lm(-r) = (-1)^l Y_lm(r), the global value is identically zero (to rounding) for odd l;
+    it is meaningful for even l, as in Steinhardt's definition. Per-atom q_l remains valid
+    for odd l. The global value is bond-weighted (Steinhardt), not atom-averaged as in
+    Lechner-Dellago or pyscal, so it differs from those codes for non-uniform coordination.
+
     :param positions: Cartesian positions (N,3) in angstrom.
     :param cell: Nonsingular row-vector cell in angstrom.
     :param cutoff: Positive inclusive neighbor radius, strictly below the unique-image limit.

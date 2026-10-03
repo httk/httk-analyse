@@ -13,7 +13,6 @@ _PAIRS = ((0, 0), (1, 1), (2, 2), (1, 2), (0, 2), (0, 1))
 _SHEAR = np.array((1.0, 1.0, 1.0, 2.0, 2.0, 2.0))
 _KELVIN = np.sqrt(_SHEAR)
 _ZERO_STRESS: tuple[float, float, float, float, float, float] = (0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
-_EV_A3_TO_GPA = 160.2176634
 
 
 @dataclass(frozen=True, slots=True, init=False)
@@ -204,6 +203,16 @@ class ElasticTensor:
         This is an incremental hydrostatic criterion, not a general
         pre-stressed finite-strain stability test.
 
+        This tensor must be the thermodynamic stiffness: the second derivative
+        of energy with respect to Lagrangian strain about the pressurised
+        reference state. The correction ``C_ijkl + P*(delta_ij*delta_kl -
+        delta_ik*delta_jl - delta_il*delta_jk)`` yields Wallace's stress-strain
+        coefficients B for ``sigma = -P*I`` (Voigt ``C11-P, C12+P, C44-P``).
+        Stress-strain coefficients, such as the output of
+        ``fit_stress_strain`` or a code's elastic constants computed under
+        pressure, are already B: test them with ``is_stable``, because
+        applying this correction to them double-counts the pressure.
+
         :param pressure: Applied hydrostatic pressure in eV/angstrom³.
         :return: Ascending eigenvalues of the corrected stiffness.
         """
@@ -220,6 +229,11 @@ class ElasticTensor:
 
     def is_stable_under_pressure(self, pressure: float, tolerance: float = 0.0) -> bool:
         """Test positive definiteness under the hydrostatic pressure correction.
+
+        The same input contract as ``pressure_stability_eigenvalues``
+        applies: the tensor must be the thermodynamic stiffness (Lagrangian
+        strain energy derivative). Stress-strain coefficients are already
+        corrected and must be tested with ``is_stable`` instead.
 
         :param pressure: Hydrostatic pressure in eV/angstrom³, positive in compression.
         :param tolerance: Minimum accepted eigenvalue in eV/angstrom³.
@@ -317,8 +331,11 @@ def fit_stress_strain(
 
     Strains and tensile-positive stresses use ``xx, yy, zz, yz, xz, xy``
     components, with engineering shear strain ``2*epsilon_ij`` and tensor
-    shear stress. At least enough independent observations for full design
-    rank are required. The reported condition number describes only the
+    shear stress. The fitted tensor is the stress-strain coefficient tensor;
+    at finite pressure that is Wallace's B, not the thermodynamic stiffness C,
+    so test its stability with ``ElasticTensor.is_stable``, not
+    ``ElasticTensor.is_stable_under_pressure``. At least enough independent
+    observations for full design rank are required. The reported condition number describes only the
     column-scaled linear design, not physical parameter confidence.
 
     :param strains: Finite ``(samples, 6)`` engineering strain components.
@@ -376,7 +393,9 @@ def fit_energy_strain(
     The model is ``E = E0 + V*(stress_offset @ strain +
     0.5*strain @ C @ strain)``. With ``fit_offset=False``, both ``E0`` and
     stress offset are fixed to zero; use that mode only when the inputs have
-    this explicit zero-reference convention. The design condition number
+    this explicit zero-reference convention. At finite pressure the quadratic
+    fit yields the thermodynamic stiffness C only for Lagrangian strains;
+    small linear strains give neither C nor B. The design condition number
     describes the column-scaled linear solve, not physical parameter
     confidence.
 

@@ -39,20 +39,20 @@ reactants linear combination of total energies; it does not rescale energies.
 ```python
 from httk.analyse.matsci.energetics import reaction_energy, formation_energy
 
-# 2 Al + 3/2 O2 -> Al2O3
+# 2 Al + 3/2 O2 -> Al2O3, with E(Al) = -3 eV/atom and E(O2) = -4 eV (mu_O = -2 eV/atom)
 delta_e = reaction_energy(
-    energies=(-3.0, 0.0, -17.0),
+    energies=(-3.0, -4.0, -17.0),
     coefficients=(-2.0, -1.5, 1.0),
     compositions=({"Al": 1}, {"O": 2}, {"Al": 2, "O": 3}),
 )
-assert delta_e == -11.0
+assert delta_e == -5.0  # equals the formation energy below
 
 formation = formation_energy(
     energy=-17.0,
     composition={"Al": 2, "O": 3},
     chemical_potentials={"Al": -3.0, "O": -2.0},
 )
-assert formation.per_atom == -1.0
+assert formation.total == -5.0 and formation.per_atom == -1.0
 ```
 
 Formation energy uses exactly the elemental reservoirs supplied by the caller.
@@ -83,7 +83,10 @@ assert region.contains({"A": -1.0, "B": -2.0})
 ## Pressure enthalpy
 
 `enthalpy` computes `E + P*V`. Use eV for energy, angstrom³ for volume, and
-eV/angstrom³ for pressure. Pressure is positive under compression, so it is
+eV/angstrom³ for pressure; no unit conversion is applied. Convert
+GPa with 1 GPa = 1/160.2176634 eV/angstrom³ (unconverted GPa values are ×160.2
+too large, kbar values ×1602), and note that VASP prints pressure in kB, where
+1 kB = 0.1 GPa. Pressure is positive under compression, so it is
 the negative volume derivative of energy under the usual convention. A scalar
 pressure broadcasts across the input rows; vector pressures must match the
 energy and volume vectors. Decide whether structures, branches, and electronic

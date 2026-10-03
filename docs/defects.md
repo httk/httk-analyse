@@ -2,7 +2,7 @@
 
 `httk.analyse.matsci.defects` contains explicit-reference energy summaries.
 All energies use eV, chemical potentials use eV per atom, surface energies
-use eV/angstrom², and Arrhenius temperatures use K. The functions do not
+use eV/angstrom² (1 eV/angstrom² = 16.0218 J/m²; no conversion is performed), and Arrhenius temperatures use K. The functions do not
 decide whether calculations or references are physically comparable.
 
 ## Defect formation energy
@@ -18,6 +18,11 @@ atom deltas mean atoms were added to the defect cell; negative deltas mean
 atoms were removed. Positive integer charge means electrons were removed.
 The result retains the signed terms so the total can be audited. The API does
 not select a charged-defect correction scheme.
+
+`alignment` is the potential alignment ΔV = V_def(far from defect) -
+V_host(far) (Van de Walle and Neugebauer), entering as `q * alignment`.
+Freysoldt- or Kumagai-type `correction` values often already include the
+`-q * ΔV` alignment term, so it must not be counted twice.
 
 ```python
 from httk.analyse.matsci.defects import defect_formation_energy

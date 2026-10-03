@@ -50,7 +50,6 @@ equations-of-state
 energetics
 time-series
 mlip-validation
-lammps-analysis
 elasticity
 md-structure
 dynamics

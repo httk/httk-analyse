@@ -68,15 +68,26 @@ def equilibrium_response(
     Thermostat/barostat parameters or a linear drift check do not establish
     correct ensemble sampling. These formulas do not apply to NVE energy data.
 
-    Block standard errors assume independent blocks; choose their length using
-    correlation and block-size sensitivity. Small blocks can bias nonlinear
-    variance estimates. The full estimate need not equal the mean block estimate.
+    E, H and V must be whole-system totals of the simulated cell, never per-atom
+    or otherwise normalized values. Per-atom inputs (for example LAMMPS
+    ``thermo_modify norm yes``) divide Cv and Cp by N² and kappa and alpha by N;
+    divide the whole-system results by N afterwards instead. NPT enthalpy is
+    H = E_total + P_ext*V with E_total including kinetic energy and P_ext the
+    fixed barostat set-point pressure. The LAMMPS ``enthalpy`` thermo keyword
+    uses the instantaneous pressure instead and biases Cp and alpha.
+
+    Block standard errors assume independent blocks; choose block length much
+    longer than the correlation time tau and check block-size sensitivity. Each
+    block uses population moments about its own mean, so short blocks bias
+    variances low by a factor (n_b - 1)/n_b plus about 2*tau/n_b, with tau the
+    integrated correlation time in samples and n_b the block length in samples. The full
+    estimate need not equal the mean block estimate.
 
     :param temperature: Positive fixed equilibrium temperature in K.
     :param ensemble: Explicit NVT or NPT ensemble.
-    :param energies: NVT total energies in eV; required for NVT only.
-    :param enthalpies: NPT total enthalpies in eV; required for NPT only.
-    :param volumes: NPT volumes in angstrom³, matching enthalpies.
+    :param energies: NVT whole-system total energies in eV; required for NVT only.
+    :param enthalpies: NPT whole-system total enthalpies in eV; required for NPT only.
+    :param volumes: NPT whole-system volumes in angstrom³, matching enthalpies.
     :param block_size: Optional samples per block, at least two; requires two complete blocks.
     :param remainder: Raise on an incomplete block or explicitly drop the tail.
     :return: Extensive heat capacity in eV/K and optional NPT kappa/alpha.
@@ -113,8 +124,9 @@ def equilibrium_response(
     blocks: tuple[tuple[float, ...], ...] = ()
     errors = None
     if block_size is not None:
-        if isinstance(block_size, bool) or not isinstance(block_size, int) or block_size < 2:
+        if isinstance(block_size, bool) or not isinstance(block_size, (int, np.integer)) or block_size < 2:
             raise ValueError("block_size must be an integer at least two")
+        block_size = int(block_size)
         count, dropped = divmod(len(values), block_size)
         if count < 2 or (dropped and remainder == "raise"):
             raise ValueError("two complete blocks are required; incomplete tails need remainder='drop'")

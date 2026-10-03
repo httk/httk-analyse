@@ -58,6 +58,27 @@ def test_cubic_moduli_rotation_invariance_and_pressure_stability() -> None:
     assert stable.pressure_stability_eigenvalues(11.0) == pytest.approx((-2.0, -2.0, -2.0, -2.0, -2.0, 91.0))
 
 
+def _cubic(c11: float, c12: float, c44: float) -> ElasticTensor:
+    stiffness = np.zeros((6, 6))
+    stiffness[:3, :3] = c12
+    np.fill_diagonal(stiffness[:3, :3], c11)
+    stiffness[3:, 3:] = np.eye(3) * c44
+    return ElasticTensor(stiffness)
+
+
+def test_pressure_correction_applies_only_to_thermodynamic_stiffness_not_stress_strain_coefficients() -> None:
+    pressure = 25.0
+    thermodynamic = _cubic(200.0, 120.0, 30.0)
+    # Wallace's stress-strain coefficients B for sigma = -P*I, as returned by fit_stress_strain.
+    stress_strain = _cubic(200.0 - pressure, 120.0 + pressure, 30.0 - pressure)
+
+    assert thermodynamic.pressure_stability_eigenvalues(pressure) == pytest.approx(stress_strain.stability_eigenvalues)
+    assert stress_strain.is_stable()
+    # Applying the correction to B double-counts the pressure and flags a stable crystal as unstable.
+    assert not stress_strain.is_stable_under_pressure(pressure)
+    assert min(stress_strain.pressure_stability_eigenvalues(pressure)) < 0.0
+
+
 def test_stress_fit_recovers_noisy_stiffness_and_offsets_without_mutating_inputs() -> None:
     rng = np.random.default_rng(47)
     basis = rng.normal(size=(6, 6))

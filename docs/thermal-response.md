@@ -8,16 +8,34 @@ ensemble and temperature in K. NVT uses total energy in eV for
 `Cp = var(H)/(kB*T**2)`, isothermal compressibility
 `var(V)/(kB*T*mean(V))`, and volumetric expansion
 `cov(V,H)/(kB*T**2*mean(V))`. Heat capacities are extensive eV/K;
-compressibility is angstrom³/eV; expansion is 1/K. Inputs must share one
-extensive basis and describe a stationary equilibrated ensemble. Potential
-energy alone generally does not give the total heat capacity.
+compressibility is angstrom³/eV; expansion is 1/K. Inputs must describe a
+stationary equilibrated ensemble. Potential energy alone generally does not
+give the total heat capacity.
+
+E, H and V are whole-system totals of the simulated cell, never per-atom or
+normalized values; divide results by N afterwards. Per-atom inputs (for
+example LAMMPS `thermo_modify norm yes`) divide Cv and Cp by N² and
+compressibility and expansion by N, so Cp per atom is Cp(total)/N, not the
+value computed from per-atom data.
+
+NPT enthalpy is `H = E_total + P_ext*V`, where `E_total` includes kinetic
+energy and `P_ext` is the fixed barostat set-point pressure. The LAMMPS
+`enthalpy` thermo keyword is `etotal + press*vol` with the *instantaneous*
+pressure, which biases Cp and the expansion; build H from `etotal`, the
+set-point and `vol` instead. For a classical NVT system, `Cv` can optionally be
+obtained from the potential energy as `Var(U)/(kB*T**2) + (N_f/2)*kB`, with
+`N_f` the number of kinetic degrees of freedom; this is a note only and is not
+implemented.
 
 Moments use population normalization. An optional explicit `block_size`
 returns estimates per nonoverlapping block and their standard errors. At least
 two complete blocks are required. A partial tail raises unless
 `remainder="drop"` is supplied; the result reports dropped samples. Block
 independence and convergence with block length remain scientific checks for
-the caller. Finite blocks can bias nonlinear fluctuation estimates.
+the caller. Each block uses population moments about its own mean, so short
+blocks are biased low by a factor `(n_b - 1)/n_b` plus about `2*tau/n_b`, with
+`tau` the integrated correlation time in samples and `n_b` the block length in
+samples; use block lengths much longer than `tau`.
 
 ## Green–Kubo transport
 
@@ -27,16 +45,22 @@ volume in angstrom³. It returns the full running tensor in W/(m*K):
 
 `kappa_ij(t) = integral <J_i(0) J_j(tau)> d tau / (kB*T**2*V)`.
 
-`viscosity` consumes symmetric tensile stress in eV/angstrom³ and returns
-running xy, xz and yz shear responses in Pa*s, using `V/(kB*T)` times their
-autocorrelation integrals. Their mean is the isotropic estimate. This does not
-compute a complete anisotropic viscosity tensor. Correlations use all
+`viscosity` consumes symmetric tensile-positive stress in eV/angstrom³ and
+returns running xy, xz and yz shear responses in Pa*s, using `V/(kB*T)` times
+their autocorrelation integrals. Their mean over these three components only
+is the isotropic estimate; the five-component traceless (Daivis–Evans)
+estimator is not implemented, nor a complete anisotropic viscosity tensor. Correlations use all
 available time origins with lag-specific counts. Both functions subtract the
 temporal mean by default, retain the raw dimensionful correlations, and use
 trapezoidal running integration starting at zero.
 
 [LAMMPS compute heat/flux](https://docs.lammps.org/compute_heat_flux.html)
-returns a quantity that has **not** been divided by volume. Its microscopic
+returns a quantity that has **not** been divided by volume. In `metal` units
+it is directly usable as the extensive current in eV*angstrom/ps; in `real`
+units (kcal/mol*angstrom/fs) multiply by 43.3641 (0.0433641 eV per kcal/mol
+times 1000 fs/ps). The LAMMPS pressure tensor is compressive-positive and in
+bar: negate it and multiply by `1e5/(1.602176634e-19*1e30)` (about 6.2415e-7)
+to obtain tensile-positive eV/angstrom³ stress. Its microscopic
 stress and current definitions require special care for many-body potentials.
 The toolkit requires the caller to establish that the supplied current is
 physically valid for the MLIP and engine implementation. Ordinary energy and

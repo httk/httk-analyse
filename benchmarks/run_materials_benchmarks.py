@@ -10,8 +10,8 @@ from importlib.metadata import version
 from pathlib import Path
 
 from httk.atomistic.integrations.lammps.trajectory import LammpsTrajectory
+from httk.codes.lammps import lammps_samples
 
-from httk.analyse.integrations.lammps import lammps_samples
 from httk.analyse.integrations.trajectory import msd_from_trajectory, rdf_from_trajectory, vacf_from_trajectory
 
 

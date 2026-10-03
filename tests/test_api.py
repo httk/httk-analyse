@@ -1,5 +1,7 @@
 """Tests for the deliberate public import surface."""
 
+import importlib
+import pkgutil
 import subprocess
 import sys
 
@@ -63,3 +65,20 @@ def test_toolbox_exports_use_canonical_defining_modules() -> None:
     assert matsci.fit_birch_murnaghan is fit_birch_murnaghan
     assert not hasattr(analyse, "fit_birch_murnaghan")
     assert not hasattr(analyse, "block_average")
+
+
+def test_export_policy_is_pinned() -> None:
+    from httk.analyse import integrations
+
+    assert analyse.__all__ == ["crysviz", "generic", "integrations", "matsci", "plotting", "summary"]
+    assert integrations.__all__ == ["phonopy", "trajectory", "vasp"]
+    expected = {}
+    for info in pkgutil.iter_modules(matsci.__path__):
+        if info.name.startswith("_"):
+            continue
+        module = importlib.import_module(f"httk.analyse.matsci.{info.name}")
+        for name in module.__all__:
+            assert name not in expected
+            expected[name] = getattr(module, name)
+    assert matsci.__all__ == sorted(expected)
+    assert all(getattr(matsci, name) is obj for name, obj in expected.items())

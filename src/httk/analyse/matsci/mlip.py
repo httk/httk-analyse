@@ -213,7 +213,10 @@ def force_errors(
     dataset leakage. ``atom`` weights every atom equally; ``configuration``
     gives each configuration equal total weight. Species summaries condition
     and renormalize those same weights on atoms of that species. The 95th
-    percentile remains unweighted in every summary.
+    percentile remains unweighted in every summary. The pooled per-component
+    RMSE common in the literature equals ``rms_vector_error / sqrt(3)`` of the
+    result with ``weighting="atom"``; ``rms_vector_error`` is the Euclidean
+    vector RMSE and is not directly comparable to it.
 
     :param reference: One finite ``(atoms, 3)`` force array per configuration.
     :param predicted: Matching predicted force arrays in eV/angstrom.
@@ -321,6 +324,9 @@ def stress_errors(
     ``xx, yy, zz, yz, xz, xy`` and take the upper-triangle value for each shear
     component. The symmetry check permits absolute or relative differences up
     to ``1e-12``; convert virials and source sign conventions before calling.
+    Typical float32 model outputs and virial (``-sum(r (x) F)``) stresses
+    carry asymmetry of order ``1e-8`` eV/angstrom³ and are rejected: inspect
+    the asymmetry and symmetrize explicitly (``(S + S.T)/2``) first.
     Aggregate component metrics weight each configuration equally. The 95th
     percentile is unweighted in every summary.
 

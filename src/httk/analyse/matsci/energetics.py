@@ -298,7 +298,10 @@ def enthalpy(
     """Return static ``E + P*V`` values in eV.
 
     Energies use eV and volumes use angstrom³ on the same extensive basis.
-    Pressure uses eV/angstrom³, positive under compression. A scalar pressure
+    Pressure MUST be given in eV/angstrom³, positive under compression; no unit
+    conversion is applied. 1 GPa = 1/160.2176634 eV/angstrom³ (GPa values are
+    ×160.2 too large, kbar values ×1602 too large, if passed unconverted); VASP
+    prints pressure in kB, where 1 kB = 0.1 GPa. A scalar pressure
     broadcasts to all rows; a pressure vector must match the energy and volume
     vectors. The caller must decide whether each branch is comparable.
 

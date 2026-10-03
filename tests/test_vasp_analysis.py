@@ -49,27 +49,31 @@ def test_vasp_dos_snapshots_mutable_input_sequences() -> None:
     assert dos.integrated_density == (3.0, 4.0)
 
 
-def _wavefunctions() -> PlaneWaveFunctions:
+def _wavefunctions(occupations) -> PlaneWaveFunctions:
     return PlaneWaveFunctions(
         cell=[[4, 0, 0], [0, 4, 0], [0, 0, 4]],
         encut=100,
         kpoints=[[0, 0, 0], [0.25, 0, 0]],
         eigenvalues=[[[-1.0, 0.5], [-0.8, 0.3]], [[-2.0, 1.5], [-1.8, 1.3]]],
-        occupations=[[[2, 0], [2, 0]], [[1, 0], [1, 0]]],
+        occupations=occupations,
         coefficients={(spin, kpt, band): [1j] for spin in range(2) for kpt in range(2) for band in range(2)},
     )
 
 
 def test_band_edge_adapter_selects_spin_and_preserves_spin_kpoint_band_axes() -> None:
-    wavefunctions = _wavefunctions()
-    first = band_edges_from_wavefunctions(
-        wavefunctions, 0, max_occupation=2, occupancy_tolerance=1e-8, energy_reference=-0.2
-    )
-    second = band_edges_from_wavefunctions(
-        wavefunctions, 1, max_occupation=1, occupancy_tolerance=1e-8, energy_reference=0.0
-    )
+    wavefunctions = _wavefunctions([[[1.0, 0.0], [1.0, 0.0]], [[1.0, 0.0], [1.0, 0.0]]])
+    first = band_edges_from_wavefunctions(wavefunctions, 0, occupation_tolerance=1e-8, energy_reference=-0.2)
+    second = band_edges_from_wavefunctions(wavefunctions, 1, occupation_tolerance=1e-8, energy_reference=0.0)
     assert (first.vbm_band, first.vbm_kpoint) == (0, 1)
     assert (first.vbm_energy, first.indirect_gap) == pytest.approx((-0.6, 1.1))
     assert (second.vbm_energy, second.indirect_gap) == pytest.approx((-1.8, 3.1))
+    assert first.metallic is False
+    assert second.metallic is False
     with pytest.raises(ValueError, match="zero-based"):
-        band_edges_from_wavefunctions(wavefunctions, 2, max_occupation=2, occupancy_tolerance=1e-8, energy_reference=0)
+        band_edges_from_wavefunctions(wavefunctions, 2, occupation_tolerance=1e-8, energy_reference=0)
+
+
+def test_band_edge_adapter_uses_the_per_state_wavecar_occupation_scale() -> None:
+    partial = _wavefunctions([[[1.0, 0.0], [0.97, 0.03]], [[1.0, 0.0], [1.0, 0.0]]])
+    assert band_edges_from_wavefunctions(partial, 0, occupation_tolerance=1e-8, energy_reference=0.0).metallic is True
+    assert band_edges_from_wavefunctions(partial, 1, occupation_tolerance=1e-8, energy_reference=0.0).metallic is False

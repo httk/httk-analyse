@@ -85,6 +85,7 @@ def test_spectral_parseval_and_frequency_peak(size, window):
     signal = np.sin(2 * np.pi * 5 * np.arange(size) / size)
     velocities = np.tile(signal[:, None, None], (1, 3, 3))
     spectrum = velocity_spectrum(velocities, dt, window=window)
+    assert spectrum.remove_mean is False
     assert sum(spectrum.power) * spectrum.frequency_spacing == pytest.approx(spectrum.mean_square, rel=1e-13)
     peak = np.argmax(spectrum.power)
     assert spectrum.frequencies[peak] == pytest.approx(5 / (size * dt))
@@ -114,6 +115,7 @@ def test_source_arrays_are_unchanged():
     before = data.copy()
     mean_squared_displacement(data, 0.2, remove_com=True, masses=[1, 2])
     velocity_autocorrelation(data, 0.2, remove_mean=True)
+    velocity_spectrum(data, 0.2, remove_mean=True)
     velocity_spectrum(data, 0.2)
     np.testing.assert_array_equal(data, before)
 

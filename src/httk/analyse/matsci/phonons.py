@@ -13,7 +13,6 @@ __all__ = [
     "GruneisenFit",
     "HarmonicThermodynamics",
     "QuasiHarmonicResult",
-    "harmonic_from_phonopy",
     "harmonic_thermodynamics",
     "harmonic_thermodynamics_from_dos",
     "mode_gruneisen",
@@ -37,6 +36,7 @@ class HarmonicThermodynamics:
     :param retained_mode_weight: Sum of retained mode weights.
     :param excluded_zero_weight: Sum of omitted zero-mode weights.
     :param excluded_imaginary_weight: Sum of omitted negative-frequency weights.
+    :param cutoff_frequency: Zero-mode cutoff in THz that produced this result.
     """
 
     temperatures: tuple[float, ...]
@@ -48,6 +48,7 @@ class HarmonicThermodynamics:
     retained_mode_weight: float
     excluded_zero_weight: float
     excluded_imaginary_weight: float
+    cutoff_frequency: float
 
     def __post_init__(self) -> None:
         """Copy property arrays into immutable tuples."""
@@ -89,6 +90,7 @@ class QuasiHarmonicResult:
     :param retained_mode_weight: Common retained mode count at every volume.
     :param excluded_zero_weight: Common omitted zero-mode weight at every volume.
     :param excluded_imaginary_weight: Common omitted imaginary-mode weight at every volume.
+    :param cutoff_frequency: Zero-mode cutoff in THz that produced this result.
     """
 
     temperatures: tuple[float, ...]
@@ -99,6 +101,7 @@ class QuasiHarmonicResult:
     retained_mode_weight: float
     excluded_zero_weight: float
     excluded_imaginary_weight: float
+    cutoff_frequency: float
 
     def __post_init__(self) -> None:
         """Copy temperature-dependent properties into immutable tuples."""
@@ -113,6 +116,7 @@ def harmonic_thermodynamics(
     *,
     zero_modes: Literal["raise", "omit"] = "raise",
     imaginary: Literal["raise", "omit"] = "raise",
+    cutoff_frequency: float = 0.0,
 ) -> HarmonicThermodynamics:
     """Calculate harmonic free energy, energy, entropy and heat capacity.
 
@@ -124,6 +128,7 @@ def harmonic_thermodynamics(
     :param weights: Optional nonnegative mode counts matching the frequencies.
     :param zero_modes: Raise on zero frequencies or explicitly omit their weight.
     :param imaginary: Raise on negative frequencies or explicitly omit their weight.
+    :param cutoff_frequency: Nonnegative THz; modes with ``|frequency|`` below it count as zero modes, of either sign.
     :return: Immutable properties in eV and eV/K, with mode exclusions reported.
     :raises ValueError: If inputs are malformed, policies reject modes, or results are non-finite.
     """
@@ -133,10 +138,11 @@ def harmonic_thermodynamics(
         raise ValueError("frequencies and temperatures must be nonempty; temperatures must be nonnegative")
     if zero_modes not in ("raise", "omit") or imaginary not in ("raise", "omit"):
         raise ValueError("zero_modes and imaginary must be 'raise' or 'omit'")
+    cutoff = _nonnegative(cutoff_frequency, "cutoff_frequency")
     mode_weights = np.ones(len(freq)) if weights is None else _vector(weights, "weights")
     if mode_weights.shape != freq.shape or np.any(mode_weights < 0) or not np.any(mode_weights > 0):
         raise ValueError("weights must match frequencies, be nonnegative, and have positive total")
-    zero, negative = freq == 0, freq < 0
+    zero, negative = _classify_modes(freq, cutoff)
     if zero_modes == "raise" and np.any(zero & (mode_weights > 0)):
         raise ValueError("zero-frequency modes require zero_modes='omit'")
     if imaginary == "raise" and np.any(negative & (mode_weights > 0)):
@@ -191,6 +197,7 @@ def harmonic_thermodynamics(
         float(w.sum()),
         float(mode_weights[zero].sum()),
         float(mode_weights[negative].sum()),
+        cutoff,
     )
 
 
@@ -201,6 +208,7 @@ def harmonic_thermodynamics_from_dos(
     *,
     zero_modes: Literal["raise", "omit"] = "raise",
     imaginary: Literal["raise", "omit"] = "raise",
+    cutoff_frequency: float = 0.0,
 ) -> HarmonicThermodynamics:
     """Integrate a sampled density of states with trapezoid node weights.
 
@@ -209,6 +217,7 @@ def harmonic_thermodynamics_from_dos(
     :param temperatures: Nonnegative temperatures in K.
     :param zero_modes: Raise or omit quadrature weight located at zero frequency.
     :param imaginary: Raise or omit quadrature weight on negative frequencies.
+    :param cutoff_frequency: Nonnegative THz; quadrature nodes with ``|frequency|`` below it count as zero modes.
     :return: Harmonic properties, with DOS quadrature weights as mode counts.
     :raises ValueError: If the grid, DOS integral, or selected mode policies are invalid.
     """
@@ -225,6 +234,7 @@ def harmonic_thermodynamics_from_dos(
         tuple(map(float, dos * quadrature)),
         zero_modes=zero_modes,
         imaginary=imaginary,
+        cutoff_frequency=cutoff_frequency,
     )
 
 
@@ -283,6 +293,7 @@ def quasiharmonic(
     *,
     zero_modes: Literal["raise", "omit"] = "raise",
     imaginary: Literal["raise", "omit"] = "raise",
+    cutoff_frequency: float = 0.0,
 ) -> QuasiHarmonicResult:
     """Fit static energy plus harmonic Helmholtz free energy at each temperature.
 
@@ -297,6 +308,7 @@ def quasiharmonic(
     :param weights: Optional common mode counts.
     :param zero_modes: Explicit zero-mode policy.
     :param imaginary: Explicit negative-frequency policy.
+    :param cutoff_frequency: Nonnegative THz zero-mode cutoff, applied identically at every volume.
     :return: Equilibrium volume, minimized free energy, bulk modulus and alpha_V.
     :raises ValueError: If scans, mode exclusions or temperature data are inconsistent.
     """
@@ -314,12 +326,17 @@ def quasiharmonic(
     volume_values = tuple(map(float, volume))
     row_results = [
         harmonic_thermodynamics(
-            tuple(map(float, row)), temperature_values, weights, zero_modes=zero_modes, imaginary=imaginary
+            tuple(map(float, row)),
+            temperature_values,
+            weights,
+            zero_modes=zero_modes,
+            imaginary=imaginary,
+            cutoff_frequency=cutoff_frequency,
         )
         for row in freq
     ]
     exclusions = {(r.retained_mode_weight, r.excluded_zero_weight, r.excluded_imaginary_weight) for r in row_results}
-    masks = tuple(tuple(1 if mode > 0 else -1 if mode < 0 else 0 for mode in row) for row in freq)
+    masks = tuple(_mode_mask(row, cutoff_frequency) for row in freq)
     if len(exclusions) != 1 or any(mask != masks[0] for mask in masks[1:]):
         raise ValueError("mode exclusions must retain the same caller-matched modes at every volume")
     eq_volume, min_energy, bulk = [], [], []
@@ -342,44 +359,33 @@ def quasiharmonic(
         first.retained_mode_weight,
         first.excluded_zero_weight,
         first.excluded_imaginary_weight,
+        first.cutoff_frequency,
     )
 
 
-def harmonic_from_phonopy(
-    phonon: Any,
-    temperatures: Sequence[float],
-    *,
-    zero_modes: Literal["raise", "omit"] = "raise",
-    imaginary: Literal["raise", "omit"] = "raise",
-) -> HarmonicThermodynamics:
-    """Calculate harmonic properties from a Phonopy mesh result.
+def _nonnegative(value: Any, name: str) -> float:
+    """Validate a nonnegative finite scalar."""
+    if isinstance(value, (str, bytes, complex, np.complexfloating)):
+        raise ValueError(f"{name} must be nonnegative and finite")
+    try:
+        result = float(value)
+    except (TypeError, ValueError, OverflowError) as exc:
+        raise ValueError(f"{name} must be nonnegative and finite") from exc
+    if not math.isfinite(result) or result < 0:
+        raise ValueError(f"{name} must be nonnegative and finite")
+    return result
 
-    Uses the public ``mesh`` result. Q-point multiplicities are normalized to one;
-    every branch is retained. Phonopy frequencies are interpreted as THz.
 
-    :param phonon: A Phonopy object after mesh sampling has run.
-    :param temperatures: Nonnegative temperatures in K.
-    :param zero_modes: Explicit zero-mode policy.
-    :param imaginary: Explicit negative-frequency policy.
-    :return: Harmonic properties normalized per primitive-cell mode set.
-    :raises ValueError: If the mesh is missing or malformed.
-    """
-    mesh = getattr(phonon, "mesh", None)
-    frequencies = getattr(mesh, "frequencies", None)
-    q_weights = getattr(mesh, "weights", None)
-    if frequencies is None or q_weights is None:
-        raise ValueError("phonon must expose mesh frequencies and q-point weights")
-    freq, qweight = _matrix(frequencies, "phonopy mesh frequencies"), _vector(q_weights, "phonopy mesh weights")
-    if freq.shape[0] != len(qweight) or np.any(qweight < 0) or not np.any(qweight > 0):
-        raise ValueError("phonopy mesh weights must be nonnegative and match q-points")
-    mode_weights = np.repeat(qweight / qweight.sum(), freq.shape[1])
-    return harmonic_thermodynamics(
-        tuple(map(float, freq.ravel())),
-        temperatures,
-        tuple(map(float, mode_weights)),
-        zero_modes=zero_modes,
-        imaginary=imaginary,
-    )
+def _classify_modes(freq: np.ndarray, cutoff: float) -> tuple[np.ndarray, np.ndarray]:
+    """Return (zero, imaginary) masks; ``|frequency| < cutoff`` is zero, so cutoff 0 is exact-zero only."""
+    zero = (freq == 0) | (np.abs(freq) < cutoff)
+    return zero, (freq < 0) & ~zero
+
+
+def _mode_mask(row: np.ndarray, cutoff: float) -> tuple[int, ...]:
+    """Classify modes as 1 retained, 0 zero or -1 imaginary with the same rule as the thermodynamics."""
+    zero, imaginary = _classify_modes(row, _nonnegative(cutoff, "cutoff_frequency"))
+    return tuple(int(m) for m in np.where(zero, 0, np.where(imaginary, -1, 1)))
 
 
 def _vector(values: Sequence[float], name: str) -> np.ndarray:

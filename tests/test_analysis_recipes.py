@@ -58,6 +58,10 @@ def test_real_sqlite_reopen(tmp_path: Path) -> None:
             stored["run_id"],
         ).stdout
     )
+    reformatted = tmp_path / "fit_pretty.json"
+    reformatted.write_text(json.dumps(json.loads(summary.read_text(encoding="utf-8")), indent=2), encoding="utf-8")
+    again = json.loads(_command("store_analysis.py", reformatted, tmp_path / "analysis.sqlite").stdout)
+    assert again["run_id"] == stored["run_id"]
     assert linked["record_id"] == stored["record_id"]
     assert linked["run_id"] != stored["run_id"]
 

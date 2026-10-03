@@ -2,7 +2,6 @@ import numpy as np
 import pytest
 
 from httk.analyse.matsci.phonons import (
-    harmonic_from_phonopy,
     harmonic_thermodynamics,
     harmonic_thermodynamics_from_dos,
     mode_gruneisen,
@@ -71,13 +70,7 @@ def test_quasiharmonic_synthetic_expansion_and_exclusion_consistency():
         quasiharmonic(volumes, static, swapped, [0.0, 300.0, 600.0], zero_modes="omit", imaginary="omit")
 
 
-def test_phonopy_adapter_normalizes_q_weights_and_rejects_complex_inputs():
-    class Mesh:
-        frequencies = np.asarray([[1.0, 2.0, 3.0], [1.0, 2.0, 3.0]])
-        weights = np.asarray([1, 3])
-
-    result = harmonic_from_phonopy(type("Phonon", (), {"mesh": Mesh()})(), [0.0])
-    assert result.retained_mode_weight == pytest.approx(3.0)
+def test_complex_frequencies_are_rejected():
     with pytest.raises(ValueError, match="real one-dimensional"):
         harmonic_thermodynamics(np.asarray([1 + 1j]), [0.0])
 
@@ -100,6 +93,70 @@ def test_debye_dos_low_temperature_cubic_heat_capacity():
     frequencies = np.linspace(0, cutoff, 20001)
     density = 9 * frequencies**2 / cutoff**3
     result = harmonic_thermodynamics_from_dos(frequencies, density, [1, 2])
-    expected = 12 * np.pi**4 / 5 * kb * (np.array([1., 2.]) / theta)**3
+    expected = 12 * np.pi**4 / 5 * kb * (np.array([1.0, 2.0]) / theta) ** 3
     np.testing.assert_allclose(result.heat_capacity, expected, rtol=2e-7)
     assert result.retained_mode_weight == pytest.approx(3, rel=1e-8)
+
+
+def test_cutoff_omits_gamma_acoustic_noise_of_either_sign():
+    normal = [1.0, 2.0, 3.5]
+    weights = [1 / 64, 1 / 64, 1 / 64, 0.25, 0.5, 0.25]
+    noisy = [1e-6, -1e-6, 1e-6, *normal]
+    temps = [0.0, 100.0, 300.0]
+    with pytest.raises(ValueError, match="negative frequencies"):
+        harmonic_thermodynamics(noisy, temps, weights, zero_modes="omit")
+    with pytest.raises(ValueError, match="negative frequencies"):
+        harmonic_thermodynamics(noisy, temps, weights, zero_modes="omit", cutoff_frequency=1e-7)
+    result = harmonic_thermodynamics(noisy, temps, weights, zero_modes="omit", cutoff_frequency=1e-3)
+    clean = harmonic_thermodynamics(normal, temps, weights[3:])
+    for name in ("free_energy", "internal_energy", "entropy", "heat_capacity"):
+        np.testing.assert_allclose(getattr(result, name), getattr(clean, name), rtol=1e-14, atol=1e-18)
+    assert result.zero_point_energy == pytest.approx(clean.zero_point_energy, rel=1e-14)
+    assert result.excluded_zero_weight == pytest.approx(3 / 64)
+    assert result.excluded_imaginary_weight == 0.0
+    assert result.retained_mode_weight == pytest.approx(1.0)
+    assert result.cutoff_frequency == 1e-3
+    # Without a cutoff, tiny positive noise adds a large log-divergent term (about -19 meV at 300 K).
+    kept = harmonic_thermodynamics([1e-6] * 3 + normal, [300.0], weights)
+    assert kept.free_energy[0] - clean.free_energy[2] < -0.018
+    # Zero-classification is strict (< cutoff) and a mode at the cutoff stays retained.
+    assert harmonic_thermodynamics([1e-3, 1.0], [0.0], cutoff_frequency=1e-3).retained_mode_weight == 2.0
+    # Default behaviour is unchanged and records a zero cutoff.
+    assert harmonic_thermodynamics(normal, temps).cutoff_frequency == 0.0
+
+
+def test_cutoff_applies_to_dos_zero_nodes():
+    result = harmonic_thermodynamics_from_dos(
+        [0.0, 1e-4, 1.0, 2.0], [1.0, 1.0, 1.0, 1.0], [0.0], zero_modes="omit", cutoff_frequency=1e-3
+    )
+    assert result.excluded_zero_weight == pytest.approx(5e-5 + 0.5)
+    assert result.cutoff_frequency == 1e-3
+
+
+def test_quasiharmonic_cutoff_tolerates_gamma_noise_sign_flip():
+    volumes = np.linspace(9.0, 11.0, 9)
+    v0, b0, bp, e0 = 10.0, 0.2, 4.0, -5.0
+    q = (v0 / volumes) ** (2 / 3) - 1
+    static = e0 + 9 * v0 * b0 / 16 * (2 * q**2 + (bp - 4) * q**3)
+    normal = np.asarray([[2.0 * (volume / v0) ** -2, 4.0] for volume in volumes])
+    noise = np.where(np.arange(len(volumes)) % 2 == 0, 1e-6, -1e-6)
+    noisy = np.column_stack((noise, -noise, normal))
+    temps = [0.0, 300.0, 600.0]
+    with pytest.raises(ValueError):
+        quasiharmonic(volumes, static, noisy, temps, zero_modes="omit", imaginary="omit")
+    result = quasiharmonic(volumes, static, noisy, temps, zero_modes="omit", cutoff_frequency=1e-3)
+    clean = quasiharmonic(volumes, static, normal, temps)
+    np.testing.assert_allclose(result.equilibrium_volumes, clean.equilibrium_volumes, rtol=1e-12)
+    np.testing.assert_allclose(result.free_energies, clean.free_energies, rtol=1e-12)
+    assert result.retained_mode_weight == 2.0
+    assert result.excluded_zero_weight == 2.0
+    assert result.excluded_imaginary_weight == 0.0
+    assert result.cutoff_frequency == 1e-3
+
+
+@pytest.mark.parametrize("bad", [-1e-3, float("nan"), float("inf"), "x"])
+def test_invalid_cutoff_frequency_raises(bad):
+    with pytest.raises(ValueError, match="cutoff_frequency"):
+        harmonic_thermodynamics([1.0, 2.0], [300.0], cutoff_frequency=bad)
+    with pytest.raises(ValueError, match="cutoff_frequency"):
+        harmonic_thermodynamics_from_dos([1.0, 2.0], [1.0, 1.0], [300.0], cutoff_frequency=bad)

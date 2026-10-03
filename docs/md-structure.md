@@ -127,7 +127,12 @@ scales with the number of atoms times the number of supplied wavevectors.
 Install `httk-analyse[scipy]` to use this routine. It uses polar theta and
 azimuthal phi and the standard rotational invariant
 `sqrt(4*pi/(2*l+1) * sum_m |mean(Y_lm)|**2)`.
-The global value pools directed bonds, weighting atoms by their coordination.
+The global value pools directed bonds, weighting atoms by their coordination;
+it is bond-weighted (Steinhardt), not atom-averaged as in Lechner-Dellago or
+pyscal, so it differs from those codes for non-uniform coordination. Because
+each pair contributes both `r` and `-r` and `Y_lm(-r) = (-1)^l Y_lm(r)`, the
+global `Q_l` is identically zero (to rounding) for odd `l`; use even `l` for
+it. Per-atom `q_l` remains valid for odd `l`.
 Isolated atoms return `None`; coincident atoms raise. No empirical phase
 classification or neighbor-averaged variant is inferred. The definition follows
 [Steinhardt, Nelson and Ronchetti](https://doi.org/10.1103/PhysRevB.28.784).

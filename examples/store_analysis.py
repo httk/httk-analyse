@@ -1,7 +1,6 @@
 """Store a JSON analysis summary and source-file provenance in SQLite."""
 
 import argparse
-import hashlib
 import json
 from importlib import import_module
 from pathlib import Path
@@ -73,8 +72,7 @@ def main() -> None:
         run = Run(
             inputs=tuple(inputs),
             outputs=(RunEdge("analysis_summary", "records", saved_record.id),),
-            source_id=args.source_id
-            or f"analysis:sha256:{hashlib.sha256(summary.canonical_json.encode()).hexdigest()}",
+            source_id=args.source_id or f"analysis:{content_id(record)}",
         )
         store.save(run)
         saved_run = store.fetch_entry(RunEntry, content_id(run))

@@ -60,7 +60,7 @@ class BandEdges:
 class EffectiveMassFit:
     """Full signed effective-mass tensor from a local quadratic band fit.
 
-    :param center: Cartesian fit center in inverse angstroms.
+    :param center: Cartesian fit center in inverse angstroms, with 2π included.
     :param energy_at_center: Fitted band energy at the center in eV.
     :param gradient: Local energy gradient in eV angstroms.
     :param hessian: Energy Hessian in eV angstroms squared.
@@ -300,6 +300,12 @@ def band_edges(
     use the same per-state convention as ``maximum_occupation``. Band-path
     sampling is retained as supplied and is not a Brillouin-zone integration.
 
+    Occupations outside [0, ``maximum_occupation``] by more than ``occupation_tolerance`` are
+    rejected. Methfessel-Paxton smearing (VASP ISMEAR >= 1) can yield slightly negative or
+    super-maximal occupations, so callers must clean them or choose ``occupation_tolerance``
+    accordingly. The analysis is per spin channel: the spin-polarised material gap is
+    min(CBM over both spins) - max(VBM over both spins).
+
     :param energies: Finite band energies in eV.
     :param occupations: Finite occupations matching ``energies``.
     :param maximum_occupation: Explicit maximum occupancy of a state.
@@ -354,14 +360,16 @@ def fit_effective_mass(
 ) -> EffectiveMassFit:
     """Fit a full local quadratic band and return its signed mass tensor.
 
-    Cartesian k coordinates use inverse angstroms, energies use eV, and
-    ``center`` uses the same Cartesian reciprocal-space basis. The local model
+    Cartesian k coordinates use inverse angstroms with the 2π included (physical k,
+    ``|k| = 2π/λ``), energies use eV, and ``center`` uses the same Cartesian reciprocal-space
+    basis. Reciprocal-lattice fractions or 1/λ coordinates give masses off by (2π)² ≈ 39.5.
+    The local model
     is E=E0+g·dk+0.5*dk.T@H@dk. The conversion is m*/m_e =
     (hbar²/m_e)*H⁻¹, with hbar²/m_e in eV angstrom².
 
-    :param kpoints: Cartesian sample vectors with shape (n, 3), in inverse angstroms.
+    :param kpoints: Cartesian sample vectors with shape (n, 3), in inverse angstroms including 2π.
     :param energies: Matching energies in eV.
-    :param center: Expansion point in inverse angstroms.
+    :param center: Expansion point in inverse angstroms, including 2π.
     :return: Fitted Hessian, signed mass tensor, axes, and residual diagnostics.
     :raises ValueError: If data are malformed, rank deficient, or the Hessian is singular.
     """

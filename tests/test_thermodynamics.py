@@ -54,3 +54,16 @@ def test_explicit_tail_drop_is_reported_and_excluded():
 def test_invalid_ensemble_contract(arguments):
     with pytest.raises(ValueError):
         equilibrium_response(temperature=300, **arguments)
+
+
+def test_whole_system_input_contract_scaling_and_numpy_block_size():
+    n = 500
+    rng = np.random.default_rng(3)
+    h = 100.0 + rng.normal(size=400)
+    v = 1000.0 + 0.5 * (h - 100.0) + rng.normal(size=400)
+    total = equilibrium_response(temperature=300, ensemble='NPT', enthalpies=h, volumes=v)
+    per_atom = equilibrium_response(temperature=300, ensemble='NPT', enthalpies=h / n, volumes=v / n)
+    cp, kappa, alpha = (a / b for a, b in zip(total.values, per_atom.values))
+    assert cp == pytest.approx(n**2) and kappa == pytest.approx(n) and alpha == pytest.approx(n)
+    blocked = equilibrium_response(temperature=300, ensemble='NVT', energies=h, block_size=np.int64(100))
+    assert blocked.used_samples == 400

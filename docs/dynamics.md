@@ -27,7 +27,7 @@ assert abs(msd.trace[4] - .16) < 1e-12
 
 `velocity_autocorrelation` returns dimensionful `C_ij=mean[v_i(t)v_j(t+lag)]`,
 averaged over atoms and all origins, with optional per-atom/component temporal
-mean removal. The lagged matrix can be nonsymmetric. `integrate_vacf` gives a
+mean removal (off by default; see below). The lagged matrix can be nonsymmetric. `integrate_vacf` gives a
 running trapezoid integral in angstrom²/ps; it does not select a plateau. These
 pair-count correlations are not themselves positive spectral-density estimates.
 
@@ -49,9 +49,18 @@ fixed periodic cell. No powder/orientational average is inferred.
 
 `velocity_spectrum` is a one-sided velocity periodogram in
 (angstrom/ps)² per THz. Choose a rectangular or Hann window and whether to remove
-the temporal mean. Summing the spectral bins times frequency spacing reproduces
+the temporal mean (`remove_mean`, default `False`). Summing the spectral bins times frequency spacing reproduces
 the window-weighted mean-square velocity. This spectrum is not automatically a
 normalized phonon DOS, and masses/species contributions are not inferred.
+
+Per-atom temporal mean removal, in `velocity_spectrum` and
+`velocity_autocorrelation`, also removes each atom's net displacement over the
+trajectory divided by its duration, which is the diffusive signal. It biases the
+integrated-VACF estimate of the diffusion coefficient low by about the plateau
+time over the trajectory length, drives the full-length integral to zero, and
+with the rectangular window zeroes the zero-frequency bin that is proportional
+to the diffusion coefficient. Both functions therefore default to
+`remove_mean=False`; use `True` only for non-diffusive (solid) systems.
 
 ## From trajectories
 

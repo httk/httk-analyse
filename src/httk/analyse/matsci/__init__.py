@@ -1,5 +1,59 @@
-"""Materials-science analysis built on generic numerical primitives."""
+"""Materials-science analysis built on generic numerical primitives.
 
+Every public name's canonical, documentable home is its defining module (the ``result_type`` recorded by
+:func:`httk.analyse.summary.analysis_summary`); this package re-exports all public names of every matsci module
+as a convenience.
+"""
+
+from .defects import (
+    ArrheniusFit,
+    ChargeTransition,
+    DefectFormationEnergy,
+    NEBProfile,
+    SurfaceEnergy,
+    adsorption_energy,
+    charge_transition_levels,
+    defect_formation_energy,
+    fit_arrhenius,
+    neb_profile,
+    segregation_energy,
+    surface_energy,
+)
+from .dynamics import (
+    DiffusionFit,
+    RadialDynamics,
+    ScatteringSeries,
+    TensorSeries,
+    VelocitySpectrum,
+    diffusion_from_msd,
+    integrate_vacf,
+    intermediate_scattering,
+    mean_squared_displacement,
+    van_hove_distinct,
+    van_hove_self,
+    velocity_autocorrelation,
+    velocity_spectrum,
+)
+from .elasticity import (
+    ElasticFit,
+    ElasticTensor,
+    fit_energy_strain,
+    fit_stress_strain,
+)
+from .electronic import (
+    BandEdges,
+    DielectricSummary,
+    EffectiveMassFit,
+    MagneticMoments,
+    align_energies,
+    band_edges,
+    electron_count,
+    fit_effective_mass,
+    integrate_dos,
+    magnetic_moments,
+    solve_chemical_potential,
+    summarize_dielectric,
+)
 from .energetics import (
     ChemicalPotentialRegion,
     ConvergenceTable,
@@ -10,32 +64,161 @@ from .energetics import (
     formation_energy,
     reaction_energy,
 )
-from .eos import BirchMurnaghanFit, fit_birch_murnaghan
-from .eos_models import EOSFit, EOSModel, fit_eos
-from .mlip import EnergyErrors, ErrorStatistics, ForceErrors, StressErrors, energy_errors, force_errors, stress_errors
-from .phase_diagrams import PhaseDiagram, PhaseDiagramBuilder
+from .eos import (
+    BirchMurnaghanFit,
+    fit_birch_murnaghan,
+)
+from .eos_models import (
+    EOSFit,
+    EOSModel,
+    fit_eos,
+)
+from .local_order import (
+    BondOrder,
+    bond_order,
+)
+from .mlip import (
+    EnergyErrors,
+    ErrorStatistics,
+    ForceErrors,
+    StressErrors,
+    energy_errors,
+    force_errors,
+    stress_errors,
+)
+from .phase_diagrams import (
+    PhaseDiagram,
+    PhaseDiagramBuilder,
+)
+from .phonons import (
+    GruneisenFit,
+    HarmonicThermodynamics,
+    QuasiHarmonicResult,
+    harmonic_thermodynamics,
+    harmonic_thermodynamics_from_dos,
+    mode_gruneisen,
+    quasiharmonic,
+)
+from .structure import (
+    RadialDistribution,
+    bond_angles,
+    coordination_numbers,
+    minimum_image,
+    radial_distribution,
+    static_structure_factor,
+)
+from .thermodynamics import (
+    EquilibriumResponse,
+    equilibrium_response,
+)
+from .transport import (
+    ReplicaTransport,
+    TransportResult,
+    replica_transport,
+    thermal_conductivity,
+    viscosity,
+)
+from .validation import (
+    CommitteeSpread,
+    EnergyDrift,
+    PropertyParity,
+    committee_spread,
+    energy_drift,
+    force_energy_consistency,
+    property_parity,
+)
 
 __all__ = [
+    "ArrheniusFit",
+    "BandEdges",
     "BirchMurnaghanFit",
+    "BondOrder",
+    "ChargeTransition",
     "ChemicalPotentialRegion",
+    "CommitteeSpread",
     "ConvergenceTable",
+    "DefectFormationEnergy",
+    "DielectricSummary",
+    "DiffusionFit",
     "EOSFit",
     "EOSModel",
+    "EffectiveMassFit",
+    "ElasticFit",
+    "ElasticTensor",
+    "EnergyDrift",
     "EnergyErrors",
+    "EquilibriumResponse",
     "ErrorStatistics",
     "ForceErrors",
     "FormationEnergy",
+    "GruneisenFit",
+    "HarmonicThermodynamics",
+    "MagneticMoments",
+    "NEBProfile",
     "PhaseDiagram",
     "PhaseDiagramBuilder",
+    "PropertyParity",
+    "QuasiHarmonicResult",
+    "RadialDistribution",
+    "RadialDynamics",
+    "ReplicaTransport",
+    "ScatteringSeries",
     "StressErrors",
+    "SurfaceEnergy",
+    "TensorSeries",
+    "TransportResult",
+    "VelocitySpectrum",
+    "adsorption_energy",
+    "align_energies",
+    "band_edges",
+    "bond_angles",
+    "bond_order",
+    "charge_transition_levels",
     "chemical_potential_region",
+    "committee_spread",
     "convergence_table",
+    "coordination_numbers",
+    "defect_formation_energy",
+    "diffusion_from_msd",
+    "electron_count",
+    "energy_drift",
     "energy_errors",
     "enthalpy",
+    "equilibrium_response",
+    "fit_arrhenius",
     "fit_birch_murnaghan",
+    "fit_effective_mass",
+    "fit_energy_strain",
     "fit_eos",
+    "fit_stress_strain",
+    "force_energy_consistency",
     "force_errors",
     "formation_energy",
+    "harmonic_thermodynamics",
+    "harmonic_thermodynamics_from_dos",
+    "integrate_dos",
+    "integrate_vacf",
+    "intermediate_scattering",
+    "magnetic_moments",
+    "mean_squared_displacement",
+    "minimum_image",
+    "mode_gruneisen",
+    "neb_profile",
+    "property_parity",
+    "quasiharmonic",
+    "radial_distribution",
     "reaction_energy",
+    "replica_transport",
+    "segregation_energy",
+    "solve_chemical_potential",
+    "static_structure_factor",
     "stress_errors",
+    "summarize_dielectric",
+    "surface_energy",
+    "thermal_conductivity",
+    "van_hove_distinct",
+    "van_hove_self",
+    "velocity_autocorrelation",
+    "velocity_spectrum",
+    "viscosity",
 ]

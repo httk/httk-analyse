@@ -7,8 +7,8 @@ frames stay in their source files. Run the commands in an environment with
 *httk-analyse* and its relevant optional dependencies installed. Install
 `httk-analyse[scipy]` for the nonlinear EOS options and
 `httk-analyse[phonopy]` for the separate phonon adapter. The SQLite recipe
-requires `httk-store[db]`. The benchmark's dump/log join requires
-`httk-workflow-lammps`.
+requires `httk-store[db]`. The benchmark's dump/log join lives in
+`httk-workflow-lammps` (`httk.codes.lammps.lammps_samples`), which must be installed.
 
 ## Static volume scan
 

@@ -36,10 +36,16 @@ explicit. Any state strictly between the empty and full tolerance limits marks
 the result metallic. Indirect and direct gaps use only the supplied k points;
 the direct gap is the minimum same-k separation among points containing both
 occupied and empty states. Band-path data do not become a Brillouin-zone
-integration through this analysis.
+integration through this analysis. Occupations outside the declared range
+by more than `occupation_tolerance` are rejected; Methfessel-Paxton smearing
+(VASP `ISMEAR >= 1`) can produce slightly negative or super-maximal
+occupations, so clean them or choose the tolerance accordingly. `band_edges`
+works per spin channel: the spin-polarised material gap is the minimum CBM over
+both spins minus the maximum VBM over both spins.
 
 `fit_effective_mass` fits a full-rank local quadratic in Cartesian reciprocal
-coordinates, in inverse angstroms, and energy, in eV. It returns the energy
+coordinates, in inverse angstroms with the 2π included (physical k, as in
+`|k| = 2π/λ`), and energy, in eV. It returns the energy
 Hessian in eV angstrom² and signed mass tensor in electron-mass units. The
 conversion uses hbar²/m_e = 7.619964231073853 eV angstrom² from the 2022 CODATA
 recommended constants. Negative principal mass indicates negative curvature

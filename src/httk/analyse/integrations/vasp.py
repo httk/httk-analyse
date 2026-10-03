@@ -83,16 +83,20 @@ def band_edges_from_wavefunctions(
     wavefunctions: PlaneWaveFunctions,
     spin: int,
     *,
-    max_occupation: float,
-    occupancy_tolerance: float,
+    occupation_tolerance: float,
     energy_reference: float,
 ) -> BandEdges:
     """Analyze one WAVECAR spin channel using its stored eigenvalues and occupations.
 
+    WAVECAR occupations are per state on a 0..1 scale for every spin channel, so the maximum occupation is
+    fixed at one. OUTCAR prints occupations on a 0..2 scale for ISPIN=1; EIGENVAL and vasprun.xml use the same 0..1
+    per-state scale as WAVECAR. Only the selected spin channel is analysed: for ISPIN=2 the material gap is the minimum CBM over both channels minus the
+    maximum VBM over both channels. For metals the returned VBM and CBM are tolerance artifacts and only
+    ``metallic`` is meaningful.
+
     :param wavefunctions: Existing plane-wave data with axes spin, k point, band.
     :param spin: Zero-based spin index.
-    :param max_occupation: Explicit maximum occupancy of a state.
-    :param occupancy_tolerance: Explicit absolute empty/full endpoint tolerance.
+    :param occupation_tolerance: Explicit absolute empty/full endpoint tolerance on the 0..1 occupation scale.
     :param energy_reference: Explicit energy reference to subtract, in eV.
     :return: Sampled band edges from :func:`~httk.analyse.matsci.electronic.band_edges`.
     :raises ValueError: If the input or spin index is invalid.
@@ -104,7 +108,7 @@ def band_edges_from_wavefunctions(
     return band_edges(
         wavefunctions.eigenvalues[spin].T,
         wavefunctions.occupations[spin].T,
-        maximum_occupation=max_occupation,
-        occupation_tolerance=occupancy_tolerance,
+        maximum_occupation=1.0,
+        occupation_tolerance=occupation_tolerance,
         energy_reference=energy_reference,
     )
