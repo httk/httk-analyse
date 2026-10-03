@@ -1,0 +1,93 @@
+# Validate MLIP predictions
+
+The routines in `httk.analyse.matsci.mlip` compare already paired prediction
+and reference arrays. They use prediction minus reference, preserve raw energy
+errors, and return immutable summaries with the underlying residual tuples.
+Values must already use the documented units: total energy in eV, forces in
+eV/angstrom, and tensile-positive stress in eV/angstrom³.
+
+## Energy
+
+`energy_errors` divides total energies by each configuration's atom count. Its
+95th percentile is the unweighted NumPy linear-interpolation percentile across configurations. By
+default, mean and RMS statistics weight each configuration equally. Pass
+`weighting="atom"` to give each atom equal weight. Raw statistics always remain
+available. Pass `offset_per_atom` only when an explicitly chosen calibration
+offset should be applied to predicted per-atom energies; the function never
+estimates a shift from the evaluation set.
+
+```python
+from httk.analyse.matsci.mlip import energy_errors
+
+energy = energy_errors(
+    reference=[0.0, 0.0],
+    predicted=[0.25, 1.0],
+    atom_counts=[2, 8],
+    offset_per_atom=0.0625,
+    weighting="atom",
+)
+assert energy.residuals == (0.125, 0.125)
+assert energy.corrected_residuals == (0.0625, 0.0625)
+assert energy.statistics.mae == 0.125
+```
+
+The chosen offset should come from training or a separate calibration set. A
+constant per-atom energy shift can be physically harmless for some comparisons,
+but reporting only shift-corrected errors hides that model bias and may conceal
+composition-dependent errors.
+
+## Forces
+
+`force_errors` accepts one `(atoms, 3)` array for each configuration. Arrays
+must use identical atom order on both sides, and each species label must refer
+to the atom at the same position. The helper cannot match atoms, detect
+permutations, or identify train/test leakage. It reports x/y/z component
+statistics, Euclidean vector errors, each configuration's metrics, and
+component statistics grouped by species. The `atom` weighting gives each atom
+equal weight. The `configuration` weighting gives each configuration equal
+total weight and divides that weight equally among its atoms. Species summaries
+condition and renormalize the selected weights on that species. The 95th
+percentile remains unweighted.
+
+```python
+from httk.analyse.matsci.mlip import force_errors
+
+forces = force_errors(
+    reference=[[[0.0, 0.0, 0.0], [0.0, 0.0, 0.0]]],
+    predicted=[[[3.0, 4.0, 0.0], [0.0, 0.0, 0.0]]],
+    species=[["Si", "O"]],
+)
+assert forces.component_statistics[0].mae == 1.5
+assert forces.mean_vector_error == 2.5
+assert abs(forces.rms_vector_error - 5.0 / 2.0**0.5) < 1e-12
+assert dict(forces.per_species_component_statistics)["Si"][0].maximum_absolute_error == 3.0
+```
+
+Force errors are sensitive to physical atom pairing and to whether reference
+and predicted forces use the same coordinate frame, constraints, electronic
+convergence, and force convention. Do those checks before comparing metrics.
+
+## Stress
+
+`stress_errors` accepts matching `(configurations, 3, 3)` symmetric tensors. It
+uses tensile-positive stress in eV/angstrom³ and reports the independent
+components in `xx, yy, zz, yz, xz, xy` order. It checks symmetry within a
+relative and absolute tolerance of `1e-12`, reads the listed upper-triangle
+shear components, and does not symmetrize tensors. Convert virials, pressure
+signs, and unit conventions in the source adapter before calling it.
+
+```python
+import numpy as np
+
+from httk.analyse.matsci.mlip import stress_errors
+
+reference = np.zeros((1, 3, 3))
+predicted = np.array([[[1, 2, 3], [2, 4, 5], [3, 5, 6]]], dtype=float)
+stress = stress_errors(reference, predicted)
+assert stress.residuals == ((1.0, 4.0, 6.0, 5.0, 3.0, 2.0),)
+```
+
+These summaries describe residuals on the supplied samples; they do not
+estimate uncertainty or establish transferability. Keep validation structures
+and configurations independent of training, inspect residual distributions,
+and report the selected weighting, units, and any explicit energy calibration.

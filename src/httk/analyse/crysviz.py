@@ -2,6 +2,7 @@
 
 import os
 import tempfile
+from importlib import import_module
 from pathlib import Path, PureWindowsPath
 from typing import Any
 
@@ -10,7 +11,7 @@ from httk.core import register_citation, save
 
 def _import_crysviz() -> Any:
     try:
-        import crysviz  # type: ignore[import-not-found]
+        crysviz = import_module("crysviz")
     except ImportError as exc:
         raise ImportError("httk.analyse.crysviz requires crysviz; install httk-analyse[crysviz]") from exc
     return crysviz

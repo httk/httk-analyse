@@ -16,6 +16,7 @@ preserving its inputs.
 - **Materials phase diagrams**: {doc}`phase-diagrams`
 - **Equation-of-state fitting**: {doc}`equations-of-state`
 - **Simulation time series**: {doc}`time-series`
+- **MLIP validation**: {doc}`mlip-validation`
 - **CrysViz structure viewer**: {doc}`crysviz`
 - **Examples notebook**: {doc}`notebooks/examples`
 ````
@@ -46,6 +47,7 @@ generic-hulls
 phase-diagrams
 equations-of-state
 time-series
+mlip-validation
 crysviz
 reference/index
 notebooks/examples
