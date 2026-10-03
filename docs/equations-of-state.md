@@ -63,4 +63,35 @@ volumes; physical accuracy beyond the sampled interval is not established.
 
 See the executed {doc}`notebooks/materials-toolbox` for a synthetic scan and
 the [ASE EOS documentation](https://ase.gitlab.io/ase/ase/eos.html) for other
-standard EOS families. Only BM3 is implemented here.
+standard EOS families. The NumPy-only routine implements BM3; optional nonlinear models are described below.
+
+## Weighted fits and model comparison
+
+Install `httk-analyse[scipy]` to use `matsci.eos_models.fit_eos`. Select
+`model="birch-murnaghan"`, `"murnaghan"`, or `"vinet"` explicitly. Positive
+relative weights multiply squared residuals; equal weights are the default.
+Results report both weighted and unweighted RMSE and the weighted Jacobian's
+condition number. These remain numerical diagnostics, not confidence intervals.
+
+```python
+import numpy as np
+from httk.analyse.matsci.eos_models import fit_eos
+
+volumes = np.linspace(14.0, 18.0, 13)
+# Synthetic static branch, consistent per-atom eV / angstrom³ basis.
+energies = -4.0 + 0.02 * (volumes - 16.0)**2
+models = [fit_eos(volumes, energies, model=name)
+          for name in ("birch-murnaghan", "murnaghan", "vinet")]
+for fitted in models:
+    print(fitted.model, fitted.equilibrium_volume, fitted.bulk_modulus_gpa,
+          fitted.rmse)
+```
+
+The nonlinear solver starts from the algebraic BM3 solution, constrains a
+positive modulus and bracketed equilibrium volume, and rejects failed or
+rank-deficient fits. Energy evaluation integrates the model's dimensionless
+analytic pressure with SciPy quadrature. This avoids removable singularities
+at Murnaghan B′=0/1 and Vinet B′=1. These limits are tested along with independent
+ASE energy values and finite-difference pressure derivatives. Model comparison
+uses the same observations and weighting; a smaller residual alone does not
+establish which model extrapolates accurately.

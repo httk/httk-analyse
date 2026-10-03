@@ -46,6 +46,7 @@ assert tuple(hull.hull_indices) == (0, 1, 2)
 generic-hulls
 phase-diagrams
 equations-of-state
+energetics
 time-series
 mlip-validation
 crysviz

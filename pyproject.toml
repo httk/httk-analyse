@@ -41,6 +41,7 @@ Repository = "https://github.com/httk/httk-analyse"
 Issues = "https://github.com/httk/httk-analyse/issues"
 
 [project.optional-dependencies]
+scipy = ["scipy"]
 crysviz = ["crysviz>=0.1,<1"]
 highs = ["highspy>=1.15.1,<2"]
 dev = [
