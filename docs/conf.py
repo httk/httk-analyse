@@ -90,6 +90,7 @@ html_theme_options = {
 _docs_base_url = os.environ.get("HTTK_DOCS_BASE_URL", "https://docs.httk.org")
 
 intersphinx_mapping = {
+    "numpy": ("https://numpy.org/doc/stable/", "_inventories/numpy.inv"),
     "python": ("https://docs.python.org/3", "_inventories/python.inv"),
     "httk-core": (f"{_docs_base_url}/httk-core/", "_inventories/httk-core.inv"),
     "httk-atomistic": (

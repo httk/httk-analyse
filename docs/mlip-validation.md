@@ -91,3 +91,34 @@ These summaries describe residuals on the supplied samples; they do not
 estimate uncertainty or establish transferability. Keep validation structures
 and configurations independent of training, inspect residual distributions,
 and report the selected weighting, units, and any explicit energy calibration.
+
+## Derived properties and conservation
+
+`httk.analyse.matsci.validation.property_parity` compares paired scalar
+properties with explicit labels and units. It retains both inputs and raw
+residuals. Compare EOS volumes/moduli, elastic components, positive phonon
+frequencies, RDF curves or diffusion coefficients only on matched structures,
+normalizations, grids and sampling protocols. Unit labels are recorded; they
+are not an automatic unit conversion system.
+
+`energy_drift` requires `ensemble="NVE"`, selected increasing times in ps,
+total energies in eV and a constant atom count. It reports a fitted slope in
+eV/atom/ps, the intercept at the first time, residual RMS and observed endpoint
+change. Thermostat/barostat energy exchange is not a model conservation test.
+
+`force_energy_consistency` evaluates `-dE/dx` using central differences at an
+explicit displacement in angstrom and compares with forces in eV/angstrom.
+Check at multiple displacement sizes: truncation error falls with the square
+of the step until cancellation or energy noise dominates. The energy callable
+receives independent position copies. It must implement the same cell,
+periodicity, atomic ordering, units and model as the supplied force evaluation.
+
+`committee_spread` returns per-entry means and model standard deviations for
+an explicit common unit. This describes disagreement, not calibrated predictive
+uncertainty. Shared training data and model bias can make every committee member
+agree while all are wrong.
+
+For holdout validation, split complete independent trajectories or material
+families before extracting frames. Adjacent frames from one trajectory must not
+be randomly scattered between training and test sets. Keep temperature,
+composition, strain and defect coverage visible in the reported labels.

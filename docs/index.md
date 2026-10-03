@@ -4,8 +4,9 @@ This site documents specifically the *httk-analyse* module. For the full
 documentation of *httk₂* as a whole, see [docs.httk.org](https://docs.httk.org).
 
 *httk-analyse* provides numerical and materials-science analysis for *httk₂*:
-convex hulls, phase diagrams, static equations of state, and scalar time-series
-statistics. Analysis explicitly computes approximate float64 results while
+equations of state, energetics and phase diagrams, elasticity, MD structure and
+dynamics, thermal response, phonons, electronic properties, defects and MLIP
+validation. Analysis explicitly computes approximate float64 results while
 preserving its inputs.
 
 ```{admonition} Quick links
@@ -50,8 +51,19 @@ energetics
 time-series
 mlip-validation
 lammps-analysis
+elasticity
+md-structure
+dynamics
+thermal-response
+phonons
+electronic
+vasp-analysis
+defects
+analysis-artifacts
+analysis-recipes
 crysviz
 reference/index
 notebooks/examples
 notebooks/materials-toolbox
+notebooks/materials-response
 ```

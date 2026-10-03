@@ -20,6 +20,7 @@ docs-clean:
 # Refresh the committed intersphinx inventories (the one docs task that uses the
 # network); docs builds themselves resolve against these vendored files offline.
 docs-inventories:
+	curl -fsSL https://numpy.org/doc/stable/objects.inv -o docs/_inventories/numpy.inv
 	curl -fsSL https://docs.python.org/3/objects.inv -o docs/_inventories/python.inv
 	# Requires a current docs/requirements.lock; dependency release docs must be published.
 	$(PYTHON) -m httk.core.docs lock-check

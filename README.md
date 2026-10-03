@@ -9,8 +9,10 @@
 > releases.
 
 *httk-analyse* is a [*httk₂*](https://github.com/httk/httk2) module for analysis
-algorithms: convex hulls, materials phase diagrams, static equation-of-state
-fitting, and scalar time-series statistics. Its Python package is `httk.analyse`.
+of DFT calculations and atomistic simulations. It includes equations of state,
+energetics and phase diagrams, elasticity, structural and dynamical MD analysis,
+thermal response and transport, phonon thermodynamics, electronic properties,
+defect/surface energetics, and MLIP validation. Its Python package is `httk.analyse`.
 
 ## Usage
 
