@@ -91,6 +91,14 @@ values with care. `quasiharmonic` minimises `F(V, T) = E_static + F_harmonic`,
 which equals the Gibbs energy only at zero pressure; there is no pressure
 argument.
 
+As records (see {doc}`records`), a harmonic result binds its zero-point energy
+and one `vibrational_thermodynamics` series (temperatures, Helmholtz free,
+internal energies, entropies and heat capacities). A quasi-harmonic result binds
+one `quasiharmonic_thermodynamics` series whose
+`total_helmholtz_free_energies` are the minimized `free_energies`, static energy
+included, with `equilibrium_volumes`, `bulk_moduli` and
+`volumetric_thermal_expansions`.
+
 ## Phonopy mesh
 
 `httk.analyse.integrations.phonopy.harmonic_from_phonopy` consumes an already sampled public Phonopy mesh result.

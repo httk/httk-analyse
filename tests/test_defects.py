@@ -5,8 +5,12 @@ from dataclasses import FrozenInstanceError
 from typing import cast
 
 import pytest
+from httk.core import load_property_definition
 
+from httk.analyse import definitions as defs
 from httk.analyse.matsci.defects import (
+    ChargeTransition,
+    DefectFormationEnergy,
     adsorption_energy,
     charge_transition_levels,
     defect_formation_energy,
@@ -15,6 +19,7 @@ from httk.analyse.matsci.defects import (
     segregation_energy,
     surface_energy,
 )
+from httk.analyse.records import bound_values, records
 
 
 def test_defect_energy_terms_charge_sign_and_bulk_cancellation() -> None:
@@ -55,7 +60,7 @@ def test_defect_energy_terms_charge_sign_and_bulk_cancellation() -> None:
             correction=0,
         )
     source_terms = [["value", 1.0]]
-    copied = type(result)(1.0, source_terms, [], 0)  # type: ignore[arg-type]
+    copied = type(result)(1.0, source_terms, [], 0, 0.0, 0.0, 0.0, 0.0, [])  # type: ignore[arg-type]
     source_terms[0][1] = 9.0
     assert copied.terms == (("value", 1.0),)
 
@@ -154,3 +159,100 @@ def test_neb_saddle_index_is_actual_maximum_even_with_near_ties():
     assert result.saddle_index == 2
     assert result.tied_saddle_indices == (1, 2)
     assert result.forward_barrier == 1
+
+
+def _checked(result: object, **selection: object):
+    bound = bound_values(result, **selection)
+    for item in bound:
+        load_property_definition(item.binding.definition).check(item.value)
+    return bound
+
+
+def test_defect_formation_energy_retains_inputs_and_binds_dictionary() -> None:
+    result = defect_formation_energy(
+        -9.0,
+        -10.0,
+        {"B": -1, "A": 1},
+        {"A": -2.0, "B": -3.0, "C": 9.0},
+        charge=2,
+        fermi_level=0.5,
+        vbm=1.0,
+        alignment=0.1,
+        correction=-0.2,
+    )
+    assert (result.fermi_level, result.vbm, result.alignment, result.correction) == (0.5, 1.0, 0.1, -0.2)
+    assert result.chemical_potentials == (("A", -2.0), ("B", -3.0))
+    (bound,) = _checked(result)
+    assert bound.binding.definition == defs.CHARGED_DEFECT_FORMATION_ENERGY
+    assert bound.binding.derivation is None
+    assert bound.value == {
+        "charge": 2,
+        "energy": result.energy,
+        "fermi_level": 0.5,
+        "vbm": 1.0,
+        "alignment": 0.1,
+        "correction": -0.2,
+        "elements": ["A", "B"],
+        "atom_changes": [1, -1],
+        "chemical_potentials": [-2.0, -3.0],
+    }
+    assert len(records(result)) == 1
+    pristine = defect_formation_energy(-1, -1, {}, {}, charge=0, fermi_level=0, vbm=0, alignment=0, correction=0)
+    assert _checked(pristine)[0].value["elements"] == []
+
+
+def test_defect_energy_parallel_lists_must_match_in_order() -> None:
+    kwargs = {
+        "energy": 0.0,
+        "terms": (),
+        "charge": 0,
+        "fermi_level": 0.0,
+        "vbm": 0.0,
+        "alignment": 0.0,
+        "correction": 0.0,
+    }
+    with pytest.raises(ValueError, match="sorted"):
+        DefectFormationEnergy(atom_deltas=(("A", 1), ("B", 1)), chemical_potentials=(("B", 0.0), ("A", 0.0)), **kwargs)
+    with pytest.raises(ValueError, match="sorted"):
+        DefectFormationEnergy(atom_deltas=(("B", 1), ("A", 1)), chemical_potentials=(("B", 0.0), ("A", 0.0)), **kwargs)
+    with pytest.raises(ValueError, match="same elements"):
+        DefectFormationEnergy(atom_deltas=(("A", 1),), chemical_potentials=(), **kwargs)
+
+
+def test_charge_transition_binds_envelope_charges() -> None:
+    first, _ = charge_transition_levels({1: 0.0, 0: -1.0, -1: 0.0}, (-2.0, 2.0))
+    (bound,) = _checked(first)
+    assert bound.binding.definition == defs.CHARGE_TRANSITION_LEVEL
+    assert bound.value == {"charges": [1, 0], "fermi_level": pytest.approx(-1.0)}
+    with pytest.raises(ValueError, match="exactly one"):
+        bound_values(ChargeTransition(0.0, (0, 1), (), (0,)))
+
+
+def test_surface_energy_is_in_joules_per_square_metre() -> None:
+    result = surface_energy(
+        -4.0, -1.0, bulk_reference_atom_count=4, excess_atom_deltas={}, chemical_potentials={}, total_exposed_area=2.0
+    )
+    assert result.energy == 0.0
+    shifted = surface_energy(
+        -3.0, -1.0, bulk_reference_atom_count=4, excess_atom_deltas={}, chemical_potentials={}, total_exposed_area=2.0
+    )
+    assert shifted.energy == 1.0
+    assert shifted.exposed_area == 2.0
+    assert shifted.surface_energy == pytest.approx(0.5 * 16.02176634)
+    (bound,) = _checked(shifted)
+    assert bound.binding.definition == defs.SURFACE_ENERGY
+    assert bound.value == shifted.surface_energy
+    assert records(shifted)[0].name == "surface_energy"
+
+
+def test_neb_and_arrhenius_bind_barriers() -> None:
+    forward, reverse = _checked(neb_profile((0, 0.2, 0.7, 1.0), (2.0, 5.0, 5.0, 1.0)))
+    assert (forward.binding.definition, forward.value) == (defs.MIGRATION_BARRIER_FORWARD, 3.0)
+    assert (reverse.binding.definition, reverse.value) == (defs.MIGRATION_BARRIER_REVERSE, 4.0)
+    temperatures = (300.0, 400.0, 500.0)
+    fit = fit_arrhenius(
+        temperatures, tuple(1e13 * math.exp(-0.5 / (8.617333262145e-5 * t)) for t in temperatures), rate_unit="s^-1"
+    )
+    (bound,) = _checked(fit)
+    assert bound.binding.definition == defs.ACTIVATION_ENERGY
+    assert bound.value == pytest.approx(0.5)

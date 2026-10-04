@@ -1,0 +1,209 @@
+{
+    "$id": "https://schemas.httk.org/defs/v0.1/properties/transport/diffusion_running_integral",
+    "$schema": "https://schemas.optimade.org/meta/v1.3/optimade/property_definition.json",
+    "title": "Diffusion running integral",
+    "x-optimade-type": "dictionary",
+    "x-optimade-definition": {
+        "kind": "property",
+        "version": "0.1.0",
+        "format": "1.3",
+        "name": "diffusion_running_integral",
+        "label": "diffusion_running_integral_transport_httk"
+    },
+    "x-optimade-unit": "inapplicable",
+    "x-optimade-unit-definitions": [
+        {
+            "$id": "https://schemas.optimade.org/defs/v1.2/units/si/general/metre",
+            "title": "metre",
+            "symbol": "m",
+            "display-symbol": "m",
+            "alternate-symbols": [
+                "metre",
+                "meter"
+            ],
+            "description": "The metre, or meter, is a unit of length using the current, or one of the historical, definitions of the SI units.\n\nThe current definition in its most recent phrasing at the 26th CGPM Meeting in 2018, resolution 1 is: \"The metre, symbol m, is the SI unit of length. It is defined by taking the fixed numerical value of the speed of light in vacuum \\(c\\) to be 299792458 when expressed in the unit m\u22c5s\u207b\u00b9, where the second is defined in terms of the caesium frequency \\(\\Delta \\nu_\\textrm{Cs}\\).\"\n\nThis is a rephrasing of a definition at the 17th CGPM Meeting (1983), resolution 1: \"The metre is the length of the path travelled by light in vacuum during a time interval of 1/299792458 of a second.\" [17th CGPM Meeting (1983), resolution 1].\n\nThe prior definition at the 11th CGPM meeting (1960), resolution 6 was: \"The metre is the length equal to 1650763.73 wavelengths in vacuum of the radiation corresponding to the transition between the levels 2p\u2081\u2080 and 5d\u2085 of the krypton 86 atom.\"\n\nThis is a generalized definition taken to reference the current, or one of the historical, SI unit definitions.\nThis definition is intended for situations when it is not possible to be more precise, e.g., in contexts where data have been collected that uses different historical SI definitions.",
+            "compatibility": [
+                "https://schemas.optimade.org/defs/v1.2/units/si/1960/base/metre",
+                "https://schemas.optimade.org/defs/v1.2/units/si/1983/base/metre"
+            ],
+            "resources": [
+                {
+                    "relation": "Definition at the 17th CGPM meeting (1983), resolution 1",
+                    "resource-id": "https://www.bipm.org/en/committees/cg/cgpm/17-1983/resolution-1"
+                },
+                {
+                    "relation": "Definition at the 11th CGPM meeting (1960), resolution 6.",
+                    "resource-id": "https://www.bipm.org/en/committees/cg/cgpm/11-1960/resolution-6"
+                },
+                {
+                    "relation": "Wikipedia article describing the unit",
+                    "resource-id": "https://en.wikipedia.org/wiki/Metre"
+                }
+            ],
+            "x-optimade-definition": {
+                "label": "metre_si_general",
+                "kind": "unit",
+                "format": "1.2",
+                "version": "1.2.0",
+                "name": "metre"
+            }
+        },
+        {
+            "$id": "https://schemas.optimade.org/defs/v1.2/prefixes/si/pico",
+            "title": "pico",
+            "symbol": "p",
+            "display-symbol": "p",
+            "description": "The pico SI prefix defined as a dimensionless multiple of 10\u207b\u00b9\u00b2, adopted into SI at its creation at the 11th CGPM Meeting in 1960, resolution 12.",
+            "resources": [
+                {
+                    "relation": "Definition in the 11th CGPM Meeting in 1960, resolution 12",
+                    "resource-id": "https://www.bipm.org/en/committees/cg/cgpm/11-1960/resolution-12"
+                },
+                {
+                    "relation": "Wikipedia article describing the SI prefixes",
+                    "resource-id": "https://en.wikipedia.org/wiki/Metric_prefix"
+                }
+            ],
+            "defining-relation": {
+                "base-units": [],
+                "base-units-expression": "",
+                "scale": {
+                    "exponent": -12
+                }
+            },
+            "x-optimade-definition": {
+                "label": "pico_prefix_si",
+                "kind": "prefix",
+                "format": "1.2",
+                "version": "1.2.0",
+                "name": "pico"
+            }
+        },
+        {
+            "$id": "https://schemas.optimade.org/defs/v1.2/units/si/general/second",
+            "title": "second",
+            "symbol": "s",
+            "display-symbol": "s",
+            "description": "A unit of time using the current, or one of the historical, definitions of the SI units.\n\nThe current definition in its most recent phrasing at the 26th CGPM Meeting in 2018, resolution 1 is: \"The second, symbol s, is the SI unit of time. It is defined by taking the fixed numerical value of the caesium frequency, \\(\\Delta \\nu_\\textrm{Cs}\\), the unperturbed ground-state hyperfine transition frequency of the caesium 133 atom, to be 9192631770 when expressed in the unit Hz, which is equal to s\u207b\u00b9.\"\n\nThis is a rephrasing of a definition at the 13th CGPM Meeting (1967), resolution 1: \"The second is the duration of 9192631770 periods of the radiation corresponding to the transition between the two hyperfine levels of the ground state of the caesium 133 atom.\"\n\nThe earlier definition at the 11th CGPM Meeting in 1960, resolution 9 was: \"The second is the fraction 1/31556925.9747 of the tropical year for 1900 January 0 at 12 hours ephemeris time.\"\n\nThis is a generalized definition taken to reference the current, or one of the historical, SI unit definitions.\nThis definition is intended for situations when it is not possible to be more precise, e.g., in contexts where data have been collected that uses different historical SI definitions.",
+            "compatibility": [
+                "https://schemas.optimade.org/defs/v1.2/units/si/1960/base/second",
+                "https://schemas.optimade.org/defs/v1.2/units/si/1967/base/second"
+            ],
+            "resources": [
+                {
+                    "relation": "Definition in the 13th CGPM Meeting (1967), resolution 1",
+                    "resource-id": "https://www.bipm.org/en/committees/cg/cgpm/13-1967/resolution-1"
+                },
+                {
+                    "relation": "Rephrased definition in the 26th CGPM Meeting (2018), resolution 1",
+                    "resource-id": "https://www.bipm.org/en/committees/cg/cgpm/26-2018/resolution-1"
+                },
+                {
+                    "relation": "Definition at the 11th CGPM meeting (1960), resolution 6.",
+                    "resource-id": "https://www.bipm.org/en/committees/cg/cgpm/11-1960/resolution-6"
+                },
+                {
+                    "relation": "Wikipedia article describing the unit",
+                    "resource-id": "https://en.wikipedia.org/wiki/Second"
+                }
+            ],
+            "x-optimade-definition": {
+                "label": "second_si_general",
+                "kind": "unit",
+                "format": "1.2",
+                "version": "1.2.0",
+                "name": "second"
+            }
+        }
+    ],
+    "x-optimade-requirements": {
+        "support": "may",
+        "sortable": false,
+        "query-support": "none"
+    },
+    "type": [
+        "object",
+        "null"
+    ],
+    "required": [
+        "lag_times",
+        "diffusion_tensors"
+    ],
+    "description": "Running integral of the velocity autocorrelation tensor, as a function of upper integration limit.\n\nAll lists of the dictionary share the dimension `_httk_dim_lags`; `lag_times` gives the lag time of each entry. \n\n**Requirements/Conventions**:\n\n- `diffusion_tensors` (m^2 s^-1) is the trapezoidal running integral of the velocity autocorrelation tensor from 0 to each lag time. Each tensor member has the shared lag dimension first, followed by two `dim_spatial` axes (Cartesian x, y, z) giving the tensor components; the tensor is not symmetrized.\n- Selection of a plateau value, giving the diffusion tensor, is left to the user.\n\nA null value means the quantity is not available or not recorded.",
+    "properties": {
+        "lag_times": {
+            "x-optimade-type": "list",
+            "x-optimade-unit": "inapplicable",
+            "x-optimade-dimensions": {
+                "names": [
+                    "_httk_dim_lags"
+                ],
+                "sizes": [
+                    null
+                ]
+            },
+            "type": [
+                "array"
+            ],
+            "items": {
+                "x-optimade-type": "float",
+                "x-optimade-unit": "ps",
+                "type": [
+                    "number"
+                ]
+            }
+        },
+        "diffusion_tensors": {
+            "x-optimade-type": "list",
+            "x-optimade-unit": "inapplicable",
+            "x-optimade-dimensions": {
+                "names": [
+                    "_httk_dim_lags"
+                ],
+                "sizes": [
+                    null
+                ]
+            },
+            "type": [
+                "array"
+            ],
+            "items": {
+                "x-optimade-type": "list",
+                "x-optimade-unit": "inapplicable",
+                "x-optimade-dimensions": {
+                    "names": [
+                        "dim_spatial"
+                    ],
+                    "sizes": [
+                        3
+                    ]
+                },
+                "type": [
+                    "array"
+                ],
+                "items": {
+                    "x-optimade-type": "list",
+                    "x-optimade-unit": "inapplicable",
+                    "x-optimade-dimensions": {
+                        "names": [
+                            "dim_spatial"
+                        ],
+                        "sizes": [
+                            3
+                        ]
+                    },
+                    "type": [
+                        "array"
+                    ],
+                    "items": {
+                        "x-optimade-type": "float",
+                        "x-optimade-unit": "m^2*s^-1",
+                        "type": [
+                            "number"
+                        ]
+                    }
+                }
+            }
+        }
+    }
+}

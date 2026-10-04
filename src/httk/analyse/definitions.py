@@ -15,6 +15,8 @@ from dataclasses import dataclass
 from typing import Any
 
 __all__ = [
+    "ACTIVATION_ENERGY",
+    "ADSORPTION_ENERGY",
     "BAND_GAP",
     "BIAS",
     "BULK_MODULUS",
@@ -22,36 +24,57 @@ __all__ = [
     "BULK_MODULUS_PRESSURE_DERIVATIVE",
     "BULK_MODULUS_REUSS",
     "BULK_MODULUS_VOIGT",
+    "CHARGED_DEFECT_FORMATION_ENERGY",
+    "CHARGE_TRANSITION_LEVEL",
     "COMPLIANCE_TENSOR",
     "DIFFUSION_COEFFICIENT",
+    "DIFFUSION_RUNNING_INTEGRAL",
     "DIFFUSION_TENSOR",
     "DIRECT_BAND_GAP",
     "ELASTIC_TENSOR",
+    "ELECTRONIC_DENSITY_OF_STATES",
     "ENERGY_ABOVE_HULL_PER_ATOM",
     "EQUILIBRIUM_ENERGY",
     "EQUILIBRIUM_VOLUME",
+    "FERMI_ENERGY",
     "FORMATION_ENERGY_PER_ATOM",
     "HEAT_CAPACITY_CONSTANT_PRESSURE",
     "HEAT_CAPACITY_CONSTANT_VOLUME",
     "HELMHOLTZ_FREE_ENERGY",
+    "HIGH_FREQUENCY_RELATIVE_PERMITTIVITY",
     "ISOTHERMAL_COMPRESSIBILITY",
     "MAE",
     "MAXIMUM_ABSOLUTE_ERROR",
     "MEAN",
+    "MEAN_SQUARED_DISPLACEMENT",
+    "MIGRATION_BARRIER_FORWARD",
+    "MIGRATION_BARRIER_REVERSE",
+    "QUASIHARMONIC_THERMODYNAMICS",
+    "RADIAL_DISTRIBUTION_FUNCTION",
     "REACTION_ENERGY",
+    "RELATIVE_EFFECTIVE_MASS",
     "RMSE",
+    "SEGREGATION_ENERGY",
     "SHEAR_MODULUS_HILL",
     "SHEAR_MODULUS_REUSS",
     "SHEAR_MODULUS_VOIGT",
     "SHEAR_VISCOSITY",
+    "SHEAR_VISCOSITY_RUNNING_INTEGRAL",
     "STANDARD_DEVIATION",
     "STANDARD_ERROR",
+    "STATIC_RELATIVE_PERMITTIVITY",
+    "SURFACE_ENERGY",
     "THERMAL_CONDUCTIVITY",
+    "THERMAL_CONDUCTIVITY_RUNNING_INTEGRAL",
     "THERMAL_CONDUCTIVITY_TENSOR",
+    "TOTAL_ENERGY_PER_ATOM",
+    "TOTAL_MAGNETIC_MOMENT",
     "UNIVERSAL_ANISOTROPY_INDEX",
+    "VELOCITY_AUTOCORRELATION",
     "VIBRATIONAL_ENTROPY",
     "VIBRATIONAL_HEAT_CAPACITY",
     "VIBRATIONAL_INTERNAL_ENERGY",
+    "VIBRATIONAL_THERMODYNAMICS",
     "VOLUMETRIC_THERMAL_EXPANSION",
     "ZERO_POINT_ENERGY",
     "BoundValue",
@@ -183,33 +206,111 @@ BIAS = "https://schemas.httk.org/defs/v0.1/derivations/bias"
 #: Derivation term ``maximum_absolute_error`` qualifying a base property for statistics.
 MAXIMUM_ABSOLUTE_ERROR = "https://schemas.httk.org/defs/v0.1/derivations/maximum_absolute_error"
 
+#: Property definition ``vibrational_thermodynamics``.
+VIBRATIONAL_THERMODYNAMICS = "https://schemas.httk.org/defs/v0.1/properties/thermodynamics/vibrational_thermodynamics"
+
+#: Property definition ``quasiharmonic_thermodynamics``.
+QUASIHARMONIC_THERMODYNAMICS = (
+    "https://schemas.httk.org/defs/v0.1/properties/thermodynamics/quasiharmonic_thermodynamics"
+)
+
+#: Property definition ``mean_squared_displacement``.
+MEAN_SQUARED_DISPLACEMENT = "https://schemas.httk.org/defs/v0.1/properties/transport/mean_squared_displacement"
+
+#: Property definition ``velocity_autocorrelation``.
+VELOCITY_AUTOCORRELATION = "https://schemas.httk.org/defs/v0.1/properties/transport/velocity_autocorrelation"
+
+#: Property definition ``diffusion_running_integral``.
+DIFFUSION_RUNNING_INTEGRAL = "https://schemas.httk.org/defs/v0.1/properties/transport/diffusion_running_integral"
+
+#: Property definition ``thermal_conductivity_running_integral``.
+THERMAL_CONDUCTIVITY_RUNNING_INTEGRAL = (
+    "https://schemas.httk.org/defs/v0.1/properties/transport/thermal_conductivity_running_integral"
+)
+
+#: Property definition ``shear_viscosity_running_integral``.
+SHEAR_VISCOSITY_RUNNING_INTEGRAL = (
+    "https://schemas.httk.org/defs/v0.1/properties/transport/shear_viscosity_running_integral"
+)
+
+#: Property definition ``radial_distribution_function``.
+RADIAL_DISTRIBUTION_FUNCTION = "https://schemas.httk.org/defs/v0.1/properties/structure/radial_distribution_function"
+
+#: Property definition ``electronic_density_of_states``.
+ELECTRONIC_DENSITY_OF_STATES = "https://schemas.httk.org/defs/v0.1/properties/electronic/electronic_density_of_states"
+
+#: Property definition ``relative_effective_mass``.
+RELATIVE_EFFECTIVE_MASS = "https://schemas.httk.org/defs/v0.1/properties/electronic/relative_effective_mass"
+
+#: Property definition ``fermi_energy``.
+FERMI_ENERGY = "https://schemas.httk.org/defs/v0.1/properties/electronic/fermi_energy"
+
+#: Property definition ``static_relative_permittivity``.
+STATIC_RELATIVE_PERMITTIVITY = "https://schemas.httk.org/defs/v0.1/properties/electronic/static_relative_permittivity"
+
+#: Property definition ``high_frequency_relative_permittivity``.
+HIGH_FREQUENCY_RELATIVE_PERMITTIVITY = (
+    "https://schemas.httk.org/defs/v0.1/properties/electronic/high_frequency_relative_permittivity"
+)
+
+#: Property definition ``total_magnetic_moment``.
+TOTAL_MAGNETIC_MOMENT = "https://schemas.httk.org/defs/v0.1/properties/magnetism/total_magnetic_moment"
+
+#: Property definition ``charged_defect_formation_energy``.
+CHARGED_DEFECT_FORMATION_ENERGY = (
+    "https://schemas.httk.org/defs/v0.1/properties/defects/charged_defect_formation_energy"
+)
+
+#: Property definition ``charge_transition_level``.
+CHARGE_TRANSITION_LEVEL = "https://schemas.httk.org/defs/v0.1/properties/defects/charge_transition_level"
+
+#: Property definition ``surface_energy``.
+SURFACE_ENERGY = "https://schemas.httk.org/defs/v0.1/properties/defects/surface_energy"
+
+#: Property definition ``adsorption_energy``.
+ADSORPTION_ENERGY = "https://schemas.httk.org/defs/v0.1/properties/defects/adsorption_energy"
+
+#: Property definition ``segregation_energy``.
+SEGREGATION_ENERGY = "https://schemas.httk.org/defs/v0.1/properties/defects/segregation_energy"
+
+#: Property definition ``migration_barrier_forward``.
+MIGRATION_BARRIER_FORWARD = "https://schemas.httk.org/defs/v0.1/properties/kinetics/migration_barrier_forward"
+
+#: Property definition ``migration_barrier_reverse``.
+MIGRATION_BARRIER_REVERSE = "https://schemas.httk.org/defs/v0.1/properties/kinetics/migration_barrier_reverse"
+
+#: Property definition ``activation_energy``.
+ACTIVATION_ENERGY = "https://schemas.httk.org/defs/v0.1/properties/kinetics/activation_energy"
+
+#: Property definition ``total_energy_per_atom``.
+TOTAL_ENERGY_PER_ATOM = "https://schemas.httk.org/defs/v0.1/properties/energetics/total_energy_per_atom"
+
 
 @dataclass(frozen=True, slots=True)
 class FieldBinding:
     """The property identity of one analysis-result field.
 
     The field value is in the unit of ``definition``. With a ``derivation`` the
-    value is that statistic of the base property (same unit). With an ``axis``
-    the value is a series of the base property sampled over the coordinate
-    field of that name in the same result.
+    value is that statistic of the base property (same unit). A series is one
+    value of a dictionary-typed definition whose members are equal-length lists.
 
     :param definition: Property-definition IRI.
     :param derivation: Derivation-term IRI qualifying the property, or ``None``.
-    :param axis: Name of the coordinate field of a series value, or ``None``.
     """
 
     definition: str
     derivation: str | None = None
-    axis: str | None = None
 
 
 @dataclass(frozen=True, slots=True)
 class BoundValue:
     """One result value with its property binding, as plain JSON-compatible data.
 
-    :param field: Result field name, such as ``bulk_modulus`` or ``integrals[10]``.
+    :param field: Result field name, such as ``bulk_modulus`` or ``integrals[10]``, or the
+        definition name of a series.
     :param binding: Property binding of the value.
-    :param value: Float or nested lists of floats in the unit of ``binding.definition``.
+    :param value: Float, nested lists of floats, or a dictionary of member lists (a series), in the
+        units of ``binding.definition``.
     """
 
     field: str
@@ -242,3 +343,8 @@ def _bind_fields(
     """Bind attributes of ``result`` named by ``bindings``, which takes no selection keywords."""
     _reject_selection(result, selection)
     return tuple(BoundValue(field, binding, _plain(getattr(result, field))) for field, binding in bindings.items())
+
+
+def _series(definition: str, **members: Any) -> BoundValue:
+    """Bind plain-list ``members`` as one dictionary value of ``definition``, named by the definition."""
+    return BoundValue(definition.rsplit("/", 1)[1], FieldBinding(definition), members)

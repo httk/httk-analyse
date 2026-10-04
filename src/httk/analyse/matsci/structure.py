@@ -4,9 +4,12 @@ import itertools
 import math
 from collections.abc import Iterable, Iterator, Sequence
 from dataclasses import dataclass
-from typing import cast
+from typing import Any, cast
 
 import numpy as np
+
+from .. import definitions as defs
+from ..definitions import BoundValue, _reject_selection, _series
 
 __all__ = [
     "RadialDistribution",
@@ -30,6 +33,7 @@ class RadialDistribution:
     :param hist_counts: Directed pair counts accumulated in each bin.
     :param frame_count: Number of configurations accumulated.
     :param mean_coordination: Mean number of selected neighbors within the binned range per selected central atom and frame.
+    :param pair: Ordered ``(central, neighbor)`` labels of a partial RDF, or ``None`` for the total RDF.
     """
 
     edges: tuple[float, ...]
@@ -38,6 +42,7 @@ class RadialDistribution:
     hist_counts: tuple[int, ...]
     frame_count: int
     mean_coordination: float
+    pair: tuple[str, str] | None = None
 
     def __post_init__(self) -> None:
         """Copy sequence fields into immutable tuples."""
@@ -45,6 +50,16 @@ class RadialDistribution:
         object.__setattr__(self, "centers", tuple(float(value) for value in self.centers))
         object.__setattr__(self, "g", tuple(float(value) for value in self.g))
         object.__setattr__(self, "hist_counts", tuple(int(value) for value in self.hist_counts))
+        if self.pair is not None:
+            object.__setattr__(self, "pair", tuple(self.pair))
+
+    def _bound_values(self, **selection: Any) -> tuple[BoundValue, ...]:
+        """Bind the radial distribution function series; raise ValueError unless edges outnumber ``g`` by one."""
+        _reject_selection(self, selection)
+        if len(self.edges) != len(self.g) + 1:
+            raise ValueError("radial distribution needs exactly one more bin edge than g values")
+        pair = {} if self.pair is None else {"pair": list(self.pair)}
+        return (_series(defs.RADIAL_DISTRIBUTION_FUNCTION, bin_edges=list(self.edges), g=list(self.g), **pair),)
 
 
 def minimum_image(
@@ -248,6 +263,7 @@ def radial_distribution(
         tuple(int(value) for value in counts),
         frame_count,
         mean_coordination,
+        None if pair is None else (pair[0], pair[1]),
     )
 
 

@@ -11,3 +11,4 @@ HBAR2_OVER_ME_EV_A2 = 7.619964231073853
 # Exact factors between the kernels' eV/angstrom/ps system and the units of the property definitions.
 GPA_PER_EV_PER_A3 = float(default_registry().factor("angstrom^-3*eV", "GPa").factor)
 M2_PER_S_PER_A2_PER_PS = float(default_registry().factor("angstrom^2*ps^-1", "m^2*s^-1").factor)
+JM2_PER_EV_PER_A2 = float(default_registry().factor("angstrom^-2*eV", "J*m^-2").factor)

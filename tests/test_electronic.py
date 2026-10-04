@@ -2,7 +2,9 @@
 
 import numpy as np
 import pytest
+from httk.core import load_property_definition
 
+from httk.analyse import definitions as defs
 from httk.analyse.matsci.electronic import (
     align_energies,
     band_edges,
@@ -13,6 +15,7 @@ from httk.analyse.matsci.electronic import (
     solve_chemical_potential,
     summarize_dielectric,
 )
+from httk.analyse.records import bound_values, records
 
 
 def test_piecewise_dos_bounds_spin_multiplier_and_zero_temperature_count() -> None:
@@ -157,3 +160,41 @@ def test_thermal_counts_do_not_extrapolate_past_sampled_dos():
 def test_chemical_potential_rejects_unreachable_even_within_solver_tolerance():
     with pytest.raises(ValueError, match="exceeds"):
         solve_chemical_potential([0, 1], [1, 1], 1 + 5e-11, temperature=300, spin_degeneracy=1)
+
+
+def _checked(result: object, **selection: object):
+    bound = bound_values(result, **selection)
+    for item in bound:
+        load_property_definition(item.binding.definition).check(item.value)
+    return bound
+
+
+def test_dielectric_summary_binding_requires_kind() -> None:
+    summary = summarize_dielectric(((3, 0, 0), (0, 2, 0), (0, 0, 1)))
+    (static,) = _checked(summary, kind="static")
+    assert (static.binding.definition, static.value) == (defs.STATIC_RELATIVE_PERMITTIVITY, 2.0)
+    (high,) = _checked(summary, kind="high_frequency")
+    assert high.binding.definition == defs.HIGH_FREQUENCY_RELATIVE_PERMITTIVITY
+    assert records(summary, kind="static")[0].name == "static_relative_permittivity"
+    with pytest.raises(TypeError):
+        bound_values(summary)
+    with pytest.raises(ValueError, match="kind"):
+        bound_values(summary, kind="optical")
+    with pytest.raises(TypeError, match="selection"):
+        bound_values(summary, kind="static", lag_index=1)
+
+
+def test_effective_mass_and_magnetic_moment_bindings() -> None:
+    x = np.linspace(-0.2, 0.2, 7)
+    k = np.array([(a, b, c) for a in x for b in x for c in x])
+    energy = 0.5 * 7.619964231073853 * (k[:, 0] ** 2 / 0.5 + k[:, 1] ** 2 / 1.0 + k[:, 2] ** 2 / 2.0)
+    fit = fit_effective_mass(k, energy, (0, 0, 0))
+    (bound,) = _checked(fit)
+    assert bound.binding.definition == defs.RELATIVE_EFFECTIVE_MASS
+    assert bound.value["center"] == [0.0, 0.0, 0.0]
+    assert bound.value["tensor"][0][0] == pytest.approx(0.5)
+    moments = magnetic_moments(((1.0, 0.0, 0.0), (0.5, 2.0, 0.0)))
+    (total,) = _checked(moments)
+    assert total.binding.definition == defs.TOTAL_MAGNETIC_MOMENT
+    assert total.value == [1.5, 2.0, 0.0]
+    assert records(moments)[0].name == "total_magnetic_moment"

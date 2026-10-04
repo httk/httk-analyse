@@ -9,7 +9,8 @@ import numpy as np
 
 from .. import definitions as defs
 from .._constants import M2_PER_S_PER_A2_PER_PS
-from ..definitions import BoundValue, FieldBinding, _bind_fields
+from ..definitions import BoundValue, FieldBinding, _bind_fields, _plain, _reject_selection
+from ..definitions import _series as _bind_series
 
 __all__ = [
     "DiffusionFit",
@@ -63,6 +64,17 @@ class TensorSeries:
     def trace(self) -> tuple[float, ...]:
         """Return tensor traces in lag order."""
         return tuple(sum(row[i][i] for i in range(3)) for row in self.tensors)
+
+    def _bound_values(self, **selection: Any) -> tuple[BoundValue, ...]:
+        """Bind the series of ``kind``; the VACF integral is converted to m²/s and carries no origin counts."""
+        _reject_selection(self, selection)
+        times, tensors, counts = list(self.times), _plain(self.tensors), list(self.counts)
+        if self.kind == "msd":
+            return (_bind_series(defs.MEAN_SQUARED_DISPLACEMENT, lag_times=times, msd=tensors, origin_counts=counts),)
+        if self.kind == "vacf":
+            return (_bind_series(defs.VELOCITY_AUTOCORRELATION, lag_times=times, vacf=tensors, origin_counts=counts),)
+        diffusion = (np.asarray(self.tensors) * M2_PER_S_PER_A2_PER_PS).tolist()
+        return (_bind_series(defs.DIFFUSION_RUNNING_INTEGRAL, lag_times=times, diffusion_tensors=diffusion),)
 
 
 @dataclass(frozen=True, slots=True)

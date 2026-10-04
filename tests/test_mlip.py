@@ -4,8 +4,12 @@ from dataclasses import FrozenInstanceError
 
 import numpy as np
 import pytest
+from httk.core import DerivedDataRecord, load_property_definition
+from httk.core.definition_ids import STRESS_TENSOR
 
+from httk.analyse import definitions as defs
 from httk.analyse.matsci.mlip import energy_errors, force_errors, stress_errors
+from httk.analyse.records import bound_values, records
 
 
 def test_energy_errors_keep_raw_values_and_apply_only_explicit_offset() -> None:
@@ -151,3 +155,32 @@ def test_force_statistics_remain_finite_at_small_and_large_scales(scale: float) 
     assert result.component_statistics[0].bias == pytest.approx(0.0)
     assert result.component_statistics[0].rmse == pytest.approx(scale)
     assert result.rms_vector_error == pytest.approx(scale)
+
+
+_DERIVATIONS = (defs.RMSE, defs.MAE, defs.BIAS, defs.MAXIMUM_ABSOLUTE_ERROR)
+
+
+def test_energy_error_statistics_bind_raw_only() -> None:
+    result = energy_errors([0.0, 0.0], [0.0, 10.0], atom_counts=[1, 4], offset_per_atom=1.0, weighting="atom")
+    bound = bound_values(result)
+    assert tuple(b.binding.derivation for b in bound) == _DERIVATIONS
+    assert {b.binding.definition for b in bound} == {defs.TOTAL_ENERGY_PER_ATOM}
+    assert next(b.field for b in bound) == "statistics.rmse"
+    assert [b.value for b in bound] == pytest.approx([5.0**0.5, 2.0, 2.0, 2.5])
+    for b in bound:
+        load_property_definition(b.binding.definition).check(b.value)
+    made = records(result)
+    assert all(isinstance(r, DerivedDataRecord) for r in made)
+    assert (made[0].definition_id, made[0].derivation) == (defs.TOTAL_ENERGY_PER_ATOM, defs.RMSE)
+
+
+def test_stress_error_statistics_bind_voigt_lists() -> None:
+    pred = np.array([[[1.0, 2.0, 3.0], [2.0, 4.0, 5.0], [3.0, 5.0, 6.0]]])
+    bound = bound_values(stress_errors(np.zeros((1, 3, 3)), pred))
+    assert tuple(b.binding.derivation for b in bound) == _DERIVATIONS
+    assert {b.binding.definition for b in bound} == {STRESS_TENSOR}
+    assert bound[2].value == [1.0, 4.0, 6.0, 5.0, 3.0, 2.0]  # bias, Voigt xx yy zz yz xz xy
+    for b in bound:
+        load_property_definition(b.binding.definition).check(b.value)
+    with pytest.raises(TypeError, match="no property-definition bindings"):
+        bound_values(force_errors([[[1.0, 2.0, 3.0]]], [[[1.0, 2.0, 3.0]]], species=[["Si"]]))

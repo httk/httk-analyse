@@ -45,6 +45,29 @@ their IRIs are used.
 | `thermal_conductivity_tensor.json` | `https://schemas.httk.org/defs/v0.1/properties/transport/thermal_conductivity_tensor` | `httk-schemas-source/output/properties/transport/thermal_conductivity_tensor.json` | MIT |
 | `band_gap.json` | `https://schemas.httk.org/defs/v0.1/properties/electronic/band_gap` | `httk-schemas-source/output/properties/electronic/band_gap.json` | MIT |
 | `direct_band_gap.json` | `https://schemas.httk.org/defs/v0.1/properties/electronic/direct_band_gap` | `httk-schemas-source/output/properties/electronic/direct_band_gap.json` | MIT |
+| `vibrational_thermodynamics.json` | `https://schemas.httk.org/defs/v0.1/properties/thermodynamics/vibrational_thermodynamics` | `httk-schemas-source/output/properties/thermodynamics/vibrational_thermodynamics.json` | MIT |
+| `quasiharmonic_thermodynamics.json` | `https://schemas.httk.org/defs/v0.1/properties/thermodynamics/quasiharmonic_thermodynamics` | `httk-schemas-source/output/properties/thermodynamics/quasiharmonic_thermodynamics.json` | MIT |
+| `mean_squared_displacement.json` | `https://schemas.httk.org/defs/v0.1/properties/transport/mean_squared_displacement` | `httk-schemas-source/output/properties/transport/mean_squared_displacement.json` | MIT |
+| `velocity_autocorrelation.json` | `https://schemas.httk.org/defs/v0.1/properties/transport/velocity_autocorrelation` | `httk-schemas-source/output/properties/transport/velocity_autocorrelation.json` | MIT |
+| `diffusion_running_integral.json` | `https://schemas.httk.org/defs/v0.1/properties/transport/diffusion_running_integral` | `httk-schemas-source/output/properties/transport/diffusion_running_integral.json` | MIT |
+| `thermal_conductivity_running_integral.json` | `https://schemas.httk.org/defs/v0.1/properties/transport/thermal_conductivity_running_integral` | `httk-schemas-source/output/properties/transport/thermal_conductivity_running_integral.json` | MIT |
+| `shear_viscosity_running_integral.json` | `https://schemas.httk.org/defs/v0.1/properties/transport/shear_viscosity_running_integral` | `httk-schemas-source/output/properties/transport/shear_viscosity_running_integral.json` | MIT |
+| `radial_distribution_function.json` | `https://schemas.httk.org/defs/v0.1/properties/structure/radial_distribution_function` | `httk-schemas-source/output/properties/structure/radial_distribution_function.json` | MIT |
+| `electronic_density_of_states.json` | `https://schemas.httk.org/defs/v0.1/properties/electronic/electronic_density_of_states` | `httk-schemas-source/output/properties/electronic/electronic_density_of_states.json` | MIT |
+| `relative_effective_mass.json` | `https://schemas.httk.org/defs/v0.1/properties/electronic/relative_effective_mass` | `httk-schemas-source/output/properties/electronic/relative_effective_mass.json` | MIT |
+| `fermi_energy.json` | `https://schemas.httk.org/defs/v0.1/properties/electronic/fermi_energy` | `httk-schemas-source/output/properties/electronic/fermi_energy.json` | MIT |
+| `static_relative_permittivity.json` | `https://schemas.httk.org/defs/v0.1/properties/electronic/static_relative_permittivity` | `httk-schemas-source/output/properties/electronic/static_relative_permittivity.json` | MIT |
+| `high_frequency_relative_permittivity.json` | `https://schemas.httk.org/defs/v0.1/properties/electronic/high_frequency_relative_permittivity` | `httk-schemas-source/output/properties/electronic/high_frequency_relative_permittivity.json` | MIT |
+| `total_magnetic_moment.json` | `https://schemas.httk.org/defs/v0.1/properties/magnetism/total_magnetic_moment` | `httk-schemas-source/output/properties/magnetism/total_magnetic_moment.json` | MIT |
+| `charged_defect_formation_energy.json` | `https://schemas.httk.org/defs/v0.1/properties/defects/charged_defect_formation_energy` | `httk-schemas-source/output/properties/defects/charged_defect_formation_energy.json` | MIT |
+| `charge_transition_level.json` | `https://schemas.httk.org/defs/v0.1/properties/defects/charge_transition_level` | `httk-schemas-source/output/properties/defects/charge_transition_level.json` | MIT |
+| `surface_energy.json` | `https://schemas.httk.org/defs/v0.1/properties/defects/surface_energy` | `httk-schemas-source/output/properties/defects/surface_energy.json` | MIT |
+| `adsorption_energy.json` | `https://schemas.httk.org/defs/v0.1/properties/defects/adsorption_energy` | `httk-schemas-source/output/properties/defects/adsorption_energy.json` | MIT |
+| `segregation_energy.json` | `https://schemas.httk.org/defs/v0.1/properties/defects/segregation_energy` | `httk-schemas-source/output/properties/defects/segregation_energy.json` | MIT |
+| `migration_barrier_forward.json` | `https://schemas.httk.org/defs/v0.1/properties/kinetics/migration_barrier_forward` | `httk-schemas-source/output/properties/kinetics/migration_barrier_forward.json` | MIT |
+| `migration_barrier_reverse.json` | `https://schemas.httk.org/defs/v0.1/properties/kinetics/migration_barrier_reverse` | `httk-schemas-source/output/properties/kinetics/migration_barrier_reverse.json` | MIT |
+| `activation_energy.json` | `https://schemas.httk.org/defs/v0.1/properties/kinetics/activation_energy` | `httk-schemas-source/output/properties/kinetics/activation_energy.json` | MIT |
+| `total_energy_per_atom.json` | `https://schemas.httk.org/defs/v0.1/properties/energetics/total_energy_per_atom` | `httk-schemas-source/output/properties/energetics/total_energy_per_atom.json` | MIT |
 
 ## License
 

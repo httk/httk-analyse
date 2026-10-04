@@ -3,9 +3,13 @@
 import math
 from collections.abc import Sequence
 from dataclasses import dataclass
-from typing import Literal
+from typing import Any, Literal
 
 import numpy as np
+from httk.core.definition_ids import STRESS_TENSOR
+
+from .. import definitions as defs
+from ..definitions import BoundValue, FieldBinding, _reject_selection
 
 __all__ = [
     "EnergyErrors",
@@ -17,6 +21,12 @@ __all__ = [
     "stress_errors",
 ]
 
+_STATISTIC_DERIVATIONS = (
+    ("rmse", defs.RMSE),
+    ("mae", defs.MAE),
+    ("bias", defs.BIAS),
+    ("maximum_absolute_error", defs.MAXIMUM_ABSOLUTE_ERROR),
+)
 _STRESS_COMPONENTS = ((0, 0), (1, 1), (2, 2), (1, 2), (0, 2), (0, 1))
 
 
@@ -64,6 +74,15 @@ class EnergyErrors:
         object.__setattr__(self, "residuals", tuple(float(value) for value in self.residuals))
         if self.corrected_residuals is not None:
             object.__setattr__(self, "corrected_residuals", tuple(float(value) for value in self.corrected_residuals))
+
+    def _bound_values(self, **selection: Any) -> tuple[BoundValue, ...]:
+        """Bind the raw statistics as ``total_energy_per_atom`` residual statistics; corrected ones are not bound."""
+        _reject_selection(self, selection)
+        binding = defs.TOTAL_ENERGY_PER_ATOM
+        return tuple(
+            BoundValue(f"statistics.{name}", FieldBinding(binding, derivation), float(getattr(self.statistics, name)))
+            for name, derivation in _STATISTIC_DERIVATIONS
+        )
 
 
 @dataclass(frozen=True, slots=True)
@@ -141,6 +160,18 @@ class StressErrors:
             self,
             "per_configuration_component_statistics",
             tuple(tuple(stats) for stats in self.per_configuration_component_statistics),
+        )
+
+    def _bound_values(self, **selection: Any) -> tuple[BoundValue, ...]:
+        """Bind the aggregate component statistics as Voigt-ordered ``stress_tensor`` residual statistics."""
+        _reject_selection(self, selection)
+        return tuple(
+            BoundValue(
+                f"component_statistics.{name}",
+                FieldBinding(STRESS_TENSOR, derivation),
+                [float(getattr(stats, name)) for stats in self.component_statistics],
+            )
+            for name, derivation in _STATISTIC_DERIVATIONS
         )
 
 

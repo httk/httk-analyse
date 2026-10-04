@@ -2,17 +2,18 @@
 
 Bound result types know which of their fields carry which property definition
 (see :class:`httk.analyse.definitions.FieldBinding`). :func:`records` emits one
-:class:`httk.core.DataRecord` per scalar or fixed-size bound value, validated
-against its definition. Series over a coordinate (``axis``) and statistics
-(``derivation``) are not recorded here; they belong in the analysis summary
-envelope. Selection keywords are explicit per result type: transport results
-require ``lag_index``, the caller's plateau choice.
+record per bound value, validated against its definition: a
+:class:`httk.core.DataRecord` for a property value (scalar, fixed-size or a
+dictionary-valued series), and a :class:`httk.core.DerivedDataRecord` for a
+statistic (``derivation``) of a base property. Selection keywords are explicit
+per result type: ``lag_index`` selects the plateau of transport results
+(optional for a single run, required for replica statistics).
 """
 
 from collections.abc import Iterable, Mapping
 from typing import Any
 
-from httk.core import DataRecord, RunEdge, load_property_definition
+from httk.core import DataRecord, DerivedDataRecord, RunEdge, load_property_definition
 
 from .definitions import BoundValue
 
@@ -35,11 +36,10 @@ def bound_values(result: object, **selection: Any) -> tuple[BoundValue, ...]:
 
 def records(
     result: object, *, product_of: Iterable[RunEdge | Mapping[str, Any]] = (), **selection: Any
-) -> tuple[DataRecord, ...]:
-    r"""Build data records for the scalar and fixed-size bound values of an analysis result.
+) -> tuple[DataRecord | DerivedDataRecord, ...]:
+    r"""Build a checked data record for every bound value of an analysis result.
 
-    Values bound with an ``axis`` (series) or a ``derivation`` (statistics) are
-    skipped; record them in the analysis summary envelope instead.
+    Values with a ``derivation`` become derived data records of their base property.
 
     :param result: An analysis result of a bound type.
     :param product_of: Provenance edges attached to every record.
@@ -49,11 +49,17 @@ def records(
     :raises ValueError: If a value does not satisfy its property definition.
     """
     edges = tuple(product_of)
-    out = []
+    out: list[DataRecord | DerivedDataRecord] = []
     for bound in bound_values(result, **selection):
-        if bound.binding.axis is not None or bound.binding.derivation is not None:
-            continue
-        definition = load_property_definition(bound.binding.definition)
+        binding = bound.binding
+        definition = load_property_definition(binding.definition)
         definition.check(bound.value)
-        out.append(DataRecord.from_value(definition.definition_id, definition.name, bound.value, product_of=edges))
+        if binding.derivation is None:
+            out.append(DataRecord.from_value(definition.definition_id, definition.name, bound.value, product_of=edges))
+        else:
+            out.append(
+                DerivedDataRecord.from_value(
+                    definition.definition_id, binding.derivation, definition.name, bound.value, product_of=edges
+                )
+            )
     return tuple(out)

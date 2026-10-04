@@ -62,11 +62,12 @@ def analysis_summary(
     The envelope's ``fields`` object identifies the meaning of result fields.
     For a result type bound to property definitions (see
     :mod:`httk.analyse.records`) each binding name maps to
-    ``{"definition", "derivation", "axis", "value"}``, the same bindings and
+    ``{"definition", "derivation", "value"}``, the same bindings and
     values :func:`~httk.analyse.records.records` uses. Binding names (such as
-    ``isotropic[4]``) are not paths into ``result``; each entry carries its value. Fields without a published
-    definition (for example RDF or MSD series) may instead be given an OPTIMADE
-    unit expression in ``units``, stored with the unit definition IRIs it uses.
+    ``isotropic[4]``, or the definition name of a series) are not paths into ``result``; each entry
+    carries its value. Fields without a published definition (for example van Hove or scattering
+    series) may instead be given an OPTIMADE unit expression in ``units``, stored with the unit
+    definition IRIs it uses.
 
     Local source files are read in chunks only to calculate SHA-256; their bytes
     and frames are not embedded. Sources should be stable snapshots during
@@ -96,7 +97,6 @@ def analysis_summary(
             fields[bound.field] = {
                 "definition": binding.definition,
                 "derivation": binding.derivation,
-                "axis": binding.axis,
                 "value": bound.value,
             }
     elif bound_selection:

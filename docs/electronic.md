@@ -67,6 +67,25 @@ dielectric tensor and returns ascending principal values, corresponding axes,
 and their mean. Frequency-dependent dielectric spectra have a separate
 contract and are not represented by this summary.
 
+## Property bindings
+
+`httk.analyse.records.bound_values(result)` binds `EffectiveMassFit` to
+`relative_effective_mass` (`center` in 1/Å with 2π included, and the signed
+`tensor` from `mass_tensor`) and `MagneticMoments.total` to
+`total_magnetic_moment` (μB). `DielectricSummary` binds its `mean` only when
+the kind is selected, since the tensor alone cannot tell: `kind="static"` gives
+`static_relative_permittivity` and `kind="high_frequency"` gives
+`high_frequency_relative_permittivity`; omitting `kind` raises `TypeError`.
+Pair correlations and the other fit diagnostics are not bound.
+
+```python
+from httk.analyse.matsci.electronic import summarize_dielectric
+from httk.analyse.records import bound_values
+
+(bound,) = bound_values(summarize_dielectric(((3, 0, 0), (0, 2, 0), (0, 0, 1))), kind="static")
+assert bound.value == 2.0
+```
+
 All result records are frozen dataclasses with copied tuple fields. Inputs
 must be finite; this module does not guess missing scientific metadata.
 

@@ -5,7 +5,10 @@ as immutable float tuples for numerical analysis. `spin="total"` keeps a
 nonmagnetic DOS unchanged and sums the two channels for a collinear DOS;
 `spin="up"` and `spin="down"` select a collinear channel. The result records
 the selected channel and whether its spin basis is spin-summed or resolved.
-No degeneracy factor is applied to DOSCAR's nonmagnetic total.
+No degeneracy factor is applied to DOSCAR's nonmagnetic total. As records (see
+{doc}`records`), a spin-summed result binds to `electronic_density_of_states`
+(`energies`, `density`, `integrated_density`) and `fermi_energy`; a
+spin-resolved channel has no definition and raises `ValueError`.
 
 `band_edges_from_wavefunctions(wavefunctions, spin, occupation_tolerance=..., energy_reference=...)`
 selects one zero-based spin channel from an existing `PlaneWaveFunctions`

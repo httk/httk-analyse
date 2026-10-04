@@ -161,3 +161,118 @@ register_property_definition(
     definition_id="https://schemas.httk.org/defs/v0.1/properties/electronic/direct_band_gap",
     resource="httk.registry.schemas.analyse:direct_band_gap.json",
 )
+
+register_property_definition(
+    definition_id="https://schemas.httk.org/defs/v0.1/properties/thermodynamics/vibrational_thermodynamics",
+    resource="httk.registry.schemas.analyse:vibrational_thermodynamics.json",
+)
+
+register_property_definition(
+    definition_id="https://schemas.httk.org/defs/v0.1/properties/thermodynamics/quasiharmonic_thermodynamics",
+    resource="httk.registry.schemas.analyse:quasiharmonic_thermodynamics.json",
+)
+
+register_property_definition(
+    definition_id="https://schemas.httk.org/defs/v0.1/properties/transport/mean_squared_displacement",
+    resource="httk.registry.schemas.analyse:mean_squared_displacement.json",
+)
+
+register_property_definition(
+    definition_id="https://schemas.httk.org/defs/v0.1/properties/transport/velocity_autocorrelation",
+    resource="httk.registry.schemas.analyse:velocity_autocorrelation.json",
+)
+
+register_property_definition(
+    definition_id="https://schemas.httk.org/defs/v0.1/properties/transport/diffusion_running_integral",
+    resource="httk.registry.schemas.analyse:diffusion_running_integral.json",
+)
+
+register_property_definition(
+    definition_id="https://schemas.httk.org/defs/v0.1/properties/transport/thermal_conductivity_running_integral",
+    resource="httk.registry.schemas.analyse:thermal_conductivity_running_integral.json",
+)
+
+register_property_definition(
+    definition_id="https://schemas.httk.org/defs/v0.1/properties/transport/shear_viscosity_running_integral",
+    resource="httk.registry.schemas.analyse:shear_viscosity_running_integral.json",
+)
+
+register_property_definition(
+    definition_id="https://schemas.httk.org/defs/v0.1/properties/structure/radial_distribution_function",
+    resource="httk.registry.schemas.analyse:radial_distribution_function.json",
+)
+
+register_property_definition(
+    definition_id="https://schemas.httk.org/defs/v0.1/properties/electronic/electronic_density_of_states",
+    resource="httk.registry.schemas.analyse:electronic_density_of_states.json",
+)
+
+register_property_definition(
+    definition_id="https://schemas.httk.org/defs/v0.1/properties/electronic/relative_effective_mass",
+    resource="httk.registry.schemas.analyse:relative_effective_mass.json",
+)
+
+register_property_definition(
+    definition_id="https://schemas.httk.org/defs/v0.1/properties/electronic/fermi_energy",
+    resource="httk.registry.schemas.analyse:fermi_energy.json",
+)
+
+register_property_definition(
+    definition_id="https://schemas.httk.org/defs/v0.1/properties/electronic/static_relative_permittivity",
+    resource="httk.registry.schemas.analyse:static_relative_permittivity.json",
+)
+
+register_property_definition(
+    definition_id="https://schemas.httk.org/defs/v0.1/properties/electronic/high_frequency_relative_permittivity",
+    resource="httk.registry.schemas.analyse:high_frequency_relative_permittivity.json",
+)
+
+register_property_definition(
+    definition_id="https://schemas.httk.org/defs/v0.1/properties/magnetism/total_magnetic_moment",
+    resource="httk.registry.schemas.analyse:total_magnetic_moment.json",
+)
+
+register_property_definition(
+    definition_id="https://schemas.httk.org/defs/v0.1/properties/defects/charged_defect_formation_energy",
+    resource="httk.registry.schemas.analyse:charged_defect_formation_energy.json",
+)
+
+register_property_definition(
+    definition_id="https://schemas.httk.org/defs/v0.1/properties/defects/charge_transition_level",
+    resource="httk.registry.schemas.analyse:charge_transition_level.json",
+)
+
+register_property_definition(
+    definition_id="https://schemas.httk.org/defs/v0.1/properties/defects/surface_energy",
+    resource="httk.registry.schemas.analyse:surface_energy.json",
+)
+
+register_property_definition(
+    definition_id="https://schemas.httk.org/defs/v0.1/properties/defects/adsorption_energy",
+    resource="httk.registry.schemas.analyse:adsorption_energy.json",
+)
+
+register_property_definition(
+    definition_id="https://schemas.httk.org/defs/v0.1/properties/defects/segregation_energy",
+    resource="httk.registry.schemas.analyse:segregation_energy.json",
+)
+
+register_property_definition(
+    definition_id="https://schemas.httk.org/defs/v0.1/properties/kinetics/migration_barrier_forward",
+    resource="httk.registry.schemas.analyse:migration_barrier_forward.json",
+)
+
+register_property_definition(
+    definition_id="https://schemas.httk.org/defs/v0.1/properties/kinetics/migration_barrier_reverse",
+    resource="httk.registry.schemas.analyse:migration_barrier_reverse.json",
+)
+
+register_property_definition(
+    definition_id="https://schemas.httk.org/defs/v0.1/properties/kinetics/activation_energy",
+    resource="httk.registry.schemas.analyse:activation_energy.json",
+)
+
+register_property_definition(
+    definition_id="https://schemas.httk.org/defs/v0.1/properties/energetics/total_energy_per_atom",
+    resource="httk.registry.schemas.analyse:total_energy_per_atom.json",
+)

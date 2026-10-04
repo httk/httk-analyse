@@ -6,11 +6,10 @@ from dataclasses import dataclass
 from typing import Any, Literal
 
 import numpy as np
-from httk.core import definition_ids
 
 from .. import definitions as defs
 from .._constants import H_EV_PER_THZ, KB_EV_PER_K
-from ..definitions import BoundValue, FieldBinding, _bind_fields
+from ..definitions import BoundValue, FieldBinding, _reject_selection, _series
 from .eos import fit_birch_murnaghan
 
 __all__ = [
@@ -22,22 +21,6 @@ __all__ = [
     "mode_gruneisen",
     "quasiharmonic",
 ]
-
-_HARMONIC_BINDINGS = {
-    "zero_point_energy": FieldBinding(defs.ZERO_POINT_ENERGY),
-    "temperatures": FieldBinding(definition_ids.TEMPERATURE, axis="temperatures"),
-    "free_energy": FieldBinding(defs.HELMHOLTZ_FREE_ENERGY, axis="temperatures"),
-    "internal_energy": FieldBinding(defs.VIBRATIONAL_INTERNAL_ENERGY, axis="temperatures"),
-    "entropy": FieldBinding(defs.VIBRATIONAL_ENTROPY, axis="temperatures"),
-    "heat_capacity": FieldBinding(defs.VIBRATIONAL_HEAT_CAPACITY, axis="temperatures"),
-}
-_QUASIHARMONIC_BINDINGS = {
-    "temperatures": FieldBinding(definition_ids.TEMPERATURE, axis="temperatures"),
-    "equilibrium_volumes": FieldBinding(defs.EQUILIBRIUM_VOLUME, axis="temperatures"),
-    "free_energies": FieldBinding(defs.HELMHOLTZ_FREE_ENERGY, axis="temperatures"),
-    "bulk_moduli": FieldBinding(defs.BULK_MODULUS, axis="temperatures"),
-    "volumetric_expansion": FieldBinding(defs.VOLUMETRIC_THERMAL_EXPANSION, axis="temperatures"),
-}
 
 
 @dataclass(frozen=True, slots=True)
@@ -73,8 +56,19 @@ class HarmonicThermodynamics:
             object.__setattr__(self, name, tuple(float(value) for value in getattr(self, name)))
 
     def _bound_values(self, **selection: Any) -> tuple[BoundValue, ...]:
-        """Bind the zero-point energy and the temperature series."""
-        return _bind_fields(self, selection, _HARMONIC_BINDINGS)
+        """Bind the zero-point energy and the vibrational thermodynamics series."""
+        _reject_selection(self, selection)
+        return (
+            BoundValue("zero_point_energy", FieldBinding(defs.ZERO_POINT_ENERGY), float(self.zero_point_energy)),
+            _series(
+                defs.VIBRATIONAL_THERMODYNAMICS,
+                temperatures=list(self.temperatures),
+                helmholtz_free_energies=list(self.free_energy),
+                internal_energies=list(self.internal_energy),
+                entropies=list(self.entropy),
+                heat_capacities=list(self.heat_capacity),
+            ),
+        )
 
 
 @dataclass(frozen=True, slots=True)
@@ -105,7 +99,7 @@ class QuasiHarmonicResult:
 
     :param temperatures: Strictly increasing temperatures in K.
     :param equilibrium_volumes: Equilibrium volumes in angstrom³.
-    :param free_energies: Minimized Helmholtz energies in eV.
+    :param free_energies: Minimized total (static plus vibrational) Helmholtz energies in eV.
     :param bulk_moduli: Equilibrium bulk moduli in GPa.
     :param volumetric_expansion: Finite-difference alpha_V in 1/K.
     :param retained_mode_weight: Common retained mode count at every volume.
@@ -130,8 +124,18 @@ class QuasiHarmonicResult:
             object.__setattr__(self, name, tuple(float(value) for value in getattr(self, name)))
 
     def _bound_values(self, **selection: Any) -> tuple[BoundValue, ...]:
-        """Bind the temperature series of the quasi-harmonic equilibrium properties."""
-        return _bind_fields(self, selection, _QUASIHARMONIC_BINDINGS)
+        """Bind the quasi-harmonic equilibrium series; free energies include the static energy."""
+        _reject_selection(self, selection)
+        return (
+            _series(
+                defs.QUASIHARMONIC_THERMODYNAMICS,
+                temperatures=list(self.temperatures),
+                equilibrium_volumes=list(self.equilibrium_volumes),
+                total_helmholtz_free_energies=list(self.free_energies),
+                bulk_moduli=list(self.bulk_moduli),
+                volumetric_thermal_expansions=list(self.volumetric_expansion),
+            ),
+        )
 
 
 def harmonic_thermodynamics(

@@ -2,7 +2,8 @@
 
 `httk.analyse.matsci.defects` contains explicit-reference energy summaries.
 All energies use eV, chemical potentials use eV per atom, surface energies
-use eV/angstrom² (1 eV/angstrom² = 16.0218 J/m²; no conversion is performed), and Arrhenius temperatures use K. The functions do not
+are reported in J/m² (converted once from eV/angstrom² by the unit engine; the total energy stays in eV and the exposed area in
+angstrom²), and Arrhenius temperatures use K. The functions do not
 decide whether calculations or references are physically comparable.
 
 ## Defect formation energy
@@ -45,6 +46,40 @@ assert formation.energy == 0.7
 finite Fermi-level interval. It reports only crossings on the lower envelope;
 metastable pair crossings are omitted. Ties list every charge state within
 the requested absolute energy tolerance. Endpoint crossings are excluded.
+
+The intercepts must be formation energies at `E_F = 0` measured from the VBM,
+that is `defect_formation_energy(..., fermi_level=0.0).energy` for each charge.
+The bound `charge_transition_level` defines its `fermi_level` relative to the
+VBM, and this cannot be checked, so other intercept scales are mislabelled.
+Its `charges` are `[q, q']` with q > q': the stable charge at lower and at
+higher Fermi level.
+
+`DefectFormationEnergy` also retains the `fermi_level`, `vbm`, `alignment`,
+`correction` and `chemical_potentials` (element and eV-per-atom pairs for the
+elements of `atom_deltas`) that the formula used, so the result is
+self-describing.
+
+## Property bindings
+
+`httk.analyse.records.bound_values(result)` returns the property-definition
+bindings of these results (values are plain JSON data in the definition units):
+
+| Result | Field | Definition |
+| --- | --- | --- |
+| `DefectFormationEnergy` | `energy` | `charged_defect_formation_energy` dictionary: `charge`, `energy`, `fermi_level`, `vbm`, `alignment`, `correction`, and lists `elements`, `atom_changes`, `chemical_potentials` ordered by element |
+| `ChargeTransition` | `fermi_level` | `charge_transition_level`: `charges` `[left, right]` (the lower-envelope charges either side of the crossing) and `fermi_level` |
+| `SurfaceEnergy` | `surface_energy` | `surface_energy` (J/m²) |
+| `NEBProfile` | `forward_barrier`, `reverse_barrier` | `migration_barrier_forward`, `migration_barrier_reverse` |
+| `ArrheniusFit` | `activation_energy` | `activation_energy` (the prefactor is not bound) |
+
+```python
+from httk.analyse.matsci.defects import surface_energy
+from httk.analyse.records import bound_values
+
+surface = surface_energy(-3.0, -1.0, 4, {}, {}, total_exposed_area=2.0)
+(bound,) = bound_values(surface)
+assert abs(bound.value - 0.5 * 16.02176634) < 1e-9
+```
 
 ## Surfaces and adsorption
 

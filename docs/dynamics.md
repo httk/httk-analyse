@@ -33,6 +33,11 @@ mean removal (off by default; see below). The lagged matrix can be nonsymmetric.
 running trapezoid integral in angstrom²/ps; it does not select a plateau. These
 pair-count correlations are not themselves positive spectral-density estimates.
 
+As records (see {doc}`records`), a `TensorSeries` binds by `kind`: an MSD to
+`mean_squared_displacement` and a VACF to `velocity_autocorrelation`, both with
+lag times and origin counts, and a VACF integral to `diffusion_running_integral`
+with its tensors converted to m²/s.
+
 ## Distributions and scattering
 
 `van_hove_self` gives a spherical-shell density of self displacement probability.

@@ -69,9 +69,12 @@ assert result.frame_count > 0
 `frames` is consumed once. `cells` may be one fixed 3 by 3 matrix or a
 single-pass iterable with exactly one matrix per frame. The returned
 `RadialDistribution` holds bin `edges`, midpoint `centers`, normalized values
-`g`, raw `hist_counts`, `frame_count`, and `mean_coordination`. The final value
-is the number of counted directed neighbors divided by the number of selected
+`g`, raw `hist_counts`, `frame_count`, `mean_coordination`, and the ordered
+`pair` of a partial RDF (`None` for the total RDF). `mean_coordination` is the
+number of counted directed neighbors divided by the number of selected
 central atoms over all frames, so it integrates only over the supplied bins.
+As a record (see {doc}`records`) it binds to `radial_distribution_function`
+with `bin_edges`, `g` and, for a partial RDF, `pair`.
 
 Only full three-dimensional periodicity has a homogeneous bulk RDF
 normalization. Bin edges must be increasing and nonnegative. The largest edge

@@ -67,6 +67,13 @@ The toolkit requires the caller to establish that the supplied current is
 physically valid for the MLIP and engine implementation. Ordinary energy and
 velocity output is insufficient to reconstruct it.
 
+As records (see {doc}`records`), a transport result always binds its running
+integral, as `thermal_conductivity_running_integral` (one 3×3 tensor per lag)
+or `shear_viscosity_running_integral` (xy, xz, yz per lag), with temperature and
+volume; the plateau tensor and isotropic coefficient are recorded only for an
+explicit `lag_index=`. Replica means and standard errors at a `lag_index=` are
+derived data records.
+
 No automatic plateau is selected. Compare running integrals, lag truncation,
 sampling interval, trajectory duration, system size and independent replicas.
 `replica_transport` returns means and standard errors for matching protocols.

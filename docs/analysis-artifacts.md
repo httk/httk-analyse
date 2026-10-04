@@ -18,12 +18,16 @@ checkout.
 The envelope's `fields` object says what each result field means. For a result
 type bound to property definitions (see {doc}`records`), every bound field maps
 to `{"definition": <property IRI>, "derivation": <derivation IRI or null>,
-"axis": <coordinate field or null>, "value": <bound value>}`, the same bindings
-and values `records()` uses; selection keywords such as `lag_index=` are passed
-through. The keys are binding names, not paths into `result`: `isotropic[4]`
-or `standard_errors.heat_capacity_constant_pressure` name a derived or selected
-value, so each entry carries its own value. Fields without a
-published definition (RDF, MSD or correlation series, fit diagnostics) may get
+"value": <bound value>}`, the same bindings and values `records()` uses;
+selection keywords such as `lag_index=` are passed through. The keys are
+binding names, not paths into `result`: `isotropic[4]` or
+`standard_errors.heat_capacity_constant_pressure` name a derived or selected
+value, and a series is keyed by its definition name (such as
+`vibrational_thermodynamics`) with a dictionary of member lists as its value,
+so each entry carries its own value. A value with a derivation is the
+statistic `records()` stores as a `DerivedDataRecord`. Fields without a
+published definition (van Hove, scattering or velocity-spectrum series, bond
+order, fit diagnostics) may get
 an OPTIMADE unit expression through `units=`, validated against the vendored
 OPTIMADE unit definitions and stored as `{"unit": ..., "unit_definitions":
 [<unit IRIs>]}`. `dimensionless` is accepted; malformed expressions (such as
@@ -42,7 +46,8 @@ summary = analysis_summary(
     sources=[], assumptions=["synthetic three-mode example"],
 )
 assert summary.value["result"]["retained_mode_weight"] == 3
-assert summary.value["fields"]["free_energy"]["axis"] == "temperatures"
+series = summary.value["fields"]["vibrational_thermodynamics"]["value"]
+assert series["helmholtz_free_energies"] == list(result.free_energy)
 ```
 
 ## Plotting

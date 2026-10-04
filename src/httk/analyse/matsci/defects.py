@@ -4,10 +4,14 @@ import math
 from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
 from itertools import pairwise
-from typing import cast
+from typing import Any, cast
 
 import numpy as np
 from httk.core.units import default_registry
+
+from .. import definitions as defs
+from .._constants import JM2_PER_EV_PER_A2
+from ..definitions import BoundValue, FieldBinding, _plain, _reject_selection
 
 __all__ = [
     "ArrheniusFit",
@@ -35,12 +39,22 @@ class DefectFormationEnergy:
     :param terms: Signed named terms whose sum is ``energy``.
     :param atom_deltas: Exact signed integer atom changes; positive means added.
     :param charge: Integer charge state; positive means electrons removed.
+    :param fermi_level: Fermi energy in eV relative to the valence-band reference, alignment not included.
+    :param vbm: Valence-band reference energy in eV used in the charge term.
+    :param alignment: Potential alignment in eV used in the charge term.
+    :param correction: Explicit correction in eV as supplied.
+    :param chemical_potentials: Element and eV-per-atom reservoir pairs, sorted by element, for the elements of ``atom_deltas``.
     """
 
     energy: float
     terms: tuple[tuple[str, float], ...]
     atom_deltas: tuple[tuple[str, int], ...]
     charge: int
+    fermi_level: float
+    vbm: float
+    alignment: float
+    correction: float
+    chemical_potentials: tuple[tuple[str, float], ...]
 
     def __post_init__(self) -> None:
         object.__setattr__(self, "energy", _finite(self.energy, "energy"))
@@ -49,6 +63,32 @@ class DefectFormationEnergy:
             self, "atom_deltas", tuple((str(name), _integer(value, name)) for name, value in self.atom_deltas)
         )
         object.__setattr__(self, "charge", _integer(self.charge, "charge"))
+        for name in ("fermi_level", "vbm", "alignment", "correction"):
+            object.__setattr__(self, name, _finite(getattr(self, name), name))
+        object.__setattr__(
+            self,
+            "chemical_potentials",
+            tuple((str(name), _finite(value, name)) for name, value in self.chemical_potentials),
+        )
+        elements = tuple(element for element, _ in self.atom_deltas)
+        if elements != tuple(sorted(elements)) or elements != tuple(element for element, _ in self.chemical_potentials):
+            raise ValueError("atom_deltas and chemical_potentials must list the same elements, sorted by element")
+
+    def _bound_values(self, **selection: Any) -> tuple[BoundValue, ...]:
+        """Bind everything the formula used as one ``charged_defect_formation_energy`` dictionary."""
+        _reject_selection(self, selection)
+        value = {
+            "charge": self.charge,
+            "energy": self.energy,
+            "fermi_level": self.fermi_level,
+            "vbm": self.vbm,
+            "alignment": self.alignment,
+            "correction": self.correction,
+            "elements": [element for element, _ in self.atom_deltas],
+            "atom_changes": [delta for _, delta in self.atom_deltas],
+            "chemical_potentials": _plain([mu for _, mu in self.chemical_potentials]),
+        }
+        return (BoundValue("energy", FieldBinding(defs.CHARGED_DEFECT_FORMATION_ENERGY), value),)
 
 
 @dataclass(frozen=True, slots=True)
@@ -71,13 +111,26 @@ class ChargeTransition:
         for name in ("tied_charges", "left_charges", "right_charges"):
             object.__setattr__(self, name, tuple(_integer(value, name) for value in getattr(self, name)))
 
+    def _bound_values(self, **selection: Any) -> tuple[BoundValue, ...]:
+        """Bind the crossing as ``charge_transition_level``, ``charges`` being ``[q, q']`` with q > q'.
+
+        ``q`` is the stable charge at lower and ``q'`` at higher Fermi level. The definition's ``fermi_level``
+        is relative to the VBM, so this is only valid when the transition came from intercepts that are
+        formation energies at ``E_F = 0`` measured from the VBM.
+        """
+        _reject_selection(self, selection)
+        if len(self.left_charges) != 1 or len(self.right_charges) != 1:
+            raise ValueError("a charge transition binds exactly one lower-envelope charge on each side")
+        value = {"charges": [self.left_charges[0], self.right_charges[0]], "fermi_level": self.fermi_level}
+        return (BoundValue("fermi_level", FieldBinding(defs.CHARGE_TRANSITION_LEVEL), value),)
+
 
 @dataclass(frozen=True, slots=True)
 class SurfaceEnergy:
     """Surface excess energy using caller-supplied total exposed area.
 
     :param energy: Total excess energy in eV.
-    :param surface_energy: Excess energy per total exposed area in eV/angstrom².
+    :param surface_energy: Excess energy per total exposed area in J/m².
     :param exposed_area: Total exposed area in angstrom².
     :param terms: Signed named contributions in eV.
     """
@@ -92,6 +145,11 @@ class SurfaceEnergy:
         object.__setattr__(self, "surface_energy", _finite(self.surface_energy, "surface_energy"))
         object.__setattr__(self, "exposed_area", _finite(self.exposed_area, "exposed_area"))
         object.__setattr__(self, "terms", tuple((str(name), _finite(value, name)) for name, value in self.terms))
+
+    def _bound_values(self, **selection: Any) -> tuple[BoundValue, ...]:
+        """Bind the area-normalized energy as ``surface_energy``."""
+        _reject_selection(self, selection)
+        return (BoundValue("surface_energy", FieldBinding(defs.SURFACE_ENERGY), float(self.surface_energy)),)
 
 
 @dataclass(frozen=True, slots=True)
@@ -129,6 +187,14 @@ class NEBProfile:
             tuple(_integer(value, "tied_saddle_indices") for value in self.tied_saddle_indices),
         )
 
+    def _bound_values(self, **selection: Any) -> tuple[BoundValue, ...]:
+        """Bind the forward and reverse sampled barriers."""
+        _reject_selection(self, selection)
+        return (
+            BoundValue("forward_barrier", FieldBinding(defs.MIGRATION_BARRIER_FORWARD), float(self.forward_barrier)),
+            BoundValue("reverse_barrier", FieldBinding(defs.MIGRATION_BARRIER_REVERSE), float(self.reverse_barrier)),
+        )
+
 
 @dataclass(frozen=True, slots=True)
 class ArrheniusFit:
@@ -162,6 +228,11 @@ class ArrheniusFit:
             object.__setattr__(self, name, _finite(getattr(self, name), name))
         object.__setattr__(self, "rank", _integer(self.rank, "rank"))
         _rate_unit(self.rate_unit)
+
+    def _bound_values(self, **selection: Any) -> tuple[BoundValue, ...]:
+        """Bind the activation energy; the prefactor, whose unit is caller-chosen, is not bound."""
+        _reject_selection(self, selection)
+        return (BoundValue("activation_energy", FieldBinding(defs.ACTIVATION_ENERGY), float(self.activation_energy)),)
 
 
 def _rate_unit(expression: object) -> None:
@@ -225,7 +296,17 @@ def defect_formation_energy(
         ("charge_fermi_vbm_alignment", _finite(q * (ef + band + align), "charge term")),
         ("correction", corr),
     )
-    return DefectFormationEnergy(_sum(value for _, value in terms), terms, deltas, q)
+    return DefectFormationEnergy(
+        _sum(value for _, value in terms),
+        terms,
+        deltas,
+        q,
+        ef,
+        band,
+        align,
+        corr,
+        tuple((element, mus[element]) for element, _ in deltas),
+    )
 
 
 def charge_transition_levels(
@@ -237,7 +318,11 @@ def charge_transition_levels(
     """Return only charge crossings on the lower envelope in a finite interval.
 
     Each intercept is the formation energy at ``EF=0``; charge ``q`` gives
-    the line ``intercept + q*EF``. Coincident crossings report every tied
+    the line ``intercept + q*EF``. The intercepts MUST be formation energies at
+    ``E_F = 0`` measured from the valence-band maximum, that is
+    ``defect_formation_energy(..., fermi_level=0.0).energy`` for each charge;
+    the bound ``charge_transition_level`` defines its Fermi level relative to
+    the VBM and nothing here can check that. Coincident crossings report every tied
     charge. Crossings at interval endpoints are excluded.
 
     :param intercepts: Nonempty mapping from distinct integer charges to eV intercepts.
@@ -290,7 +375,7 @@ def surface_energy(
     :param excess_atom_deltas: Exact signed excess atom counts by element.
     :param chemical_potentials: Required elemental reservoirs in eV per atom.
     :param total_exposed_area: Sum of exposed face areas in angstrom².
-    :return: Total and area-normalized excess energy with signed terms.
+    :return: Total excess energy in eV, its area-normalized value in J/m², the area and signed terms in eV.
     :raises ValueError: If references, atom counts, or area are invalid.
     """
     count = _positive_integer(bulk_reference_atom_count, "bulk_reference_atom_count")
@@ -305,7 +390,7 @@ def surface_energy(
         ("-excess_atom_reservoirs", -_sum(delta * mus[element] for element, delta in deltas)),
     )
     excess = _sum(value for _, value in terms)
-    return SurfaceEnergy(excess, excess / area, area, terms)
+    return SurfaceEnergy(excess, excess / area * JM2_PER_EV_PER_A2, area, terms)
 
 
 def adsorption_energy(

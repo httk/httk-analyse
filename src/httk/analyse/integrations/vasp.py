@@ -2,11 +2,13 @@
 
 import math
 from dataclasses import dataclass
-from typing import Literal
+from typing import Any, Literal
 
 from httk.atomistic.integrations.vasp.io.doscar import DOSCAR
 from httk.atomistic.wavefunction import PlaneWaveFunctions
 
+from httk.analyse import definitions as defs
+from httk.analyse.definitions import BoundValue, FieldBinding, _reject_selection, _series
 from httk.analyse.matsci.electronic import BandEdges, band_edges
 
 __all__ = ["VaspDOS", "band_edges_from_wavefunctions", "dos_from_vasp"]
@@ -36,6 +38,21 @@ class VaspDOS:
         for name in ("energies", "density", "integrated_density"):
             object.__setattr__(self, name, tuple(float(value) for value in getattr(self, name)))
         object.__setattr__(self, "fermi_energy", float(self.fermi_energy))
+
+    def _bound_values(self, **selection: Any) -> tuple[BoundValue, ...]:
+        """Bind the DOS series and Fermi energy; raise ValueError for a spin-resolved DOS (no definition)."""
+        _reject_selection(self, selection)
+        if self.spin_basis != "spin-summed":
+            raise ValueError(f"only a spin-summed DOS binds to a property definition, not {self.spin_basis!r}")
+        return (
+            _series(
+                defs.ELECTRONIC_DENSITY_OF_STATES,
+                energies=list(self.energies),
+                density=list(self.density),
+                integrated_density=list(self.integrated_density),
+            ),
+            BoundValue("fermi_energy", FieldBinding(defs.FERMI_ENERGY), self.fermi_energy),
+        )
 
 
 def dos_from_vasp(payload: DOSCAR, spin: Literal["total", "up", "down"] = "total") -> VaspDOS:

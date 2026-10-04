@@ -10,7 +10,7 @@ from httk.core import definition_ids
 
 from .. import definitions as defs
 from .._constants import GPA_PER_EV_PER_A3, KB_EV_PER_K
-from ..definitions import BoundValue, FieldBinding
+from ..definitions import BoundValue, FieldBinding, _series
 from .dynamics import _array
 
 __all__ = ["ReplicaTransport", "TransportResult", "replica_transport", "thermal_conductivity", "viscosity"]
@@ -56,17 +56,37 @@ class TransportResult:
         indices = (0, 4, 8) if self.quantity == "thermal_conductivity" else (0, 1, 2)
         return tuple(sum(row[i] for i in indices) / 3 for row in self.integrals)
 
-    def _bound_values(self, *, lag_index: int, **selection: Any) -> tuple[BoundValue, ...]:
-        r"""Bind the coefficients at the caller-chosen plateau lag, plus temperature and volume.
+    def _bound_values(self, *, lag_index: int | None = None, **selection: Any) -> tuple[BoundValue, ...]:
+        r"""Bind the running-integral series, optionally the plateau coefficients, and temperature and volume.
 
-        :param lag_index: Explicit plateau lag index into ``integrals``; no plateau is inferred.
+        :param lag_index: Explicit plateau lag index into ``integrals``, or ``None`` to bind no plateau;
+            no plateau is inferred.
         :param \*\*selection: Unsupported further keywords, rejected.
         :return: The bound values.
         :raises TypeError: If unsupported keywords are given.
-        :raises ValueError: If ``lag_index`` is not a valid lag index.
+        :raises ValueError: If ``lag_index`` is not a valid lag index or the components are not in definition order.
         """
+        if selection:
+            raise TypeError(f"transport results take only lag_index, got {', '.join(sorted(selection))}")
+        times = list(self.times)
+        if self.quantity == "thermal_conductivity":
+            if self.components != tuple(i + j for i in "xyz" for j in "xyz"):
+                raise ValueError("thermal conductivity components must be xx, xy, xz, yx, ..., zz")
+            tensors = [[list(row[i : i + 3]) for i in (0, 3, 6)] for row in self.integrals]
+            series = _series(
+                defs.THERMAL_CONDUCTIVITY_RUNNING_INTEGRAL, lag_times=times, thermal_conductivity_tensors=tensors
+            )
+        else:
+            if self.components != ("xy", "xz", "yz"):
+                raise ValueError("shear viscosity components must be xy, xz, yz")
+            shear = [list(row) for row in self.integrals]
+            series = _series(defs.SHEAR_VISCOSITY_RUNNING_INTEGRAL, lag_times=times, shear_viscosities=shear)
+        plateau = (
+            () if lag_index is None else _lag_values("integrals", self.quantity, self.integrals, lag_index, None, {})
+        )
         return (
-            *_lag_values("integrals", self.quantity, self.integrals, lag_index, None, selection),
+            series,
+            *plateau,
             BoundValue("temperature", FieldBinding(definition_ids.TEMPERATURE), self.temperature),
             BoundValue("volume", FieldBinding(definition_ids.VOLUME), self.volume),
         )

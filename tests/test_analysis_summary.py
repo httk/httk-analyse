@@ -38,15 +38,10 @@ def test_summary_roundtrip_hash_selection_and_immutability(tmp_path):
     assert fields['zero_point_energy'] == {
         'definition': defs.ZERO_POINT_ENERGY,
         'derivation': None,
-        'axis': None,
         'value': result.zero_point_energy,
     }
-    assert fields['free_energy'] == {
-        'definition': defs.HELMHOLTZ_FREE_ENERGY,
-        'derivation': None,
-        'axis': 'temperatures',
-        'value': list(result.free_energy),
-    }
+    assert fields['vibrational_thermodynamics']['definition'] == defs.VIBRATIONAL_THERMODYNAMICS
+    assert fields['vibrational_thermodynamics']['value']['helmholtz_free_energies'] == list(result.free_energy)
     assert fields['cutoff_frequency'] == {
         'unit': 'THz',
         'unit_definitions': [
@@ -64,7 +59,7 @@ def _summary(result, **kwargs):
 def test_summary_units_are_only_for_unbound_fields():
     result = harmonic_thermodynamics([2], [0, 300])
     with pytest.raises(ValueError, match='property definition'):
-        _summary(result, units={'free_energy': 'eV'})
+        _summary(result, units={'vibrational_thermodynamics': 'eV'})
     with pytest.raises(ValueError):
         _summary(result, units={'retained_mode_weight': 'eV/angstrom'})
     series = _summary({'edges': [1.0, 2.0]}, units={'edges': 'angstrom'}).value['fields']
@@ -82,13 +77,16 @@ def test_summary_bound_selection_matches_records():
     result = thermal_conductivity(
         [[1, 0, 0], [0, 1, 0], [0, 0, 1], [1, 1, 1]], 1, temperature=300, volume=10, max_lag=2
     )
-    with pytest.raises(TypeError):
-        _summary(result)
+    series = _summary(result).value['fields']
+    assert set(series) == {'thermal_conductivity_running_integral', 'temperature', 'volume'}
     fields = _summary(result, lag_index=2).value['fields']
+    assert fields['thermal_conductivity_running_integral'] == series['thermal_conductivity_running_integral']
     assert fields['isotropic[2]']['definition'] == defs.THERMAL_CONDUCTIVITY
     assert fields['isotropic[2]']['value'] == result.isotropic[2]  # binding names are not result paths
     assert fields['integrals[2]']['value'] == [list(result.integrals[2][i : i + 3]) for i in (0, 3, 6)]
     assert fields['integrals[2]']['definition'] == defs.THERMAL_CONDUCTIVITY_TENSOR
+    with pytest.raises(TypeError):
+        _summary(result, lag_index=2, plateau=1)
 
 
 def test_summary_rejects_nonfinite_and_encodes_complex(tmp_path):

@@ -9,7 +9,7 @@ from typing import Any
 import numpy as np
 
 from .. import definitions as defs
-from ..definitions import BoundValue, FieldBinding, _reject_selection
+from ..definitions import BoundValue, FieldBinding, _plain, _reject_selection
 
 __all__ = [
     "BandEdges",
@@ -26,6 +26,10 @@ __all__ = [
     "summarize_dielectric",
 ]
 
+_DIELECTRIC_KINDS = {
+    "static": defs.STATIC_RELATIVE_PERMITTIVITY,
+    "high_frequency": defs.HIGH_FREQUENCY_RELATIVE_PERMITTIVITY,
+}
 _KB_EV_K = 8.617333262145e-5
 # CODATA 2022 constants give hbar**2 / m_e = 7.619964 eV angstrom**2.
 _HBAR2_OVER_ME_EV_A2 = 7.619964231073853
@@ -106,6 +110,12 @@ class EffectiveMassFit:
         for name in ("hessian", "mass_tensor", "principal_axes"):
             object.__setattr__(self, name, tuple(tuple(float(x) for x in row) for row in getattr(self, name)))
 
+    def _bound_values(self, **selection: Any) -> tuple[BoundValue, ...]:
+        """Bind the center and signed mass tensor as one ``relative_effective_mass`` dictionary."""
+        _reject_selection(self, selection)
+        value = {"center": _plain(self.center), "tensor": _plain(self.mass_tensor)}
+        return (BoundValue("mass_tensor", FieldBinding(defs.RELATIVE_EFFECTIVE_MASS), value),)
+
 
 @dataclass(frozen=True, slots=True)
 class MagneticMoments:
@@ -128,6 +138,11 @@ class MagneticMoments:
         object.__setattr__(self, "pairs", tuple(tuple(int(x) for x in pair) for pair in self.pairs))
         object.__setattr__(self, "correlations", tuple(float(x) for x in self.correlations))
 
+    def _bound_values(self, **selection: Any) -> tuple[BoundValue, ...]:
+        """Bind the total moment; the pair correlations are not bound."""
+        _reject_selection(self, selection)
+        return (BoundValue("total", FieldBinding(defs.TOTAL_MAGNETIC_MOMENT), _plain(self.total)),)
+
 
 @dataclass(frozen=True, slots=True)
 class DielectricSummary:
@@ -146,6 +161,13 @@ class DielectricSummary:
         """Copy array-like fields into immutable tuples."""
         object.__setattr__(self, "eigenvalues", tuple(float(x) for x in self.eigenvalues))
         object.__setattr__(self, "principal_axes", tuple(tuple(float(x) for x in row) for row in self.principal_axes))
+
+    def _bound_values(self, *, kind: str, **selection: Any) -> tuple[BoundValue, ...]:
+        """Bind the isotropic mean as the ``static`` or ``high_frequency`` (``kind=``) relative permittivity."""
+        _reject_selection(self, selection)
+        if kind not in _DIELECTRIC_KINDS:
+            raise ValueError(f"kind must be one of {', '.join(map(repr, _DIELECTRIC_KINDS))}, got {kind!r}")
+        return (BoundValue("mean", FieldBinding(_DIELECTRIC_KINDS[kind]), float(self.mean)),)
 
 
 def integrate_dos(

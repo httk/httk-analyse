@@ -98,6 +98,25 @@ stress = stress_errors(reference, predicted)
 assert stress.residuals == ((1.0, 4.0, 6.0, 5.0, 3.0, 2.0),)
 ```
 
+## Property bindings
+
+`httk.analyse.records.bound_values(result)` binds the raw `EnergyErrors.statistics`
+(`rmse`, `mae`, `bias`, `maximum_absolute_error`) to `total_energy_per_atom`
+(eV/atom) with the matching derivation term, and the four
+`StressErrors.component_statistics` metrics to the core `stress_tensor` (GPa) as
+lists of six in `xx, yy, zz, yz, xz, xy` order, again with derivation terms.
+Offset-corrected statistics and the percentile are not bound, and
+`ForceErrors` is not bound yet (deferred).
+
+```python
+from httk.analyse.matsci.mlip import energy_errors
+from httk.analyse.records import bound_values
+
+bound = bound_values(energy_errors([0.0, 0.0], [1.0, 1.0], atom_counts=[1, 1]))
+assert [b.field for b in bound][0] == "statistics.rmse"
+assert bound[0].value == 1.0
+```
+
 These summaries describe residuals on the supplied samples; they do not
 estimate uncertainty or establish transferability. Keep validation structures
 and configurations independent of training, inspect residual distributions,

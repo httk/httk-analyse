@@ -56,8 +56,11 @@ def test_real_sqlite_reopen(tmp_path: Path) -> None:
         "bulk_modulus_pressure_derivative",
         "equilibrium_energy",
         "equilibrium_volume",
+        "total_energy",  # the RMSE of the fit, a derived data record of total_energy
     ]
     assert json.loads(stored["properties"]["bulk_modulus"]) == fit["bulk_modulus"]
+    # The example reopens the store and verifies each record by its own type (DataRecord or DerivedDataRecord).
+    assert json.loads(stored["properties"]["total_energy"]) == fit["rmse"]
     linked = json.loads(
         _command(
             "store_analysis.py",

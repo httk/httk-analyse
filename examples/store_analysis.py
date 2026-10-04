@@ -1,11 +1,12 @@
-"""Store a JSON analysis summary, its scalar property records and source-file provenance in SQLite.
+"""Store a JSON analysis summary, its property records and source-file provenance in SQLite.
 
 When the summary's result is an ``httk.analyse.matsci`` result type bound to
 property definitions (for example an EOS fit), the result is rebuilt from the
-summary and :func:`httk.analyse.records.records` adds one data record per
-scalar or fixed-size property, such as ``bulk_modulus`` in GPa. Results whose
-bindings need a selection keyword (transport ``lag_index``) are stored as the
-summary only.
+summary and :func:`httk.analyse.records.records` adds one record per bound
+value: a data record per property, such as ``bulk_modulus`` in GPa, and a
+derived data record per statistic, such as the RMSE of the fitted total
+energies. Results whose bindings need a selection keyword (replica transport
+``lag_index``) are stored as the summary only.
 """
 
 import argparse
@@ -14,7 +15,17 @@ from importlib import import_module
 from pathlib import Path
 from typing import Any
 
-from httk.core import DataRecord, DataRecordEntry, FileEntry, FileRecord, PropertyDefinition, Run, RunEdge, RunEntry
+from httk.core import (
+    DataRecord,
+    DataRecordEntry,
+    DerivedDataRecord,
+    FileEntry,
+    FileRecord,
+    PropertyDefinition,
+    Run,
+    RunEdge,
+    RunEntry,
+)
 from httk.core.storage import content_id
 
 from httk.analyse.records import records
@@ -24,12 +35,14 @@ from httk.analyse.summary import AnalysisSummary
 def _store(database: Any, sql_store: Any, entry_id_scheme: Any) -> Any:
     return sql_store(
         database,
-        entry_records={DataRecordEntry: DataRecord, FileEntry: FileRecord, RunEntry: Run},
+        entry_records={DataRecordEntry: (DataRecord, DerivedDataRecord), FileEntry: FileRecord, RunEntry: Run},
         entry_ids=entry_id_scheme("httk.analyse.recipe", "1"),
     )
 
 
-def _property_records(value: dict[str, Any], product_of: tuple[RunEdge, ...]) -> tuple[DataRecord, ...]:
+def _property_records(
+    value: dict[str, Any], product_of: tuple[RunEdge, ...]
+) -> tuple[DataRecord | DerivedDataRecord, ...]:
     module, _, name = value["result_type"].rpartition(".")
     # Only rebuild trusted httk result types named in the JSON; never import arbitrary modules.
     if not module.startswith("httk.analyse.matsci.") or not any(f.get("definition") for f in value["fields"].values()):
@@ -41,7 +54,7 @@ def _property_records(value: dict[str, Any], product_of: tuple[RunEdge, ...]) ->
         return ()
 
 
-def _saved_id(store: Any, record: DataRecord) -> str:
+def _saved_id(store: Any, record: DataRecord | DerivedDataRecord) -> str:
     saved = store.fetch_entry(DataRecordEntry, content_id(record))
     if saved is None or saved.id is None:
         raise RuntimeError(f"property record {record.name} was not saved")
@@ -137,7 +150,7 @@ def main() -> None:
         stored_properties = {}
         for prop in properties:
             search = store.searcher()
-            candidate = search.variable(DataRecord)
+            candidate = search.variable(type(prop))
             search.add(candidate.name == prop.name)
             values = {row[0].value_json for row in search.results(record=candidate)}
             if prop.value_json not in values:

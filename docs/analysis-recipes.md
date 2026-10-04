@@ -120,12 +120,13 @@ database. Entry edges use public IDs minted by that database, and the canonical
 summary retains source checksums. Store revisions preserve the edge content.
 When the summary's result is a bound result type, such as the EOS fit from
 `volume_scan.py`, the recipe also rebuilds the result and stores
-`httk.analyse.records.records(result)`: one `DataRecord` per scalar property
+`httk.analyse.records.records(result)`: one `DataRecord` per property
 (`equilibrium_volume`, `equilibrium_energy`, `bulk_modulus`,
-`bulk_modulus_pressure_derivative`) in its definition's unit, linked to the same
-sources and listed as run outputs. See {doc}`records`. Results whose bindings
-need an explicit selection (transport `lag_index`) are stored as the summary
-only. The SQLite file contains only numerical summary JSON, property records and
+`bulk_modulus_pressure_derivative`) in its definition's unit, and a
+`DerivedDataRecord` for the fit RMSE (base property `total_energy`, `RMSE`
+derivation), linked to the same sources and listed as run outputs. See
+{doc}`records`. Results whose bindings need an explicit selection (replica
+transport `lag_index`) are stored as the summary only. The SQLite file contains only numerical summary JSON, property records and
 file metadata, never source trajectory frames. The ad hoc property definition is local to this
 recipe and does not change global entry schemas.
 
