@@ -4,9 +4,12 @@ import math
 from collections.abc import Sequence
 from dataclasses import dataclass
 from importlib import import_module
+from typing import Any
 
 import numpy as np
 
+from .. import definitions as defs
+from ..definitions import BoundValue, _reject_selection, _series
 from .structure import _cell, _check_unique_cutoff, _neighbor_vectors, _periodicity, _positions, _positive_scalar
 
 __all__ = ["BondOrder", "bond_order"]
@@ -20,17 +23,34 @@ class BondOrder:
     :param local: Per-atom q_l, or None for an isolated atom.
     :param global_order: Q_l from pooled directed bonds, or None without bonds.
     :param coordination: Number of neighbor bonds per atom.
+    :param cutoff: Inclusive neighbor radius in angstrom used to find the bonds.
     """
 
     degree: int
     local: tuple[float | None, ...]
     global_order: float | None
     coordination: tuple[int, ...]
+    cutoff: float
 
     def __post_init__(self) -> None:
         """Copy per-atom data into immutable tuples."""
         object.__setattr__(self, "local", tuple(None if v is None else float(v) for v in self.local))
         object.__setattr__(self, "coordination", tuple(int(v) for v in self.coordination))
+        object.__setattr__(self, "cutoff", float(self.cutoff))
+
+    def _bound_values(self, **selection: Any) -> tuple[BoundValue, ...]:
+        """Bind the Steinhardt bond order; isolated atoms and an empty bond set stay ``None``."""
+        _reject_selection(self, selection)
+        return (
+            _series(
+                defs.STEINHARDT_BOND_ORDER,
+                degree=self.degree,
+                cutoff=self.cutoff,
+                global_order=self.global_order,
+                local_orders=list(self.local),
+                coordination_numbers=list(self.coordination),
+            ),
+        )
 
 
 def bond_order(
@@ -92,4 +112,4 @@ def bond_order(
         local.append(float(np.sqrt(factor * np.sum(np.abs(values / len(vectors)) ** 2))))
     count = sum(counts)
     global_order = float(np.sqrt(factor * np.sum(np.abs(total / count) ** 2))) if count else None
-    return BondOrder(degree, tuple(local), global_order, tuple(counts))
+    return BondOrder(degree, tuple(local), global_order, tuple(counts), radius)

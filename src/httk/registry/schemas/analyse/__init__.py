@@ -276,3 +276,43 @@ register_property_definition(
     definition_id="https://schemas.httk.org/defs/v0.1/properties/energetics/total_energy_per_atom",
     resource="httk.registry.schemas.analyse:total_energy_per_atom.json",
 )
+
+register_property_definition(
+    definition_id="https://schemas.httk.org/defs/v0.1/properties/kinetics/arrhenius_prefactor",
+    resource="httk.registry.schemas.analyse:arrhenius_prefactor.json",
+)
+
+register_property_definition(
+    definition_id="https://schemas.httk.org/defs/v0.1/properties/transport/diffusion_prefactor",
+    resource="httk.registry.schemas.analyse:diffusion_prefactor.json",
+)
+
+register_property_definition(
+    definition_id="https://schemas.httk.org/defs/v0.1/properties/dynamics/self_intermediate_scattering_function",
+    resource="httk.registry.schemas.analyse:self_intermediate_scattering_function.json",
+)
+
+register_property_definition(
+    definition_id="https://schemas.httk.org/defs/v0.1/properties/dynamics/intermediate_scattering_function",
+    resource="httk.registry.schemas.analyse:intermediate_scattering_function.json",
+)
+
+register_property_definition(
+    definition_id="https://schemas.httk.org/defs/v0.1/properties/dynamics/self_van_hove_function",
+    resource="httk.registry.schemas.analyse:self_van_hove_function.json",
+)
+
+register_property_definition(
+    definition_id="https://schemas.httk.org/defs/v0.1/properties/dynamics/distinct_van_hove_function",
+    resource="httk.registry.schemas.analyse:distinct_van_hove_function.json",
+)
+
+register_property_definition(
+    definition_id="https://schemas.httk.org/defs/v0.1/properties/dynamics/velocity_power_spectrum",
+    resource="httk.registry.schemas.analyse:velocity_power_spectrum.json",
+)
+
+register_property_definition(
+    definition_id="https://schemas.httk.org/defs/v0.1/properties/structure/steinhardt_bond_order",
+    resource="httk.registry.schemas.analyse:steinhardt_bond_order.json",
+)

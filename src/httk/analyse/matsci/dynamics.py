@@ -28,6 +28,12 @@ __all__ = [
     "velocity_spectrum",
 ]
 
+_VAN_HOVE = {"self": defs.SELF_VAN_HOVE_FUNCTION, "distinct": defs.DISTINCT_VAN_HOVE_FUNCTION}
+_SCATTERING = {
+    "self": defs.SELF_INTERMEDIATE_SCATTERING_FUNCTION,
+    "coherent": defs.INTERMEDIATE_SCATTERING_FUNCTION,
+}
+
 
 @dataclass(frozen=True, slots=True)
 class TensorSeries:
@@ -136,10 +142,29 @@ class RadialDynamics:
     kind: Literal["self", "distinct"] = "self"
 
     def __post_init__(self) -> None:
-        """Copy numeric shell fields into tuples."""
+        """Validate ``kind`` and copy numeric shell fields into tuples."""
+        if self.kind not in _VAN_HOVE:
+            raise ValueError("kind must be 'self' or 'distinct'")
         for name in ("edges", "density"):
             object.__setattr__(self, name, tuple(float(v) for v in _array(getattr(self, name), name)))
         object.__setattr__(self, "counts", tuple(int(v) for v in self.counts))
+
+    def _bound_values(self, **selection: Any) -> tuple[BoundValue, ...]:
+        """Bind the self or distinct van Hove function; raise ValueError unless edges outnumber density by one."""
+        _reject_selection(self, selection)
+        if len(self.edges) != len(self.density) + 1:
+            raise ValueError("van Hove function needs exactly one more bin edge than density values")
+        definition = _VAN_HOVE[self.kind]
+        return (
+            _bind_series(
+                definition,
+                lag_time=self.time,
+                bin_edges=list(self.edges),
+                density=list(self.density),
+                counts=list(self.counts),
+                samples=int(self.samples),
+            ),
+        )
 
 
 @dataclass(frozen=True, slots=True)
@@ -160,11 +185,28 @@ class ScatteringSeries:
     kind: Literal["self", "coherent"]
 
     def __post_init__(self) -> None:
-        """Copy complex correlations and wavevectors into tuples."""
+        """Validate ``kind`` and copy complex correlations and wavevectors into tuples."""
+        if self.kind not in _SCATTERING:
+            raise ValueError("kind must be 'self' or 'coherent'")
         object.__setattr__(self, "times", tuple(float(v) for v in self.times))
         object.__setattr__(self, "wavevectors", tuple(tuple(float(v) for v in row) for row in self.wavevectors))
         object.__setattr__(self, "values", tuple(tuple(complex(v) for v in row) for row in self.values))
         object.__setattr__(self, "counts", tuple(int(v) for v in self.counts))
+
+    def _bound_values(self, **selection: Any) -> tuple[BoundValue, ...]:
+        """Bind the self or coherent scattering function with complex values split into real and imaginary parts."""
+        _reject_selection(self, selection)
+        definition = _SCATTERING[self.kind]
+        return (
+            _bind_series(
+                definition,
+                lag_times=list(self.times),
+                wavevectors=[list(q) for q in self.wavevectors],
+                real=[[v.real for v in row] for row in self.values],
+                imaginary=[[v.imag for v in row] for row in self.values],
+                origin_counts=list(self.counts),
+            ),
+        )
 
 
 @dataclass(frozen=True, slots=True)
@@ -187,9 +229,25 @@ class VelocitySpectrum:
     mean_square: float
 
     def __post_init__(self) -> None:
-        """Copy spectral arrays into finite scalar tuples."""
+        """Validate ``window`` and copy spectral arrays into finite scalar tuples."""
+        if self.window not in ("none", "hann"):
+            raise ValueError("window must be 'none' or 'hann'")
         for name in ("frequencies", "power"):
             object.__setattr__(self, name, tuple(float(v) for v in _array(getattr(self, name), name)))
+
+    def _bound_values(self, **selection: Any) -> tuple[BoundValue, ...]:
+        """Bind the velocity power spectrum."""
+        _reject_selection(self, selection)
+        return (
+            _bind_series(
+                defs.VELOCITY_POWER_SPECTRUM,
+                frequencies=list(self.frequencies),
+                power=list(self.power),
+                window=self.window,
+                mean_removed=self.remove_mean,
+                mean_square=self.mean_square,
+            ),
+        )
 
 
 def mean_squared_displacement(

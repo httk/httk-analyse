@@ -18,7 +18,13 @@ checkout.
 The envelope's `fields` object says what each result field means. For a result
 type bound to property definitions (see {doc}`records`), every bound field maps
 to `{"definition": <property IRI>, "derivation": <derivation IRI or null>,
-"value": <bound value>}`, the same bindings and values `records()` uses;
+"content_id": <id of the record>, "value": <bound value>}`, built from the
+records `records()` emits (a value failing its definition raises);
+`content_id` links the envelope to the stored record. Pass `product_of=` the same
+provenance edges you store the records with: ids depend on them, and the
+envelope keeps only the ids, not the edges (so a summary written before its
+source files are stored cannot carry the final ids). `field_values=False` omits
+`value` from each entry for long series (the `result` dump and ids remain);
 selection keywords such as `lag_index=` are passed through. The keys are
 binding names, not paths into `result`: `isotropic[4]` or
 `standard_errors.heat_capacity_constant_pressure` name a derived or selected

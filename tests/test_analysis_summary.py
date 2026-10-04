@@ -4,11 +4,13 @@ import hashlib
 import json
 
 import pytest
+from httk.core import RunEdge
+from httk.core.storage import content_id
 
 from httk.analyse import definitions as defs
 from httk.analyse.matsci.phonons import harmonic_thermodynamics
 from httk.analyse.matsci.transport import thermal_conductivity
-from httk.analyse.records import bound_values
+from httk.analyse.records import bound_values, records
 from httk.analyse.summary import AnalysisSummary, analysis_summary
 
 
@@ -38,6 +40,7 @@ def test_summary_roundtrip_hash_selection_and_immutability(tmp_path):
     assert fields['zero_point_energy'] == {
         'definition': defs.ZERO_POINT_ENERGY,
         'derivation': None,
+        'content_id': content_id(records(result)[0]),
         'value': result.zero_point_energy,
     }
     assert fields['vibrational_thermodynamics']['definition'] == defs.VIBRATIONAL_THERMODYNAMICS
@@ -104,3 +107,20 @@ def test_summary_rejects_nonfinite_and_encodes_complex(tmp_path):
         analysis_summary({'values': [float('nan')]}, **kwargs)
     with pytest.raises(ValueError):
         AnalysisSummary('{"value":NaN}')
+
+
+def test_summary_content_ids_match_records_and_depend_on_product_of():
+    result = harmonic_thermodynamics([2], [0, 300])
+    edges = (RunEdge('source_0', 'files', 'f' * 8),)
+
+    def ids(fields):  # JSON keys are sorted, so read in binding order
+        return [fields[b.field]['content_id'] for b in bound_values(result)]
+
+    plain = _summary(result).value['fields']
+    linked = _summary(result, product_of=edges).value['fields']
+    assert ids(linked) == [content_id(r) for r in records(result, product_of=edges)]
+    assert ids(plain) == [content_id(r) for r in records(result)]
+    assert ids(plain) != ids(linked)
+    bare = _summary(result, product_of=edges, field_values=False).value['fields']
+    assert all('value' not in f for f in bare.values())
+    assert ids(bare) == ids(linked)

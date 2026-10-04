@@ -328,3 +328,80 @@ def test_unsupported_results_and_keywords_raise():
         records(object())
     with pytest.raises(TypeError):
         records(_cubic(), lag_index=1)
+
+
+def _checked(result):
+    (value,) = bound_values(result)
+    load_property_definition(value.binding.definition).check(value.value)
+    (record,) = records(result)
+    assert json.loads(record.value_json) == value.value
+    return value.binding.definition, value.value
+
+
+def test_dynamics_series_bind_and_check():
+    from dataclasses import replace
+
+    from httk.analyse.matsci import (
+        intermediate_scattering,
+        van_hove_distinct,
+        van_hove_self,
+        velocity_spectrum,
+    )
+
+    positions = np.cumsum(np.random.default_rng(3).normal(size=(8, 3, 3)), axis=0) * 0.1
+    q = [[0, 0, 0], [2, 0, 0]]
+    for kind, definition in (
+        ("self", defs.SELF_INTERMEDIATE_SCATTERING_FUNCTION),
+        ("coherent", defs.INTERMEDIATE_SCATTERING_FUNCTION),
+    ):
+        result = intermediate_scattering(positions, 0.5, q, kind=kind, max_lag=3)
+        found, value = _checked(result)
+        assert found == definition
+        np.testing.assert_array_equal(np.array(value["real"]) + 1j * np.array(value["imaginary"]), result.values)
+        assert value["origin_counts"] == list(result.counts)
+    hove = van_hove_self(positions, 0.2, lag=1, bins=[0, 1, 2])
+    assert _checked(hove)[0] == defs.SELF_VAN_HOVE_FUNCTION
+    far = van_hove_distinct(positions, 0.2, lag=1, bins=[0, 1, 2], cell=np.eye(3) * 9)
+    found, value = _checked(far)
+    assert found == defs.DISTINCT_VAN_HOVE_FUNCTION
+    assert value["lag_time"] == far.time and value["samples"] == far.samples
+    with pytest.raises(ValueError, match="one more bin edge"):
+        records(replace(hove, edges=hove.edges[:-1]))
+    spectrum = velocity_spectrum(np.random.default_rng(4).normal(size=(16, 2, 3)), 0.2, remove_mean=True)
+    found, value = _checked(spectrum)
+    assert found == defs.VELOCITY_POWER_SPECTRUM
+    assert value["mean_removed"] is True and value["window"] == spectrum.window
+
+
+def test_bond_order_binds_cutoff_and_none_entries():
+    from httk.analyse.matsci.local_order import bond_order
+
+    result = bond_order([[0, 0, 0], [0.5, 0, 0], [5, 5, 5]], np.eye(3) * 10, 1, 2)
+    found, value = _checked(result)
+    assert found == defs.STEINHARDT_BOND_ORDER
+    assert value["cutoff"] == 1.0 and value["local_orders"][2] is None
+    assert value["coordination_numbers"] == [1, 1, 0]
+    alone = _checked(bond_order([[0, 0, 0]], np.eye(3) * 10, 1, 6))[1]
+    assert alone["global_order"] is None and alone["local_orders"] == [None]
+
+
+def test_dynamics_reject_bad_kind_and_window():
+    from dataclasses import replace
+
+    from httk.analyse.matsci import intermediate_scattering, van_hove_self, velocity_spectrum
+
+    positions = np.random.default_rng(5).normal(size=(6, 2, 3))
+    with pytest.raises(ValueError, match="kind"):
+        replace(van_hove_self(positions, 0.2, lag=1, bins=[0, 1, 2]), kind="bogus")
+    with pytest.raises(ValueError, match="kind"):
+        replace(intermediate_scattering(positions, 0.5, [[0, 0, 0]], kind="self", max_lag=2), kind="bogus")
+    with pytest.raises(ValueError, match="window"):
+        replace(velocity_spectrum(positions, 0.2), window="bogus")
+
+
+def test_recorded_spectrum_integrates_to_mean_square():
+    from httk.analyse.matsci import velocity_spectrum
+
+    spectrum = velocity_spectrum(np.random.default_rng(6).normal(size=(16, 2, 3)), 0.2, window="hann")
+    value = _record_values(spectrum)["velocity_power_spectrum"]
+    assert sum(value["power"]) * spectrum.frequency_spacing == pytest.approx(value["mean_square"])

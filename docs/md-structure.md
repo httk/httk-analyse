@@ -136,6 +136,8 @@ pyscal, so it differs from those codes for non-uniform coordination. Because
 each pair contributes both `r` and `-r` and `Y_lm(-r) = (-1)^l Y_lm(r)`, the
 global `Q_l` is identically zero (to rounding) for odd `l`; use even `l` for
 it. Per-atom `q_l` remains valid for odd `l`.
+`BondOrder` records its `cutoff` and binds to `steinhardt_bond_order` through
+`records()`.
 Isolated atoms return `None`; coincident atoms raise. No empirical phase
 classification or neighbor-averaged variant is inferred. The definition follows
 [Steinhardt, Nelson and Ronchetti](https://doi.org/10.1103/PhysRevB.28.784).

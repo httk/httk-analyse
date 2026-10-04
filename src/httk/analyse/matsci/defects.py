@@ -230,9 +230,21 @@ class ArrheniusFit:
         _rate_unit(self.rate_unit)
 
     def _bound_values(self, **selection: Any) -> tuple[BoundValue, ...]:
-        """Bind the activation energy; the prefactor, whose unit is caller-chosen, is not bound."""
+        """Bind the activation energy and, for a recognised rate unit, the prefactor.
+
+        A rate unit of dimension ``s^-1`` binds ``arrhenius_prefactor`` (in ``s^-1``) and one of dimension
+        ``m^2*s^-1`` binds ``diffusion_prefactor`` (in ``m^2*s^-1``); other units bind only the activation energy.
+        """
         _reject_selection(self, selection)
-        return (BoundValue("activation_energy", FieldBinding(defs.ACTIVATION_ENERGY), float(self.activation_energy)),)
+        out = [BoundValue("activation_energy", FieldBinding(defs.ACTIVATION_ENERGY), float(self.activation_energy))]
+        registry = default_registry()
+        dimension = registry.dimension(self.rate_unit)
+        for target, definition in (("s^-1", defs.ARRHENIUS_PREFACTOR), ("m^2*s^-1", defs.DIFFUSION_PREFACTOR)):
+            if dimension == registry.dimension(target):
+                value = float(self.prefactor) * float(registry.factor(self.rate_unit, target).factor)
+                out.append(BoundValue("prefactor", FieldBinding(definition), value))
+                break
+        return tuple(out)
 
 
 def _rate_unit(expression: object) -> None:

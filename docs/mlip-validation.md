@@ -100,13 +100,20 @@ assert stress.residuals == ((1.0, 4.0, 6.0, 5.0, 3.0, 2.0),)
 
 ## Property bindings
 
+A statistic's population is part of its meaning, and derivation terms do not
+carry the weighting, so statistics bind only for their natural population.
 `httk.analyse.records.bound_values(result)` binds the raw `EnergyErrors.statistics`
 (`rmse`, `mae`, `bias`, `maximum_absolute_error`) to `total_energy_per_atom`
-(eV/atom) with the matching derivation term, and the four
+(eV/atom) with the matching derivation term, only when `weighting="configuration"`
+(otherwise nothing is bound). `ForceErrors.component_statistics` binds to the
+core `atomic_force` (eV/angstrom) with the same four derivation terms, each value
+the `(x, y, z)` vector of that statistic, only when `weighting="atom"`
+(otherwise nothing is bound); vector-norm statistics, per-configuration and
+per-species statistics stay in the result only. The four
 `StressErrors.component_statistics` metrics to the core `stress_tensor` (GPa) as
 lists of six in `xx, yy, zz, yz, xz, xy` order, again with derivation terms.
-Offset-corrected statistics and the percentile are not bound, and
-`ForceErrors` is not bound yet (deferred).
+Stress errors have no weighting parameter and always bind. Offset-corrected
+statistics and the percentile are not bound.
 
 ```python
 from httk.analyse.matsci.mlip import energy_errors

@@ -60,6 +60,13 @@ the temporal mean (`remove_mean`, default `False`). Summing the spectral bins ti
 the window-weighted mean-square velocity. This spectrum is not automatically a
 normalized phonon DOS, and masses/species contributions are not inferred.
 
+`RadialDynamics` (self or distinct van Hove), `ScatteringSeries` and
+`VelocitySpectrum` bind to the `self_van_hove_function` /
+`distinct_van_hove_function`, `self_intermediate_scattering_function` /
+`intermediate_scattering_function` and `velocity_power_spectrum` definitions
+through `records()`; the complex scattering values are stored as separate
+`real` and `imaginary` lists.
+
 Per-atom temporal mean removal, in `velocity_spectrum` and
 `velocity_autocorrelation`, also removes each atom's net displacement over the
 trajectory divided by its duration, which is the diffusive signal. It biases the

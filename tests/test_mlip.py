@@ -5,7 +5,7 @@ from dataclasses import FrozenInstanceError
 import numpy as np
 import pytest
 from httk.core import DerivedDataRecord, load_property_definition
-from httk.core.definition_ids import STRESS_TENSOR
+from httk.core.definition_ids import ATOMIC_FORCE, STRESS_TENSOR
 
 from httk.analyse import definitions as defs
 from httk.analyse.matsci.mlip import energy_errors, force_errors, stress_errors
@@ -161,12 +161,12 @@ _DERIVATIONS = (defs.RMSE, defs.MAE, defs.BIAS, defs.MAXIMUM_ABSOLUTE_ERROR)
 
 
 def test_energy_error_statistics_bind_raw_only() -> None:
-    result = energy_errors([0.0, 0.0], [0.0, 10.0], atom_counts=[1, 4], offset_per_atom=1.0, weighting="atom")
+    result = energy_errors([0.0, 0.0], [0.0, 10.0], atom_counts=[1, 4], offset_per_atom=1.0)
     bound = bound_values(result)
     assert tuple(b.binding.derivation for b in bound) == _DERIVATIONS
     assert {b.binding.definition for b in bound} == {defs.TOTAL_ENERGY_PER_ATOM}
     assert next(b.field for b in bound) == "statistics.rmse"
-    assert [b.value for b in bound] == pytest.approx([5.0**0.5, 2.0, 2.0, 2.5])
+    assert [b.value for b in bound] == pytest.approx([3.125**0.5, 1.25, 1.25, 2.5])
     for b in bound:
         load_property_definition(b.binding.definition).check(b.value)
     made = records(result)
@@ -182,5 +182,20 @@ def test_stress_error_statistics_bind_voigt_lists() -> None:
     assert bound[2].value == [1.0, 4.0, 6.0, 5.0, 3.0, 2.0]  # bias, Voigt xx yy zz yz xz xy
     for b in bound:
         load_property_definition(b.binding.definition).check(b.value)
-    with pytest.raises(TypeError, match="no property-definition bindings"):
-        bound_values(force_errors([[[1.0, 2.0, 3.0]]], [[[1.0, 2.0, 3.0]]], species=[["Si"]]))
+
+
+def test_statistics_bind_only_for_their_natural_population(caplog) -> None:
+    with caplog.at_level("WARNING", logger="httk.analyse.records"):
+        assert records(energy_errors([0.0], [1.0], atom_counts=[1], weighting="atom")) == ()
+    assert "EnergyErrors binds no property values" in caplog.text
+    assert bound_values(energy_errors([0.0, 0.0], [0.0, 10.0], atom_counts=[1, 4], weighting="atom")) == ()
+    forces = ([[[0.0, 0.0, 0.0], [0.0, 0.0, 0.0]]], [[[1.0, 2.0, 3.0], [-1.0, 0.0, 0.0]]])
+    assert bound_values(force_errors(*forces, species=[["Si", "Si"]], weighting="configuration")) == ()
+    result = force_errors(*forces, species=[["Si", "Si"]], weighting="atom")
+    made = records(result)
+    assert len(made) == 4 and all(isinstance(r, DerivedDataRecord) for r in made)
+    assert {r.definition_id for r in made} == {ATOMIC_FORCE}
+    assert tuple(r.derivation for r in made) == _DERIVATIONS
+    bound = bound_values(result)
+    assert bound[2].value == pytest.approx([0.0, 1.0, 1.5])  # bias
+    assert all(len(b.value) == 3 for b in bound)

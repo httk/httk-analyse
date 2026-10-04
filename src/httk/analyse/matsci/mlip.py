@@ -6,7 +6,7 @@ from dataclasses import dataclass
 from typing import Any, Literal
 
 import numpy as np
-from httk.core.definition_ids import STRESS_TENSOR
+from httk.core.definition_ids import ATOMIC_FORCE, STRESS_TENSOR
 
 from .. import definitions as defs
 from ..definitions import BoundValue, FieldBinding, _reject_selection
@@ -76,8 +76,14 @@ class EnergyErrors:
             object.__setattr__(self, "corrected_residuals", tuple(float(value) for value in self.corrected_residuals))
 
     def _bound_values(self, **selection: Any) -> tuple[BoundValue, ...]:
-        """Bind the raw statistics as ``total_energy_per_atom`` residual statistics; corrected ones are not bound."""
+        """Bind raw statistics as ``total_energy_per_atom`` residual statistics, for configuration weighting only.
+
+        A statistic's population is part of its meaning and derivation terms do not carry weighting, so
+        other weightings, and the offset-corrected statistics, are not bound.
+        """
         _reject_selection(self, selection)
+        if self.weighting != "configuration":
+            return ()
         binding = defs.TOTAL_ENERGY_PER_ATOM
         return tuple(
             BoundValue(f"statistics.{name}", FieldBinding(binding, derivation), float(getattr(self.statistics, name)))
@@ -132,6 +138,25 @@ class ForceErrors:
             self,
             "per_species_component_statistics",
             tuple((label, tuple(stats)) for label, stats in self.per_species_component_statistics),
+        )
+
+    def _bound_values(self, **selection: Any) -> tuple[BoundValue, ...]:
+        """Bind aggregate component statistics as ``atomic_force`` residual statistics, for atom weighting only.
+
+        Each value is the (x, y, z) vector of the statistic. Vector-norm, per-configuration and per-species
+        statistics are not bound, and other weightings yield no bound values (the population is part of a
+        statistic's meaning).
+        """
+        _reject_selection(self, selection)
+        if self.weighting != "atom":
+            return ()
+        return tuple(
+            BoundValue(
+                f"component_statistics.{name}",
+                FieldBinding(ATOMIC_FORCE, derivation),
+                [float(getattr(stats, name)) for stats in self.component_statistics],
+            )
+            for name, derivation in _STATISTIC_DERIVATIONS
         )
 
 

@@ -253,6 +253,30 @@ def test_neb_and_arrhenius_bind_barriers() -> None:
     fit = fit_arrhenius(
         temperatures, tuple(1e13 * math.exp(-0.5 / (8.617333262145e-5 * t)) for t in temperatures), rate_unit="s^-1"
     )
-    (bound,) = _checked(fit)
+    bound, prefactor = _checked(fit)
     assert bound.binding.definition == defs.ACTIVATION_ENERGY
     assert bound.value == pytest.approx(0.5)
+    assert prefactor.value == pytest.approx(1e13)
+
+
+@pytest.mark.parametrize(
+    ("unit", "definition", "scale"),
+    [
+        ("s^-1", defs.ARRHENIUS_PREFACTOR, 1.0),
+        ("ps^-1", defs.ARRHENIUS_PREFACTOR, 1e12),
+        ("m^2*s^-1", defs.DIFFUSION_PREFACTOR, 1.0),
+        ("angstrom^2*ps^-1", defs.DIFFUSION_PREFACTOR, 1e-8),
+        ("m", None, None),
+    ],
+)
+def test_arrhenius_prefactor_binds_by_rate_dimension(unit, definition, scale) -> None:
+    temperatures = (300.0, 400.0, 500.0)
+    rates = tuple(2.0 * math.exp(-0.5 / (8.617333262145e-5 * t)) for t in temperatures)
+    fit = fit_arrhenius(temperatures, rates, rate_unit=unit)
+    bound = _checked(fit)
+    if definition is None:
+        assert [b.field for b in bound] == ["activation_energy"]
+    else:
+        assert [b.field for b in bound] == ["activation_energy", "prefactor"]
+        assert bound[1].binding.definition == definition
+        assert bound[1].value == pytest.approx(2.0 * scale)

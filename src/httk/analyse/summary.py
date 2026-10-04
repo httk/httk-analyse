@@ -1,16 +1,18 @@
 """Portable analysis summaries with explicit source and numerical provenance."""
 
 import json
-from collections.abc import Mapping, Sequence
+from collections.abc import Iterable, Mapping, Sequence
 from dataclasses import asdict, dataclass, is_dataclass
 from importlib.metadata import version
 from pathlib import Path
 from typing import Any
 
+from httk.core import RunEdge
 from httk.core.digests import sha256_file
+from httk.core.storage import content_id
 from httk.core.units import default_registry
 
-from .records import bound_values
+from .records import bound_values, records
 
 __all__ = ["AnalysisSummary", "analysis_summary"]
 
@@ -55,6 +57,8 @@ def analysis_summary(
     sources: Sequence[str | Path],
     assumptions: Sequence[str],
     units: Mapping[str, str] | None = None,
+    product_of: Iterable[RunEdge | Mapping[str, Any]] = (),
+    field_values: bool = True,
     **bound_selection: Any,
 ) -> AnalysisSummary:
     r"""Serialize a result with its field definitions, parameters and hashed input files.
@@ -62,11 +66,13 @@ def analysis_summary(
     The envelope's ``fields`` object identifies the meaning of result fields.
     For a result type bound to property definitions (see
     :mod:`httk.analyse.records`) each binding name maps to
-    ``{"definition", "derivation", "value"}``, the same bindings and
-    values :func:`~httk.analyse.records.records` uses. Binding names (such as
+    ``{"definition", "derivation", "content_id", "value"}``, built from the records
+    :func:`~httk.analyse.records.records` emits for the same ``product_of`` and selection, so each
+    ``content_id`` links the envelope to the stored record. Content ids depend on the supplied ``product_of``
+    edges (the envelope records only the ids, not the edges). Binding names (such as
     ``isotropic[4]``, or the definition name of a series) are not paths into ``result``; each entry
-    carries its value. Fields without a published definition (for example van Hove or scattering
-    series) may instead be given an OPTIMADE unit expression in ``units``, stored with the unit
+    carries its value. Fields without a published definition (for example fit diagnostics such as
+    residuals or condition numbers) may instead be given an OPTIMADE unit expression in ``units``, stored with the unit
     definition IRIs it uses.
 
     Local source files are read in chunks only to calculate SHA-256; their bytes
@@ -81,9 +87,12 @@ def analysis_summary(
     :param sources: Source paths whose URLs, sizes and SHA-256 checksums are retained.
     :param assumptions: Scientific assumptions needed to interpret the result.
     :param units: OPTIMADE unit expression (or ``dimensionless``) per field that has no property definition.
+    :param product_of: Provenance edges the records carry; they enter the records' content ids.
+    :param field_values: Include each bound field's ``value`` in ``fields``; ``False`` keeps only the content id
+        (the ``result`` dump is unaffected), which shortens summaries of long series.
     :param \*\*bound_selection: Selection keywords of the result's bindings, such as ``lag_index``.
     :return: Immutable canonical JSON result and provenance envelope.
-    :raises ValueError: If metadata is incomplete, nonfinite or unsupported, a unit expression is invalid,
+    :raises ValueError: If a bound value fails its property definition, metadata is incomplete, nonfinite or unsupported, a unit expression is invalid,
         or a unit is given for a field that has a property definition.
     :raises TypeError: If binding selection keywords are missing or unsupported for the result type.
     :raises OSError: If a source cannot be read.
@@ -92,13 +101,15 @@ def analysis_summary(
         raise ValueError("algorithm must be a nonempty identifier")
     fields: dict[str, Any] = {}
     if hasattr(result, "_bound_values"):
-        for bound in bound_values(result, **bound_selection):
-            binding = bound.binding
-            fields[bound.field] = {
-                "definition": binding.definition,
-                "derivation": binding.derivation,
-                "value": bound.value,
+        bound = bound_values(result, **bound_selection)
+        for item, record in zip(bound, records(result, product_of=product_of, **bound_selection), strict=True):
+            fields[item.field] = {
+                "definition": item.binding.definition,
+                "derivation": item.binding.derivation,
+                "content_id": content_id(record),
             }
+            if field_values:
+                fields[item.field]["value"] = item.value
     elif bound_selection:
         raise TypeError(f"{type(result).__name__} takes no binding selection keywords")
     registry = default_registry()

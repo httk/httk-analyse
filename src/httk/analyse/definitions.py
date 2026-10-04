@@ -17,6 +17,7 @@ from typing import Any
 __all__ = [
     "ACTIVATION_ENERGY",
     "ADSORPTION_ENERGY",
+    "ARRHENIUS_PREFACTOR",
     "BAND_GAP",
     "BIAS",
     "BULK_MODULUS",
@@ -28,9 +29,11 @@ __all__ = [
     "CHARGE_TRANSITION_LEVEL",
     "COMPLIANCE_TENSOR",
     "DIFFUSION_COEFFICIENT",
+    "DIFFUSION_PREFACTOR",
     "DIFFUSION_RUNNING_INTEGRAL",
     "DIFFUSION_TENSOR",
     "DIRECT_BAND_GAP",
+    "DISTINCT_VAN_HOVE_FUNCTION",
     "ELASTIC_TENSOR",
     "ELECTRONIC_DENSITY_OF_STATES",
     "ENERGY_ABOVE_HULL_PER_ATOM",
@@ -42,6 +45,7 @@ __all__ = [
     "HEAT_CAPACITY_CONSTANT_VOLUME",
     "HELMHOLTZ_FREE_ENERGY",
     "HIGH_FREQUENCY_RELATIVE_PERMITTIVITY",
+    "INTERMEDIATE_SCATTERING_FUNCTION",
     "ISOTHERMAL_COMPRESSIBILITY",
     "MAE",
     "MAXIMUM_ABSOLUTE_ERROR",
@@ -55,6 +59,8 @@ __all__ = [
     "RELATIVE_EFFECTIVE_MASS",
     "RMSE",
     "SEGREGATION_ENERGY",
+    "SELF_INTERMEDIATE_SCATTERING_FUNCTION",
+    "SELF_VAN_HOVE_FUNCTION",
     "SHEAR_MODULUS_HILL",
     "SHEAR_MODULUS_REUSS",
     "SHEAR_MODULUS_VOIGT",
@@ -63,6 +69,7 @@ __all__ = [
     "STANDARD_DEVIATION",
     "STANDARD_ERROR",
     "STATIC_RELATIVE_PERMITTIVITY",
+    "STEINHARDT_BOND_ORDER",
     "SURFACE_ENERGY",
     "THERMAL_CONDUCTIVITY",
     "THERMAL_CONDUCTIVITY_RUNNING_INTEGRAL",
@@ -71,6 +78,7 @@ __all__ = [
     "TOTAL_MAGNETIC_MOMENT",
     "UNIVERSAL_ANISOTROPY_INDEX",
     "VELOCITY_AUTOCORRELATION",
+    "VELOCITY_POWER_SPECTRUM",
     "VIBRATIONAL_ENTROPY",
     "VIBRATIONAL_HEAT_CAPACITY",
     "VIBRATIONAL_INTERNAL_ENERGY",
@@ -281,6 +289,34 @@ MIGRATION_BARRIER_REVERSE = "https://schemas.httk.org/defs/v0.1/properties/kinet
 
 #: Property definition ``activation_energy``.
 ACTIVATION_ENERGY = "https://schemas.httk.org/defs/v0.1/properties/kinetics/activation_energy"
+
+#: Property definition ``arrhenius_prefactor``.
+ARRHENIUS_PREFACTOR = "https://schemas.httk.org/defs/v0.1/properties/kinetics/arrhenius_prefactor"
+
+#: Property definition ``diffusion_prefactor``.
+DIFFUSION_PREFACTOR = "https://schemas.httk.org/defs/v0.1/properties/transport/diffusion_prefactor"
+
+#: Property definition ``self_intermediate_scattering_function``.
+SELF_INTERMEDIATE_SCATTERING_FUNCTION = (
+    "https://schemas.httk.org/defs/v0.1/properties/dynamics/self_intermediate_scattering_function"
+)
+
+#: Property definition ``intermediate_scattering_function``.
+INTERMEDIATE_SCATTERING_FUNCTION = (
+    "https://schemas.httk.org/defs/v0.1/properties/dynamics/intermediate_scattering_function"
+)
+
+#: Property definition ``self_van_hove_function``.
+SELF_VAN_HOVE_FUNCTION = "https://schemas.httk.org/defs/v0.1/properties/dynamics/self_van_hove_function"
+
+#: Property definition ``distinct_van_hove_function``.
+DISTINCT_VAN_HOVE_FUNCTION = "https://schemas.httk.org/defs/v0.1/properties/dynamics/distinct_van_hove_function"
+
+#: Property definition ``velocity_power_spectrum``.
+VELOCITY_POWER_SPECTRUM = "https://schemas.httk.org/defs/v0.1/properties/dynamics/velocity_power_spectrum"
+
+#: Property definition ``steinhardt_bond_order``.
+STEINHARDT_BOND_ORDER = "https://schemas.httk.org/defs/v0.1/properties/structure/steinhardt_bond_order"
 
 #: Property definition ``total_energy_per_atom``.
 TOTAL_ENERGY_PER_ATOM = "https://schemas.httk.org/defs/v0.1/properties/energetics/total_energy_per_atom"

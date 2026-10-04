@@ -95,6 +95,10 @@ binding name is the definition name:
 | `TensorSeries` (`msd`) | `mean_squared_displacement` | `lag_times`, `msd`, `origin_counts` |
 | `TensorSeries` (`vacf`) | `velocity_autocorrelation` | `lag_times`, `vacf`, `origin_counts` |
 | `TensorSeries` (`vacf_integral`) | `diffusion_running_integral` | `lag_times`, `diffusion_tensors` (converted to m²/s) |
+| `RadialDynamics` | `self_van_hove_function` or `distinct_van_hove_function` by `kind` | `lag_time`, `bin_edges`, `density`, `counts`, `samples` |
+| `ScatteringSeries` | `self_intermediate_scattering_function` or `intermediate_scattering_function` by `kind` | `lag_times`, `wavevectors`, `real`, `imaginary` (complex values split), `origin_counts` |
+| `VelocitySpectrum` | `velocity_power_spectrum` | `frequencies`, `power`, `window`, `mean_removed`, `mean_square` |
+| `BondOrder` | `steinhardt_bond_order` | `degree`, `cutoff`, `global_order`, `local_orders`, `coordination_numbers` (`null` for isolated atoms) |
 | `RadialDistribution` | `radial_distribution_function` | `bin_edges`, `g`, and `pair` for a partial RDF |
 | `TransportResult` | `thermal_conductivity_running_integral` or `shear_viscosity_running_integral` | `lag_times`, `thermal_conductivity_tensors` (3×3 per lag) or `shear_viscosities` (xy, xz, yz per lag) |
 | `VaspDOS` (spin-summed) | `electronic_density_of_states` | `energies`, `density`, `integrated_density` |

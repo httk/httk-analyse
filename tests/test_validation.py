@@ -4,6 +4,7 @@ import numpy as np
 import pytest
 
 from httk.analyse.matsci.validation import committee_spread, energy_drift, force_energy_consistency, property_parity
+from httk.analyse.records import bound_values
 
 IRI = 'https://schemas.httk.org/defs/v0.1/properties/mechanics/bulk_modulus'
 
@@ -28,7 +29,7 @@ def test_nve_linear_drift_nonuniform_times():
         energy_drift(time, np.ones(4), atom_count=20, ensemble='NVT')
 
 
-def test_finite_difference_force_sign_and_step_convergence():
+def test_finite_difference_force_sign_and_step_convergence(caplog):
     xyz = np.array([[0.2, -0.4, 0.7]])
     saved = xyz.copy()
     energy = lambda positions: float(np.sum(positions**4))
@@ -37,6 +38,9 @@ def test_finite_difference_force_sign_and_step_convergence():
     fine = force_energy_consistency(energy, xyz, force, displacement=0.005)
     assert coarse.statistics.rmse / fine.statistics.rmse == pytest.approx(4, rel=1e-7)
     assert fine.definition is None
+    with caplog.at_level("WARNING", logger="httk.analyse.records"):
+        assert bound_values(fine) == ()
+    assert "binds no property values" in caplog.text
     np.testing.assert_array_equal(xyz, saved)
     wrong = force_energy_consistency(energy, xyz, -force, displacement=0.005)
     assert wrong.statistics.rmse > 1

@@ -1,0 +1,290 @@
+{
+    "$id": "https://schemas.httk.org/defs/v0.1/properties/dynamics/velocity_power_spectrum",
+    "$schema": "https://schemas.optimade.org/meta/v1.3/optimade/property_definition.json",
+    "title": "Velocity power spectrum",
+    "x-optimade-type": "dictionary",
+    "x-optimade-definition": {
+        "kind": "property",
+        "version": "0.1.0",
+        "format": "1.3",
+        "name": "velocity_power_spectrum",
+        "label": "velocity_power_spectrum_dynamics_httk"
+    },
+    "x-optimade-unit": "inapplicable",
+    "x-optimade-unit-definitions": [
+        {
+            "$id": "https://schemas.optimade.org/defs/v1.2/units/si/general/angstrom",
+            "title": "\u00e5ngstr\u00f6m",
+            "symbol": "angstrom",
+            "display-symbol": "\u00c5",
+            "description": "A unit of length equal to 10\u207b\u00b9\u2070 meter, using the current, or one of the historical, definitions of the SI units.\n\nThe \u00e5ngstr\u00f6m unit appears in the International System of Units (SI), 1st ed. (1970) defined as \"1 \u00c5 = 0.1 nm = 10\u207b\u00b9\u2070 m\".\n\nThe \u00e5ngstr\u00f6m unit was implicitly redefined via the redefinition of the metre at the 17th CGPM meeting (1983), resolution 1.\n\n- The International System of Units (SI), 1st ed. (1970) categorizes the unit as \"temporarily admitted\" for use with the SI units.\n- The International System of Units (SI), 7th ed. (1998) changes the categorization to \"Other non-SI units currently accepted for use with the International System.\"\n- The International System of Units (SI), 8th ed. (2006) changes the categorization to \"Other non-SI units\" and adds as a clarifying footnote \"The \u00e5ngstr\u00f6m is widely used by x-ray crystallographers and structural chemists because all chemical bonds lie in the range 1 to 3 \u00e5ngstr\u00f6ms. However it has no official sanction from the CIPM or the CGPM.\"\n- The \u00e5ngstr\u00f6m is omitted in the International System of Units (SI), 9th Edition (2019).\n\nThis is a generalized definition taken to reference the current, or one of the historical, SI unit definitions.\nThis definition is intended for situations when it is not possible to be more precise, e.g., in contexts where data have been collected that uses different historical SI definitions.",
+            "compatibility": [
+                "https://schemas.optimade.org/defs/v1.2/units/si/1970/temporary/angstrom",
+                "https://schemas.optimade.org/defs/v1.2/units/si/1983/temporary/angstrom"
+            ],
+            "resources": [
+                {
+                    "relation": "Definition in the International System of Units (SI), 1st Edition",
+                    "resource-id": "https://www.bipm.org/en/publications/si-brochure"
+                },
+                {
+                    "relation": "Redefinition of the metre at the 17th CGPM meeting (1983), resolution 1",
+                    "resource-id": "https://www.bipm.org/en/committees/cg/cgpm/17-1983/resolution-1"
+                },
+                {
+                    "relation": "Wikipedia article describing the unit",
+                    "resource-id": "https://en.wikipedia.org/wiki/Angstrom"
+                }
+            ],
+            "defining-relation": {
+                "base-units": [
+                    {
+                        "symbol": "m",
+                        "id": "https://schemas.optimade.org/defs/v1.2/units/si/general/metre"
+                    }
+                ],
+                "base-units-expression": "m",
+                "scale": {
+                    "exponent": -10
+                }
+            },
+            "x-optimade-definition": {
+                "label": "angstrom_si_general",
+                "kind": "unit",
+                "format": "1.2",
+                "version": "1.2.0",
+                "name": "angstrom"
+            }
+        },
+        {
+            "$id": "https://schemas.optimade.org/defs/v1.2/prefixes/si/pico",
+            "title": "pico",
+            "symbol": "p",
+            "display-symbol": "p",
+            "description": "The pico SI prefix defined as a dimensionless multiple of 10\u207b\u00b9\u00b2, adopted into SI at its creation at the 11th CGPM Meeting in 1960, resolution 12.",
+            "resources": [
+                {
+                    "relation": "Definition in the 11th CGPM Meeting in 1960, resolution 12",
+                    "resource-id": "https://www.bipm.org/en/committees/cg/cgpm/11-1960/resolution-12"
+                },
+                {
+                    "relation": "Wikipedia article describing the SI prefixes",
+                    "resource-id": "https://en.wikipedia.org/wiki/Metric_prefix"
+                }
+            ],
+            "defining-relation": {
+                "base-units": [],
+                "base-units-expression": "",
+                "scale": {
+                    "exponent": -12
+                }
+            },
+            "x-optimade-definition": {
+                "label": "pico_prefix_si",
+                "kind": "prefix",
+                "format": "1.2",
+                "version": "1.2.0",
+                "name": "pico"
+            }
+        },
+        {
+            "$id": "https://schemas.optimade.org/defs/v1.2/units/si/general/second",
+            "title": "second",
+            "symbol": "s",
+            "display-symbol": "s",
+            "description": "A unit of time using the current, or one of the historical, definitions of the SI units.\n\nThe current definition in its most recent phrasing at the 26th CGPM Meeting in 2018, resolution 1 is: \"The second, symbol s, is the SI unit of time. It is defined by taking the fixed numerical value of the caesium frequency, \\(\\Delta \\nu_\\textrm{Cs}\\), the unperturbed ground-state hyperfine transition frequency of the caesium 133 atom, to be 9192631770 when expressed in the unit Hz, which is equal to s\u207b\u00b9.\"\n\nThis is a rephrasing of a definition at the 13th CGPM Meeting (1967), resolution 1: \"The second is the duration of 9192631770 periods of the radiation corresponding to the transition between the two hyperfine levels of the ground state of the caesium 133 atom.\"\n\nThe earlier definition at the 11th CGPM Meeting in 1960, resolution 9 was: \"The second is the fraction 1/31556925.9747 of the tropical year for 1900 January 0 at 12 hours ephemeris time.\"\n\nThis is a generalized definition taken to reference the current, or one of the historical, SI unit definitions.\nThis definition is intended for situations when it is not possible to be more precise, e.g., in contexts where data have been collected that uses different historical SI definitions.",
+            "compatibility": [
+                "https://schemas.optimade.org/defs/v1.2/units/si/1960/base/second",
+                "https://schemas.optimade.org/defs/v1.2/units/si/1967/base/second"
+            ],
+            "resources": [
+                {
+                    "relation": "Definition in the 13th CGPM Meeting (1967), resolution 1",
+                    "resource-id": "https://www.bipm.org/en/committees/cg/cgpm/13-1967/resolution-1"
+                },
+                {
+                    "relation": "Rephrased definition in the 26th CGPM Meeting (2018), resolution 1",
+                    "resource-id": "https://www.bipm.org/en/committees/cg/cgpm/26-2018/resolution-1"
+                },
+                {
+                    "relation": "Definition at the 11th CGPM meeting (1960), resolution 6.",
+                    "resource-id": "https://www.bipm.org/en/committees/cg/cgpm/11-1960/resolution-6"
+                },
+                {
+                    "relation": "Wikipedia article describing the unit",
+                    "resource-id": "https://en.wikipedia.org/wiki/Second"
+                }
+            ],
+            "x-optimade-definition": {
+                "label": "second_si_general",
+                "kind": "unit",
+                "format": "1.2",
+                "version": "1.2.0",
+                "name": "second"
+            }
+        },
+        {
+            "$id": "https://schemas.optimade.org/defs/v1.2/prefixes/si/tera",
+            "title": "tera",
+            "symbol": "T",
+            "display-symbol": "T",
+            "description": "The tera SI prefix defined as a dimensionless multiple of 10\u00b9\u00b2, adopted into SI at its creation at the 11th CGPM Meeting in 1960, resolution 12.",
+            "resources": [
+                {
+                    "relation": "Definition in the 11th CGPM Meeting in 1960, resolution 12",
+                    "resource-id": "https://www.bipm.org/en/committees/cg/cgpm/11-1960/resolution-12"
+                },
+                {
+                    "relation": "Wikipedia article describing the SI prefixes",
+                    "resource-id": "https://en.wikipedia.org/wiki/Metric_prefix"
+                }
+            ],
+            "defining-relation": {
+                "base-units": [],
+                "base-units-expression": "",
+                "scale": {
+                    "exponent": 12
+                }
+            },
+            "x-optimade-definition": {
+                "label": "tera_prefix_si",
+                "kind": "prefix",
+                "format": "1.2",
+                "version": "1.2.0",
+                "name": "tera"
+            }
+        },
+        {
+            "$id": "https://schemas.optimade.org/defs/v1.2/units/si/general/hertz",
+            "title": "hertz",
+            "symbol": "Hz",
+            "display-symbol": "Hz",
+            "description": "A unit for frequency equal to s\u207b\u00b9 using the current, or one of the historical, definitions of the SI units.\n\n\"The frequency of a periodic phenomenon is expressed in hertz, as the inverse of its period expressed in seconds.\" [9th CGPM meeting in 1946]\n\nThe hertz was defined at the 9th CGPM Meeting in 1946, included in SI at the 11th CGPM meeting in 1960, resolution 12 and implicitly redefined via the redefinition of the second at the 13th CGPM Meeting in 1967, resolution 1.\n\nThis is a generalized definition taken to reference the current, or one of the historical, SI unit definitions.\nThis definition is intended for situations when it is not possible to be more precise, e.g., in contexts where data have been collected that uses different historical SI definitions.",
+            "compatibility": [
+                "https://schemas.optimade.org/defs/v1.2/units/si/1960/named/hertz",
+                "https://schemas.optimade.org/defs/v1.2/units/si/1967/named/hertz"
+            ],
+            "resources": [
+                {
+                    "relation": "Definition at the 9th CGPM meeting (1948)",
+                    "resource-id": "https://www.bipm.org/en/committees/cg/cgpm/9-1948"
+                },
+                {
+                    "relation": "Definition and establishment of the SI unit system at the 11th CGPM meeting (1960), resolution 12.",
+                    "resource-id": "https://www.bipm.org/en/committees/cg/cgpm/11-1960/resolution-12"
+                },
+                {
+                    "relation": "Redefinition of the second in the 13th CGPM Meeting (1967), resolution 1",
+                    "resource-id": "https://www.bipm.org/en/committees/cg/cgpm/13-1967/resolution-1"
+                },
+                {
+                    "relation": "Wikipedia article describing the unit",
+                    "resource-id": "https://en.wikipedia.org/wiki/Hertz"
+                }
+            ],
+            "defining-relation": {
+                "base-units": [
+                    {
+                        "symbol": "s",
+                        "id": "https://schemas.optimade.org/defs/v1.2/units/si/general/second"
+                    }
+                ],
+                "base-units-expression": "s^-1"
+            },
+            "x-optimade-definition": {
+                "label": "hertz_si_general",
+                "kind": "unit",
+                "format": "1.2",
+                "version": "1.2.0",
+                "name": "hertz"
+            }
+        }
+    ],
+    "x-optimade-requirements": {
+        "support": "may",
+        "sortable": false,
+        "query-support": "none"
+    },
+    "type": [
+        "object",
+        "null"
+    ],
+    "required": [
+        "frequencies",
+        "power",
+        "window",
+        "mean_removed"
+    ],
+    "description": "Velocity power spectrum of a trajectory: a one-sided periodogram of the atomic velocities, not a normalized phonon density of states.\n\n**Requirements/Conventions**:\n\n- `frequencies` (THz, ordinary frequency, dimension `_httk_dim_frequencies`) are the frequencies of the discrete Fourier transform.\n- `power` (angstrom^2*ps^-1, i.e. (angstrom/ps)^2 per THz, dimension `_httk_dim_frequencies`) is averaged equally over atoms and Cartesian components. It is one-sided: every bin except the zero-frequency bin (and the Nyquist bin for an even number of frames) is doubled. It is normalized so that the sum of power times the frequency spacing equals the window-weighted mean square velocity.\n- `window` is the window applied to each velocity series before the transform: `none` (rectangular) or `hann`.\n- `mean_removed` states whether the time mean of each atom and Cartesian component was subtracted before windowing.\n- `mean_square` (optional, angstrom^2*ps^-2) is the window-weighted mean square velocity.\n\nA null value means the quantity is not available or not recorded.",
+    "properties": {
+        "frequencies": {
+            "x-optimade-type": "list",
+            "x-optimade-unit": "inapplicable",
+            "x-optimade-dimensions": {
+                "names": [
+                    "_httk_dim_frequencies"
+                ],
+                "sizes": [
+                    null
+                ]
+            },
+            "type": [
+                "array"
+            ],
+            "items": {
+                "x-optimade-type": "float",
+                "x-optimade-unit": "THz",
+                "type": [
+                    "number"
+                ]
+            }
+        },
+        "power": {
+            "x-optimade-type": "list",
+            "x-optimade-unit": "inapplicable",
+            "x-optimade-dimensions": {
+                "names": [
+                    "_httk_dim_frequencies"
+                ],
+                "sizes": [
+                    null
+                ]
+            },
+            "type": [
+                "array"
+            ],
+            "items": {
+                "x-optimade-type": "float",
+                "x-optimade-unit": "angstrom^2*ps^-1",
+                "type": [
+                    "number"
+                ]
+            }
+        },
+        "window": {
+            "x-optimade-type": "string",
+            "x-optimade-unit": "inapplicable",
+            "type": [
+                "string"
+            ],
+            "enum": [
+                "none",
+                "hann"
+            ]
+        },
+        "mean_removed": {
+            "x-optimade-type": "boolean",
+            "x-optimade-unit": "inapplicable",
+            "type": [
+                "boolean"
+            ]
+        },
+        "mean_square": {
+            "x-optimade-type": "float",
+            "x-optimade-unit": "angstrom^2*ps^-2",
+            "type": [
+                "number"
+            ]
+        }
+    }
+}

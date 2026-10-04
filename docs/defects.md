@@ -70,7 +70,7 @@ bindings of these results (values are plain JSON data in the definition units):
 | `ChargeTransition` | `fermi_level` | `charge_transition_level`: `charges` `[left, right]` (the lower-envelope charges either side of the crossing) and `fermi_level` |
 | `SurfaceEnergy` | `surface_energy` | `surface_energy` (J/m²) |
 | `NEBProfile` | `forward_barrier`, `reverse_barrier` | `migration_barrier_forward`, `migration_barrier_reverse` |
-| `ArrheniusFit` | `activation_energy` | `activation_energy` (the prefactor is not bound) |
+| `ArrheniusFit` | `activation_energy` | `activation_energy`; `prefactor` as `arrhenius_prefactor` (`s^-1`) when `rate_unit` has dimension `s^-1`, or `diffusion_prefactor` (`m^2*s^-1`) when it has dimension `m^2*s^-1`, converted from `rate_unit`; for any other unit only the activation energy is bound |
 
 ```python
 from httk.analyse.matsci.defects import surface_energy

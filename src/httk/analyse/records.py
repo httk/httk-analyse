@@ -10,6 +10,7 @@ per result type: ``lag_index`` selects the plateau of transport results
 (optional for a single run, required for replica statistics).
 """
 
+import logging
 from collections.abc import Iterable, Mapping
 from typing import Any
 
@@ -18,6 +19,8 @@ from httk.core import DataRecord, DerivedDataRecord, RunEdge, load_property_defi
 from .definitions import BoundValue
 
 __all__ = ["bound_values", "records"]
+
+logger = logging.getLogger(__name__)
 
 
 def bound_values(result: object, **selection: Any) -> tuple[BoundValue, ...]:
@@ -31,7 +34,14 @@ def bound_values(result: object, **selection: Any) -> tuple[BoundValue, ...]:
     method = getattr(result, "_bound_values", None)
     if method is None:
         raise TypeError(f"{type(result).__name__} has no property-definition bindings")
-    return method(**selection)
+    bound = method(**selection)
+    if not bound:
+        logger.warning(
+            "%s binds no property values (no definition applies to this result, e.g. an unbound parity quantity "
+            "or a statistics weighting without a definition)",
+            type(result).__name__,
+        )
+    return bound
 
 
 def records(
