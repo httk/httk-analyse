@@ -10,7 +10,9 @@ origin and atom. It returns the full symmetric tensor, its trace and time-origin
 counts. Optional COM removal requires explicit masses and subtracts each frame's
 mass-weighted center. `diffusion_from_msd` fits each tensor component to
 `MSD_ij = 2 D_ij t + intercept` on an explicit inclusive lag-index window.
-Its scalar diffusion estimate is one third of the tensor trace. Select a
+The fitted tensor and its scalar estimate (one third of the trace) are in m²/s,
+the unit of the `diffusion_tensor` definition; intercepts and residuals stay in
+angstrom², the MSD unit. Select a
 physically diffusive window and compare neighboring windows; a linear regression
 cannot establish that the motion is diffusive. Negative noisy fits are retained.
 

@@ -8,6 +8,9 @@ from pathlib import Path
 from typing import Any
 
 from httk.core.digests import sha256_file
+from httk.core.units import default_registry
+
+from .records import bound_values
 
 __all__ = ["AnalysisSummary", "analysis_summary"]
 
@@ -47,13 +50,23 @@ def analysis_summary(
     result: Any,
     *,
     algorithm: str,
-    units: Mapping[str, str],
     parameters: Mapping[str, Any],
     selection: Mapping[str, Any],
     sources: Sequence[str | Path],
     assumptions: Sequence[str],
+    units: Mapping[str, str] | None = None,
+    **bound_selection: Any,
 ) -> AnalysisSummary:
-    """Serialize a result with explicit units, parameters and hashed input files.
+    r"""Serialize a result with its field definitions, parameters and hashed input files.
+
+    The envelope's ``fields`` object identifies the meaning of result fields.
+    For a result type bound to property definitions (see
+    :mod:`httk.analyse.records`) each binding name maps to
+    ``{"definition", "derivation", "axis", "value"}``, the same bindings and
+    values :func:`~httk.analyse.records.records` uses. Binding names (such as
+    ``isotropic[4]``) are not paths into ``result``; each entry carries its value. Fields without a published
+    definition (for example RDF or MSD series) may instead be given an OPTIMADE
+    unit expression in ``units``, stored with the unit definition IRIs it uses.
 
     Local source files are read in chunks only to calculate SHA-256; their bytes
     and frames are not embedded. Sources should be stable snapshots during
@@ -62,19 +75,42 @@ def analysis_summary(
 
     :param result: Frozen result dataclass or JSON-compatible numerical summary.
     :param algorithm: Fully qualified routine name or declared algorithm identifier.
-    :param units: Unit for each physically dimensioned result field.
     :param parameters: Actual numerical/model options used for the calculation.
     :param selection: Frame ranges, fit windows or other explicit sample selection.
     :param sources: Source paths whose URLs, sizes and SHA-256 checksums are retained.
     :param assumptions: Scientific assumptions needed to interpret the result.
+    :param units: OPTIMADE unit expression (or ``dimensionless``) per field that has no property definition.
+    :param \*\*bound_selection: Selection keywords of the result's bindings, such as ``lag_index``.
     :return: Immutable canonical JSON result and provenance envelope.
-    :raises ValueError: If metadata is incomplete, nonfinite or unsupported.
+    :raises ValueError: If metadata is incomplete, nonfinite or unsupported, a unit expression is invalid,
+        or a unit is given for a field that has a property definition.
+    :raises TypeError: If binding selection keywords are missing or unsupported for the result type.
     :raises OSError: If a source cannot be read.
     """
     if not isinstance(algorithm, str) or not algorithm.strip():
         raise ValueError("algorithm must be a nonempty identifier")
-    if not isinstance(units, Mapping) or any(not isinstance(v, str) or not v.strip() for v in units.values()):
-        raise ValueError("units must map field names to nonempty unit labels")
+    fields: dict[str, Any] = {}
+    if hasattr(result, "_bound_values"):
+        for bound in bound_values(result, **bound_selection):
+            binding = bound.binding
+            fields[bound.field] = {
+                "definition": binding.definition,
+                "derivation": binding.derivation,
+                "axis": binding.axis,
+                "value": bound.value,
+            }
+    elif bound_selection:
+        raise TypeError(f"{type(result).__name__} takes no binding selection keywords")
+    registry = default_registry()
+    for field, expression in (units or {}).items():
+        if field in fields:
+            raise ValueError(f"field {field!r} has a property definition; do not give it a unit")
+        if not isinstance(expression, str):
+            raise ValueError(f"unit of {field!r} must be an OPTIMADE unit expression")
+        fields[field] = {
+            "unit": expression,
+            "unit_definitions": [unit.definition_id for unit in registry.definitions(expression)],
+        }
     if isinstance(assumptions, (str, bytes)) or any(not isinstance(v, str) for v in assumptions):
         raise ValueError("assumptions must be a sequence of strings")
     files = []
@@ -88,7 +124,7 @@ def analysis_summary(
         "software": {"httk-analyse": version("httk-analyse"), "numpy": version("numpy")},
         "result_type": f"{type(result).__module__}.{type(result).__qualname__}",
         "result": _json_value(asdict(result) if is_dataclass(result) and not isinstance(result, type) else result),
-        "units": dict(units),
+        "fields": fields,
         "parameters": _json_value(dict(parameters)),
         "selection": _json_value(dict(selection)),
         "sources": files,

@@ -7,8 +7,9 @@ ensemble and temperature in K. NVT uses total energy in eV for
 `Cv = var(E)/(kB*T**2)`. NPT uses enthalpy in eV and volume in angstrom³ for
 `Cp = var(H)/(kB*T**2)`, isothermal compressibility
 `var(V)/(kB*T*mean(V))`, and volumetric expansion
-`cov(V,H)/(kB*T**2*mean(V))`. Heat capacities are extensive eV/K;
-compressibility is angstrom³/eV; expansion is 1/K. Inputs must describe a
+`cov(V,H)/(kB*T**2*mean(V))`. Results are named after property definitions: `heat_capacity_constant_volume` and
+`heat_capacity_constant_pressure` are extensive eV/K; `isothermal_compressibility`
+is GPa⁻¹; `volumetric_thermal_expansion` is K⁻¹. Inputs must describe a
 stationary equilibrated ensemble. Potential energy alone generally does not
 give the total heat capacity.
 
@@ -41,11 +42,12 @@ samples; use block lengths much longer than `tau`.
 
 `httk.analyse.matsci.transport.thermal_conductivity` consumes **extensive heat
 current** in eV*angstrom/ps, uniform spacing in ps, temperature in K and fixed
-volume in angstrom³. It returns the full running tensor in W/(m*K):
+volume in angstrom³. It returns the full running tensor in W/(m*K) (the unit of the
+`thermal_conductivity` definition; viscosity results are in Pa*s):
 
 `kappa_ij(t) = integral <J_i(0) J_j(tau)> d tau / (kB*T**2*V)`.
 
-`viscosity` consumes symmetric tensile-positive stress in eV/angstrom³ and
+`viscosity` consumes symmetric tensile-positive stress in GPa and
 returns running xy, xz and yz shear responses in Pa*s, using `V/(kB*T)` times
 their autocorrelation integrals. Their mean over these three components only
 is the isotropic estimate; the five-component traceless (Daivis–Evans)
@@ -59,8 +61,7 @@ returns a quantity that has **not** been divided by volume. In `metal` units
 it is directly usable as the extensive current in eV*angstrom/ps; in `real`
 units (kcal/mol*angstrom/fs) multiply by 43.3641 (0.0433641 eV per kcal/mol
 times 1000 fs/ps). The LAMMPS pressure tensor is compressive-positive and in
-bar: negate it and multiply by `1e5/(1.602176634e-19*1e30)` (about 6.2415e-7)
-to obtain tensile-positive eV/angstrom³ stress. Its microscopic
+bar: negate it and multiply by `1e-4` to obtain tensile-positive GPa stress. Its microscopic
 stress and current definitions require special care for many-body potentials.
 The toolkit requires the caller to establish that the supplied current is
 physically valid for the MLIP and engine implementation. Ordinary energy and

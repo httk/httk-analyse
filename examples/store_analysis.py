@@ -1,4 +1,12 @@
-"""Store a JSON analysis summary and source-file provenance in SQLite."""
+"""Store a JSON analysis summary, its scalar property records and source-file provenance in SQLite.
+
+When the summary's result is an ``httk.analyse.matsci`` result type bound to
+property definitions (for example an EOS fit), the result is rebuilt from the
+summary and :func:`httk.analyse.records.records` adds one data record per
+scalar or fixed-size property, such as ``bulk_modulus`` in GPa. Results whose
+bindings need a selection keyword (transport ``lag_index``) are stored as the
+summary only.
+"""
 
 import argparse
 import json
@@ -9,6 +17,7 @@ from typing import Any
 from httk.core import DataRecord, DataRecordEntry, FileEntry, FileRecord, PropertyDefinition, Run, RunEdge, RunEntry
 from httk.core.storage import content_id
 
+from httk.analyse.records import records
 from httk.analyse.summary import AnalysisSummary
 
 
@@ -18,6 +27,25 @@ def _store(database: Any, sql_store: Any, entry_id_scheme: Any) -> Any:
         entry_records={DataRecordEntry: DataRecord, FileEntry: FileRecord, RunEntry: Run},
         entry_ids=entry_id_scheme("httk.analyse.recipe", "1"),
     )
+
+
+def _property_records(value: dict[str, Any], product_of: tuple[RunEdge, ...]) -> tuple[DataRecord, ...]:
+    module, _, name = value["result_type"].rpartition(".")
+    # Only rebuild trusted httk result types named in the JSON; never import arbitrary modules.
+    if not module.startswith("httk.analyse.matsci.") or not any(f.get("definition") for f in value["fields"].values()):
+        return ()
+    result = getattr(import_module(module), name)(**value["result"])
+    try:
+        return records(result, product_of=product_of)
+    except TypeError:  # the bindings need an explicit selection such as lag_index
+        return ()
+
+
+def _saved_id(store: Any, record: DataRecord) -> str:
+    saved = store.fetch_entry(DataRecordEntry, content_id(record))
+    if saved is None or saved.id is None:
+        raise RuntimeError(f"property record {record.name} was not saved")
+    return saved.id
 
 
 def main() -> None:
@@ -66,12 +94,18 @@ def main() -> None:
         saved_record = store.fetch_entry(DataRecordEntry, content_id(record))
         if saved_record is None or saved_record.id is None or saved_record.immutable_id is None:
             raise RuntimeError("analysis record was not saved")
+        properties = _property_records(value, record.product_of)
+        for property_record in properties:
+            store.save(property_record)
         inputs = [RunEdge(f"source_{i}", "files", file.id) for i, file in enumerate(files)]
         if args.upstream_run_id:
             inputs.append(RunEdge("upstream_run", "runs", args.upstream_run_id))
         run = Run(
             inputs=tuple(inputs),
-            outputs=(RunEdge("analysis_summary", "records", saved_record.id),),
+            outputs=(
+                RunEdge("analysis_summary", "records", saved_record.id),
+                *(RunEdge(p.name, "records", _saved_id(store, p)) for p in properties),
+            ),
             source_id=args.source_id or f"analysis:{content_id(record)}",
         )
         store.save(run)
@@ -100,11 +134,25 @@ def main() -> None:
             or saved_run.inputs != run.inputs
         ):
             raise RuntimeError("reopened run provenance differs")
+        stored_properties = {}
+        for prop in properties:
+            search = store.searcher()
+            candidate = search.variable(DataRecord)
+            search.add(candidate.name == prop.name)
+            values = {row[0].value_json for row in search.results(record=candidate)}
+            if prop.value_json not in values:
+                raise RuntimeError(f"reopened property record {prop.name} differs")
+            stored_properties[prop.name] = prop.value_json
         for file, file_id in zip(files, file_ids):
             fetched = store.fetch_entry(FileEntry, content_id(file))
             if fetched is None or fetched.id != file_id or fetched.sha256 != file.sha256:
                 raise RuntimeError("reopened source file metadata differs")
-    print(json.dumps({"record_id": record_id, "run_id": run_id, "file_ids": file_ids}, sort_keys=True))
+    print(
+        json.dumps(
+            {"record_id": record_id, "run_id": run_id, "file_ids": file_ids, "properties": stored_properties},
+            sort_keys=True,
+        )
+    )
 
 
 if __name__ == "__main__":

@@ -36,6 +36,9 @@ def test_volume_scan(tmp_path: Path) -> None:
     value = json.loads(summary.read_text(encoding="utf-8"))
     assert value["result"]["equilibrium_volume"] == pytest.approx(10, abs=0.1)
     assert value["sources"][0]["name"] == "scan.csv"
+    assert value["fields"]["bulk_modulus"]["definition"].endswith("/mechanics/bulk_modulus")
+    assert value["fields"]["rmse"]["derivation"].endswith("/derivations/rmse")
+    assert value["fields"]["volumes"]["unit"] == "angstrom^3"
 
 
 def test_real_sqlite_reopen(tmp_path: Path) -> None:
@@ -47,6 +50,14 @@ def test_real_sqlite_reopen(tmp_path: Path) -> None:
     _command("volume_scan.py", source, summary)
     stored = json.loads(_command("store_analysis.py", summary, tmp_path / "analysis.sqlite").stdout)
     assert stored["record_id"] and stored["run_id"] and len(stored["file_ids"]) == 1
+    fit = json.loads(summary.read_text(encoding="utf-8"))["result"]
+    assert sorted(stored["properties"]) == [
+        "bulk_modulus",
+        "bulk_modulus_pressure_derivative",
+        "equilibrium_energy",
+        "equilibrium_volume",
+    ]
+    assert json.loads(stored["properties"]["bulk_modulus"]) == fit["bulk_modulus"]
     linked = json.loads(
         _command(
             "store_analysis.py",
@@ -116,9 +127,10 @@ def test_md_recipe_streams_rdf_and_selects_unwrapped_dynamics(tmp_path: Path) ->
     )
     value = json.loads(summary.read_text(encoding="utf-8"))
     assert value["result"]["rdf"]["frame_count"] == 4
-    assert value["units"]["rdf.edges"] == "angstrom"
-    assert value["units"]["msd.tensors"] == "angstrom^2"
-    assert value["units"]["thermal_conductivity.times"] == "ps"
+    assert value["fields"]["rdf.edges"]["unit"] == "angstrom"
+    assert value["fields"]["msd.tensors"]["unit"] == "angstrom^2"
+    assert value["fields"]["thermal_conductivity.times"]["unit"] == "ps"
+    assert value["fields"]["thermal_conductivity.integrals"]["unit"] == "K^-1*W*m^-1"
     assert [tensor[0][0] for tensor in value["result"]["msd"]["tensors"]] == [0, 1, 4]
     assert [tensor[0][0] for tensor in value["result"]["vacf"]["tensors"]] == [1, 1, 1]
     assert len(value["sources"]) == 2
@@ -155,8 +167,10 @@ def test_mlip_recipe_compares_separate_curves_and_reports_checks(tmp_path: Path)
     assert value["selection"]["holdout_group"] == "material-family-A"
     assert value["selection"]["matched_volume_grid_angstrom3"] == list(volumes)
     assert value["parameters"]["matched_eos_metadata"]["composition"] == "Ar2"
-    assert value["units"]["nve_drift.intercept"] == "eV/atom"
-    assert value["units"]["eos_parity.bulk_modulus.residuals"] == "eV/angstrom^3"
+    assert value["fields"]["nve_drift.intercept"]["unit"] == "eV"
+    assert value["parameters"]["nve_drift_energy_basis"] == "per atom"
+    assert value["fields"]["eos_parity.bulk_modulus.residuals"]["unit"] == "GPa"
+    assert value["result"]["eos_parity"]["bulk_modulus"]["definition"].endswith("/mechanics/bulk_modulus")
     assert len(value["result"]["harmonic_force_checks"]) == 2
     assert value["result"]["nve_drift"]["slope"] == pytest.approx(0.005)
     assert len(value["sources"]) == 4

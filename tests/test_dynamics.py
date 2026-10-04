@@ -52,10 +52,10 @@ def test_diffusion_tensor_fit_and_units():
     diffusion = np.array([[1, 0.2, 0], [0.2, 2, 0.1], [0, 0.1, 3]])
     times = np.linspace(0, 10, 21)
     tensors = 2 * times[:, None, None] * diffusion + np.eye(3)[None, :, :] * 0.3
-    result = diffusion_from_msd(TensorSeries(tuple(times), tensors, (50,) * 21, 'MSD angstrom^2'), window=(3, 16))
-    np.testing.assert_allclose(result.tensor, diffusion, atol=1e-14)
+    result = diffusion_from_msd(TensorSeries(tuple(times), tensors, (50,) * 21, 'msd'), window=(3, 16))
+    np.testing.assert_allclose(result.tensor, diffusion * 1e-8, atol=1e-22)  # m^2/s
     np.testing.assert_allclose(result.intercept, np.eye(3) * 0.3, atol=1e-14)
-    assert result.isotropic == pytest.approx(2.0)
+    assert result.isotropic == pytest.approx(2.0e-8)
     assert np.max(result.rmse) < 1e-13
 
 

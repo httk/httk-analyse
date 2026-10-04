@@ -5,14 +5,16 @@ import pytest
 
 from httk.analyse.matsci.validation import committee_spread, energy_drift, force_energy_consistency, property_parity
 
+IRI = 'https://schemas.httk.org/defs/v0.1/properties/mechanics/bulk_modulus'
+
 
 def test_parity_labels_raw_errors_and_units():
-    result = property_parity([1, 2], [2, 0], labels=['A', 'B'], unit='eV')
+    result = property_parity([1, 2], [2, 0], labels=['A', 'B'], definition=IRI)
     assert result.residuals == (1, -2)
     assert result.statistics.rmse == pytest.approx(np.sqrt(2.5))
-    for labels, unit in [('AB', 'eV'), (['A'], 'eV'), (['A', 'B'], '')]:
+    for labels, definition in [('AB', IRI), (['A'], IRI), (['A', 'B'], '')]:
         with pytest.raises(ValueError):
-            property_parity([1, 2], [2, 0], labels=labels, unit=unit)
+            property_parity([1, 2], [2, 0], labels=labels, definition=definition)
 
 
 def test_nve_linear_drift_nonuniform_times():
@@ -34,18 +36,18 @@ def test_finite_difference_force_sign_and_step_convergence():
     coarse = force_energy_consistency(energy, xyz, force, displacement=0.01)
     fine = force_energy_consistency(energy, xyz, force, displacement=0.005)
     assert coarse.statistics.rmse / fine.statistics.rmse == pytest.approx(4, rel=1e-7)
-    assert fine.unit == 'eV/angstrom'
+    assert fine.definition is None
     np.testing.assert_array_equal(xyz, saved)
     wrong = force_energy_consistency(energy, xyz, -force, displacement=0.005)
     assert wrong.statistics.rmse > 1
 
 
 def test_committee_mean_sample_variance_not_sem():
-    result = committee_spread([[1, 2], [3, 4]], unit='eV', ddof=1)
+    result = committee_spread([[1, 2], [3, 4]], definition=IRI, ddof=1)
     assert result.mean == (2, 3)
     assert result.standard_deviation == pytest.approx([np.sqrt(2), np.sqrt(2)])
     with pytest.raises(ValueError):
-        committee_spread([[1]], unit='eV')
+        committee_spread([[1]], definition=IRI)
 
 
 def test_finite_difference_uses_representable_coordinate_spacing():

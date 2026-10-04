@@ -5,6 +5,7 @@ from dataclasses import FrozenInstanceError
 
 import pytest
 
+from httk.analyse._constants import GPA_PER_EV_PER_A3
 from httk.analyse.matsci.eos import BirchMurnaghanFit, fit_birch_murnaghan
 
 
@@ -32,9 +33,8 @@ def test_closed_form_bm3_recovers_parameters_and_independent_pressure(derivative
 
     assert fit.equilibrium_volume == pytest.approx(v0, rel=2e-10)
     assert fit.equilibrium_energy == pytest.approx(e0, abs=2e-12)
-    assert fit.bulk_modulus == pytest.approx(b0, rel=2e-9)
+    assert fit.bulk_modulus == pytest.approx(b0 * GPA_PER_EV_PER_A3, rel=2e-9)
     assert fit.bulk_modulus_derivative == pytest.approx(derivative, abs=2e-7)
-    assert fit.bulk_modulus_gpa == pytest.approx(b0 * 160.2176634)
     assert fit.volumes == volumes
     assert fit.energies == energies
     assert max(abs(residual) for residual in fit.residuals) < 2e-12
@@ -43,7 +43,7 @@ def test_closed_form_bm3_recovers_parameters_and_independent_pressure(derivative
     for volume in (v0 * 0.93, v0, v0 * 1.07):
         assert fit.energy(volume) == pytest.approx(_closed_form_bm3(volume, v0, e0, b0, derivative), abs=3e-12)
         assert fit.pressure(volume) == pytest.approx(
-            _closed_form_pressure(volume, v0, b0, derivative), rel=2e-9, abs=2e-12
+            _closed_form_pressure(volume, v0, b0, derivative) * GPA_PER_EV_PER_A3, rel=2e-9, abs=2e-10
         )
 
 
@@ -57,8 +57,9 @@ def test_pressure_matches_energy_finite_difference_and_pressure_sign() -> None:
 
     assert fit.pressure(v0 * 0.9) > 0.0
     assert fit.pressure(v0 * 1.1) < 0.0
-    assert fit.pressure(v0) == pytest.approx(0.0, abs=1e-14)
-    assert fit.pressure(v0) == pytest.approx(numeric_pressure, rel=2e-7, abs=2e-10)
+    assert fit.pressure(v0) == pytest.approx(0.0, abs=1e-12)
+    # numeric_pressure is -dE/dV in eV/angstrom³; pressure() is GPa.
+    assert fit.pressure(v0) == pytest.approx(numeric_pressure * GPA_PER_EV_PER_A3, rel=2e-7, abs=2e-8)
 
 
 def test_noisy_data_retains_residuals_and_input_order() -> None:
@@ -199,7 +200,7 @@ def test_fit_and_result_state_are_immutable_and_query_volumes_are_validated() ->
             fit.equilibrium_volume * 1.5,
             fit.equilibrium_volume,
             fit.equilibrium_energy,
-            fit.bulk_modulus,
+            fit.bulk_modulus / GPA_PER_EV_PER_A3,
             fit.bulk_modulus_derivative,
         )
     )

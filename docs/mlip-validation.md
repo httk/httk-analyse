@@ -4,7 +4,7 @@ The routines in `httk.analyse.matsci.mlip` compare already paired prediction
 and reference arrays. They use prediction minus reference, preserve raw energy
 errors, and return immutable summaries with the underlying residual tuples.
 Values must already use the documented units: total energy in eV, forces in
-eV/angstrom, and tensile-positive stress in eV/angstrom³.
+eV/angstrom, and tensile-positive stress in GPa.
 
 ## Energy
 
@@ -75,7 +75,7 @@ so compare `rms_vector_error` with published values only after that division.
 ## Stress
 
 `stress_errors` accepts matching `(configurations, 3, 3)` symmetric tensors. It
-uses tensile-positive stress in eV/angstrom³ and reports the independent
+uses tensile-positive stress in GPa and reports the independent
 components in `xx, yy, zz, yz, xz, xy` order. It checks symmetry within a
 relative and absolute tolerance of `1e-12`, reads the listed upper-triangle
 shear components, and does not symmetrize tensors. Convert virials, pressure
@@ -83,7 +83,7 @@ signs, and unit conventions in the source adapter before calling it.
 
 The `1e-12` symmetry check is intentional and strict. Typical float32 model
 outputs and virial (`-sum(r (x) F)`) stresses carry asymmetry of order `1e-8`
-eV/angstrom³ and are rejected. Inspect the asymmetry magnitude, then
+GPa and are rejected. Inspect the asymmetry magnitude, then
 symmetrize explicitly, for example `(stress + stress.swapaxes(1, 2)) / 2`,
 before calling `stress_errors`.
 
@@ -106,11 +106,12 @@ and report the selected weighting, units, and any explicit energy calibration.
 ## Derived properties and conservation
 
 `httk.analyse.matsci.validation.property_parity` compares paired scalar
-properties with explicit labels and units. It retains both inputs and raw
+properties with explicit labels and a property-definition IRI (`definition`,
+not loaded; `None` when no definition is published). It retains both inputs and raw
 residuals. Compare EOS volumes/moduli, elastic components, positive phonon
 frequencies, RDF curves or diffusion coefficients only on matched structures,
-normalizations, grids and sampling protocols. Unit labels are recorded; they
-are not an automatic unit conversion system.
+normalizations, grids and sampling protocols. The values must already be in the unit that definition fixes; there is no
+automatic unit conversion.
 
 `energy_drift` requires `ensemble="NVE"`, selected increasing times in ps,
 total energies in eV and a constant atom count. It reports a fitted slope in
@@ -125,7 +126,7 @@ receives independent position copies. It must implement the same cell,
 periodicity, atomic ordering, units and model as the supplied force evaluation.
 
 `committee_spread` returns per-entry means and model standard deviations for
-an explicit common unit. This describes disagreement, not calibrated predictive
+a common property-definition IRI. This describes disagreement, not calibrated predictive
 uncertainty. Shared training data and model bias can make every committee member
 agree while all are wrong.
 

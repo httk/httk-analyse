@@ -7,6 +7,10 @@ from typing import Any, Literal
 
 import numpy as np
 
+from .. import definitions as defs
+from .._constants import M2_PER_S_PER_A2_PER_PS
+from ..definitions import BoundValue, FieldBinding, _bind_fields
+
 __all__ = [
     "DiffusionFit",
     "RadialDynamics",
@@ -28,19 +32,29 @@ __all__ = [
 class TensorSeries:
     """Immutable lag times, tensor values and time-origin counts.
 
+    Tensor units follow ``kind``: angstrom² for ``msd``, (angstrom/ps)² for
+    ``vacf`` and angstrom²/ps for ``vacf_integral``.
+
     :param times: Lag times in ps.
     :param tensors: One 3x3 Cartesian tensor per lag.
     :param counts: Number of time origins contributing at each lag.
-    :param convention: Estimator and units description.
+    :param kind: Estimator: ``msd``, ``vacf`` or ``vacf_integral``.
+    :param remove_com: Whether center-of-mass motion was removed (MSD), else ``None``.
+    :param remove_mean: Whether per-atom temporal means were removed (VACF and its integral), else ``None``.
+    :raises ValueError: If ``kind`` is unknown.
     """
 
     times: tuple[float, ...]
     tensors: tuple[tuple[tuple[float, ...], ...], ...]
     counts: tuple[int, ...]
-    convention: str
+    kind: Literal["msd", "vacf", "vacf_integral"]
+    remove_com: bool | None = None
+    remove_mean: bool | None = None
 
     def __post_init__(self) -> None:
         """Copy nested numeric sequences to immutable tuples."""
+        if self.kind not in ("msd", "vacf", "vacf_integral"):
+            raise ValueError("kind must be 'msd', 'vacf' or 'vacf_integral'")
         object.__setattr__(self, "times", tuple(float(v) for v in self.times))
         object.__setattr__(self, "tensors", _tensors(self.tensors))
         object.__setattr__(self, "counts", tuple(int(v) for v in self.counts))
@@ -55,9 +69,9 @@ class TensorSeries:
 class DiffusionFit:
     """A user-window linear MSD fit, without an inferred diffusive regime.
 
-    :param tensor: Diffusion tensor in angstrom²/ps.
-    :param intercept: MSD intercept tensor in angstrom².
-    :param rmse: RMS residual per tensor component in angstrom².
+    :param tensor: Diffusion tensor in m²/s (the unit of the ``diffusion_tensor`` definition).
+    :param intercept: MSD intercept tensor in angstrom² (a fit diagnostic of the MSD series).
+    :param rmse: RMS residual per tensor component in angstrom² (MSD units).
     :param window: Inclusive start/stop lag indices.
     :param condition_number: Condition of the centered/scaled time design.
     """
@@ -74,9 +88,17 @@ class DiffusionFit:
             object.__setattr__(self, name, _tensors([getattr(self, name)])[0])
         object.__setattr__(self, "window", tuple(self.window))
 
+    def _bound_values(self, **selection: Any) -> tuple[BoundValue, ...]:
+        """Bind the diffusion tensor and its isotropic coefficient."""
+        return _bind_fields(
+            self,
+            selection,
+            {"tensor": FieldBinding(defs.DIFFUSION_TENSOR), "isotropic": FieldBinding(defs.DIFFUSION_COEFFICIENT)},
+        )
+
     @property
     def isotropic(self) -> float:
-        """Return one third of the diffusion tensor trace in angstrom²/ps."""
+        """Return one third of the diffusion tensor trace in m²/s."""
         return sum(self.tensor[i][i] for i in range(3)) / 3
 
 
@@ -177,7 +199,7 @@ def mean_squared_displacement(
     :param max_lag: Largest lag, inclusive; default frames minus one.
     :param remove_com: Subtract each frame's mass-weighted center before displacements.
     :param masses: Positive atom masses, required only when removing COM motion.
-    :return: Symmetric MSD tensor in angstrom² with time-origin counts.
+    :return: Symmetric MSD tensors in angstrom² on lag times in ps, with time-origin counts.
     :raises ValueError: If data, lag, masses or derived quantities are invalid.
     """
     positions, dt, lag = _trajectory(unwrapped_positions, timestep, max_lag)
@@ -194,7 +216,7 @@ def mean_squared_displacement(
     for k in range(lag + 1):
         delta = positions[k:] - positions[: len(positions) - k]
         values.append(np.einsum("tni,tnj->ij", delta, delta) / (delta.shape[0] * delta.shape[1]))
-    return _series(values, len(positions), lag, dt, f"MSD angstrom^2; remove_com={remove_com}")
+    return _series(values, len(positions), lag, dt, "msd", remove_com=bool(remove_com))
 
 
 def velocity_autocorrelation(
@@ -217,7 +239,7 @@ def velocity_autocorrelation(
     :param timestep: Uniform frame spacing in ps.
     :param max_lag: Largest inclusive lag.
     :param remove_mean: Subtract each atom/component time mean before correlation; only for non-diffusive systems.
-    :return: Correlation tensors in (angstrom/ps)².
+    :return: Correlation tensors in (angstrom/ps)² on lag times in ps.
     :raises ValueError: If data, lag or results are invalid.
     """
     velocity, dt, lag = _trajectory(velocities, timestep, max_lag)
@@ -228,7 +250,7 @@ def velocity_autocorrelation(
         / ((len(velocity) - k) * velocity.shape[1])
         for k in range(lag + 1)
     ]
-    return _series(tensors, len(velocity), lag, dt, f"VACF (angstrom/ps)^2; remove_mean={remove_mean}")
+    return _series(tensors, len(velocity), lag, dt, "vacf", remove_mean=bool(remove_mean))
 
 
 def diffusion_from_msd(msd: TensorSeries, *, window: tuple[int, int]) -> DiffusionFit:
@@ -261,12 +283,15 @@ def diffusion_from_msd(msd: TensorSeries, *, window: tuple[int, int]) -> Diffusi
     slope = coeff[1] / scale
     intercept = coeff[0] - slope * center
     rms = np.sqrt(np.mean((y - design @ coeff) ** 2, axis=0))
-    rows = _tensors(np.asarray((slope / 2, intercept, rms)).reshape(3, 3, 3))
+    rows = _tensors(np.asarray((slope / 2 * M2_PER_S_PER_A2_PER_PS, intercept, rms)).reshape(3, 3, 3))
     return DiffusionFit(rows[0], rows[1], rows[2], (start, stop), float(singular[0] / singular[-1]))
 
 
 def integrate_vacf(vacf: TensorSeries) -> TensorSeries:
     """Trapezoid-integrate a velocity correlation into a running diffusion tensor.
+
+    The result is a running series kept in angstrom²/ps; the diffusion coefficient
+    as a property (m²/s) is reported by :func:`diffusion_from_msd`.
 
     :param vacf: Dimensionful VACF in (angstrom/ps)² on increasing ps lags.
     :return: Running integral in angstrom²/ps, starting at zero.
@@ -280,7 +305,7 @@ def integrate_vacf(vacf: TensorSeries) -> TensorSeries:
         raise ValueError("VACF tensors and times must match")
     integrated = np.zeros_like(values)
     integrated[1:] = np.cumsum(0.5 * (values[1:] + values[:-1]) * np.diff(times)[:, None, None], axis=0)
-    return TensorSeries(tuple(times), _tensors(integrated), vacf.counts, "VACF integral angstrom^2/ps")
+    return TensorSeries(tuple(times), _tensors(integrated), vacf.counts, "vacf_integral", remove_mean=vacf.remove_mean)
 
 
 def van_hove_self(unwrapped_positions: Any, timestep: float, *, lag: int, bins: Sequence[float]) -> RadialDynamics:
@@ -489,7 +514,13 @@ def _tensors(values: Any) -> tuple[tuple[tuple[float, ...], ...], ...]:
     return tuple(tuple(tuple(float(v) for v in row) for row in tensor) for tensor in data)
 
 
-def _series(values: Any, frames: int, lag: int, dt: float, convention: str) -> TensorSeries:
+def _series(
+    values: Any, frames: int, lag: int, dt: float, kind: Literal["msd", "vacf"], **options: bool
+) -> TensorSeries:
     return TensorSeries(
-        tuple(k * dt for k in range(lag + 1)), _tensors(values), tuple(frames - k for k in range(lag + 1)), convention
+        tuple(k * dt for k in range(lag + 1)),
+        _tensors(values),
+        tuple(frames - k for k in range(lag + 1)),
+        kind,
+        **options,
     )

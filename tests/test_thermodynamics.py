@@ -3,14 +3,16 @@
 import numpy as np
 import pytest
 
-from httk.analyse.matsci.thermodynamics import equilibrium_response
+from httk.analyse._constants import GPA_PER_EV_PER_A3
+from httk.analyse.matsci.thermodynamics import EquilibriumResponse, equilibrium_response
+from httk.analyse.records import records
 
 KB = 1.380649e-23 / 1.602176634e-19
 
 
 def test_nvt_uses_total_energy_variance_and_explicit_temperature():
     result = equilibrium_response(temperature=300, ensemble='NVT', energies=[-3, -1, -3, -1])
-    assert result.names == ('heat_capacity_cv',)
+    assert result.names == ('heat_capacity_constant_volume',)
     assert result.values == pytest.approx([1 / (KB * 300**2)])
     assert result.standard_errors is None
 
@@ -21,7 +23,7 @@ def test_npt_covariance_sign_units_and_blocks():
     result = equilibrium_response(temperature=100, ensemble='NPT', enthalpies=h, volumes=v, block_size=4)
     expected = [
         np.var(h) / (KB * 100**2),
-        np.var(v) / (KB * 100 * np.mean(v)),
+        np.var(v) / (KB * 100 * np.mean(v)) / GPA_PER_EV_PER_A3,
         np.mean((v - v.mean()) * (h - h.mean())) / (KB * 100**2 * np.mean(v)),
     ]
     assert result.values == pytest.approx(expected)
@@ -43,12 +45,12 @@ def test_explicit_tail_drop_is_reported_and_excluded():
 @pytest.mark.parametrize(
     'arguments',
     [
-        dict(ensemble='NVE', energies=[1, 2]),
-        dict(ensemble='NVT', enthalpies=[1, 2]),
-        dict(ensemble='NPT', energies=[1, 2], volumes=[1, 2]),
-        dict(ensemble='NPT', enthalpies=[1, 2], volumes=[1, -1]),
-        dict(ensemble='NVT', energies=[1, 2], block_size=1),
-        dict(ensemble='NVT', energies=[1 + 2j, 2]),
+        {'ensemble': 'NVE', 'energies': [1, 2]},
+        {'ensemble': 'NVT', 'enthalpies': [1, 2]},
+        {'ensemble': 'NPT', 'energies': [1, 2], 'volumes': [1, 2]},
+        {'ensemble': 'NPT', 'enthalpies': [1, 2], 'volumes': [1, -1]},
+        {'ensemble': 'NVT', 'energies': [1, 2], 'block_size': 1},
+        {'ensemble': 'NVT', 'energies': [1 + 2j, 2]},
     ],
 )
 def test_invalid_ensemble_contract(arguments):
@@ -67,3 +69,9 @@ def test_whole_system_input_contract_scaling_and_numpy_block_size():
     assert cp == pytest.approx(n**2) and kappa == pytest.approx(n) and alpha == pytest.approx(n)
     blocked = equilibrium_response(temperature=300, ensemble='NVT', energies=h, block_size=np.int64(100))
     assert blocked.used_samples == 400
+
+
+def test_unknown_response_names_raise_on_binding():
+    legacy = EquilibriumResponse('NVT', ('heat_capacity_cv',), (1.0,), 300.0, (), None, 4, 0)
+    with pytest.raises(ValueError, match='heat_capacity_cv'):
+        records(legacy)

@@ -21,6 +21,6 @@ register_citation(
     },
 )
 
-from . import crysviz, generic, integrations, matsci, plotting, summary
+from . import crysviz, definitions, generic, integrations, matsci, plotting, records, summary
 
-__all__ = ["crysviz", "generic", "integrations", "matsci", "plotting", "summary"]
+__all__ = ["crysviz", "definitions", "generic", "integrations", "matsci", "plotting", "records", "summary"]

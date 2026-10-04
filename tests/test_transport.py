@@ -3,6 +3,7 @@
 import numpy as np
 import pytest
 
+from httk.analyse._constants import GPA_PER_EV_PER_A3
 from httk.analyse.matsci.transport import replica_transport, thermal_conductivity, viscosity
 
 KB = 1.380649e-23
@@ -29,11 +30,16 @@ def test_heat_tensor_matches_direct_sum_in_si():
 
 
 def test_constant_shear_si_prefactor_and_centering():
-    stress = np.tile([[0, 2, 3], [2, 0, 4], [3, 4, 0]], (5, 1, 1))
+    stress = np.tile([[0, 2, 3], [2, 0, 4], [3, 4, 0]], (5, 1, 1)) * GPA_PER_EV_PER_A3  # input in GPa
     result = viscosity(stress, 0.1, temperature=100, volume=10, max_lag=3, remove_mean=False)
     expected = np.outer(np.arange(4) * 0.1e-12, (np.array([2, 3, 4]) * EV / 1e-30) ** 2) * 10e-30 / (KB * 100)
     np.testing.assert_allclose(result.integrals, expected)
     assert viscosity(stress, 0.1, temperature=100, volume=10, max_lag=3).isotropic == (0,) * 4
+
+
+def test_quantity_identifies_definition_without_unit_fields():
+    result = thermal_conductivity(np.ones((5, 3)), 1, temperature=300, volume=10, max_lag=3)
+    assert result.quantity == 'thermal_conductivity' and not hasattr(result, 'unit')
 
 
 def test_replica_error_and_protocol_mismatch():

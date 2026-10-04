@@ -1,0 +1,128 @@
+{
+    "$id": "https://schemas.httk.org/defs/v0.1/properties/transport/diffusion_tensor",
+    "$schema": "https://schemas.optimade.org/meta/v1.3/optimade/property_definition.json",
+    "title": "Diffusion tensor",
+    "x-optimade-type": "list",
+    "x-optimade-definition": {
+        "kind": "property",
+        "version": "0.1.0",
+        "format": "1.3",
+        "name": "diffusion_tensor",
+        "label": "diffusion_tensor_transport_httk"
+    },
+    "x-optimade-unit": "m^2*s^-1",
+    "x-optimade-unit-definitions": [
+        {
+            "$id": "https://schemas.optimade.org/defs/v1.2/units/si/general/metre",
+            "title": "metre",
+            "symbol": "m",
+            "display-symbol": "m",
+            "alternate-symbols": [
+                "metre",
+                "meter"
+            ],
+            "description": "The metre, or meter, is a unit of length using the current, or one of the historical, definitions of the SI units.\n\nThe current definition in its most recent phrasing at the 26th CGPM Meeting in 2018, resolution 1 is: \"The metre, symbol m, is the SI unit of length. It is defined by taking the fixed numerical value of the speed of light in vacuum \\(c\\) to be 299792458 when expressed in the unit m\u22c5s\u207b\u00b9, where the second is defined in terms of the caesium frequency \\(\\Delta \\nu_\\textrm{Cs}\\).\"\n\nThis is a rephrasing of a definition at the 17th CGPM Meeting (1983), resolution 1: \"The metre is the length of the path travelled by light in vacuum during a time interval of 1/299792458 of a second.\" [17th CGPM Meeting (1983), resolution 1].\n\nThe prior definition at the 11th CGPM meeting (1960), resolution 6 was: \"The metre is the length equal to 1650763.73 wavelengths in vacuum of the radiation corresponding to the transition between the levels 2p\u2081\u2080 and 5d\u2085 of the krypton 86 atom.\"\n\nThis is a generalized definition taken to reference the current, or one of the historical, SI unit definitions.\nThis definition is intended for situations when it is not possible to be more precise, e.g., in contexts where data have been collected that uses different historical SI definitions.",
+            "compatibility": [
+                "https://schemas.optimade.org/defs/v1.2/units/si/1960/base/metre",
+                "https://schemas.optimade.org/defs/v1.2/units/si/1983/base/metre"
+            ],
+            "resources": [
+                {
+                    "relation": "Definition at the 17th CGPM meeting (1983), resolution 1",
+                    "resource-id": "https://www.bipm.org/en/committees/cg/cgpm/17-1983/resolution-1"
+                },
+                {
+                    "relation": "Definition at the 11th CGPM meeting (1960), resolution 6.",
+                    "resource-id": "https://www.bipm.org/en/committees/cg/cgpm/11-1960/resolution-6"
+                },
+                {
+                    "relation": "Wikipedia article describing the unit",
+                    "resource-id": "https://en.wikipedia.org/wiki/Metre"
+                }
+            ],
+            "x-optimade-definition": {
+                "label": "metre_si_general",
+                "kind": "unit",
+                "format": "1.2",
+                "version": "1.2.0",
+                "name": "metre"
+            }
+        },
+        {
+            "$id": "https://schemas.optimade.org/defs/v1.2/units/si/general/second",
+            "title": "second",
+            "symbol": "s",
+            "display-symbol": "s",
+            "description": "A unit of time using the current, or one of the historical, definitions of the SI units.\n\nThe current definition in its most recent phrasing at the 26th CGPM Meeting in 2018, resolution 1 is: \"The second, symbol s, is the SI unit of time. It is defined by taking the fixed numerical value of the caesium frequency, \\(\\Delta \\nu_\\textrm{Cs}\\), the unperturbed ground-state hyperfine transition frequency of the caesium 133 atom, to be 9192631770 when expressed in the unit Hz, which is equal to s\u207b\u00b9.\"\n\nThis is a rephrasing of a definition at the 13th CGPM Meeting (1967), resolution 1: \"The second is the duration of 9192631770 periods of the radiation corresponding to the transition between the two hyperfine levels of the ground state of the caesium 133 atom.\"\n\nThe earlier definition at the 11th CGPM Meeting in 1960, resolution 9 was: \"The second is the fraction 1/31556925.9747 of the tropical year for 1900 January 0 at 12 hours ephemeris time.\"\n\nThis is a generalized definition taken to reference the current, or one of the historical, SI unit definitions.\nThis definition is intended for situations when it is not possible to be more precise, e.g., in contexts where data have been collected that uses different historical SI definitions.",
+            "compatibility": [
+                "https://schemas.optimade.org/defs/v1.2/units/si/1960/base/second",
+                "https://schemas.optimade.org/defs/v1.2/units/si/1967/base/second"
+            ],
+            "resources": [
+                {
+                    "relation": "Definition in the 13th CGPM Meeting (1967), resolution 1",
+                    "resource-id": "https://www.bipm.org/en/committees/cg/cgpm/13-1967/resolution-1"
+                },
+                {
+                    "relation": "Rephrased definition in the 26th CGPM Meeting (2018), resolution 1",
+                    "resource-id": "https://www.bipm.org/en/committees/cg/cgpm/26-2018/resolution-1"
+                },
+                {
+                    "relation": "Definition at the 11th CGPM meeting (1960), resolution 6.",
+                    "resource-id": "https://www.bipm.org/en/committees/cg/cgpm/11-1960/resolution-6"
+                },
+                {
+                    "relation": "Wikipedia article describing the unit",
+                    "resource-id": "https://en.wikipedia.org/wiki/Second"
+                }
+            ],
+            "x-optimade-definition": {
+                "label": "second_si_general",
+                "kind": "unit",
+                "format": "1.2",
+                "version": "1.2.0",
+                "name": "second"
+            }
+        }
+    ],
+    "x-optimade-dimensions": {
+        "names": [
+            "dim_spatial"
+        ],
+        "sizes": [
+            3
+        ]
+    },
+    "x-optimade-requirements": {
+        "support": "may",
+        "sortable": false,
+        "query-support": "all mandatory"
+    },
+    "type": [
+        "array",
+        "null"
+    ],
+    "items": {
+        "x-optimade-type": "list",
+        "x-optimade-unit": "inapplicable",
+        "x-optimade-dimensions": {
+            "names": [
+                "dim_spatial"
+            ],
+            "sizes": [
+                3
+            ]
+        },
+        "type": [
+            "array"
+        ],
+        "items": {
+            "x-optimade-type": "float",
+            "x-optimade-unit": "m^2*s^-1",
+            "type": [
+                "number"
+            ]
+        }
+    },
+    "description": "The self-diffusion tensor D_ij, in square metre per second (m^2 s^-1), a 3x3 Cartesian tensor with both indices over `dim_spatial` in the Cartesian frame of the referenced cell.\nObtained from Green-Kubo or Einstein relations. The tensor is not assumed to be symmetric. The species or selection it refers to is recorded alongside.\nA null value means the quantity is not available or not recorded."
+}

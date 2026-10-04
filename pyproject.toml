@@ -80,6 +80,7 @@ namespaces = true
 
 [tool.setuptools.package-data]
 "httk.analyse" = ["py.typed"]
+"httk.registry.schemas.analyse" = ["*.json", "LICENSE*", "README.md"]
 
 [tool.pydoclint]
 style = "sphinx"

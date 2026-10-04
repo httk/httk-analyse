@@ -1,7 +1,8 @@
 # Elasticity
 
 `httk.analyse.matsci.elasticity` works with finite strain and stress arrays in
-one explicit convention. Stiffness and stress use eV/angstrom³, stress is
+one explicit convention. Stiffness and stress use GPa (the units of the OPTIMADE `elastic_tensor` and
+`stress_tensor` definitions), stress is
 tensile-positive, and Voigt components are ordered `xx, yy, zz, yz, xz, xy`.
 The strain shear entries are engineering strains `2*epsilon_ij`; stress shear
 entries are tensor components `sigma_ij`. Convert signs, units, cell bases and
@@ -53,7 +54,7 @@ eigenvalues and the caller’s absolute eigenvalue tolerance. `pressure_stabilit
 B_ijkl = C_ijkl + P*(delta_ij*delta_kl - delta_ik*delta_jl - delta_il*delta_jk)
 ```
 
-with hydrostatic compression positive and pressure in eV/angstrom³. This is
+with hydrostatic compression positive and pressure in GPa. This is
 Wallace's stress-strain coefficient tensor B for `sigma = -P*I`; in Voigt form
 a cubic crystal gives `C11-P, C12+P, C44-P`. It is a hydrostatic incremental
 criterion; it does not claim general finite-strain stability for arbitrary
@@ -69,10 +70,10 @@ report a stable crystal as unstable.
 
 ## Source stress conventions
 
-This module is tensile-positive, in eV/angstrom³, with components ordered
+This module is tensile-positive, in GPa, with components ordered
 `xx, yy, zz, yz, xz, xy`. VASP OUTCAR "in kB" stresses are compressive-positive,
 in kBar and ordered `XX YY ZZ XY YZ ZX`. To convert them, flip the sign,
-multiply kBar by 0.1 to get GPa, divide by 160.2176634 to get eV/angstrom³,
+multiply kBar by 0.1 to get GPa,
 and reorder with the index list `[0, 1, 2, 4, 5, 3]`. LAMMPS pressure tensors
 are also compressive-positive.
 
@@ -96,7 +97,8 @@ E = E0 + volume*(stress_offset @ strain + 0.5*strain @ C @ strain)
 ```
 
 where energies are total eV and `volume` is a positive reference volume in
-angstrom³. The default fits a constant energy and six linear stress terms. Set
+angstrom³. The fitted tensor and stress offset are returned in GPa (converted
+once from eV/angstrom³); energy residuals stay in eV. The default fits a constant energy and six linear stress terms. Set
 `fit_offset=False` only when the energy reference and stress are explicitly
 zero; that option fixes both offsets to zero. Neither fit infers strain from
 cell changes.

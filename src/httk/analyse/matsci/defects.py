@@ -7,6 +7,7 @@ from itertools import pairwise
 from typing import cast
 
 import numpy as np
+from httk.core.units import default_registry
 
 __all__ = [
     "ArrheniusFit",
@@ -138,7 +139,7 @@ class ArrheniusFit:
     :param log_residuals: Observed minus fitted natural-log rates.
     :param activation_energy: Fitted activation energy in eV.
     :param prefactor: Fitted positive rate prefactor in the input rate unit.
-    :param rate_unit: Caller-supplied label for the rate and prefactor unit.
+    :param rate_unit: OPTIMADE unit expression of the rates and prefactor, such as ``s^-1``.
     :param rank: Rank of the scaled weighted design matrix.
     :param condition_number: Condition number of that scaled design matrix.
     :param weighted_rmse: Weighted RMS log-rate residual.
@@ -160,8 +161,13 @@ class ArrheniusFit:
         for name in ("activation_energy", "prefactor", "condition_number", "weighted_rmse"):
             object.__setattr__(self, name, _finite(getattr(self, name), name))
         object.__setattr__(self, "rank", _integer(self.rank, "rank"))
-        if not isinstance(self.rate_unit, str):
-            raise ValueError("rate_unit must be a string")
+        _rate_unit(self.rate_unit)
+
+
+def _rate_unit(expression: object) -> None:
+    if not isinstance(expression, str):
+        raise ValueError("rate_unit must be an OPTIMADE unit expression")
+    default_registry().parse(expression)  # raises ValueError on malformed or unknown units
 
 
 def defect_formation_energy(
@@ -391,8 +397,8 @@ def fit_arrhenius(
     responsibility. The prefactor has the same unit as ``rates``.
 
     :param temperatures: Positive temperatures in K.
-    :param rates: Positive rates in an explicitly labeled caller unit.
-    :param rate_unit: Nonempty label such as ``"s^-1"`` or ``"ps^-1"``.
+    :param rates: Positive rates in the unit ``rate_unit``.
+    :param rate_unit: OPTIMADE unit expression such as ``"s^-1"`` or ``"ps^-1"`` (not ``"1/s"``).
     :param weights: Optional positive relative squared-residual weights.
     :return: Immutable fit, log residuals, rank, and scaled condition diagnostic.
     :raises ValueError: If data are insufficient, invalid, or rank deficient.
@@ -401,8 +407,7 @@ def fit_arrhenius(
     rate = _finite_sequence(rates, "rates")
     if len(temp) < 3 or len(rate) != len(temp) or any(value <= 0 for value in temp + rate):
         raise ValueError("at least three matching positive temperatures and rates are required")
-    if not isinstance(rate_unit, str) or not rate_unit.strip():
-        raise ValueError("rate_unit must be a nonempty caller-supplied label")
+    _rate_unit(rate_unit)
     weight = (
         np.ones(len(temp)) if weights is None else np.asarray(_finite_sequence(weights, "weights"), dtype=np.float64)
     )
@@ -438,7 +443,7 @@ def fit_arrhenius(
         tuple(float(v) for v in residuals),
         activation,
         prefactor,
-        rate_unit.strip(),
+        rate_unit,
         int(rank),
         condition,
         rmse,

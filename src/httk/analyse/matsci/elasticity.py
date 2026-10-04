@@ -3,9 +3,13 @@
 import math
 from collections.abc import Sequence
 from dataclasses import dataclass
-from typing import cast
+from typing import Any, cast
 
 import numpy as np
+
+from httk.analyse import definitions as defs
+from httk.analyse._constants import GPA_PER_EV_PER_A3
+from httk.analyse.definitions import BoundValue, FieldBinding, _bind_fields
 
 __all__ = ["ElasticFit", "ElasticTensor", "fit_energy_strain", "fit_stress_strain"]
 
@@ -13,18 +17,29 @@ _PAIRS = ((0, 0), (1, 1), (2, 2), (1, 2), (0, 2), (0, 1))
 _SHEAR = np.array((1.0, 1.0, 1.0, 2.0, 2.0, 2.0))
 _KELVIN = np.sqrt(_SHEAR)
 _ZERO_STRESS: tuple[float, float, float, float, float, float] = (0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
+_ELASTIC_BINDINGS = {
+    "stiffness": FieldBinding(defs.ELASTIC_TENSOR),
+    "compliance": FieldBinding(defs.COMPLIANCE_TENSOR),
+    "bulk_modulus_voigt": FieldBinding(defs.BULK_MODULUS_VOIGT),
+    "bulk_modulus_reuss": FieldBinding(defs.BULK_MODULUS_REUSS),
+    "bulk_modulus_hill": FieldBinding(defs.BULK_MODULUS_HILL),
+    "shear_modulus_voigt": FieldBinding(defs.SHEAR_MODULUS_VOIGT),
+    "shear_modulus_reuss": FieldBinding(defs.SHEAR_MODULUS_REUSS),
+    "shear_modulus_hill": FieldBinding(defs.SHEAR_MODULUS_HILL),
+    "universal_anisotropy": FieldBinding(defs.UNIVERSAL_ANISOTROPY_INDEX),
+}
 
 
 @dataclass(frozen=True, slots=True, init=False)
 class ElasticTensor:
     """Hold a symmetric stiffness matrix in engineering-strain Voigt form.
 
-    Entries use eV/angstrom³, with components ``xx, yy, zz, yz, xz, xy``.
+    Entries use GPa, with components ``xx, yy, zz, yz, xz, xy``.
     Strain shear components are engineering strains ``2*epsilon_ij`` and
     stress shear components are tensor stresses ``sigma_ij``. Finite unstable
     stiffnesses are retained so callers can diagnose them.
 
-    :param stiffness: Finite symmetric 6 by 6 stiffness matrix in eV/angstrom³.
+    :param stiffness: Finite symmetric 6 by 6 stiffness matrix in GPa.
     :raises ValueError: If the matrix is not finite, real, symmetric, or 6 by 6.
     """
 
@@ -44,7 +59,7 @@ class ElasticTensor:
         The tensor must satisfy both minor symmetries and major symmetry to
         relative and absolute tolerance 1e-12.
 
-        :param tensor: Full finite stiffness tensor in eV/angstrom³.
+        :param tensor: Full finite stiffness tensor in GPa.
         :return: The immutable Voigt representation.
         :raises ValueError: If shape, values, or elastic symmetries are invalid.
         """
@@ -58,11 +73,18 @@ class ElasticTensor:
         matrix = np.array([[values[i, j, k, l] for k, l in _PAIRS] for i, j in _PAIRS])
         return cls(_tuple_matrix(matrix))
 
+    def _bound_values(self, **selection: Any) -> tuple[BoundValue, ...]:
+        """Bind stiffness, compliance, the six averaged moduli and the anisotropy index.
+
+        Raises :class:`ValueError` when Reuss quantities are undefined (singular or unstable stiffness).
+        """
+        return _bind_fields(self, selection, _ELASTIC_BINDINGS)
+
     @property
     def compliance(self) -> tuple[tuple[float, ...], ...]:
         """Return the inverse stiffness in engineering Voigt form.
 
-        :return: Compliance matrix in angstrom³/eV.
+        :return: Compliance matrix in GPa⁻¹.
         :raises ValueError: If stiffness is singular or its inverse is non-finite.
         """
         try:
@@ -75,20 +97,20 @@ class ElasticTensor:
 
     @property
     def bulk_modulus_voigt(self) -> float:
-        """Return the Voigt bulk modulus in eV/angstrom³."""
+        """Return the Voigt bulk modulus in GPa."""
         c = np.asarray(self.stiffness)
         return float((c[0, 0] + c[1, 1] + c[2, 2] + 2.0 * (c[0, 1] + c[0, 2] + c[1, 2])) / 9.0)
 
     @property
     def shear_modulus_voigt(self) -> float:
-        """Return the Voigt shear modulus in eV/angstrom³."""
+        """Return the Voigt shear modulus in GPa."""
         c = np.asarray(self.stiffness)
         normal = c[:3, :3]
         return float((np.trace(normal) - normal[0, 1] - normal[0, 2] - normal[1, 2] + 3.0 * np.trace(c[3:, 3:])) / 15.0)
 
     @property
     def bulk_modulus_reuss(self) -> float:
-        """Return the Reuss bulk modulus in eV/angstrom³.
+        """Return the Reuss bulk modulus in GPa.
 
         :raises ValueError: If compliance is singular or its bulk denominator is not positive.
         """
@@ -100,7 +122,7 @@ class ElasticTensor:
 
     @property
     def shear_modulus_reuss(self) -> float:
-        """Return the Reuss shear modulus in eV/angstrom³.
+        """Return the Reuss shear modulus in GPa.
 
         :raises ValueError: If compliance is singular or its shear denominator is not positive.
         """
@@ -114,12 +136,12 @@ class ElasticTensor:
 
     @property
     def bulk_modulus_hill(self) -> float:
-        """Return the Voigt-Reuss-Hill bulk modulus in eV/angstrom³."""
+        """Return the Voigt-Reuss-Hill bulk modulus in GPa."""
         return (self.bulk_modulus_voigt + self.bulk_modulus_reuss) / 2.0
 
     @property
     def shear_modulus_hill(self) -> float:
-        """Return the Voigt-Reuss-Hill shear modulus in eV/angstrom³."""
+        """Return the Voigt-Reuss-Hill shear modulus in GPa."""
         return (self.shear_modulus_voigt + self.shear_modulus_reuss) / 2.0
 
     @property
@@ -137,7 +159,7 @@ class ElasticTensor:
     def to_full(self) -> tuple[tuple[tuple[tuple[float, ...], ...], ...], ...]:
         """Return stiffness as a full fourth-rank tensor.
 
-        :return: Tensor ``C_ijkl`` in eV/angstrom³ with all minor and major symmetries.
+        :return: Tensor ``C_ijkl`` in GPa with all minor and major symmetries.
         """
         c = np.asarray(self.stiffness)
         result = np.empty((3, 3, 3, 3), dtype=np.float64)
@@ -151,7 +173,7 @@ class ElasticTensor:
     def compliance_full(self) -> tuple[tuple[tuple[tuple[float, ...], ...], ...], ...]:
         """Return compliance as a full fourth-rank tensor.
 
-        :return: Tensor ``S_ijkl`` in angstrom³/eV, including engineering-shear factors.
+        :return: Tensor ``S_ijkl`` in GPa⁻¹, including engineering-shear factors.
         :raises ValueError: If stiffness is singular.
         """
         s = np.asarray(self.compliance)
@@ -189,7 +211,7 @@ class ElasticTensor:
     def is_stable(self, tolerance: float = 0.0) -> bool:
         """Test positive definiteness using the supplied absolute tolerance.
 
-        :param tolerance: Minimum accepted Kelvin-basis eigenvalue in eV/angstrom³.
+        :param tolerance: Minimum accepted Kelvin-basis eigenvalue in GPa.
         :return: Whether every stiffness eigenvalue is greater than tolerance.
         :raises ValueError: If tolerance is negative or non-finite.
         """
@@ -199,7 +221,7 @@ class ElasticTensor:
     def pressure_stability_eigenvalues(self, pressure: float) -> tuple[float, ...]:
         """Return eigenvalues after the hydrostatic pressure correction.
 
-        Pressure is positive in compression and measured in eV/angstrom³.
+        Pressure is positive in compression and measured in GPa.
         This is an incremental hydrostatic criterion, not a general
         pre-stressed finite-strain stability test.
 
@@ -213,7 +235,7 @@ class ElasticTensor:
         pressure, are already B: test them with ``is_stable``, because
         applying this correction to them double-counts the pressure.
 
-        :param pressure: Applied hydrostatic pressure in eV/angstrom³.
+        :param pressure: Applied hydrostatic pressure in GPa.
         :return: Ascending eigenvalues of the corrected stiffness.
         """
         p = _real_scalar(pressure, "pressure")
@@ -235,8 +257,8 @@ class ElasticTensor:
         strain energy derivative). Stress-strain coefficients are already
         corrected and must be tested with ``is_stable`` instead.
 
-        :param pressure: Hydrostatic pressure in eV/angstrom³, positive in compression.
-        :param tolerance: Minimum accepted eigenvalue in eV/angstrom³.
+        :param pressure: Hydrostatic pressure in GPa, positive in compression.
+        :param tolerance: Minimum accepted eigenvalue in GPa.
         :return: Whether all corrected stiffness eigenvalues exceed tolerance.
         :raises ValueError: If pressure or tolerance is not finite, or tolerance is negative.
         """
@@ -244,7 +266,7 @@ class ElasticTensor:
         return min(self.pressure_stability_eigenvalues(pressure)) > tol
 
     def young_modulus(self, direction: Sequence[float]) -> float:
-        """Return directional Young's modulus in eV/angstrom³.
+        """Return directional Young's modulus in GPa.
 
         :param direction: Nonzero Cartesian loading direction.
         :return: Reciprocal longitudinal compliance.
@@ -258,7 +280,7 @@ class ElasticTensor:
         return 1.0 / value
 
     def shear_modulus(self, direction: Sequence[float], transverse: Sequence[float]) -> float:
-        """Return shear modulus for an orthogonal direction pair in eV/angstrom³.
+        """Return shear modulus for an orthogonal direction pair in GPa.
 
         :param direction: Nonzero Cartesian shear-plane normal.
         :param transverse: Nonzero Cartesian shear direction perpendicular to ``direction``.
@@ -294,7 +316,7 @@ class ElasticFit:
     """Retain an elastic fit, offsets, residuals, and design diagnostics.
 
     Residuals are observed minus fitted values. Stress residuals are in
-    eV/angstrom³; energy residuals are in eV. ``energy_offset`` is ``None``
+    GPa; energy residuals are in eV. ``energy_offset`` is ``None``
     for a stress fit.
 
     :param tensor: Fitted stiffness tensor.
@@ -339,7 +361,7 @@ def fit_stress_strain(
     column-scaled linear design, not physical parameter confidence.
 
     :param strains: Finite ``(samples, 6)`` engineering strain components.
-    :param stresses: Matching finite tensile-positive stresses in eV/angstrom³.
+    :param stresses: Matching finite tensile-positive stresses in GPa.
     :param fit_offset: Fit six constant stress offsets when true.
     :return: Immutable fitted tensor and input-order stress residuals.
     :raises ValueError: If shapes are invalid or the scaled design is rank deficient.
@@ -403,7 +425,7 @@ def fit_energy_strain(
     :param energies: Matching total energies in eV.
     :param volume: Positive reference volume in angstrom³.
     :param fit_offset: Fit one constant energy and six linear stress terms when true.
-    :return: Immutable fitted tensor and input-order energy residuals.
+    :return: Fitted tensor and stress offset in GPa, with input-order energy residuals in eV.
     :raises ValueError: If inputs are invalid or the scaled design is rank deficient.
     """
     x = _sample_array(strains, "strains")
@@ -419,9 +441,9 @@ def fit_energy_strain(
             design[row_index, 21] = 1.0
             design[row_index, 22:28] = v * sample
     solution, condition = _least_squares(design, y, center_target=fit_offset)
-    matrix = _matrix_from_symmetric(solution[:21])
+    matrix = _matrix_from_symmetric(solution[:21]) * GPA_PER_EV_PER_A3
     energy_offset = float(solution[21]) if fit_offset else 0.0
-    stress_offset = _six(solution[22:28]) if fit_offset else _ZERO_STRESS
+    stress_offset = _six(solution[22:28] * GPA_PER_EV_PER_A3) if fit_offset else _ZERO_STRESS
     predicted = design @ solution
     residuals = y - predicted
     return ElasticFit(

@@ -6,7 +6,11 @@ from dataclasses import dataclass
 from typing import Any, Literal
 
 import numpy as np
+from httk.core import definition_ids
 
+from .. import definitions as defs
+from .._constants import H_EV_PER_THZ, KB_EV_PER_K
+from ..definitions import BoundValue, FieldBinding, _bind_fields
 from .eos import fit_birch_murnaghan
 
 __all__ = [
@@ -19,8 +23,21 @@ __all__ = [
     "quasiharmonic",
 ]
 
-_H_EV_THz = 6.62607015e-34 / 1.602176634e-19 * 1e12
-_KB_EV_K = 1.380649e-23 / 1.602176634e-19
+_HARMONIC_BINDINGS = {
+    "zero_point_energy": FieldBinding(defs.ZERO_POINT_ENERGY),
+    "temperatures": FieldBinding(definition_ids.TEMPERATURE, axis="temperatures"),
+    "free_energy": FieldBinding(defs.HELMHOLTZ_FREE_ENERGY, axis="temperatures"),
+    "internal_energy": FieldBinding(defs.VIBRATIONAL_INTERNAL_ENERGY, axis="temperatures"),
+    "entropy": FieldBinding(defs.VIBRATIONAL_ENTROPY, axis="temperatures"),
+    "heat_capacity": FieldBinding(defs.VIBRATIONAL_HEAT_CAPACITY, axis="temperatures"),
+}
+_QUASIHARMONIC_BINDINGS = {
+    "temperatures": FieldBinding(definition_ids.TEMPERATURE, axis="temperatures"),
+    "equilibrium_volumes": FieldBinding(defs.EQUILIBRIUM_VOLUME, axis="temperatures"),
+    "free_energies": FieldBinding(defs.HELMHOLTZ_FREE_ENERGY, axis="temperatures"),
+    "bulk_moduli": FieldBinding(defs.BULK_MODULUS, axis="temperatures"),
+    "volumetric_expansion": FieldBinding(defs.VOLUMETRIC_THERMAL_EXPANSION, axis="temperatures"),
+}
 
 
 @dataclass(frozen=True, slots=True)
@@ -55,6 +72,10 @@ class HarmonicThermodynamics:
         for name in ("temperatures", "free_energy", "internal_energy", "entropy", "heat_capacity"):
             object.__setattr__(self, name, tuple(float(value) for value in getattr(self, name)))
 
+    def _bound_values(self, **selection: Any) -> tuple[BoundValue, ...]:
+        """Bind the zero-point energy and the temperature series."""
+        return _bind_fields(self, selection, _HARMONIC_BINDINGS)
+
 
 @dataclass(frozen=True, slots=True)
 class GruneisenFit:
@@ -85,7 +106,7 @@ class QuasiHarmonicResult:
     :param temperatures: Strictly increasing temperatures in K.
     :param equilibrium_volumes: Equilibrium volumes in angstrom³.
     :param free_energies: Minimized Helmholtz energies in eV.
-    :param bulk_moduli: Equilibrium bulk moduli in eV/angstrom³.
+    :param bulk_moduli: Equilibrium bulk moduli in GPa.
     :param volumetric_expansion: Finite-difference alpha_V in 1/K.
     :param retained_mode_weight: Common retained mode count at every volume.
     :param excluded_zero_weight: Common omitted zero-mode weight at every volume.
@@ -107,6 +128,10 @@ class QuasiHarmonicResult:
         """Copy temperature-dependent properties into immutable tuples."""
         for name in ("temperatures", "equilibrium_volumes", "free_energies", "bulk_moduli", "volumetric_expansion"):
             object.__setattr__(self, name, tuple(float(value) for value in getattr(self, name)))
+
+    def _bound_values(self, **selection: Any) -> tuple[BoundValue, ...]:
+        """Bind the temperature series of the quasi-harmonic equilibrium properties."""
+        return _bind_fields(self, selection, _QUASIHARMONIC_BINDINGS)
 
 
 def harmonic_thermodynamics(
@@ -151,7 +176,7 @@ def harmonic_thermodynamics(
     f, w = freq[retained], mode_weights[retained]
     if not np.any(w > 0):
         raise ValueError("no positive-frequency modes remain")
-    energies = _H_EV_THz * f
+    energies = H_EV_PER_THZ * f
     zpe = float(np.dot(w, energies) / 2.0)
     weighted_energy = w * energies
     free, internal, entropy, capacity = [], [], [], []
@@ -162,24 +187,24 @@ def harmonic_thermodynamics(
             entropy.append(0.0)
             capacity.append(0.0)
             continue
-        x = energies / (_KB_EV_K * t)
+        x = energies / (KB_EV_PER_K * t)
         small = x < 1e-5
         large = x > 700.0
         occupation = np.zeros_like(x)
         occupation[~large] = 1.0 / np.expm1(x[~large])
         thermal_log = np.zeros_like(x)
         thermal_log[~large] = np.log(-np.expm1(-x[~large]))
-        f_value = zpe + _KB_EV_K * t * float(np.dot(w, thermal_log))
+        f_value = zpe + KB_EV_PER_K * t * float(np.dot(w, thermal_log))
         u_value = zpe + float(np.dot(weighted_energy, occupation))
         s_terms = np.zeros_like(x)
         s_terms[~large] = x[~large] * occupation[~large] - thermal_log[~large]
-        s_value = _KB_EV_K * float(np.dot(w, s_terms))
+        s_value = KB_EV_PER_K * float(np.dot(w, s_terms))
         cv_terms = np.zeros_like(x)
         cv_terms[small] = 1.0 - x[small] ** 2 / 12.0
         middle = ~(small | large)
         decay = np.exp(-x[middle])
         cv_terms[middle] = x[middle] ** 2 * decay / (1.0 - decay) ** 2
-        cv_value = _KB_EV_K * float(np.dot(w, cv_terms))
+        cv_value = KB_EV_PER_K * float(np.dot(w, cv_terms))
         free.append(f_value)
         internal.append(u_value)
         entropy.append(s_value)

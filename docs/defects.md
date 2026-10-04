@@ -78,8 +78,8 @@ interpolate an unsampled saddle or reorder images.
 
 `fit_arrhenius` fits `ln(rate) = ln(prefactor) - Ea/(kB*T)` by ordinary or
 positive-weight least squares. Rates and the prefactor share the required
-caller-provided `rate_unit` label. The result includes log-rate residuals,
-matrix rank, a condition number for the scaled fit design, and weighted log
+`rate_unit`, an OPTIMADE unit expression such as `s^-1` (malformed expressions
+such as `1/s` raise). The result includes log-rate residuals, matrix rank, a condition number for the scaled fit design, and weighted log
 RMSE. Every supplied point is used; choose a physically justified linear fit
 window before calling the function. The diagnostics do not establish that the
 mechanism is Arrhenius over that range.

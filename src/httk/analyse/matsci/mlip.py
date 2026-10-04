@@ -120,7 +120,7 @@ class ForceErrors:
 class StressErrors:
     """Hold stress residuals and aggregate and per-configuration metrics.
 
-    :param residuals: Six component residual tuples per configuration in ``xx, yy, zz, yz, xz, xy`` order, in eV/angstrom³.
+    :param residuals: Six component residual tuples per configuration in ``xx, yy, zz, yz, xz, xy`` order, in GPa.
     :param component_statistics: Aggregate component statistics in ``xx, yy, zz, yz, xz, xy`` order.
     :param per_configuration_component_statistics: Component statistics for each configuration.
     """
@@ -318,20 +318,20 @@ def force_errors(
 def stress_errors(
     reference: Sequence[Sequence[Sequence[float]]], predicted: Sequence[Sequence[Sequence[float]]]
 ) -> StressErrors:
-    """Compare symmetric tensile-positive stress tensors in eV/angstrom³.
+    """Compare symmetric tensile-positive stress tensors in GPa.
 
     Tensor pairs are compared without symmetrizing. Components use the order
     ``xx, yy, zz, yz, xz, xy`` and take the upper-triangle value for each shear
     component. The symmetry check permits absolute or relative differences up
     to ``1e-12``; convert virials and source sign conventions before calling.
     Typical float32 model outputs and virial (``-sum(r (x) F)``) stresses
-    carry asymmetry of order ``1e-8`` eV/angstrom³ and are rejected: inspect
+    carry asymmetry of order ``1e-8`` GPa and are rejected: inspect
     the asymmetry and symmetrize explicitly (``(S + S.T)/2``) first.
     Aggregate component metrics weight each configuration equally. The 95th
     percentile is unweighted in every summary.
 
     :param reference: Finite stress tensors with shape ``(configurations, 3, 3)``.
-    :param predicted: Matching predicted stress tensors in eV/angstrom³.
+    :param predicted: Matching predicted stress tensors in GPa.
     :return: Immutable six-component residuals and statistics.
     :raises ValueError: If shapes, symmetry, or finite numeric values are invalid.
     """

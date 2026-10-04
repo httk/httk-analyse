@@ -88,19 +88,19 @@ def main() -> None:
     result_units = {
         "rdf.edges": "angstrom",
         "rdf.centers": "angstrom",
-        "rdf.g": "1",
-        "rdf.mean_coordination": "1",
+        "rdf.g": "dimensionless",
+        "rdf.mean_coordination": "dimensionless",
     }
     if args.msd:
         result_units.update({"msd.times": "ps", "msd.tensors": "angstrom^2"})
     if args.vacf:
-        result_units.update({"vacf.times": "ps", "vacf.tensors": "angstrom^2/ps^2"})
+        result_units.update({"vacf.times": "ps", "vacf.tensors": "angstrom^2*ps^-2"})
     if args.heat_current is not None:
         result_units.update(
             {
                 "thermal_conductivity.times": "ps",
-                "thermal_conductivity.correlations": "(eV*angstrom/ps)^2",
-                "thermal_conductivity.integrals": "W/(m*K)",
+                "thermal_conductivity.correlations": "angstrom^2*eV^2*ps^-2",
+                "thermal_conductivity.integrals": "K^-1*W*m^-1",
                 "thermal_conductivity.temperature": "K",
                 "thermal_conductivity.volume": "angstrom^3",
             }

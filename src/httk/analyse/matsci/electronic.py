@@ -4,8 +4,12 @@ import math
 from collections.abc import Sequence
 from dataclasses import dataclass
 from itertools import pairwise
+from typing import Any
 
 import numpy as np
+
+from .. import definitions as defs
+from ..definitions import BoundValue, FieldBinding, _reject_selection
 
 __all__ = [
     "BandEdges",
@@ -54,6 +58,16 @@ class BandEdges:
     cbm_band: int
     cbm_kpoint: int
     energy_reference: float
+
+    def _bound_values(self, **selection: Any) -> tuple[BoundValue, ...]:
+        """Bind the gaps, reported as 0.0 (the definitions' metallic value) when ``metallic``."""
+        _reject_selection(self, selection)
+        return (
+            BoundValue("indirect_gap", FieldBinding(defs.BAND_GAP), 0.0 if self.metallic else float(self.indirect_gap)),
+            BoundValue(
+                "direct_gap", FieldBinding(defs.DIRECT_BAND_GAP), 0.0 if self.metallic else float(self.direct_gap)
+            ),
+        )
 
 
 @dataclass(frozen=True, slots=True)

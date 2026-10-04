@@ -5,8 +5,11 @@ import json
 
 import pytest
 
-from httk.analyse.summary import AnalysisSummary, analysis_summary
+from httk.analyse import definitions as defs
 from httk.analyse.matsci.phonons import harmonic_thermodynamics
+from httk.analyse.matsci.transport import thermal_conductivity
+from httk.analyse.records import bound_values
+from httk.analyse.summary import AnalysisSummary, analysis_summary
 
 
 def test_summary_roundtrip_hash_selection_and_immutability(tmp_path):
@@ -16,7 +19,7 @@ def test_summary_roundtrip_hash_selection_and_immutability(tmp_path):
     summary = analysis_summary(
         result,
         algorithm='harmonic_thermodynamics',
-        units={'free_energy': 'eV'},
+        units={'retained_mode_weight': 'dimensionless', 'cutoff_frequency': 'THz'},
         parameters={'zero_modes': 'raise'},
         selection={'rows': [0]},
         sources=[source],
@@ -31,12 +34,72 @@ def test_summary_roundtrip_hash_selection_and_immutability(tmp_path):
     summary.write(output)
     assert AnalysisSummary(output.read_text()) == summary
     assert json.loads(output.read_text())['selection'] == {'rows': [0]}
+    fields = value['fields']
+    assert fields['zero_point_energy'] == {
+        'definition': defs.ZERO_POINT_ENERGY,
+        'derivation': None,
+        'axis': None,
+        'value': result.zero_point_energy,
+    }
+    assert fields['free_energy'] == {
+        'definition': defs.HELMHOLTZ_FREE_ENERGY,
+        'derivation': None,
+        'axis': 'temperatures',
+        'value': list(result.free_energy),
+    }
+    assert fields['cutoff_frequency'] == {
+        'unit': 'THz',
+        'unit_definitions': [
+            'https://schemas.optimade.org/defs/v1.2/prefixes/si/tera',
+            'https://schemas.optimade.org/defs/v1.2/units/si/general/hertz',
+        ],
+    }
+    assert {b.field for b in bound_values(result)} <= set(fields)
+
+
+def _summary(result, **kwargs):
+    return analysis_summary(result, algorithm='x', parameters={}, selection={}, sources=[], assumptions=[], **kwargs)
+
+
+def test_summary_units_are_only_for_unbound_fields():
+    result = harmonic_thermodynamics([2], [0, 300])
+    with pytest.raises(ValueError, match='property definition'):
+        _summary(result, units={'free_energy': 'eV'})
+    with pytest.raises(ValueError):
+        _summary(result, units={'retained_mode_weight': 'eV/angstrom'})
+    series = _summary({'edges': [1.0, 2.0]}, units={'edges': 'angstrom'}).value['fields']
+    assert series == {
+        'edges': {
+            'unit': 'angstrom',
+            'unit_definitions': ['https://schemas.optimade.org/defs/v1.2/units/si/general/angstrom'],
+        }
+    }
+    with pytest.raises(TypeError):
+        _summary({'edges': [1.0]}, lag_index=1)
+
+
+def test_summary_bound_selection_matches_records():
+    result = thermal_conductivity(
+        [[1, 0, 0], [0, 1, 0], [0, 0, 1], [1, 1, 1]], 1, temperature=300, volume=10, max_lag=2
+    )
+    with pytest.raises(TypeError):
+        _summary(result)
+    fields = _summary(result, lag_index=2).value['fields']
+    assert fields['isotropic[2]']['definition'] == defs.THERMAL_CONDUCTIVITY
+    assert fields['isotropic[2]']['value'] == result.isotropic[2]  # binding names are not result paths
+    assert fields['integrals[2]']['value'] == [list(result.integrals[2][i : i + 3]) for i in (0, 3, 6)]
+    assert fields['integrals[2]']['definition'] == defs.THERMAL_CONDUCTIVITY_TENSOR
 
 
 def test_summary_rejects_nonfinite_and_encodes_complex(tmp_path):
-    kwargs = dict(
-        algorithm='scattering', units={'values': '1'}, parameters={}, selection={}, sources=[], assumptions=[]
-    )
+    kwargs = {
+        'algorithm': 'scattering',
+        'units': {'values': 'dimensionless'},
+        'parameters': {},
+        'selection': {},
+        'sources': [],
+        'assumptions': [],
+    }
     result = analysis_summary({'values': [1 + 2j]}, **kwargs)
     assert result.value['result']['values'] == [{'real': 1, 'imaginary': 2}]
     with pytest.raises(ValueError):

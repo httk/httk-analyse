@@ -1,11 +1,18 @@
-"""Matplotlib figures for analysis results with explicit physical axes."""
+"""Matplotlib figures for analysis results with explicit physical axes.
+
+Axes of quantities with a property definition are labelled with the
+definition's title and unit.
+"""
 
 from collections.abc import Mapping
+from functools import cache
 from importlib import import_module
 from typing import Any
 
 import numpy as np
+from httk.core import definition_ids, load_property_definition
 
+from . import definitions as defs
 from .matsci.dynamics import TensorSeries
 from .matsci.energetics import ChemicalPotentialRegion, ConvergenceTable
 from .matsci.eos import BirchMurnaghanFit
@@ -38,11 +45,11 @@ def plot_eos(result: BirchMurnaghanFit | EOSFit) -> tuple[Any, Any]:
     volumes = np.linspace(min(result.volumes), max(result.volumes), 200)
     axes[0].plot(result.volumes, result.energies, "o", label="samples")
     axes[0].plot(volumes, [result.energy(float(v)) for v in volumes], label="fit")
-    axes[0].set_ylabel("Energy (eV)")
+    axes[0].set_ylabel(_label(definition_ids.TOTAL_ENERGY))
     axes[0].legend()
     axes[1].plot(result.volumes, result.residuals, "o")
     axes[1].axhline(0, color="grey", linewidth=0.8)
-    axes[1].set(xlabel="Volume (angstrom³)", ylabel="Observed − fitted (eV)")
+    axes[1].set(xlabel=_label(definition_ids.VOLUME), ylabel="Observed − fitted (eV)")
     return figure, axes
 
 
@@ -76,9 +83,9 @@ def plot_msd(result: TensorSeries) -> tuple[Any, Any]:
 
     :param result: Tensor series returned by mean_squared_displacement.
     :return: Matplotlib figure and axis.
-    :raises ValueError: If the result convention is not a displacement covariance.
+    :raises ValueError: If the result is not an MSD series.
     """
-    if not result.convention.startswith("MSD "):
+    if result.kind != "msd":
         raise ValueError("plot_msd requires an MSD tensor series")
     figure, axis = _axis()
     axis.plot(result.times, result.trace)
@@ -96,7 +103,8 @@ def plot_transport(result: TransportResult) -> tuple[Any, Any]:
     for index, label in enumerate(result.components):
         axis.plot(result.times, np.asarray(result.integrals)[:, index], label=label, alpha=0.6)
     axis.plot(result.times, result.isotropic, color="black", linewidth=2, label="isotropic mean")
-    axis.set(xlabel="Integration time (ps)", ylabel=f"{result.quantity.replace('_', ' ')} ({result.unit})")
+    definition = defs.THERMAL_CONDUCTIVITY if result.quantity == "thermal_conductivity" else defs.SHEAR_VISCOSITY
+    axis.set(xlabel="Integration time (ps)", ylabel=_label(definition))
     axis.legend()
     return figure, axis
 
@@ -112,27 +120,34 @@ def plot_phonons(result: HarmonicThermodynamics) -> tuple[Any, Any]:
     for axis, values, label in zip(
         axes,
         (result.free_energy, result.entropy, result.heat_capacity),
-        ("Free energy (eV)", "Entropy (eV/K)", "Heat capacity (eV/K)"),
+        (defs.HELMHOLTZ_FREE_ENERGY, defs.VIBRATIONAL_ENTROPY, defs.VIBRATIONAL_HEAT_CAPACITY),
         strict=True,
     ):
         axis.plot(result.temperatures, values)
-        axis.set_ylabel(label)
-    axes[-1].set_xlabel("Temperature (K)")
+        axis.set_ylabel(_label(label))
+    axes[-1].set_xlabel(_label(definition_ids.TEMPERATURE))
     return figure, axes
 
 
 def plot_parity(result: PropertyParity) -> tuple[Any, Any]:
     """Plot paired scalar predictions with a unity reference line.
 
-    :param result: Matched property pairs and explicit common unit.
+    :param result: Matched property pairs; axes use its definition, or no unit when it has none.
     :return: Matplotlib figure and axis.
     """
     figure, axis = _axis()
     axis.scatter(result.reference, result.predicted)
     limits = [min(*result.reference, *result.predicted), max(*result.reference, *result.predicted)]
     axis.plot(limits, limits, color="grey", linestyle="--")
-    axis.set(xlabel=f"Reference ({result.unit})", ylabel=f"Predicted ({result.unit})", aspect="equal")
+    quantity = "" if result.definition is None else f": {_label(result.definition)}"
+    axis.set(xlabel=f"Reference{quantity}", ylabel=f"Predicted{quantity}", aspect="equal")
     return figure, axis
+
+
+@cache
+def _label(iri: str) -> str:
+    definition = load_property_definition(iri)
+    return f"{definition.title} ({definition.unit})"
 
 
 def _axis() -> tuple[Any, Any]:

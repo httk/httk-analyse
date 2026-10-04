@@ -1,0 +1,154 @@
+{
+    "$id": "https://schemas.httk.org/defs/v0.1/properties/transport/thermal_conductivity",
+    "$schema": "https://schemas.optimade.org/meta/v1.3/optimade/property_definition.json",
+    "title": "Thermal conductivity",
+    "x-optimade-type": "float",
+    "x-optimade-definition": {
+        "kind": "property",
+        "version": "0.1.0",
+        "format": "1.3",
+        "name": "thermal_conductivity",
+        "label": "thermal_conductivity_transport_httk"
+    },
+    "x-optimade-unit": "K^-1*W*m^-1",
+    "x-optimade-unit-definitions": [
+        {
+            "$id": "https://schemas.optimade.org/defs/v1.2/units/si/general/kelvin",
+            "title": "kelvin",
+            "symbol": "K",
+            "display-symbol": "K",
+            "description": "A unit of thermodynamic temperature using the current, or one of the historical, definitions of the SI units.\n\nThe current definition at the 26th CGPM Meeting in 2018, resolution 1 is: \"The kelvin, symbol K, is the SI unit of thermodynamic temperature. It is defined by taking the fixed numerical value of the Boltzmann constant k to be 1.380649\u00d710\u207b\u00b2\u00b3 when expressed in the unit J\u22c5K\u207b\u00b9, which is equal to kg\u22c5m\u00b2\u22c5s\u207b\u00b2\u22c5K\u207b\u00b9, where the kilogram, metre and second are defined in terms of \\(h\\), \\(c\\) and \\(\\Delta \\nu_\\textrm{Cs}\\).\" [26th CGPM Meeting (2018), resolution 1].\n\nThe prior definition at the 13th CGPM Meeting in 1967, resolution 4, was: \"The kelvin, unit of thermodynamic temperature, is the fraction 1/273.16 of the thermodynamic temperature of the triple point of water.\"\nThis definition changed the symbol and rephrased the definition of the unit \"degree Kelvin\" from the 10th CGPM meeting in 1954: \"The 10th Conf\u00e9rence G\u00e9n\u00e9rale des Poids et Mesures decides to define the thermodynamic temperature scale by choosing the triple point of water as the fundamental fixed point, and assigning to it the temperature 273.16 degrees Kelvin, exactly.\"\n\nThis is a generalized definition taken to reference the current, or one of the historical, SI unit definitions.\nThis definition is intended for situations when it is not possible to be more precise, e.g., in contexts where data have been collected that uses different historical SI definitions.",
+            "compatibility": [
+                "https://schemas.optimade.org/defs/v1.2/units/si/1967/base/kelvin",
+                "https://schemas.optimade.org/defs/v1.2/units/si/2019/base/kelvin",
+                "https://schemas.optimade.org/defs/v1.2/units/si/1960/base/degreekelvin"
+            ],
+            "resources": [
+                {
+                    "relation": "Definition in the 26th CGPM Meeting in 2018, resolution 1",
+                    "resource-id": "https://www.bipm.org/en/committees/cg/cgpm/26-2018/resolution-1"
+                },
+                {
+                    "relation": "Definition in the International System of Units (SI), 9th Edition",
+                    "resource-id": "https://www.bipm.org/en/publications/si-brochure"
+                },
+                {
+                    "relation": "Wikipedia article describing the unit",
+                    "resource-id": "https://en.wikipedia.org/wiki/Kelvin"
+                }
+            ],
+            "x-optimade-definition": {
+                "label": "kelvin_si_general",
+                "kind": "unit",
+                "format": "1.2",
+                "version": "1.2.0",
+                "name": "kelvin"
+            }
+        },
+        {
+            "$id": "https://schemas.optimade.org/defs/v1.2/units/si/general/watt",
+            "title": "watt",
+            "symbol": "W",
+            "display-symbol": "W",
+            "description": "A unit for power and radiant flux equal to kg\u00b7m\u00b2\u00b7s\u207b\u00b3 using the current, or one of the historical, definitions of the SI units.\n\n\"The watt is the power that produces one joule per second.\" [9th CGPM meeting in 1946]\n\nThe watt was defined at the 9th CGPM Meeting in 1946, included in SI at the 11th CGPM meeting in 1960, resolution 12, implicitly redefined via the redefinitions of the second at the 13th CGPM Meeting in 1967, resolution 1; the metre at the 17th CGPM meeting (1983), resolution 1; and the kilogram at the 26th CGPM Meeting (2018), resolution 1.\n\nThis is a generalized definition taken to reference the current, or one of the historical, SI unit definitions.\nThis definition is intended for situations when it is not possible to be more precise, e.g., in contexts where data have been collected that uses different historical SI definitions.",
+            "compatibility": [
+                "https://schemas.optimade.org/defs/v1.2/units/si/1960/named/watt",
+                "https://schemas.optimade.org/defs/v1.2/units/si/1967/named/watt",
+                "https://schemas.optimade.org/defs/v1.2/units/si/1983/named/watt",
+                "https://schemas.optimade.org/defs/v1.2/units/si/2019/named/watt"
+            ],
+            "resources": [
+                {
+                    "relation": "Definition and establishment of the SI unit system at the 11th CGPM meeting (1960), resolution 12.",
+                    "resource-id": "https://www.bipm.org/en/committees/cg/cgpm/11-1960/resolution-12"
+                },
+                {
+                    "relation": "Redefinition of the metre at the 17th CGPM meeting (1983), resolution 1",
+                    "resource-id": "https://www.bipm.org/en/committees/cg/cgpm/17-1983/resolution-1"
+                },
+                {
+                    "relation": "Redefinition of the second in the 13th CGPM Meeting (1967), resolution 1",
+                    "resource-id": "https://www.bipm.org/en/committees/cg/cgpm/13-1967/resolution-1"
+                },
+                {
+                    "relation": "Redefinition of the metre at the 17th CGPM meeting (1983), resolution 1",
+                    "resource-id": "https://www.bipm.org/en/committees/cg/cgpm/17-1983/resolution-1"
+                },
+                {
+                    "relation": "Wikipedia article describing the unit",
+                    "resource-id": "https://en.wikipedia.org/wiki/Watt"
+                }
+            ],
+            "defining-relation": {
+                "base-units": [
+                    {
+                        "symbol": "kg",
+                        "id": "https://schemas.optimade.org/defs/v1.2/units/si/general/kilogram"
+                    },
+                    {
+                        "symbol": "m",
+                        "id": "https://schemas.optimade.org/defs/v1.2/units/si/general/metre"
+                    },
+                    {
+                        "symbol": "s",
+                        "id": "https://schemas.optimade.org/defs/v1.2/units/si/general/second"
+                    }
+                ],
+                "base-units-expression": "kg*m^2*s^-3"
+            },
+            "x-optimade-definition": {
+                "label": "watt_si_general",
+                "kind": "unit",
+                "format": "1.2",
+                "version": "1.2.0",
+                "name": "watt"
+            }
+        },
+        {
+            "$id": "https://schemas.optimade.org/defs/v1.2/units/si/general/metre",
+            "title": "metre",
+            "symbol": "m",
+            "display-symbol": "m",
+            "alternate-symbols": [
+                "metre",
+                "meter"
+            ],
+            "description": "The metre, or meter, is a unit of length using the current, or one of the historical, definitions of the SI units.\n\nThe current definition in its most recent phrasing at the 26th CGPM Meeting in 2018, resolution 1 is: \"The metre, symbol m, is the SI unit of length. It is defined by taking the fixed numerical value of the speed of light in vacuum \\(c\\) to be 299792458 when expressed in the unit m\u22c5s\u207b\u00b9, where the second is defined in terms of the caesium frequency \\(\\Delta \\nu_\\textrm{Cs}\\).\"\n\nThis is a rephrasing of a definition at the 17th CGPM Meeting (1983), resolution 1: \"The metre is the length of the path travelled by light in vacuum during a time interval of 1/299792458 of a second.\" [17th CGPM Meeting (1983), resolution 1].\n\nThe prior definition at the 11th CGPM meeting (1960), resolution 6 was: \"The metre is the length equal to 1650763.73 wavelengths in vacuum of the radiation corresponding to the transition between the levels 2p\u2081\u2080 and 5d\u2085 of the krypton 86 atom.\"\n\nThis is a generalized definition taken to reference the current, or one of the historical, SI unit definitions.\nThis definition is intended for situations when it is not possible to be more precise, e.g., in contexts where data have been collected that uses different historical SI definitions.",
+            "compatibility": [
+                "https://schemas.optimade.org/defs/v1.2/units/si/1960/base/metre",
+                "https://schemas.optimade.org/defs/v1.2/units/si/1983/base/metre"
+            ],
+            "resources": [
+                {
+                    "relation": "Definition at the 17th CGPM meeting (1983), resolution 1",
+                    "resource-id": "https://www.bipm.org/en/committees/cg/cgpm/17-1983/resolution-1"
+                },
+                {
+                    "relation": "Definition at the 11th CGPM meeting (1960), resolution 6.",
+                    "resource-id": "https://www.bipm.org/en/committees/cg/cgpm/11-1960/resolution-6"
+                },
+                {
+                    "relation": "Wikipedia article describing the unit",
+                    "resource-id": "https://en.wikipedia.org/wiki/Metre"
+                }
+            ],
+            "x-optimade-definition": {
+                "label": "metre_si_general",
+                "kind": "unit",
+                "format": "1.2",
+                "version": "1.2.0",
+                "name": "metre"
+            }
+        }
+    ],
+    "x-optimade-requirements": {
+        "support": "may",
+        "sortable": false,
+        "query-support": "all mandatory"
+    },
+    "type": [
+        "number",
+        "null"
+    ],
+    "description": "The isotropic thermal conductivity, the mean of the diagonal of the thermal conductivity tensor, in watt per metre per kelvin (W m^-1 K^-1).\nObtained from Green-Kubo or Einstein relations.\nA null value means the quantity is not available or not recorded."
+}

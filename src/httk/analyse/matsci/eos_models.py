@@ -4,11 +4,13 @@ import math
 from collections.abc import Sequence
 from dataclasses import dataclass
 from importlib import import_module
-from typing import Literal
+from typing import Any, Literal
 
 import numpy as np
 
-from .eos import _finite_sequence, _positive_scalar, fit_birch_murnaghan
+from .._constants import GPA_PER_EV_PER_A3
+from ..definitions import BoundValue, _bind_fields
+from .eos import _EOS_BINDINGS, _finite_sequence, _positive_scalar, fit_birch_murnaghan
 
 __all__ = ["EOSFit", "EOSModel", "fit_eos"]
 
@@ -27,7 +29,7 @@ class EOSFit:
     :param model: EOS family.
     :param equilibrium_volume: Minimum volume in angstrom³.
     :param equilibrium_energy: Minimum energy in eV.
-    :param bulk_modulus: Equilibrium bulk modulus in eV/angstrom³.
+    :param bulk_modulus: Equilibrium bulk modulus in GPa.
     :param bulk_modulus_derivative: Dimensionless equilibrium pressure derivative.
     :param volumes: Input volumes in caller order.
     :param energies: Input energies in caller order.
@@ -62,10 +64,9 @@ class EOSFit:
         for name in ("volumes", "energies", "weights", "residuals"):
             object.__setattr__(self, name, _finite_sequence(getattr(self, name), name))
 
-    @property
-    def bulk_modulus_gpa(self) -> float:
-        """Return the equilibrium bulk modulus in GPa."""
-        return self.bulk_modulus * 160.2176634
+    def _bound_values(self, **selection: Any) -> tuple[BoundValue, ...]:
+        """Bind the fitted parameters and the unweighted energy RMSE to property definitions."""
+        return _bind_fields(self, selection, _EOS_BINDINGS)
 
     def energy(self, volume: float) -> float:
         """Evaluate energy, allowing explicit model extrapolation.
@@ -75,8 +76,12 @@ class EOSFit:
         :raises ValueError: If the query or predicted energy is not representable.
         """
         ratio = _positive_scalar(volume, "volume") / self.equilibrium_volume
-        value = self.equilibrium_energy + self.bulk_modulus * self.equilibrium_volume * _energy_ratio(
-            ratio, self.bulk_modulus_derivative, self.model
+        value = (
+            self.equilibrium_energy
+            + self.bulk_modulus
+            / GPA_PER_EV_PER_A3
+            * self.equilibrium_volume
+            * _energy_ratio(ratio, self.bulk_modulus_derivative, self.model)
         )
         return _finite(value)
 
@@ -84,7 +89,7 @@ class EOSFit:
         """Evaluate positive-compression pressure.
 
         :param volume: Positive volume in angstrom³.
-        :return: Model pressure in eV/angstrom³.
+        :return: Model pressure in GPa.
         :raises ValueError: If the query or predicted pressure is not representable.
         """
         ratio = _positive_scalar(volume, "volume") / self.equilibrium_volume
@@ -146,7 +151,7 @@ def fit_eos(
         [
             1.0,
             (initial.equilibrium_energy - eoffset) / escale,
-            initial.bulk_modulus * vscale / escale,
+            initial.bulk_modulus / GPA_PER_EV_PER_A3 * vscale / escale,
             initial.bulk_modulus_derivative,
         ]
     )
@@ -166,7 +171,7 @@ def fit_eos(
     residuals = (target - predictions(fitted.x)) * escale
     rmse = float(np.linalg.norm(residuals / math.sqrt(len(v))))
     weighted_rmse = float(np.linalg.norm(residuals * np.sqrt(w / np.sum(w))))
-    parameters = (v0 * vscale, e0 * escale + eoffset, b0 * escale / vscale, bp)
+    parameters = (v0 * vscale, e0 * escale + eoffset, b0 * escale / vscale * GPA_PER_EV_PER_A3, bp)
     if not all(math.isfinite(value) for value in parameters) or not np.isfinite(residuals).all():
         raise ValueError("EOS fit results are not finite")
     return EOSFit(

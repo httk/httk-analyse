@@ -59,6 +59,7 @@ electronic
 vasp-analysis
 defects
 analysis-artifacts
+records
 analysis-recipes
 crysviz
 reference/index

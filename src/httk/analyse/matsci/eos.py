@@ -6,10 +6,21 @@ from dataclasses import dataclass
 from typing import Any
 
 import numpy as np
+from httk.core import definition_ids
+
+from .. import definitions as defs
+from .._constants import GPA_PER_EV_PER_A3
+from ..definitions import BoundValue, FieldBinding, _bind_fields
 
 __all__ = ["BirchMurnaghanFit", "fit_birch_murnaghan"]
 
-_EV_A3_TO_GPA = 160.2176634
+_EOS_BINDINGS = {
+    "equilibrium_volume": FieldBinding(defs.EQUILIBRIUM_VOLUME),
+    "equilibrium_energy": FieldBinding(defs.EQUILIBRIUM_ENERGY),
+    "bulk_modulus": FieldBinding(defs.BULK_MODULUS),
+    "bulk_modulus_derivative": FieldBinding(defs.BULK_MODULUS_PRESSURE_DERIVATIVE),
+    "rmse": FieldBinding(definition_ids.TOTAL_ENERGY, derivation=defs.RMSE),
+}
 
 
 @dataclass(frozen=True, slots=True)
@@ -25,7 +36,7 @@ class BirchMurnaghanFit:
 
     :param equilibrium_volume: Fitted minimum volume in angstrom³.
     :param equilibrium_energy: Fitted minimum energy in eV.
-    :param bulk_modulus: Fitted bulk modulus in eV/angstrom³.
+    :param bulk_modulus: Fitted bulk modulus in GPa.
     :param bulk_modulus_derivative: Dimensionless pressure derivative at equilibrium.
     :param volumes: Input volumes in original order, in angstrom³.
     :param energies: Input energies in original order, in eV.
@@ -50,13 +61,9 @@ class BirchMurnaghanFit:
         object.__setattr__(self, "energies", tuple(self.energies))
         object.__setattr__(self, "residuals", tuple(self.residuals))
 
-    @property
-    def bulk_modulus_gpa(self) -> float:
-        """Return the bulk modulus in gigapascals.
-
-        :return: The bulk modulus in GPa.
-        """
-        return self.bulk_modulus * _EV_A3_TO_GPA
+    def _bound_values(self, **selection: Any) -> tuple[BoundValue, ...]:
+        """Bind the fitted parameters and the energy RMSE to property definitions."""
+        return _bind_fields(self, selection, _EOS_BINDINGS)
 
     def energy(self, volume: float) -> float:
         """Evaluate the fitted energy at a positive volume.
@@ -71,9 +78,9 @@ class BirchMurnaghanFit:
         """
         query = _positive_scalar(volume, "volume")
         eta_minus_one = _eta_minus_one(self.equilibrium_volume, query)
-        prediction = self.equilibrium_energy + (9.0 * self.equilibrium_volume * self.bulk_modulus / 16.0) * (
-            2.0 * eta_minus_one**2 + (self.bulk_modulus_derivative - 4.0) * eta_minus_one**3
-        )
+        prediction = self.equilibrium_energy + (
+            9.0 * self.equilibrium_volume * self.bulk_modulus / GPA_PER_EV_PER_A3 / 16.0
+        ) * (2.0 * eta_minus_one**2 + (self.bulk_modulus_derivative - 4.0) * eta_minus_one**3)
         if not math.isfinite(prediction):
             raise ValueError("fitted energy is non-finite at the requested volume")
         return prediction
@@ -85,7 +92,7 @@ class BirchMurnaghanFit:
         outside the sampled interval is not validated.
 
         :param volume: Query volume in angstrom³.
-        :return: Predicted pressure in eV/angstrom³.
+        :return: Predicted pressure in GPa.
         :raises ValueError: If ``volume`` is not a positive finite scalar or the prediction is non-finite.
         """
         query = _positive_scalar(volume, "volume")
@@ -209,7 +216,7 @@ def fit_birch_murnaghan(volumes: Sequence[float], energies: Sequence[float]) -> 
     return BirchMurnaghanFit(
         equilibrium_volume=equilibrium_volume,
         equilibrium_energy=equilibrium_energy,
-        bulk_modulus=bulk_modulus,
+        bulk_modulus=bulk_modulus * GPA_PER_EV_PER_A3,
         bulk_modulus_derivative=bulk_modulus_derivative,
         volumes=volume_values,
         energies=energy_values,

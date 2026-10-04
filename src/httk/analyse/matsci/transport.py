@@ -6,12 +6,14 @@ from dataclasses import dataclass
 from typing import Any, Literal
 
 import numpy as np
+from httk.core import definition_ids
 
+from .. import definitions as defs
+from .._constants import GPA_PER_EV_PER_A3, KB_EV_PER_K
+from ..definitions import BoundValue, FieldBinding
 from .dynamics import _array
 
 __all__ = ["ReplicaTransport", "TransportResult", "replica_transport", "thermal_conductivity", "viscosity"]
-
-_KB_EV = 1.380649e-23 / 1.602176634e-19
 
 
 @dataclass(frozen=True, slots=True)
@@ -21,10 +23,9 @@ class TransportResult:
     :param times: Lag times in ps.
     :param components: Tensor/component names in row order.
     :param correlations: Dimensionful correlations before physical prefactors.
-    :param integrals: Running transport coefficients in the declared unit.
+    :param integrals: Running transport coefficients in the unit of the ``quantity`` definition.
     :param counts: Number of time origins at each lag.
-    :param quantity: Thermal conductivity or shear viscosity.
-    :param unit: W/(m*K) or Pa*s.
+    :param quantity: ``thermal_conductivity`` (integrals in W/(m K)) or ``viscosity`` (shear viscosity, integrals in Pa s).
     :param temperature: Equilibrium temperature in K.
     :param volume: Fixed cell volume in angstrom³.
     :param remove_mean: Whether the time mean of each input component was removed.
@@ -36,7 +37,6 @@ class TransportResult:
     integrals: tuple[tuple[float, ...], ...]
     counts: tuple[int, ...]
     quantity: Literal["thermal_conductivity", "viscosity"]
-    unit: str
     temperature: float
     volume: float
     remove_mean: bool
@@ -56,6 +56,21 @@ class TransportResult:
         indices = (0, 4, 8) if self.quantity == "thermal_conductivity" else (0, 1, 2)
         return tuple(sum(row[i] for i in indices) / 3 for row in self.integrals)
 
+    def _bound_values(self, *, lag_index: int, **selection: Any) -> tuple[BoundValue, ...]:
+        r"""Bind the coefficients at the caller-chosen plateau lag, plus temperature and volume.
+
+        :param lag_index: Explicit plateau lag index into ``integrals``; no plateau is inferred.
+        :param \*\*selection: Unsupported further keywords, rejected.
+        :return: The bound values.
+        :raises TypeError: If unsupported keywords are given.
+        :raises ValueError: If ``lag_index`` is not a valid lag index.
+        """
+        return (
+            *_lag_values("integrals", self.quantity, self.integrals, lag_index, None, selection),
+            BoundValue("temperature", FieldBinding(definition_ids.TEMPERATURE), self.temperature),
+            BoundValue("volume", FieldBinding(definition_ids.VOLUME), self.volume),
+        )
+
 
 @dataclass(frozen=True, slots=True)
 class ReplicaTransport:
@@ -66,7 +81,6 @@ class ReplicaTransport:
     :param mean: Replica-mean running coefficients.
     :param standard_error: Sample standard deviation divided by sqrt(replica count).
     :param replicas: Number of independent replicas.
-    :param unit: Coefficient unit.
     """
 
     times: tuple[float, ...]
@@ -74,7 +88,6 @@ class ReplicaTransport:
     mean: tuple[tuple[float, ...], ...]
     standard_error: tuple[tuple[float, ...], ...]
     replicas: int
-    unit: str
 
     def __post_init__(self) -> None:
         """Copy nested replica summaries into immutable tuples."""
@@ -83,6 +96,26 @@ class ReplicaTransport:
         for name in ("mean", "standard_error"):
             values = _array(getattr(self, name), name)
             object.__setattr__(self, name, tuple(tuple(float(v) for v in row) for row in values))
+
+    def _bound_values(self, *, lag_index: int, **selection: Any) -> tuple[BoundValue, ...]:
+        r"""Bind the replica mean and standard error at the caller-chosen plateau lag.
+
+        The quantity follows from ``components`` (nine Cartesian pairs for
+        thermal conductivity, three shear pairs for viscosity).
+
+        :param lag_index: Explicit plateau lag index; no plateau is inferred.
+        :param \*\*selection: Unsupported further keywords, rejected.
+        :return: The bound values, all qualified by a derivation.
+        :raises TypeError: If unsupported keywords are given.
+        :raises ValueError: If ``lag_index`` is not a valid lag index.
+        """
+        quantity: Literal["thermal_conductivity", "viscosity"] = (
+            "thermal_conductivity" if len(self.components) == 9 else "viscosity"
+        )
+        return (
+            *_lag_values("mean", quantity, self.mean, lag_index, defs.MEAN, selection),
+            *_lag_values("standard_error", quantity, self.standard_error, lag_index, defs.STANDARD_ERROR, selection),
+        )
 
 
 def thermal_conductivity(
@@ -119,7 +152,7 @@ def thermal_conductivity(
     correlation = np.asarray([data[: len(data) - lag].T @ data[lag:] / (len(data) - lag) for lag in range(max_lag + 1)])
     correlation = correlation.reshape(max_lag + 1, 9)
     # eV/(angstrom*ps*K) -> J/(metre*second*K).
-    factor = 1.602176634e3 / (_KB_EV * t * t * v)
+    factor = 1.602176634e3 / (KB_EV_PER_K * t * t * v)
     return _result(correlation, len(data), dt, t, v, remove_mean, factor, "thermal_conductivity")
 
 
@@ -138,11 +171,11 @@ def viscosity(
     equilibrium temperature. The isotropic result averages only these three
     shear components; the five-component traceless (Daivis-Evans) estimator is
     not implemented, and the result is not a complete anisotropic fourth-rank
-    viscosity tensor. Stress must be tensile-positive in eV/angstrom³. The LAMMPS
+    viscosity tensor. Stress must be tensile-positive in GPa. The LAMMPS
     pressure tensor is compressive-positive and in bar: negate it and multiply by
-    1e5/(1.602176634e-19*1e30) = 6.241509e-7 to get eV/angstrom³.
+    1e-4 to get GPa.
 
-    :param stresses: Symmetric tensile-positive (samples,3,3) stress in eV/angstrom³.
+    :param stresses: Symmetric tensile-positive (samples,3,3) stress in GPa.
     :param timestep: Uniform sample spacing in ps.
     :param temperature: Positive equilibrium temperature in K.
     :param volume: Positive fixed cell volume in angstrom³.
@@ -158,20 +191,21 @@ def viscosity(
         or not np.allclose(tensor, tensor.swapaxes(1, 2), rtol=1e-12, atol=1e-12)
     ):
         raise ValueError("stresses require symmetric (samples,3,3) tensors")
+    tensor = tensor / GPA_PER_EV_PER_A3
     data = np.stack((tensor[:, 0, 1], tensor[:, 0, 2], tensor[:, 1, 2]), axis=1)
     data, dt, t, v = _inputs(data, timestep, temperature, volume, max_lag)
     if remove_mean:
         data -= data.mean(axis=0)
     correlation = np.asarray([np.mean(data[: len(data) - lag] * data[lag:], axis=0) for lag in range(max_lag + 1)])
     # eV*ps/angstrom^3 -> Pa*s.
-    factor = 0.1602176634 * v / (_KB_EV * t)
+    factor = 0.1602176634 * v / (KB_EV_PER_K * t)
     return _result(correlation, len(data), dt, t, v, remove_mean, factor, "viscosity")
 
 
 def replica_transport(results: Sequence[TransportResult]) -> ReplicaTransport:
     """Aggregate independent runs or caller-selected decorrelated blocks.
 
-    Equal protocol means the same quantity, units, T, V, lag grid, components and
+    Equal protocol means the same quantity, T, V, lag grid, components and
     centering. Counts may differ. This estimates between-replica standard error;
     it does not prove replica independence or remove truncation/finite-size bias.
     To use blocks, run the estimator separately on each equal-length block with
@@ -187,7 +221,7 @@ def replica_transport(results: Sequence[TransportResult]) -> ReplicaTransport:
     for result in results[1:]:
         if any(
             getattr(result, name) != getattr(first, name)
-            for name in ("times", "components", "quantity", "unit", "temperature", "volume", "remove_mean")
+            for name in ("times", "components", "quantity", "temperature", "volume", "remove_mean")
         ):
             raise ValueError("replica protocols and lag grids must match")
     values = _array([result.integrals for result in results], "replica integrals")
@@ -196,8 +230,35 @@ def replica_transport(results: Sequence[TransportResult]) -> ReplicaTransport:
     if not np.isfinite(mean).all() or not np.isfinite(error).all():
         raise ValueError("replica statistics are not finite")
     return ReplicaTransport(
-        first.times, first.components, tuple(map(tuple, mean)), tuple(map(tuple, error)), len(results), first.unit
+        first.times, first.components, tuple(map(tuple, mean)), tuple(map(tuple, error)), len(results)
     )
+
+
+def _lag_values(
+    field: str,
+    quantity: Literal["thermal_conductivity", "viscosity"],
+    rows: tuple[tuple[float, ...], ...],
+    lag_index: int,
+    derivation: str | None,
+    selection: dict[str, Any],
+) -> tuple[BoundValue, ...]:
+    if selection:
+        raise TypeError(f"transport results take only lag_index, got {', '.join(sorted(selection))}")
+    if isinstance(lag_index, bool) or not isinstance(lag_index, int) or not 0 <= lag_index < len(rows):
+        raise ValueError(f"lag_index must be an integer from 0 through {len(rows) - 1}")
+    row = rows[lag_index]
+    name = f"{field}[{lag_index}]"
+    isotropic_name = f"isotropic[{lag_index}]" if field == "integrals" else f"{field}.isotropic[{lag_index}]"
+    bound = []
+    if quantity == "thermal_conductivity":
+        tensor = [list(row[i : i + 3]) for i in (0, 3, 6)]
+        bound.append(BoundValue(name, FieldBinding(defs.THERMAL_CONDUCTIVITY_TENSOR, derivation), tensor))
+    # Per-component standard errors do not determine the error of their average (covariances are not kept).
+    if derivation != defs.STANDARD_ERROR:
+        indices = (0, 4, 8) if quantity == "thermal_conductivity" else (0, 1, 2)
+        definition = defs.THERMAL_CONDUCTIVITY if quantity == "thermal_conductivity" else defs.SHEAR_VISCOSITY
+        bound.append(BoundValue(isotropic_name, FieldBinding(definition, derivation), sum(row[i] for i in indices) / 3))
+    return tuple(bound)
 
 
 def _inputs(
@@ -234,7 +295,6 @@ def _result(
     components = (
         tuple(i + j for i in "xyz" for j in "xyz") if quantity == "thermal_conductivity" else ("xy", "xz", "yz")
     )
-    unit = "W/(m*K)" if quantity == "thermal_conductivity" else "Pa*s"
     return TransportResult(
         tuple(i * dt for i in range(len(correlation))),
         components,
@@ -242,7 +302,6 @@ def _result(
         tuple(map(tuple, running)),
         tuple(count - i for i in range(len(correlation))),
         quantity,
-        unit,
         temp,
         volume,
         center,

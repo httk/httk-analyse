@@ -7,7 +7,9 @@ from dataclasses import asdict
 from pathlib import Path
 
 import numpy as np
+from httk.core.definition_ids import TOTAL_ENERGY
 
+from httk.analyse.definitions import BULK_MODULUS, EQUILIBRIUM_VOLUME
 from httk.analyse.matsci.eos import fit_birch_murnaghan
 from httk.analyse.matsci.validation import committee_spread, energy_drift, force_energy_consistency, property_parity
 from httk.analyse.summary import analysis_summary
@@ -65,10 +67,13 @@ def main() -> None:
     pred_fit = fit_birch_murnaghan(pv, [float(row["energy_eV"]) for row in predicted])
     parity = {
         "equilibrium_volume": property_parity(
-            [ref_fit.equilibrium_volume], [pred_fit.equilibrium_volume], labels=[args.holdout_group], unit="angstrom^3"
+            [ref_fit.equilibrium_volume],
+            [pred_fit.equilibrium_volume],
+            labels=[args.holdout_group],
+            definition=EQUILIBRIUM_VOLUME,
         ),
         "bulk_modulus": property_parity(
-            [ref_fit.bulk_modulus], [pred_fit.bulk_modulus], labels=[args.holdout_group], unit="eV/angstrom^3"
+            [ref_fit.bulk_modulus], [pred_fit.bulk_modulus], labels=[args.holdout_group], definition=BULK_MODULUS
         ),
     }
     position = np.array([[0.2, 0.0, 0.0]])
@@ -92,7 +97,7 @@ def main() -> None:
     columns = sorted(name for name in committee[0] if name.startswith("prediction_")) if committee else []
     if len(columns) < 2:
         raise ValueError("committee CSV needs at least prediction_1 and prediction_2")
-    spread = committee_spread([[float(row[name]) for row in committee] for name in columns], unit="eV")
+    spread = committee_spread([[float(row[name]) for row in committee] for name in columns], definition=TOTAL_ENERGY)
     result = {
         "reference_eos": asdict(ref_fit),
         "prediction_eos": asdict(pred_fit),
@@ -101,11 +106,13 @@ def main() -> None:
         "nve_drift": asdict(drift),
         "committee_spread": asdict(spread),
     }
+    # Composite summary: nested fields take OPTIMADE unit expressions. Parity and committee
+    # results also carry their property-definition IRI in their ``definition`` field.
     units = {
-        "nve_drift.slope": "eV/atom/ps",
-        "nve_drift.intercept": "eV/atom",
-        "nve_drift.residual_rms": "eV/atom",
-        "nve_drift.endpoint_change": "eV/atom",
+        "nve_drift.slope": "eV*ps^-1",
+        "nve_drift.intercept": "eV",
+        "nve_drift.residual_rms": "eV",
+        "nve_drift.endpoint_change": "eV",
         "nve_drift.start": "ps",
         "nve_drift.stop": "ps",
         "committee_spread.mean": "eV",
@@ -119,13 +126,13 @@ def main() -> None:
                 f"{prefix}.energies": "eV",
                 f"{prefix}.equilibrium_volume": "angstrom^3",
                 f"{prefix}.equilibrium_energy": "eV",
-                f"{prefix}.bulk_modulus": "eV/angstrom^3",
-                f"{prefix}.bulk_modulus_derivative": "1",
+                f"{prefix}.bulk_modulus": "GPa",
+                f"{prefix}.bulk_modulus_derivative": "dimensionless",
                 f"{prefix}.residuals": "eV",
                 f"{prefix}.rmse": "eV",
             }
         )
-    for name, unit in (("equilibrium_volume", "angstrom^3"), ("bulk_modulus", "eV/angstrom^3")):
+    for name, unit in (("equilibrium_volume", "angstrom^3"), ("bulk_modulus", "GPa")):
         prefix = f"eos_parity.{name}"
         units.update({f"{prefix}.{field}": unit for field in ("reference", "predicted", "residuals")})
         units.update(
@@ -136,10 +143,10 @@ def main() -> None:
         )
     for index in range(2):
         prefix = f"harmonic_force_checks[{index}]"
-        units.update({f"{prefix}.{field}": "eV/angstrom" for field in ("reference", "predicted", "residuals")})
+        units.update({f"{prefix}.{field}": "angstrom^-1*eV" for field in ("reference", "predicted", "residuals")})
         units.update(
             {
-                f"{prefix}.statistics.{field}": "eV/angstrom"
+                f"{prefix}.statistics.{field}": "angstrom^-1*eV"
                 for field in ("bias", "mae", "rmse", "maximum_absolute_error", "percentile95_absolute_error")
             }
         )
@@ -153,6 +160,7 @@ def main() -> None:
             "spring_constant_eV_per_angstrom2": args.spring_constant,
             "displacements_angstrom": [args.displacement, args.displacement / 2],
             "atom_count": args.atom_count,
+            "nve_drift_energy_basis": "per atom",
             "ensemble": "NVE",
             "committee_columns": columns,
         },

@@ -3,15 +3,17 @@
 import math
 from collections.abc import Sequence
 from dataclasses import dataclass
-from typing import Literal
+from typing import Any, Literal
 
 import numpy as np
+from httk.core import definition_ids
 
+from .. import definitions as defs
+from .._constants import GPA_PER_EV_PER_A3, KB_EV_PER_K
+from ..definitions import _PROPERTY_BY_NAME, BoundValue, FieldBinding, _reject_selection
 from .dynamics import _array
 
 __all__ = ["EquilibriumResponse", "equilibrium_response"]
-
-_KB_EV = 1.380649e-23 / 1.602176634e-19
 
 
 @dataclass(frozen=True, slots=True)
@@ -19,8 +21,7 @@ class EquilibriumResponse:
     """Fluctuation estimates with optional independent-block error estimates.
 
     :param ensemble: The supplied equilibrium ensemble.
-    :param names: Property names in value order.
-    :param units: Property units in value order.
+    :param names: Property definition names in value order; values are in the units of those definitions.
     :param values: Estimates from all retained samples, using population moments.
     :param temperature: Supplied equilibrium temperature in K.
     :param block_values: Per-block property estimates, when requested.
@@ -31,7 +32,6 @@ class EquilibriumResponse:
 
     ensemble: Literal["NVT", "NPT"]
     names: tuple[str, ...]
-    units: tuple[str, ...]
     values: tuple[float, ...]
     temperature: float
     block_values: tuple[tuple[float, ...], ...]
@@ -42,11 +42,25 @@ class EquilibriumResponse:
     def __post_init__(self) -> None:
         """Copy numeric values and metadata into immutable tuples."""
         object.__setattr__(self, "names", tuple(self.names))
-        object.__setattr__(self, "units", tuple(self.units))
         object.__setattr__(self, "values", tuple(float(v) for v in _array(self.values, "values")))
         object.__setattr__(self, "block_values", tuple(tuple(float(v) for v in row) for row in self.block_values))
         if self.standard_errors is not None:
             object.__setattr__(self, "standard_errors", tuple(float(v) for v in self.standard_errors))
+
+    def _bound_values(self, **selection: Any) -> tuple[BoundValue, ...]:
+        """Bind each named response, the temperature and any block standard errors."""
+        _reject_selection(self, selection)
+        unknown = [name for name in self.names if name not in _PROPERTY_BY_NAME]
+        if unknown:
+            raise ValueError(f"names are not analysis property definitions: {', '.join(unknown)}")
+        bound = [BoundValue(name, FieldBinding(_PROPERTY_BY_NAME[name]), v) for name, v in zip(self.names, self.values)]
+        bound.append(BoundValue("temperature", FieldBinding(definition_ids.TEMPERATURE), float(self.temperature)))
+        if self.standard_errors is not None:
+            bound += (
+                BoundValue(f"standard_errors.{name}", FieldBinding(_PROPERTY_BY_NAME[name], defs.STANDARD_ERROR), v)
+                for name, v in zip(self.names, self.standard_errors)
+            )
+        return tuple(bound)
 
 
 def equilibrium_response(
@@ -90,7 +104,9 @@ def equilibrium_response(
     :param volumes: NPT whole-system volumes in angstrom³, matching enthalpies.
     :param block_size: Optional samples per block, at least two; requires two complete blocks.
     :param remainder: Raise on an incomplete block or explicitly drop the tail.
-    :return: Extensive heat capacity in eV/K and optional NPT kappa/alpha.
+    :return: Values named after property definitions: extensive ``heat_capacity_constant_volume`` or
+        ``heat_capacity_constant_pressure`` in eV/K, ``isothermal_compressibility`` in GPa⁻¹ and
+        ``volumetric_thermal_expansion`` in K⁻¹ (the NPT pair).
     :raises ValueError: If ensemble inputs, temperature, blocks or derived values are invalid.
     """
     temp = _array(temperature, "temperature")
@@ -98,12 +114,11 @@ def equilibrium_response(
         raise ValueError("temperature must be a positive finite scalar")
     t = float(temp)
     names: tuple[str, ...]
-    units: tuple[str, ...]
     if ensemble == "NVT":
         if energies is None or enthalpies is not None or volumes is not None:
             raise ValueError("NVT requires energies only, without enthalpies or volumes")
         values = _array(energies, "energies")
-        names, units = ("heat_capacity_cv",), ("eV/K",)
+        names = ("heat_capacity_constant_volume",)
         volume = None
     elif ensemble == "NPT":
         if enthalpies is None or volumes is None or energies is not None:
@@ -112,8 +127,7 @@ def equilibrium_response(
         volume = _array(volumes, "volumes")
         if volume.shape != values.shape or np.any(volume <= 0):
             raise ValueError("volumes must be positive and match enthalpies")
-        names = ("heat_capacity_cp", "isothermal_compressibility", "volumetric_expansion")
-        units = ("eV/K", "angstrom^3/eV", "1/K")
+        names = ("heat_capacity_constant_pressure", "isothermal_compressibility", "volumetric_thermal_expansion")
     else:
         raise ValueError("ensemble must be NVT or NPT")
     if values.ndim != 1 or len(values) < 2:
@@ -140,13 +154,13 @@ def equilibrium_response(
             raise ValueError("block errors are not finite")
         errors = tuple(float(v) for v in error_values)
     estimate = _response(values[:used], None if volume is None else volume[:used], t)
-    return EquilibriumResponse(ensemble, names, units, estimate, t, blocks, errors, used, dropped)
+    return EquilibriumResponse(ensemble, names, estimate, t, blocks, errors, used, dropped)
 
 
 def _response(energy: np.ndarray, volume: np.ndarray | None, temperature: float) -> tuple[float, ...]:
     centered_energy = energy - energy[0]
     centered_energy -= centered_energy.mean()
-    capacity = float(np.mean(centered_energy**2) / (_KB_EV * temperature**2))
+    capacity = float(np.mean(centered_energy**2) / (KB_EV_PER_K * temperature**2))
     result: tuple[float, ...]
     if volume is None:
         result = (capacity,)
@@ -154,8 +168,10 @@ def _response(energy: np.ndarray, volume: np.ndarray | None, temperature: float)
         mean_volume = float(volume.mean())
         centered_volume = volume - volume[0]
         centered_volume -= centered_volume.mean()
-        compressibility = float(np.mean(centered_volume**2) / (_KB_EV * temperature * mean_volume))
-        expansion = float(np.mean(centered_volume * centered_energy) / (_KB_EV * temperature**2 * mean_volume))
+        compressibility = float(
+            np.mean(centered_volume**2) / (KB_EV_PER_K * temperature * mean_volume) / GPA_PER_EV_PER_A3
+        )
+        expansion = float(np.mean(centered_volume * centered_energy) / (KB_EV_PER_K * temperature**2 * mean_volume))
         result = capacity, compressibility, expansion
     if not all(math.isfinite(value) for value in result):
         raise ValueError("fluctuation responses are not finite")

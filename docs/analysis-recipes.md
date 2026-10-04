@@ -1,7 +1,8 @@
 # Analysis recipes
 
 These commands write canonical JSON summaries with algorithm and software versions,
-declared units and parameters, sample selection, assumptions, and SHA-256 hashes of
+field bindings to property definitions (or OPTIMADE unit expressions for fields
+without one), parameters, sample selection, assumptions, and SHA-256 hashes of
 the source files. The JSON contains numerical results and metadata; trajectory
 frames stay in their source files. Run the commands in an environment with
 *httk-analyse* and its relevant optional dependencies installed. Install
@@ -117,8 +118,15 @@ python examples/store_analysis.py scan.json analysis.sqlite \
 simulation. `--upstream-run-id` can link an already stored run in the same
 database. Entry edges use public IDs minted by that database, and the canonical
 summary retains source checksums. Store revisions preserve the edge content.
-The SQLite file contains only numerical summary JSON and file metadata, never
-source trajectory frames. The ad hoc property definition is local to this
+When the summary's result is a bound result type, such as the EOS fit from
+`volume_scan.py`, the recipe also rebuilds the result and stores
+`httk.analyse.records.records(result)`: one `DataRecord` per scalar property
+(`equilibrium_volume`, `equilibrium_energy`, `bulk_modulus`,
+`bulk_modulus_pressure_derivative`) in its definition's unit, linked to the same
+sources and listed as run outputs. See {doc}`records`. Results whose bindings
+need an explicit selection (transport `lag_index`) are stored as the summary
+only. The SQLite file contains only numerical summary JSON, property records and
+file metadata, never source trajectory frames. The ad hoc property definition is local to this
 recipe and does not change global entry schemas.
 
 ## Scale benchmark

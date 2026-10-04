@@ -4,11 +4,12 @@ import numpy as np
 import pytest
 
 pytest.importorskip("scipy")
+from httk.analyse._constants import GPA_PER_EV_PER_A3
 from httk.analyse.matsci.eos_models import EOSFit, fit_eos
 
 
 def _model(name, bp):
-    return EOSFit(name, 16, -5, 0.7, bp, (), (), (), (), 0, 0, 0)
+    return EOSFit(name, 16, -5, 0.7 * GPA_PER_EV_PER_A3, bp, (), (), (), (), 0, 0, 0)
 
 
 @pytest.mark.parametrize("model", ["birch-murnaghan", "murnaghan", "vinet"])
@@ -20,13 +21,13 @@ def test_recover_parameters_and_pressure_derivative(model, bp):
     fit = fit_eos(volumes, energies, model=model)
     assert fit.equilibrium_volume == pytest.approx(16, abs=1e-7)
     assert fit.equilibrium_energy == pytest.approx(-5, abs=1e-8)
-    assert fit.bulk_modulus == pytest.approx(0.7, abs=1e-7)
+    assert fit.bulk_modulus == pytest.approx(0.7 * GPA_PER_EV_PER_A3, abs=2e-5)
     assert fit.bulk_modulus_derivative == pytest.approx(bp, abs=2e-6)
     for volume in [14.0, 16.0, 18.0]:
         h = 1e-4
         derivative = (fit.energy(volume + h) - fit.energy(volume - h)) / (2 * h)
-        assert fit.pressure(volume) == pytest.approx(-derivative, abs=1e-9)
-    assert fit.bulk_modulus_gpa == pytest.approx(0.7 * 160.2176634)
+        assert fit.pressure(volume) == pytest.approx(-derivative * GPA_PER_EV_PER_A3, abs=2e-7)
+    assert fit.pressure(fit.equilibrium_volume) == pytest.approx(0.0, abs=1e-6)
 
 
 @pytest.mark.parametrize("model", ["murnaghan", "vinet", "birch-murnaghan"])
@@ -82,7 +83,12 @@ def test_noisy_weighted_fit_matches_independent_ase_scipy_fit(name):
     )
     actual = fit_eos(volumes, energies, model=name, weights=1 / sigma**2)
     np.testing.assert_allclose(
-        [actual.equilibrium_energy, actual.bulk_modulus, actual.bulk_modulus_derivative, actual.equilibrium_volume],
+        [
+            actual.equilibrium_energy,
+            actual.bulk_modulus / GPA_PER_EV_PER_A3,
+            actual.bulk_modulus_derivative,
+            actual.equilibrium_volume,
+        ],
         reference,
         rtol=2e-6,
         atol=2e-7,

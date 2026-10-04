@@ -5,6 +5,7 @@ from dataclasses import FrozenInstanceError
 import numpy as np
 import pytest
 
+from httk.analyse._constants import GPA_PER_EV_PER_A3 as G
 from httk.analyse.matsci.elasticity import ElasticTensor, fit_energy_strain, fit_stress_strain
 
 
@@ -105,20 +106,20 @@ def test_stress_fit_recovers_noisy_stiffness_and_offsets_without_mutating_inputs
 def test_energy_fit_recovers_stiffness_and_both_offsets() -> None:
     rng = np.random.default_rng(92)
     basis = rng.normal(size=(6, 6))
-    stiffness = basis.T @ basis + np.eye(6) * 30.0
-    stress_offset = np.array((0.3, -0.1, 0.05, 0.02, -0.02, 0.01))
+    stiffness = (basis.T @ basis + np.eye(6) * 30.0) * G
+    stress_offset = np.array((0.3, -0.1, 0.05, 0.02, -0.02, 0.01)) * G
     energy_offset = -15.0
     volume = 32.0
     strains = rng.uniform(-0.04, 0.04, size=(120, 6))
-    energies = energy_offset + volume * (
+    energies = energy_offset + volume / G * (
         strains @ stress_offset + 0.5 * np.einsum("ni,ij,nj->n", strains, stiffness, strains)
     )
     energies += rng.normal(scale=1e-6, size=len(energies))
 
     fit = fit_energy_strain(strains, energies, volume)
 
-    np.testing.assert_allclose(fit.tensor.stiffness, stiffness, rtol=2e-3, atol=2e-3)
-    assert fit.stress_offset == pytest.approx(stress_offset, abs=2e-5)
+    np.testing.assert_allclose(fit.tensor.stiffness, stiffness, rtol=2e-3, atol=2e-3 * G)
+    assert fit.stress_offset == pytest.approx(stress_offset, abs=2e-5 * G)
     assert fit.energy_offset == pytest.approx(energy_offset, abs=1e-6)
     assert fit.rmse > 0.0
     assert isinstance(fit.residuals, tuple) and isinstance(fit.residuals[0], float)
@@ -127,14 +128,14 @@ def test_energy_fit_recovers_stiffness_and_both_offsets() -> None:
 def test_energy_fit_without_offsets_assumes_zero_reference_and_stress() -> None:
     rng = np.random.default_rng(12)
     basis = rng.normal(size=(6, 6))
-    stiffness = basis.T @ basis + np.eye(6)
+    stiffness = (basis.T @ basis + np.eye(6)) * G
     strains = rng.uniform(-0.1, 0.1, size=(80, 6))
     volume = 10.0
-    energies = volume * 0.5 * np.einsum("ni,ij,nj->n", strains, stiffness, strains)
+    energies = volume / G * 0.5 * np.einsum("ni,ij,nj->n", strains, stiffness, strains)
 
     fit = fit_energy_strain(strains, energies, volume, fit_offset=False)
 
-    np.testing.assert_allclose(fit.tensor.stiffness, stiffness, rtol=1e-10, atol=1e-10)
+    np.testing.assert_allclose(fit.tensor.stiffness, stiffness, rtol=1e-10, atol=1e-10 * G)
     assert fit.energy_offset == 0.0
     assert fit.stress_offset == (0.0,) * 6
 

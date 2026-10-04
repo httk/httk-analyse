@@ -1,6 +1,7 @@
 """Run a synthetic static volume scan and stationary correlated-series analysis."""
 
 import numpy as np
+from httk.core.units import default_registry
 
 from httk.analyse.generic import autocorrelation, block_average
 from httk.analyse.matsci import fit_birch_murnaghan
@@ -16,11 +17,11 @@ def main() -> None:
     energies = e0 + 9.0 * b0 * v0 / 16.0 * (2.0 * strain**2 + (bp - 4.0) * strain**3)
     fit = fit_birch_murnaghan(volumes.tolist(), energies.tolist())
     assert abs(fit.equilibrium_volume - v0) < 1e-8
-    assert abs(fit.bulk_modulus - b0) < 1e-8
+    assert abs(fit.bulk_modulus - default_registry().convert(b0, "angstrom^-3*eV", "GPa")) < 1e-6
     assert abs(fit.bulk_modulus_derivative - bp) < 1e-7
     assert abs(fit.pressure(v0)) < 1e-9
     print(f"Equilibrium volume: {fit.equilibrium_volume:.6f} angstrom^3")
-    print(f"Bulk modulus: {fit.bulk_modulus_gpa:.6f} GPa")
+    print(f"Bulk modulus: {fit.bulk_modulus:.6f} GPa")
     print(f"EOS RMSE: {fit.rmse:.3g} eV")
 
     # AR(1) initialized from its stationary distribution, with unit variance.

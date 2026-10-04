@@ -75,7 +75,7 @@ each temperature. Provide at least five distinct volumes that bracket a stable
 minimum, a common frequency column layout, and at least three strictly
 increasing temperatures. The frequencies and static energies must use the same
 cell or per-atom normalization. If a mode is omitted at one volume, the same
-matched modes must be omitted at every volume. `volumetric_expansion` is
+matched modes must be omitted at every volume. `bulk_moduli` are in GPa. `volumetric_expansion` is
 `(1/V) dV/dT` from `numpy.gradient` on the nonuniform temperature grid, with
 the library's second-order endpoint convention. A `cutoff_frequency` applies the
 same classification at every volume, so Γ noise that changes sign between volumes

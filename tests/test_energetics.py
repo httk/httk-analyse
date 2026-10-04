@@ -4,6 +4,7 @@ from dataclasses import FrozenInstanceError
 
 import pytest
 
+from httk.analyse._constants import GPA_PER_EV_PER_A3
 from httk.analyse.matsci.energetics import (
     ChemicalPotentialRegion,
     ConvergenceTable,
@@ -141,10 +142,12 @@ def test_chemical_potential_region_allows_host_equality_without_competitors() ->
 def test_enthalpy_uses_positive_compression_pressure_and_scalar_broadcast() -> None:
     energies = [-2.0, -2.0]
     volumes = [10.0, 12.0]
-    result = enthalpy(energies, volumes, 0.1)
+    result = enthalpy(energies, volumes, 0.1 * GPA_PER_EV_PER_A3)
     assert result == pytest.approx((-1.0, -0.8))
     assert energies == [-2.0, -2.0]
-    assert enthalpy([-2.0, -2.0], [10.0, 12.0], [0.1, -0.1]) == pytest.approx((-1.0, -3.2))
+    assert enthalpy([-2.0, -2.0], [10.0, 12.0], [0.1 * GPA_PER_EV_PER_A3, -0.1 * GPA_PER_EV_PER_A3]) == pytest.approx(
+        (-1.0, -3.2)
+    )
 
 
 @pytest.mark.parametrize(

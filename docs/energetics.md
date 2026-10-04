@@ -83,10 +83,7 @@ assert region.contains({"A": -1.0, "B": -2.0})
 ## Pressure enthalpy
 
 `enthalpy` computes `E + P*V`. Use eV for energy, angstrom³ for volume, and
-eV/angstrom³ for pressure; no unit conversion is applied. Convert
-GPa with 1 GPa = 1/160.2176634 eV/angstrom³ (unconverted GPa values are ×160.2
-too large, kbar values ×1602), and note that VASP prints pressure in kB, where
-1 kB = 0.1 GPa. Pressure is positive under compression, so it is
+GPa for pressure (VASP prints pressure in kB; multiply by 0.1 to get GPa). Pressure is positive under compression, so it is
 the negative volume derivative of energy under the usual convention. A scalar
 pressure broadcasts across the input rows; vector pressures must match the
 energy and volume vectors. Decide whether structures, branches, and electronic
@@ -100,7 +97,7 @@ from httk.analyse.matsci.energetics import enthalpy
 values = enthalpy(
     energies=(-2.0, -2.0),
     volumes=(10.0, 12.0),
-    pressures=0.1,
+    pressures=16.02176634,  # GPa, equal to 0.1 eV/angstrom³
 )
 assert all(isclose(actual, expected) for actual, expected in zip(values, (-1.0, -0.8)))
 ```

@@ -32,20 +32,14 @@ def main() -> None:
     analysis_summary(
         fit,
         algorithm=f"httk.analyse.matsci.{'eos.fit_birch_murnaghan' if args.model == 'algebraic-bm3' else 'eos_models.fit_eos'}",
+        # Fitted parameters carry property definitions (see ``fields``); only the unbound
+        # input/diagnostic series need OPTIMADE unit expressions.
         units={
             "volumes": "angstrom^3",
             "energies": "eV",
-            "equilibrium_volume": "angstrom^3",
-            "equilibrium_energy": "eV",
-            "bulk_modulus": "eV/angstrom^3",
-            "bulk_modulus_derivative": "1",
             "residuals": "eV",
-            "rmse": "eV",
-            **(
-                {"weighted_rmse": "eV", "weights": "1", "condition_number": "1"}
-                if args.model != "algebraic-bm3"
-                else {}
-            ),
+            "condition_number": "dimensionless",
+            **({"weighted_rmse": "eV", "weights": "dimensionless"} if args.model != "algebraic-bm3" else {}),
         },
         parameters={"model": args.model, "energy_basis": "total energy per structure"},
         selection={"rows": len(rows), "order": "CSV row order"},

@@ -142,6 +142,8 @@ def test_arrhenius_fit_recovers_exact_line_with_orthogonal_noise() -> None:
         for temperature, error in zip(temperatures, noise, strict=True)
     )
     fit = fit_arrhenius(temperatures, rates, rate_unit="ps^-1")
+    with pytest.raises(ValueError):
+        fit_arrhenius(temperatures, rates, rate_unit="1/s")
     assert fit.activation_energy == pytest.approx(activation, rel=1e-11)
     assert fit.prefactor == pytest.approx(prefactor, rel=1e-11)
     assert fit.log_residuals == pytest.approx(noise, abs=1e-11)

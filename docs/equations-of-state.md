@@ -11,9 +11,9 @@ from httk.analyse.matsci import fit_birch_murnaghan
 # volumes: angstrom³; energies: eV, both per cell or both per atom.
 fit = fit_birch_murnaghan(volumes, energies)
 print(fit.equilibrium_volume, fit.equilibrium_energy)
-print(fit.bulk_modulus_gpa, fit.bulk_modulus_derivative)
+print(fit.bulk_modulus, fit.bulk_modulus_derivative)
 print(fit.rmse, fit.residuals)
-pressure_ev_per_a3 = fit.pressure(fit.equilibrium_volume)
+pressure = fit.pressure(fit.equilibrium_volume)  # GPa
 ```
 
 ## Prepare a consistent volume scan
@@ -45,10 +45,9 @@ scaled linear least squares, then derives the equilibrium parameters. It
 requires a stable minimum strictly inside the sampled volume interval. Invalid
 or rank-deficient inputs and absent interior minima raise `ValueError`.
 
-- `bulk_modulus` and `pressure(volume)` use eV/angstrom³. Pressure is positive
-  under compression and equals $-dE/dV$.
-- `bulk_modulus_gpa` multiplies by 160.2176634. `bulk_modulus_derivative` is
-  dimensionless, $dB/dP$ at equilibrium.
+- `bulk_modulus` and `pressure(volume)` are in GPa (energies eV, volumes
+  angstrom³). Pressure is positive under compression and equals $-dE/dV$.
+- `bulk_modulus_derivative` is dimensionless, $dB/dP$ at equilibrium.
 - `residuals` are observed minus predicted energies in original input order;
   `rmse` is their root mean square in eV.
 - `condition_number` describes the **scaled polynomial design**. It measures
@@ -83,7 +82,7 @@ energies = -4.0 + 0.02 * (volumes - 16.0)**2
 models = [fit_eos(volumes, energies, model=name)
           for name in ("birch-murnaghan", "murnaghan", "vinet")]
 for fitted in models:
-    print(fitted.model, fitted.equilibrium_volume, fitted.bulk_modulus_gpa,
+    print(fitted.model, fitted.equilibrium_volume, fitted.bulk_modulus,
           fitted.rmse)
 ```
 

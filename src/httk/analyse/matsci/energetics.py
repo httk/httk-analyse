@@ -7,6 +7,10 @@ from typing import Any, cast
 
 import numpy as np
 
+from .. import definitions as defs
+from .._constants import GPA_PER_EV_PER_A3
+from ..definitions import BoundValue, FieldBinding, _bind_fields
+
 __all__ = [
     "ChemicalPotentialRegion",
     "ConvergenceTable",
@@ -73,6 +77,10 @@ class FormationEnergy:
             object.__setattr__(self, name, _finite_scalar(getattr(self, name), name))
         if self.atom_count <= 0:
             raise ValueError("atom_count must be positive")
+
+    def _bound_values(self, **selection: Any) -> tuple[BoundValue, ...]:
+        """Bind the per-atom formation energy to its property definition."""
+        return _bind_fields(self, selection, {"per_atom": FieldBinding(defs.FORMATION_ENERGY_PER_ATOM)})
 
 
 @dataclass(frozen=True, slots=True)
@@ -298,16 +306,14 @@ def enthalpy(
     """Return static ``E + P*V`` values in eV.
 
     Energies use eV and volumes use angstrom³ on the same extensive basis.
-    Pressure MUST be given in eV/angstrom³, positive under compression; no unit
-    conversion is applied. 1 GPa = 1/160.2176634 eV/angstrom³ (GPa values are
-    ×160.2 too large, kbar values ×1602 too large, if passed unconverted); VASP
-    prints pressure in kB, where 1 kB = 0.1 GPa. A scalar pressure
+    Pressure is in GPa, positive under compression; VASP prints pressure in
+    kB, so multiply those values by 0.1 to get GPa. A scalar pressure
     broadcasts to all rows; a pressure vector must match the energy and volume
     vectors. The caller must decide whether each branch is comparable.
 
     :param energies: Non-empty one-dimensional total energies in eV.
     :param volumes: Matching positive volumes in angstrom³.
-    :param pressures: Scalar pressure or matching one-dimensional pressures.
+    :param pressures: Scalar pressure or matching one-dimensional pressures in GPa.
     :return: Enthalpies in input order as an immutable tuple.
     :raises ValueError: If arrays have invalid shape, values, or lengths.
     """
@@ -324,7 +330,7 @@ def enthalpy(
         if len(pressure_values) != len(energy_values):
             raise ValueError("pressure vector must match energies and volumes")
     result = tuple(
-        energy + pressure * volume
+        energy + pressure / GPA_PER_EV_PER_A3 * volume
         for energy, pressure, volume in zip(energy_values, pressure_values, volume_values, strict=True)
     )
     if not all(math.isfinite(value) for value in result):
