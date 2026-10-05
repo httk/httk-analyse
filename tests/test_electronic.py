@@ -175,7 +175,7 @@ def test_dielectric_summary_binding_requires_kind() -> None:
     assert (static.binding.definition, static.value) == (defs.STATIC_RELATIVE_PERMITTIVITY, 2.0)
     (high,) = _checked(summary, kind="high_frequency")
     assert high.binding.definition == defs.HIGH_FREQUENCY_RELATIVE_PERMITTIVITY
-    assert records(summary, kind="static")[0].name == "static_relative_permittivity"
+    assert records(summary, kind="static")[0].definition_id == defs.STATIC_RELATIVE_PERMITTIVITY
     with pytest.raises(TypeError):
         bound_values(summary)
     with pytest.raises(ValueError, match="kind"):
@@ -197,4 +197,4 @@ def test_effective_mass_and_magnetic_moment_bindings() -> None:
     (total,) = _checked(moments)
     assert total.binding.definition == defs.TOTAL_MAGNETIC_MOMENT
     assert total.value == [1.5, 2.0, 0.0]
-    assert records(moments)[0].name == "total_magnetic_moment"
+    assert records(moments)[0].definition_id == defs.TOTAL_MAGNETIC_MOMENT

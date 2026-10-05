@@ -4,12 +4,13 @@ from dataclasses import FrozenInstanceError
 
 import numpy as np
 import pytest
-from httk.core import DerivedDataRecord, load_property_definition
+from httk.core import load_property_definition
 from httk.core.definition_ids import ATOMIC_FORCE, STRESS_TENSOR
 from httk.core.storage import content_id
 
 from httk.analyse import definitions as defs
 from httk.analyse.matsci.mlip import energy_errors, force_errors, stress_errors
+from httk.analyse.property_records import DERIVED_RECORD_KINDS, TotalEnergyPerAtomRmseRecord
 from httk.analyse.records import bound_values, records
 
 
@@ -181,7 +182,7 @@ def test_energy_error_derivations_bind_raw_only_and_summaries_are_added() -> Non
     assert [b.value for b in derived] == pytest.approx([3.125**0.5, 1.25, 1.25, 2.5])
     made = _check_all(result)
     assert (made[0].definition_id, made[0].derivation) == (defs.TOTAL_ENERGY_PER_ATOM, defs.RMSE)
-    assert isinstance(made[0], DerivedDataRecord)
+    assert type(made[0]) is TotalEnergyPerAtomRmseRecord
 
 
 def test_energy_raw_and_corrected_summaries_are_distinct_values() -> None:
@@ -207,7 +208,7 @@ def test_atom_weighted_energy_binds_summary_only(caplog) -> None:
     with caplog.at_level("WARNING", logger="httk.analyse.records"):
         made = _check_all(result)
     assert caplog.text == ""
-    assert len(made) == 1 and not isinstance(made[0], DerivedDataRecord)
+    assert len(made) == 1 and made[0].derivation is None
     (summary,) = bound_values(result)
     assert summary.value["weighting"] == "atom"
     assert summary.value["rmse"] == pytest.approx((0.2 * 0 + 0.8 * 2.5**2) ** 0.5)
@@ -247,7 +248,7 @@ def test_force_configuration_weighting_binds_summary_only() -> None:
     assert len(_check_all(result)) == 1
     atom = force_errors(*forces, species=[["Si", "Si"]], weighting="atom")
     made = _check_all(atom)
-    assert len(made) == 5 and all(isinstance(r, DerivedDataRecord) for r in made[:4])
+    assert len(made) == 5 and all(type(r) is DERIVED_RECORD_KINDS[ATOMIC_FORCE, r.derivation] for r in made[:4])
     assert {r.definition_id for r in made[:4]} == {ATOMIC_FORCE}
     assert tuple(r.derivation for r in made[:4]) == _DERIVATIONS
     assert bound_values(atom)[2].value == pytest.approx([0.0, 1.0, 1.5])  # bias

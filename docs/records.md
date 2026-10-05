@@ -11,15 +11,23 @@ new property.
 ## Records
 
 `httk.analyse.records.records(result, *, product_of=(), **selection)` returns one
-record per bound value of a result, each checked against its definition first.
-A property value (scalar, fixed-size or a series) becomes an
-`httk.core.DataRecord`; a statistic of a property becomes an
-`httk.core.DerivedDataRecord` whose `definition_id` and `name` are the base
-property's and whose `derivation` is the derivation-term IRI:
+checked record per bound value of a result. A property value becomes the typed
+record kind generated from its definition: `httk.analyse.property_records` has
+one per analyse definition (`BulkModulusRecord`, `EnergyPredictionErrorsRecord`,
+...), `httk.core.property_records` the core ones (`TemperatureRecord`,
+`VolumeRecord`, ...), and total energy uses `httk.core.TotalEnergyRecord`. A
+typed record's `definition_id` is the definition IRI and its `value` the value
+shaped as the definition says. A statistic of a fixed base property becomes its
+generated statistic kind (`TotalEnergyRmseRecord`,
+`TotalEnergyPerAtomMaeRecord`, ...), whose `definition_id` is the base IRI and
+whose `derivation` is the derivation-term IRI. A statistic of a caller-chosen base
+(`PropertyParity`) becomes an `httk.core.DerivedDataRecord` with the same
+`definition_id` and `derivation`. A null value becomes a generic
+`httk.core.DataRecord`, the catch-all that keeps a value as JSON:
 
 ```python
 import numpy as np
-from httk.core import DerivedDataRecord
+from httk.core.definition_ids import TOTAL_ENERGY
 from httk.core.units import default_registry
 from httk.analyse import definitions as defs
 from httk.analyse.matsci import fit_birch_murnaghan
@@ -30,12 +38,42 @@ strain = (10.0 / volumes) ** (2 / 3) - 1
 energies = -5.0 + 9 * 10.0 * 0.2 / 16 * (2 * strain**2 + 0.5 * strain**3)
 fit = fit_birch_murnaghan(volumes, energies)
 made = records(fit)
-assert [record.name for record in made] == [
-    "equilibrium_volume", "equilibrium_energy", "bulk_modulus", "bulk_modulus_pressure_derivative", "total_energy",
+assert [type(record).__name__ for record in made] == [
+    "EquilibriumVolumeRecord", "EquilibriumEnergyRecord", "BulkModulusRecord", "BulkModulusPressureDerivativeRecord",
+    "TotalEnergyRmseRecord",
 ]
-assert isinstance(made[-1], DerivedDataRecord) and made[-1].derivation == defs.RMSE
+assert made[2].definition_id == defs.BULK_MODULUS and made[2].value == fit.bulk_modulus
+assert (made[-1].definition_id, made[-1].derivation, made[-1].value) == (TOTAL_ENERGY, defs.RMSE, fit.rmse)
 # Input energies use eV and angstrom^3; the fitted bulk modulus is in GPa.
 assert abs(fit.bulk_modulus - default_registry().convert(0.2, "angstrom^-3*eV", "GPa")) < 1e-6
+```
+
+A store serves each typed value as the OPTIMADE property `_httk_<name>` and
+filters on it: scalars compare (`_httk_bulk_modulus > 100`; float equality is
+exact), dictionary members filter by nested name
+(`_httk_energy_prediction_errors.weighting = "configuration" AND _httk_energy_prediction_errors.rmse < 0.005`),
+one-dimensional list members take `HAS`, `HAS ALL`, `HAS ANY` and `HAS ONLY`, and
+`LENGTH` is the outer length of a list. A statistic kind is served as
+`_httk_<base>_<derivation>` (`_httk_total_energy_per_atom_rmse < 0.005`) under an
+ad-hoc definition synthesized from the base, which is not a published
+definition. Generic `DataRecord` and `DerivedDataRecord` values are not served.
+A store declares the kinds it holds in the records family; declaring all
+generated kinds is fine, and reopening an existing store with a longer
+declaration and `upgrade=True` adds kinds (an additive change). With
+*httk-store* installed:
+
+```python
+from httk.core import DataRecord, DataRecordEntry
+from httk.store import EntryIdScheme
+from httk.store.backend.sql import Backend, SqlStore
+
+kinds = (DataRecord, *dict.fromkeys(type(record) for record in made))
+with Backend.sqlite() as database:
+    store = SqlStore(database, entry_records={DataRecordEntry: kinds}, entry_ids=EntryIdScheme("example", "1"))
+    for record in made:
+        store.save(record)
+    searchers = store.stored_property_plan(DataRecordEntry).filter_searchers("_httk_bulk_modulus > 20")
+    assert [row[0].value for searcher in searchers for row in searcher.results()] == [fit.bulk_modulus]
 ```
 
 `bound_values(result, **selection)` lists every binding as
@@ -53,7 +91,8 @@ compliance, Voigt/Reuss/Hill moduli, universal anisotropy), `FormationEnergy`,
 `BandEdges` (gaps are 0.0 for a metal), `EquilibriumResponse`,
 `HarmonicThermodynamics`, `QuasiHarmonicResult`, `DiffusionFit`,
 `TensorSeries`, `RadialDistribution`, `TransportResult`, `ReplicaTransport`,
-`PropertyParity` (statistics of its `definition`), `ElasticFit` (delegates to
+`PropertyParity` (statistics of its `definition`, as `DerivedDataRecord`),
+`ElasticFit` (delegates to
 its `tensor`, so an unstable or singular tensor raises as `ElasticTensor` does),
 `GruneisenFit`, `ChemicalPotentialRegion`, `PhaseDiagram` and
 `httk.analyse.integrations.vasp.VaspDOS` (spin-summed or one collinear spin channel).
@@ -122,13 +161,11 @@ edge than `g` value, otherwise `ValueError` is raised; a non-collinear `VaspDOS`
 is not bound.
 
 ```python
-import json
-
 from httk.analyse.matsci import harmonic_thermodynamics
 
 result = harmonic_thermodynamics([2.0, 4.0], [0.0, 300.0])
-series = {record.name: record for record in records(result)}["vibrational_thermodynamics"]
-assert sorted(json.loads(series.value_json)) == [
+series = {record.definition_id: record for record in records(result)}[defs.VIBRATIONAL_THERMODYNAMICS]
+assert sorted(series.value) == [
     "entropies", "heat_capacities", "helmholtz_free_energies", "internal_energies", "temperatures",
 ]
 ```
@@ -141,22 +178,23 @@ always records its running-integral series, temperature and volume; with
 coefficients:
 
 ```python
+from httk.core.definition_ids import TEMPERATURE, VOLUME
 from httk.analyse.matsci import thermal_conductivity
 
 current = np.random.default_rng(0).normal(size=(40, 3))
 result = thermal_conductivity(current, 0.01, temperature=300, volume=125, max_lag=6)
-assert [record.name for record in records(result)] == [
-    "thermal_conductivity_running_integral", "temperature", "volume",
+assert [type(record).__name__ for record in records(result)] == [
+    "ThermalConductivityRunningIntegralRecord", "TemperatureRecord", "VolumeRecord",
 ]
-recorded = {record.name for record in records(result, lag_index=4)}
+recorded = {record.definition_id for record in records(result, lag_index=4)}
 assert recorded == {
-    "thermal_conductivity_running_integral", "thermal_conductivity_tensor", "thermal_conductivity",
-    "temperature", "volume",
+    defs.THERMAL_CONDUCTIVITY_RUNNING_INTEGRAL, defs.THERMAL_CONDUCTIVITY_TENSOR, defs.THERMAL_CONDUCTIVITY,
+    TEMPERATURE, VOLUME,
 }
 ```
 
 A `ReplicaTransport` requires `lag_index=` and records the replica mean and
-standard error at that lag as derived data records (`MEAN`, `STANDARD_ERROR`).
+standard error at that lag as statistic kinds (`MEAN`, `STANDARD_ERROR`).
 Omitting it raises `TypeError`, and an index outside the lag grid raises
 `ValueError`.
 

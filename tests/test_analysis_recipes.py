@@ -51,16 +51,19 @@ def test_real_sqlite_reopen(tmp_path: Path) -> None:
     stored = json.loads(_command("store_analysis.py", summary, tmp_path / "analysis.sqlite").stdout)
     assert stored["record_id"] and stored["run_id"] and len(stored["file_ids"]) == 1
     fit = json.loads(summary.read_text(encoding="utf-8"))["result"]
+    # Keyed by binding field name; the example verifies each record after reopening the store.
     assert sorted(stored["properties"]) == [
         "bulk_modulus",
-        "bulk_modulus_pressure_derivative",
+        "bulk_modulus_derivative",
         "equilibrium_energy",
         "equilibrium_volume",
-        "total_energy",  # the RMSE of the fit, a derived data record of total_energy
+        "rmse",  # a TotalEnergyRmseRecord statistic of total_energy
     ]
-    assert json.loads(stored["properties"]["bulk_modulus"]) == fit["bulk_modulus"]
-    # The example reopens the store and verifies each record by its own type (DataRecord or DerivedDataRecord).
-    assert json.loads(stored["properties"]["total_energy"]) == fit["rmse"]
+    assert stored["properties"]["bulk_modulus"] == fit["bulk_modulus"]
+    assert stored["properties"]["rmse"] == fit["rmse"]
+    # Typed records are served: the example filters on one and finds its stored record.
+    assert stored["filter"]["query"] == "_httk_equilibrium_volume IS KNOWN"
+    assert len(stored["filter"]["matched_ids"]) == 1
     linked = json.loads(
         _command(
             "store_analysis.py",

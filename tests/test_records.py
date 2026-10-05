@@ -5,8 +5,10 @@ import json
 
 import numpy as np
 import pytest
-from httk.core import DataRecord, DerivedDataRecord, load_property_definition
+from httk.core import DataRecord, DerivedDataRecord, RunEdge, TotalEnergyRecord, load_property_definition
 from httk.core.definition_ids import TEMPERATURE, TOTAL_ENERGY, VOLUME
+from httk.core.property_records import RECORD_KINDS as CORE_KINDS
+from httk.core.property_records import TemperatureRecord, VolumeRecord
 
 from httk.analyse import definitions as defs
 from httk.analyse._constants import M2_PER_S_PER_A2_PER_PS
@@ -37,6 +39,10 @@ from httk.analyse.matsci import (
     velocity_autocorrelation,
     viscosity,
 )
+from httk.analyse.matsci.mlip import energy_errors, force_errors, stress_errors
+from httk.analyse.property_records import DERIVED_RECORD_KINDS as DERIVED_KINDS
+from httk.analyse.property_records import RECORD_KINDS as ANALYSE_KINDS
+from httk.analyse.property_records import ThermalConductivityTensorStandardErrorRecord, TotalEnergyRmseRecord
 from httk.analyse.records import bound_values, records
 
 
@@ -68,8 +74,8 @@ def _heat(seed=0):
     )
 
 
-def _stress():
-    noise = np.random.default_rng(1).normal(size=(30, 3, 3))
+def _stress(seed=1):
+    noise = np.random.default_rng(seed).normal(size=(30, 3, 3))
     return viscosity(noise + noise.swapaxes(1, 2), 0.1, temperature=100, volume=10, max_lag=3)
 
 
@@ -125,8 +131,36 @@ CASES = {
     "conductivity": (_heat, {"lag_index": 4}, 0),
     "viscosity": (_stress, {"lag_index": 2}, 0),
     "replica": (lambda: replica_transport([_heat(0), _heat(1)]), {"lag_index": 4}, 3),
+    "nvt": (
+        lambda: equilibrium_response(
+            temperature=100, ensemble="NVT", energies=[1.0, 2.0, 1.5, 2.5, 1.2, 2.2, 1.7, 2.6], block_size=4
+        ),
+        {},
+        1,
+    ),
+    "energy_errors": (lambda: energy_errors([0.0, 0.0], [1.0, 3.0], atom_counts=[1, 1]), {}, 4),
+    "force_errors": (
+        lambda: force_errors([np.zeros((1, 3))], [np.array([[3.0, 4.0, 0.0]])], species=[["Si"]]),
+        {},
+        4,
+    ),
+    "stress_errors": (lambda: stress_errors(np.zeros((1, 3, 3)), np.eye(3)[None] * 2.0), {}, 4),
+    "replica_viscosity": (lambda: replica_transport([_stress(1), _stress(2)]), {"lag_index": 2}, 1),
     "parity": (lambda: property_parity([1.0, 2.0], [1.5, 1.0], labels=["a", "b"], definition=defs.BULK_MODULUS), {}, 4),
 }
+
+
+def _name(record):
+    """The (base) property name of a record."""
+    return load_property_definition(record.definition_id).name
+
+
+def _statistic(record):
+    return getattr(record, "derivation", None) is not None
+
+
+def _json(value):
+    return json.loads(json.dumps(value))
 
 
 @pytest.mark.parametrize("case", sorted(CASES))
@@ -136,17 +170,51 @@ def test_every_bound_value_is_a_checked_record(case):
     bound = bound_values(result, **selection)
     made = records(result, **selection)
     assert len(made) == len(bound)
-    assert sum(isinstance(record, DerivedDataRecord) for record in made) == derived
+    assert sum(_statistic(record) for record in made) == derived
     for value, record in zip(bound, made, strict=True):
         definition = load_property_definition(value.binding.definition)
         definition.check(value.value)
-        assert record.definition_id == value.binding.definition
-        assert record.name == definition.name
-        assert json.loads(record.value_json) == value.value
+        assert _name(record) == definition.name
+        assert _json(record.value) == _json(value.value)
         if value.binding.derivation is None:
-            assert type(record) is DataRecord
+            iri = value.binding.definition
+            assert type(record) is (ANALYSE_KINDS.get(iri) or CORE_KINDS[iri])
+            assert record.definition_id == iri
         else:
-            assert record.derivation == value.binding.derivation
+            key = (value.binding.definition, value.binding.derivation)
+            # Only a caller-chosen base (PropertyParity) has no generated statistic kind.
+            assert type(record) is (DerivedDataRecord if case == "parity" else DERIVED_KINDS[key])
+            assert (record.definition_id, record.derivation) == key
+
+
+def test_cases_emit_every_generated_statistic_kind():
+    emitted = {
+        (record.definition_id, record.derivation)
+        for name, (factory, selection, _) in CASES.items()
+        if name != "parity"
+        for record in records(factory(), **selection)
+        if _statistic(record)
+    }
+    assert emitted == set(DERIVED_KINDS)
+
+
+def test_core_definitions_yield_core_and_hand_written_records():
+    made = records(_heat(), lag_index=4)
+    assert [type(r) for r in made[-2:]] == [TemperatureRecord, VolumeRecord]
+    assert (made[-2].value, made[-1].value) == (300.0, 125.0)
+
+    class Energy:
+        def _bound_values(self):
+            return (
+                defs.BoundValue("energy", defs.FieldBinding(TOTAL_ENERGY), -3),
+                defs.BoundValue("bulk_modulus", defs.FieldBinding(defs.BULK_MODULUS), None),
+            )
+
+    energy, unknown = records(Energy(), product_of=[RunEdge("source", "runs", "run-1")])
+    assert type(unknown) is DataRecord and unknown.value is None  # A null value has no typed record.
+    assert type(energy) is TotalEnergyRecord
+    assert energy.total_energy == -3.0
+    assert energy.product_of[0].label == "source"
 
 
 def test_every_binding_definition_resolves():
@@ -173,21 +241,21 @@ def test_eos_values_equal_fields():
     assert bound["bulk_modulus"].binding.definition == defs.BULK_MODULUS
     assert bound["rmse"].binding == defs.FieldBinding(TOTAL_ENERGY, derivation=defs.RMSE)
     made = records(fit)
-    assert [r.name for r in made] == [
+    assert [_name(r) for r in made] == [
         "equilibrium_volume",
         "equilibrium_energy",
         "bulk_modulus",
         "bulk_modulus_pressure_derivative",
         "total_energy",
     ]
-    assert isinstance(made[-1], DerivedDataRecord)
+    assert type(made[-1]) is TotalEnergyRmseRecord
     assert (made[-1].definition_id, made[-1].derivation) == (TOTAL_ENERGY, defs.RMSE)
-    assert json.loads(made[-1].value_json) == fit.rmse
+    assert made[-1].value == fit.rmse
 
 
 def test_elastic_tensor_records():
     tensor = _cubic()
-    made = {r.name: json.loads(r.value_json) for r in records(tensor)}
+    made = {_name(r): r.value for r in records(tensor)}
     assert made["elastic_tensor"] == [list(row) for row in tensor.stiffness]
     assert made["bulk_modulus_voigt"] == pytest.approx(490 / 3)
     assert made["universal_anisotropy_index"] == pytest.approx(tensor.universal_anisotropy)
@@ -197,7 +265,7 @@ def test_elastic_tensor_records():
 def test_metal_gaps_are_zero():
     metal = band_edges(((-1, -1), (0, 0), (1, 1)), ((1, 0.5), (0, 0), (0, 0)), maximum_occupation=1, energy_reference=0)
     assert metal.metallic
-    assert {r.name: json.loads(r.value_json) for r in records(metal)} == {"band_gap": 0.0, "direct_band_gap": 0.0}
+    assert {_name(r): r.value for r in records(metal)} == {"band_gap": 0.0, "direct_band_gap": 0.0}
 
 
 def test_equilibrium_response_names_and_standard_errors():
@@ -208,12 +276,12 @@ def test_equilibrium_response_names_and_standard_errors():
         defs.HEAT_CAPACITY_CONSTANT_PRESSURE, derivation=defs.STANDARD_ERROR
     )
     made = records(result)
-    assert [r.name for r in made if type(r) is DataRecord] == [*result.names, "temperature"]
-    assert [r.name for r in made if type(r) is DerivedDataRecord] == list(result.names)
+    assert [_name(r) for r in made if not _statistic(r)] == [*result.names, "temperature"]
+    assert [_name(r) for r in made if _statistic(r)] == list(result.names)
 
 
 def _record_values(result, **selection):
-    return {r.name: json.loads(r.value_json) for r in records(result, **selection) if type(r) is DataRecord}
+    return {_name(r): r.value for r in records(result, **selection) if not _statistic(r)}
 
 
 def test_harmonic_series_is_one_dictionary_record():
@@ -305,14 +373,14 @@ def test_chemical_potential_region_binds_with_and_without_competitors():
     }
     assert len(records(region)) == 1
     alone = records(chemical_potential_region({"A": 1}, -2.0, [], []))
-    assert json.loads(alone[0].value_json)["competing_coefficients"] == []
+    assert alone[0].value["competing_coefficients"] == []
 
 
 def test_elastic_fit_delegates_to_its_tensor():
     strains = np.random.default_rng(3).normal(scale=0.01, size=(20, 6))
     tensor = _cubic()
     fit = fit_stress_strain(strains, strains @ np.asarray(tensor.stiffness).T)
-    assert [r.value_json for r in records(fit)] == [r.value_json for r in records(fit.tensor)]
+    assert [r.value for r in records(fit)] == [r.value for r in records(fit.tensor)]
     with pytest.raises(TypeError):
         records(fit, lag_index=1)
 
@@ -394,13 +462,13 @@ def test_replica_bindings_are_derived_records():
     assert bound["standard_error[4]"].binding.derivation == defs.STANDARD_ERROR
     assert "standard_error.isotropic[4]" not in bound
     error = records(result, lag_index=4)[-1]
-    assert isinstance(error, DerivedDataRecord)
-    assert (error.definition_id, error.derivation, error.name) == (
+    assert type(error) is ThermalConductivityTensorStandardErrorRecord
+    assert (error.definition_id, error.derivation, _name(error)) == (
         defs.THERMAL_CONDUCTIVITY_TENSOR,
         defs.STANDARD_ERROR,
         "thermal_conductivity_tensor",
     )
-    assert np.ravel(json.loads(error.value_json)).tolist() == list(result.standard_error[4])
+    assert np.ravel(error.value).tolist() == list(result.standard_error[4])
     with pytest.raises(TypeError):
         records(result)
 
@@ -420,7 +488,7 @@ def _checked(result):
     (value,) = bound_values(result)
     load_property_definition(value.binding.definition).check(value.value)
     (record,) = records(result)
-    assert json.loads(record.value_json) == value.value
+    assert record.value == value.value
     return value.binding.definition, value.value
 
 

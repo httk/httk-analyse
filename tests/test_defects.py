@@ -242,7 +242,7 @@ def test_surface_energy_is_in_joules_per_square_metre() -> None:
     (bound,) = _checked(shifted)
     assert bound.binding.definition == defs.SURFACE_ENERGY
     assert bound.value == shifted.surface_energy
-    assert records(shifted)[0].name == "surface_energy"
+    assert records(shifted)[0].definition_id == defs.SURFACE_ENERGY
 
 
 def test_neb_and_arrhenius_bind_barriers() -> None:

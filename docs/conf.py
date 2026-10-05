@@ -124,6 +124,19 @@ nitpick_ignore = [
     ("py:class", "typing.Optional"),
     ("py:class", "typing.Union"),
     ("py:class", "Ellipsis"),
+    # AutoAPI renders the storage markers of generated typed-record fields unqualified when it
+    # displays Annotated record fields; the classes are documented in httk-core.
+    ("py:class", "IdentitySkip"),
+    ("py:class", "Indexed"),
+    ("py:class", "Unique"),
+    ("py:class", "StrongLink"),
+    # AutoAPI renders the PEP 695 body of httk.analyse.records.AnalysisRecord unqualified;
+    # its members are documented in httk-core.
+    ("py:class", "TypedRecord"),
+    ("py:class", "TotalEnergyRecord"),
+    ("py:class", "AverageTotalEnergyRecord"),
+    ("py:class", "DataRecord"),
+    ("py:class", "DerivedDataRecord"),
 ]
 copybutton_prompt_text = r">>> |\.\.\. |\$ "
 copybutton_prompt_is_regexp = True

@@ -6,7 +6,7 @@ BENCHMARK_ARGS ?=
 # between httk repositories (read by docs/conf.py via HTTK_DOCS_BASE_URL).
 DOCS_BASE_URL ?= https://docs.httk.org
 
-.PHONY: docs docs-live docs-clean docs-inventories docs-lock docs-lock-check clean dist-clean dist dist-check release-check release-prepare format format-check typecheck typecheck_pyright lint test test_fastfail test-extended test-extended-fastfail benchmark audit
+.PHONY: docs docs-live docs-clean docs-inventories docs-lock docs-lock-check clean dist-clean dist dist-check release-check release-prepare records records-check format format-check typecheck typecheck_pyright lint test test_fastfail test-extended test-extended-fastfail benchmark audit
 
 docs: docs-clean
 	HTTK_DOCS_BASE_URL=$(DOCS_BASE_URL) $(PYTHON) -m sphinx -E -a -b html -W --keep-going docs docs/_build/html
@@ -49,6 +49,14 @@ clean: docs-clean dist-clean
 	find . -name "*.pyc" -print0 | xargs -0 rm -f
 	find . -name "*~" -print0 | xargs -0 rm -f
 	find . -name "__pycache__" -print0 | xargs -0 rm -rf
+
+# Regenerate (records) or verify (records-check) the generated typed records module; the test suite
+# also verifies it, so `make ci` fails on a stale file.
+records:
+	$(PYTHON) tools/generate_records.py
+
+records-check:
+	$(PYTHON) tools/generate_records.py --check
 
 format:
 	$(PYTHON) -m ruff check src examples benchmarks tools --fix
