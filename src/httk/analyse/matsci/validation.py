@@ -7,7 +7,7 @@ from typing import Any
 import numpy as np
 
 from .. import definitions as defs
-from ..definitions import BoundValue, FieldBinding, _reject_selection
+from ..definitions import BoundValue, FieldBinding, _reject_selection, _series
 from .dynamics import _array
 from .mlip import ErrorStatistics, _statistics
 
@@ -85,6 +85,22 @@ class EnergyDrift:
     start: float
     stop: float
     samples: int
+
+    def _bound_values(self, **selection: Any) -> tuple[BoundValue, ...]:
+        """Bind the drift fit as one dictionary value."""
+        _reject_selection(self, selection)
+        return (
+            _series(
+                defs.NVE_ENERGY_DRIFT,
+                slope=float(self.slope),
+                intercept=float(self.intercept),
+                residual_rms=float(self.residual_rms),
+                endpoint_change=float(self.endpoint_change),
+                start=float(self.start),
+                stop=float(self.stop),
+                samples=int(self.samples),
+            ),
+        )
 
 
 @dataclass(frozen=True, slots=True)

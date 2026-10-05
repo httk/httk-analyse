@@ -27,7 +27,26 @@ _STATISTIC_DERIVATIONS = (
     ("bias", defs.BIAS),
     ("maximum_absolute_error", defs.MAXIMUM_ABSOLUTE_ERROR),
 )
+_STATISTIC_MEMBERS = ("bias", "mae", "rmse", "maximum_absolute_error", "percentile95_absolute_error")
 _STRESS_COMPONENTS = ((0, 0), (1, 1), (2, 2), (1, 2), (0, 2), (0, 1))
+
+
+def _energy_summary(
+    field: str,
+    weighting: str,
+    offset: float | None,
+    statistics: "ErrorStatistics",
+    residuals: tuple[float, ...],
+) -> BoundValue:
+    """Build one ``energy_prediction_errors`` dictionary value with exact member types."""
+    value: dict[str, Any] = {
+        "weighting": str(weighting),
+        "offset_per_atom": None if offset is None else float(offset),
+        "count": int(statistics.count),
+    }
+    value.update({name: float(getattr(statistics, name)) for name in _STATISTIC_MEMBERS})
+    value["residuals"] = [float(r) for r in residuals]
+    return BoundValue(field, FieldBinding(defs.ENERGY_PREDICTION_ERRORS), value)
 
 
 @dataclass(frozen=True, slots=True)
@@ -76,19 +95,35 @@ class EnergyErrors:
             object.__setattr__(self, "corrected_residuals", tuple(float(value) for value in self.corrected_residuals))
 
     def _bound_values(self, **selection: Any) -> tuple[BoundValue, ...]:
-        """Bind raw statistics as ``total_energy_per_atom`` residual statistics, for configuration weighting only.
+        """Bind the raw statistics as ``total_energy_per_atom`` derivations (configuration weighting only), plus summaries.
 
         A statistic's population is part of its meaning and derivation terms do not carry weighting, so
-        other weightings, and the offset-corrected statistics, are not bound.
+        other weightings are bound only through the ``energy_prediction_errors`` dictionary value (always
+        bound; raw comparison). When an offset was applied the corrected comparison is also bound, as
+        ``corrected_energy_prediction_errors``.
         """
         _reject_selection(self, selection)
-        if self.weighting != "configuration":
-            return ()
-        binding = defs.TOTAL_ENERGY_PER_ATOM
-        return tuple(
-            BoundValue(f"statistics.{name}", FieldBinding(binding, derivation), float(getattr(self.statistics, name)))
-            for name, derivation in _STATISTIC_DERIVATIONS
-        )
+        out: list[BoundValue] = []
+        if self.weighting == "configuration":
+            binding = defs.TOTAL_ENERGY_PER_ATOM
+            out.extend(
+                BoundValue(
+                    f"statistics.{name}", FieldBinding(binding, derivation), float(getattr(self.statistics, name))
+                )
+                for name, derivation in _STATISTIC_DERIVATIONS
+            )
+        out.append(_energy_summary("energy_prediction_errors", self.weighting, None, self.statistics, self.residuals))
+        if self.corrected_statistics is not None and self.corrected_residuals is not None:
+            out.append(
+                _energy_summary(
+                    "corrected_energy_prediction_errors",
+                    self.weighting,
+                    self.offset_per_atom,
+                    self.corrected_statistics,
+                    self.corrected_residuals,
+                )
+            )
+        return tuple(out)
 
 
 @dataclass(frozen=True, slots=True)
@@ -141,23 +176,44 @@ class ForceErrors:
         )
 
     def _bound_values(self, **selection: Any) -> tuple[BoundValue, ...]:
-        """Bind aggregate component statistics as ``atomic_force`` residual statistics, for atom weighting only.
+        """Bind ``force_prediction_errors`` always, plus ``atomic_force`` derivations for atom weighting.
 
-        Each value is the (x, y, z) vector of the statistic. Vector-norm, per-configuration and per-species
-        statistics are not bound, and other weightings yield no bound values (the population is part of a
-        statistic's meaning).
+        The derivation values are the (x, y, z) vectors of the aggregate component statistics; other
+        weightings yield only the dictionary value, which carries ``weighting`` as a member.
         """
         _reject_selection(self, selection)
-        if self.weighting != "atom":
-            return ()
-        return tuple(
-            BoundValue(
-                f"component_statistics.{name}",
-                FieldBinding(ATOMIC_FORCE, derivation),
-                [float(getattr(stats, name)) for stats in self.component_statistics],
+        out: list[BoundValue] = []
+        if self.weighting == "atom":
+            out.extend(
+                BoundValue(
+                    f"component_statistics.{name}",
+                    FieldBinding(ATOMIC_FORCE, derivation),
+                    [float(getattr(stats, name)) for stats in self.component_statistics],
+                )
+                for name, derivation in _STATISTIC_DERIVATIONS
             )
-            for name, derivation in _STATISTIC_DERIVATIONS
-        )
+        species = sorted(self.per_species_component_statistics, key=lambda item: item[0])
+        value: dict[str, Any] = {
+            "weighting": str(self.weighting),
+            "count": int(self.component_statistics[0].count),
+        }
+        for name in _STATISTIC_MEMBERS:
+            value[f"component_{name}"] = [float(getattr(stats, name)) for stats in self.component_statistics]
+        value["mean_vector_error"] = float(self.mean_vector_error)
+        value["rms_vector_error"] = float(self.rms_vector_error)
+        value["per_configuration_mean_vector_errors"] = [float(v) for v in self.per_configuration_mean_vector_error]
+        value["per_configuration_rms_vector_errors"] = [float(v) for v in self.per_configuration_rms_vector_error]
+        value["per_configuration_component_rmse"] = [
+            [float(stats.rmse) for stats in config] for config in self.per_configuration_component_statistics
+        ]
+        value["species_labels"] = [str(label) for label, _ in species]
+        value["per_species_count"] = [int(stats[0].count) for _, stats in species]
+        for name in _STATISTIC_MEMBERS:
+            value[f"per_species_component_{name}"] = [
+                [float(getattr(stat, name)) for stat in stats] for _, stats in species
+            ]
+        out.append(BoundValue("force_prediction_errors", FieldBinding(defs.FORCE_PREDICTION_ERRORS), value))
+        return tuple(out)
 
 
 @dataclass(frozen=True, slots=True)
@@ -188,16 +244,22 @@ class StressErrors:
         )
 
     def _bound_values(self, **selection: Any) -> tuple[BoundValue, ...]:
-        """Bind the aggregate component statistics as Voigt-ordered ``stress_tensor`` residual statistics."""
+        """Bind the Voigt-ordered ``stress_tensor`` derivations and the ``stress_prediction_errors`` dictionary value."""
         _reject_selection(self, selection)
-        return tuple(
+        out = [
             BoundValue(
                 f"component_statistics.{name}",
                 FieldBinding(STRESS_TENSOR, derivation),
                 [float(getattr(stats, name)) for stats in self.component_statistics],
             )
             for name, derivation in _STATISTIC_DERIVATIONS
-        )
+        ]
+        value: dict[str, Any] = {"count": int(self.component_statistics[0].count)}
+        for name in _STATISTIC_MEMBERS:
+            value[f"component_{name}"] = [float(getattr(stats, name)) for stats in self.component_statistics]
+        value["residuals"] = [[float(v) for v in row] for row in self.residuals]
+        out.append(BoundValue("stress_prediction_errors", FieldBinding(defs.STRESS_PREDICTION_ERRORS), value))
+        return tuple(out)
 
 
 def energy_errors(

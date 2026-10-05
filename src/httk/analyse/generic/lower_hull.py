@@ -117,6 +117,11 @@ class LowerConvexHull:
         return self._values
 
     @property
+    def tolerance(self) -> float:
+        """Return the maximum value excess treated as on the hull."""
+        return self._tolerance
+
+    @property
     def solver(self) -> Literal["simplex", "highs"]:
         """Return the resolved mixture-solver backend."""
         return self._solver

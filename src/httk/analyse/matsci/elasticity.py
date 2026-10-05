@@ -342,6 +342,14 @@ class ElasticFit:
         object.__setattr__(self, "residuals", _nested_tuple(self.residuals))
         object.__setattr__(self, "strain_range", tuple(tuple(float(x) for x in pair) for pair in self.strain_range))
 
+    def _bound_values(self, **selection: Any) -> tuple[BoundValue, ...]:
+        """Bind the fitted tensor's values; fit diagnostics stay out of the records.
+
+        Delegates to :meth:`ElasticTensor._bound_values`, so an unstable or singular tensor raises
+        :class:`ValueError` exactly as it does there.
+        """
+        return self.tensor._bound_values(**selection)
+
 
 def fit_stress_strain(
     strains: Sequence[Sequence[float]],

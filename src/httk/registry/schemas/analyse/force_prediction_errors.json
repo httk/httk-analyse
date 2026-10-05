@@ -1,0 +1,589 @@
+{
+    "$id": "https://schemas.httk.org/defs/v0.1/properties/validation/force_prediction_errors",
+    "$schema": "https://schemas.optimade.org/meta/v1.3/optimade/property_definition.json",
+    "title": "Force prediction errors",
+    "x-optimade-type": "dictionary",
+    "x-optimade-definition": {
+        "kind": "property",
+        "version": "0.1.0",
+        "format": "1.3",
+        "name": "force_prediction_errors",
+        "label": "force_prediction_errors_validation_httk"
+    },
+    "x-optimade-unit": "inapplicable",
+    "x-optimade-unit-definitions": [
+        {
+            "$id": "https://schemas.optimade.org/defs/v1.2/units/si/general/angstrom",
+            "title": "\u00e5ngstr\u00f6m",
+            "symbol": "angstrom",
+            "display-symbol": "\u00c5",
+            "description": "A unit of length equal to 10\u207b\u00b9\u2070 meter, using the current, or one of the historical, definitions of the SI units.\n\nThe \u00e5ngstr\u00f6m unit appears in the International System of Units (SI), 1st ed. (1970) defined as \"1 \u00c5 = 0.1 nm = 10\u207b\u00b9\u2070 m\".\n\nThe \u00e5ngstr\u00f6m unit was implicitly redefined via the redefinition of the metre at the 17th CGPM meeting (1983), resolution 1.\n\n- The International System of Units (SI), 1st ed. (1970) categorizes the unit as \"temporarily admitted\" for use with the SI units.\n- The International System of Units (SI), 7th ed. (1998) changes the categorization to \"Other non-SI units currently accepted for use with the International System.\"\n- The International System of Units (SI), 8th ed. (2006) changes the categorization to \"Other non-SI units\" and adds as a clarifying footnote \"The \u00e5ngstr\u00f6m is widely used by x-ray crystallographers and structural chemists because all chemical bonds lie in the range 1 to 3 \u00e5ngstr\u00f6ms. However it has no official sanction from the CIPM or the CGPM.\"\n- The \u00e5ngstr\u00f6m is omitted in the International System of Units (SI), 9th Edition (2019).\n\nThis is a generalized definition taken to reference the current, or one of the historical, SI unit definitions.\nThis definition is intended for situations when it is not possible to be more precise, e.g., in contexts where data have been collected that uses different historical SI definitions.",
+            "compatibility": [
+                "https://schemas.optimade.org/defs/v1.2/units/si/1970/temporary/angstrom",
+                "https://schemas.optimade.org/defs/v1.2/units/si/1983/temporary/angstrom"
+            ],
+            "resources": [
+                {
+                    "relation": "Definition in the International System of Units (SI), 1st Edition",
+                    "resource-id": "https://www.bipm.org/en/publications/si-brochure"
+                },
+                {
+                    "relation": "Redefinition of the metre at the 17th CGPM meeting (1983), resolution 1",
+                    "resource-id": "https://www.bipm.org/en/committees/cg/cgpm/17-1983/resolution-1"
+                },
+                {
+                    "relation": "Wikipedia article describing the unit",
+                    "resource-id": "https://en.wikipedia.org/wiki/Angstrom"
+                }
+            ],
+            "defining-relation": {
+                "base-units": [
+                    {
+                        "symbol": "m",
+                        "id": "https://schemas.optimade.org/defs/v1.2/units/si/general/metre"
+                    }
+                ],
+                "base-units-expression": "m",
+                "scale": {
+                    "exponent": -10
+                }
+            },
+            "x-optimade-definition": {
+                "label": "angstrom_si_general",
+                "kind": "unit",
+                "format": "1.2",
+                "version": "1.2.0",
+                "name": "angstrom"
+            }
+        },
+        {
+            "$id": "https://schemas.optimade.org/defs/v1.2/units/si/general/electronvolt",
+            "title": "electron volt",
+            "symbol": "eV",
+            "display-symbol": "eV",
+            "description": "A unit of energy that representing the kinetic energy acquired by an electron as it accelerates through a 1 volt potential difference in a vacuum using the current, or one of the historical, definitions given in the editions of the International System of Units (SI).\n\nThe electronvolt unit appears in the International System of Units (SI), 1st ed. (1970) defined as \"1 electronvolt is the energy acquired by an electron after traversing a potential difference of 1 V in a vacuum; 1 eV = 1.60219\u00d710\u207b\u00b9\u2079 J approximately.\"\nThis definition makes the unit equal to 1 volt times the value of the elementary charge.\nIn the 2019 redefinition of the SI units the elementary charge is exactly 1.602176634\u00b710\u207b\u00b9\u2079 C, making the electron volt exactly equal to 1.602176634\u00b710\u207b\u00b9\u2079 J.\nThe International System of Units (SI), 9th ed. (2019) accordingly notes the exact relationship with the SI 2019 derived unit joule as \"1 eV = 1.602176634\u00b710\u207b\u00b9\u2079 J\" but retains the definition from 1970 in a footnote.\n\nThe unit is categorized in the International System of Units (SI), 9th ed. (2019) as \"Non-SI units accepted for use with the SI units\".\n\nThis is a generalized definition taken to reference the current, or one of the historical, SI unit definitions.\nThis definition is intended for situations when it is not possible to be more precise, e.g., in contexts where data have been collected that uses different historical SI definitions.",
+            "compatibility": [
+                "https://schemas.optimade.org/defs/v1.2/units/si/1970/accepted/electronvolt",
+                "https://schemas.optimade.org/defs/v1.2/units/si/1983/accepted/electronvolt",
+                "https://schemas.optimade.org/defs/v1.2/units/si/2019/accepted/electronvolt"
+            ],
+            "resources": [
+                {
+                    "relation": "Definition in the International System of Units (SI), 9th Edition",
+                    "resource-id": "https://www.bipm.org/en/publications/si-brochure"
+                },
+                {
+                    "relation": "Wikipedia article describing the unit",
+                    "resource-id": "https://en.wikipedia.org/wiki/Electronvolt"
+                }
+            ],
+            "approximate-relations": [
+                {
+                    "base-units": [
+                        {
+                            "symbol": "V",
+                            "id": "https://schemas.optimade.org/defs/v1.2/units/si/general/volt"
+                        },
+                        {
+                            "symbol": "e",
+                            "id": "https://schemas.optimade.org/defs/v1.2/constants/codata/2018/electromagnetic/elementarycharge"
+                        }
+                    ],
+                    "base-units-expression": "e*V"
+                }
+            ],
+            "x-optimade-definition": {
+                "label": "electronvolt_si_general",
+                "kind": "unit",
+                "format": "1.2",
+                "version": "1.2.0",
+                "name": "electronvolt"
+            }
+        }
+    ],
+    "x-optimade-requirements": {
+        "support": "may",
+        "sortable": false,
+        "query-support": "none"
+    },
+    "type": [
+        "object",
+        "null"
+    ],
+    "required": [
+        "weighting",
+        "count",
+        "component_bias",
+        "component_mae",
+        "component_rmse",
+        "component_maximum_absolute_error",
+        "component_percentile95_absolute_error",
+        "mean_vector_error",
+        "rms_vector_error",
+        "per_configuration_mean_vector_errors",
+        "per_configuration_rms_vector_errors",
+        "per_configuration_component_rmse",
+        "species_labels",
+        "per_species_count",
+        "per_species_component_bias",
+        "per_species_component_mae",
+        "per_species_component_rmse",
+        "per_species_component_maximum_absolute_error",
+        "per_species_component_percentile95_absolute_error"
+    ],
+    "description": "Force prediction errors of a model against reference forces over a set of configurations; atoms are matched in order between reference and prediction.\n\nAll errors are predicted minus reference, in eV/angstrom, per Cartesian component in x, y, z order (dimension `dim_spatial`). Dimension `_httk_dim_configurations` has one entry per configuration in input order; dimension `_httk_dim_species` has one entry per species label.\n\n**Requirements/Conventions**:\n\n- `weighting` is `atom` (every atom weighted equally) or `configuration` (every configuration given equal total weight). It applies to the weighted statistics: `component_bias`, `component_mae`, `component_rmse`, `mean_vector_error`, `rms_vector_error`, and the per-species bias, MAE and RMSE (which condition and renormalize the same weights on atoms of that species).\n- `count` is the total number of atoms (force residual vectors); `per_species_count` is the number of atoms of each species.\n- `component_*` are the statistics of the pooled residual components (bias, mean absolute error, root mean square error, maximum absolute error, 95th percentile absolute error with linear interpolation). `component_maximum_absolute_error` and `component_percentile95_absolute_error` are unweighted under every weighting.\n- `mean_vector_error` and `rms_vector_error` are the weighted mean and weighted root mean square of the Euclidean norms of the residual vectors. The pooled per-component RMSE common in the literature equals `rms_vector_error` divided by sqrt(3) for `atom` weighting.\n- `per_configuration_mean_vector_errors`, `per_configuration_rms_vector_errors` and `per_configuration_component_rmse` are computed within each configuration with every atom of the configuration weighted equally; they are independent of `weighting`.\n- `species_labels` are the species labels, sorted by code point; the `per_species_*` members follow this order. `per_species_component_maximum_absolute_error` and `per_species_component_percentile95_absolute_error` are unweighted.\n- For the natural population (`weighting` atom) `component_bias`, `component_mae`, `component_rmse` and `component_maximum_absolute_error` equal the derivation records of `atomic_force`.\n\nA null value means the quantity is not available or not recorded.",
+    "properties": {
+        "weighting": {
+            "x-optimade-type": "string",
+            "x-optimade-unit": "inapplicable",
+            "type": [
+                "string"
+            ],
+            "enum": [
+                "atom",
+                "configuration"
+            ]
+        },
+        "count": {
+            "x-optimade-type": "integer",
+            "x-optimade-unit": "dimensionless",
+            "type": [
+                "integer"
+            ]
+        },
+        "component_bias": {
+            "x-optimade-type": "list",
+            "x-optimade-unit": "inapplicable",
+            "x-optimade-dimensions": {
+                "names": [
+                    "dim_spatial"
+                ],
+                "sizes": [
+                    3
+                ]
+            },
+            "type": [
+                "array"
+            ],
+            "items": {
+                "x-optimade-type": "float",
+                "x-optimade-unit": "angstrom^-1*eV",
+                "type": [
+                    "number"
+                ]
+            }
+        },
+        "component_mae": {
+            "x-optimade-type": "list",
+            "x-optimade-unit": "inapplicable",
+            "x-optimade-dimensions": {
+                "names": [
+                    "dim_spatial"
+                ],
+                "sizes": [
+                    3
+                ]
+            },
+            "type": [
+                "array"
+            ],
+            "items": {
+                "x-optimade-type": "float",
+                "x-optimade-unit": "angstrom^-1*eV",
+                "type": [
+                    "number"
+                ]
+            }
+        },
+        "component_rmse": {
+            "x-optimade-type": "list",
+            "x-optimade-unit": "inapplicable",
+            "x-optimade-dimensions": {
+                "names": [
+                    "dim_spatial"
+                ],
+                "sizes": [
+                    3
+                ]
+            },
+            "type": [
+                "array"
+            ],
+            "items": {
+                "x-optimade-type": "float",
+                "x-optimade-unit": "angstrom^-1*eV",
+                "type": [
+                    "number"
+                ]
+            }
+        },
+        "component_maximum_absolute_error": {
+            "x-optimade-type": "list",
+            "x-optimade-unit": "inapplicable",
+            "x-optimade-dimensions": {
+                "names": [
+                    "dim_spatial"
+                ],
+                "sizes": [
+                    3
+                ]
+            },
+            "type": [
+                "array"
+            ],
+            "items": {
+                "x-optimade-type": "float",
+                "x-optimade-unit": "angstrom^-1*eV",
+                "type": [
+                    "number"
+                ]
+            }
+        },
+        "component_percentile95_absolute_error": {
+            "x-optimade-type": "list",
+            "x-optimade-unit": "inapplicable",
+            "x-optimade-dimensions": {
+                "names": [
+                    "dim_spatial"
+                ],
+                "sizes": [
+                    3
+                ]
+            },
+            "type": [
+                "array"
+            ],
+            "items": {
+                "x-optimade-type": "float",
+                "x-optimade-unit": "angstrom^-1*eV",
+                "type": [
+                    "number"
+                ]
+            }
+        },
+        "mean_vector_error": {
+            "x-optimade-type": "float",
+            "x-optimade-unit": "angstrom^-1*eV",
+            "type": [
+                "number"
+            ]
+        },
+        "rms_vector_error": {
+            "x-optimade-type": "float",
+            "x-optimade-unit": "angstrom^-1*eV",
+            "type": [
+                "number"
+            ]
+        },
+        "per_configuration_mean_vector_errors": {
+            "x-optimade-type": "list",
+            "x-optimade-unit": "inapplicable",
+            "x-optimade-dimensions": {
+                "names": [
+                    "_httk_dim_configurations"
+                ],
+                "sizes": [
+                    null
+                ]
+            },
+            "type": [
+                "array"
+            ],
+            "items": {
+                "x-optimade-type": "float",
+                "x-optimade-unit": "angstrom^-1*eV",
+                "type": [
+                    "number"
+                ]
+            }
+        },
+        "per_configuration_rms_vector_errors": {
+            "x-optimade-type": "list",
+            "x-optimade-unit": "inapplicable",
+            "x-optimade-dimensions": {
+                "names": [
+                    "_httk_dim_configurations"
+                ],
+                "sizes": [
+                    null
+                ]
+            },
+            "type": [
+                "array"
+            ],
+            "items": {
+                "x-optimade-type": "float",
+                "x-optimade-unit": "angstrom^-1*eV",
+                "type": [
+                    "number"
+                ]
+            }
+        },
+        "per_configuration_component_rmse": {
+            "x-optimade-type": "list",
+            "x-optimade-unit": "inapplicable",
+            "x-optimade-dimensions": {
+                "names": [
+                    "_httk_dim_configurations"
+                ],
+                "sizes": [
+                    null
+                ]
+            },
+            "type": [
+                "array"
+            ],
+            "items": {
+                "x-optimade-type": "list",
+                "x-optimade-unit": "inapplicable",
+                "x-optimade-dimensions": {
+                    "names": [
+                        "dim_spatial"
+                    ],
+                    "sizes": [
+                        3
+                    ]
+                },
+                "type": [
+                    "array"
+                ],
+                "items": {
+                    "x-optimade-type": "float",
+                    "x-optimade-unit": "angstrom^-1*eV",
+                    "type": [
+                        "number"
+                    ]
+                }
+            }
+        },
+        "species_labels": {
+            "x-optimade-type": "list",
+            "x-optimade-unit": "inapplicable",
+            "x-optimade-dimensions": {
+                "names": [
+                    "_httk_dim_species"
+                ],
+                "sizes": [
+                    null
+                ]
+            },
+            "type": [
+                "array"
+            ],
+            "items": {
+                "x-optimade-type": "string",
+                "x-optimade-unit": "inapplicable",
+                "type": [
+                    "string"
+                ]
+            }
+        },
+        "per_species_count": {
+            "x-optimade-type": "list",
+            "x-optimade-unit": "inapplicable",
+            "x-optimade-dimensions": {
+                "names": [
+                    "_httk_dim_species"
+                ],
+                "sizes": [
+                    null
+                ]
+            },
+            "type": [
+                "array"
+            ],
+            "items": {
+                "x-optimade-type": "integer",
+                "x-optimade-unit": "dimensionless",
+                "type": [
+                    "integer"
+                ]
+            }
+        },
+        "per_species_component_bias": {
+            "x-optimade-type": "list",
+            "x-optimade-unit": "inapplicable",
+            "x-optimade-dimensions": {
+                "names": [
+                    "_httk_dim_species"
+                ],
+                "sizes": [
+                    null
+                ]
+            },
+            "type": [
+                "array"
+            ],
+            "items": {
+                "x-optimade-type": "list",
+                "x-optimade-unit": "inapplicable",
+                "x-optimade-dimensions": {
+                    "names": [
+                        "dim_spatial"
+                    ],
+                    "sizes": [
+                        3
+                    ]
+                },
+                "type": [
+                    "array"
+                ],
+                "items": {
+                    "x-optimade-type": "float",
+                    "x-optimade-unit": "angstrom^-1*eV",
+                    "type": [
+                        "number"
+                    ]
+                }
+            }
+        },
+        "per_species_component_mae": {
+            "x-optimade-type": "list",
+            "x-optimade-unit": "inapplicable",
+            "x-optimade-dimensions": {
+                "names": [
+                    "_httk_dim_species"
+                ],
+                "sizes": [
+                    null
+                ]
+            },
+            "type": [
+                "array"
+            ],
+            "items": {
+                "x-optimade-type": "list",
+                "x-optimade-unit": "inapplicable",
+                "x-optimade-dimensions": {
+                    "names": [
+                        "dim_spatial"
+                    ],
+                    "sizes": [
+                        3
+                    ]
+                },
+                "type": [
+                    "array"
+                ],
+                "items": {
+                    "x-optimade-type": "float",
+                    "x-optimade-unit": "angstrom^-1*eV",
+                    "type": [
+                        "number"
+                    ]
+                }
+            }
+        },
+        "per_species_component_rmse": {
+            "x-optimade-type": "list",
+            "x-optimade-unit": "inapplicable",
+            "x-optimade-dimensions": {
+                "names": [
+                    "_httk_dim_species"
+                ],
+                "sizes": [
+                    null
+                ]
+            },
+            "type": [
+                "array"
+            ],
+            "items": {
+                "x-optimade-type": "list",
+                "x-optimade-unit": "inapplicable",
+                "x-optimade-dimensions": {
+                    "names": [
+                        "dim_spatial"
+                    ],
+                    "sizes": [
+                        3
+                    ]
+                },
+                "type": [
+                    "array"
+                ],
+                "items": {
+                    "x-optimade-type": "float",
+                    "x-optimade-unit": "angstrom^-1*eV",
+                    "type": [
+                        "number"
+                    ]
+                }
+            }
+        },
+        "per_species_component_maximum_absolute_error": {
+            "x-optimade-type": "list",
+            "x-optimade-unit": "inapplicable",
+            "x-optimade-dimensions": {
+                "names": [
+                    "_httk_dim_species"
+                ],
+                "sizes": [
+                    null
+                ]
+            },
+            "type": [
+                "array"
+            ],
+            "items": {
+                "x-optimade-type": "list",
+                "x-optimade-unit": "inapplicable",
+                "x-optimade-dimensions": {
+                    "names": [
+                        "dim_spatial"
+                    ],
+                    "sizes": [
+                        3
+                    ]
+                },
+                "type": [
+                    "array"
+                ],
+                "items": {
+                    "x-optimade-type": "float",
+                    "x-optimade-unit": "angstrom^-1*eV",
+                    "type": [
+                        "number"
+                    ]
+                }
+            }
+        },
+        "per_species_component_percentile95_absolute_error": {
+            "x-optimade-type": "list",
+            "x-optimade-unit": "inapplicable",
+            "x-optimade-dimensions": {
+                "names": [
+                    "_httk_dim_species"
+                ],
+                "sizes": [
+                    null
+                ]
+            },
+            "type": [
+                "array"
+            ],
+            "items": {
+                "x-optimade-type": "list",
+                "x-optimade-unit": "inapplicable",
+                "x-optimade-dimensions": {
+                    "names": [
+                        "dim_spatial"
+                    ],
+                    "sizes": [
+                        3
+                    ]
+                },
+                "type": [
+                    "array"
+                ],
+                "items": {
+                    "x-optimade-type": "float",
+                    "x-optimade-unit": "angstrom^-1*eV",
+                    "type": [
+                        "number"
+                    ]
+                }
+            }
+        }
+    }
+}

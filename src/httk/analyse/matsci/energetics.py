@@ -9,7 +9,7 @@ import numpy as np
 
 from .. import definitions as defs
 from .._constants import GPA_PER_EV_PER_A3
-from ..definitions import BoundValue, FieldBinding, _bind_fields
+from ..definitions import BoundValue, FieldBinding, _bind_fields, _reject_selection, _series
 
 __all__ = [
     "ChemicalPotentialRegion",
@@ -120,6 +120,20 @@ class ChemicalPotentialRegion:
             self,
             "competing_energies",
             _finite_sequence(self.competing_energies, "competing_energies", allow_empty=True),
+        )
+
+    def _bound_values(self, **selection: Any) -> tuple[BoundValue, ...]:
+        """Bind the host equality and competing-phase bounds as one dictionary value."""
+        _reject_selection(self, selection)
+        return (
+            _series(
+                defs.CHEMICAL_POTENTIAL_REGION,
+                elements=list(self.elements),
+                host_coefficients=list(self.host_coefficients),
+                host_energy=float(self.host_energy),
+                competing_coefficients=[list(row) for row in self.competing_coefficients],
+                competing_energies=list(self.competing_energies),
+            ),
         )
 
     def contains(self, potentials: Mapping[str, object], tolerance: float = 1e-10) -> bool:

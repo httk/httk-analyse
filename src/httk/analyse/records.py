@@ -37,8 +37,8 @@ def bound_values(result: object, **selection: Any) -> tuple[BoundValue, ...]:
     bound = method(**selection)
     if not bound:
         logger.warning(
-            "%s binds no property values (no definition applies to this result, e.g. an unbound parity quantity "
-            "or a statistics weighting without a definition)",
+            "%s binds no property values (no definition applies to this result, e.g. a parity result without a "
+            "property definition)",
             type(result).__name__,
         )
     return bound

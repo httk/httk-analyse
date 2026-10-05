@@ -316,3 +316,43 @@ register_property_definition(
     definition_id="https://schemas.httk.org/defs/v0.1/properties/structure/steinhardt_bond_order",
     resource="httk.registry.schemas.analyse:steinhardt_bond_order.json",
 )
+
+register_property_definition(
+    definition_id="https://schemas.httk.org/defs/v0.1/properties/validation/energy_prediction_errors",
+    resource="httk.registry.schemas.analyse:energy_prediction_errors.json",
+)
+
+register_property_definition(
+    definition_id="https://schemas.httk.org/defs/v0.1/properties/validation/force_prediction_errors",
+    resource="httk.registry.schemas.analyse:force_prediction_errors.json",
+)
+
+register_property_definition(
+    definition_id="https://schemas.httk.org/defs/v0.1/properties/validation/stress_prediction_errors",
+    resource="httk.registry.schemas.analyse:stress_prediction_errors.json",
+)
+
+register_property_definition(
+    definition_id="https://schemas.httk.org/defs/v0.1/properties/validation/nve_energy_drift",
+    resource="httk.registry.schemas.analyse:nve_energy_drift.json",
+)
+
+register_property_definition(
+    definition_id="https://schemas.httk.org/defs/v0.1/properties/thermodynamics/mode_gruneisen_parameters",
+    resource="httk.registry.schemas.analyse:mode_gruneisen_parameters.json",
+)
+
+register_property_definition(
+    definition_id="https://schemas.httk.org/defs/v0.1/properties/electronic/spin_channel_electronic_density_of_states",
+    resource="httk.registry.schemas.analyse:spin_channel_electronic_density_of_states.json",
+)
+
+register_property_definition(
+    definition_id="https://schemas.httk.org/defs/v0.1/properties/energetics/chemical_potential_region",
+    resource="httk.registry.schemas.analyse:chemical_potential_region.json",
+)
+
+register_property_definition(
+    definition_id="https://schemas.httk.org/defs/v0.1/properties/energetics/convex_hull_phase_diagram",
+    resource="httk.registry.schemas.analyse:convex_hull_phase_diagram.json",
+)

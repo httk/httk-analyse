@@ -76,6 +76,14 @@ their IRIs are used.
 | `self_intermediate_scattering_function.json` | `https://schemas.httk.org/defs/v0.1/properties/dynamics/self_intermediate_scattering_function` | `httk-schemas-source/output/defs/v0.1/properties/dynamics/self_intermediate_scattering_function.json` | MIT |
 | `diffusion_prefactor.json` | `https://schemas.httk.org/defs/v0.1/properties/transport/diffusion_prefactor` | `httk-schemas-source/output/defs/v0.1/properties/transport/diffusion_prefactor.json` | MIT |
 | `arrhenius_prefactor.json` | `https://schemas.httk.org/defs/v0.1/properties/kinetics/arrhenius_prefactor` | `httk-schemas-source/output/defs/v0.1/properties/kinetics/arrhenius_prefactor.json` | MIT |
+| `energy_prediction_errors.json` | `https://schemas.httk.org/defs/v0.1/properties/validation/energy_prediction_errors` | `httk-schemas-source/output/defs/v0.1/properties/validation/energy_prediction_errors.json` | MIT |
+| `force_prediction_errors.json` | `https://schemas.httk.org/defs/v0.1/properties/validation/force_prediction_errors` | `httk-schemas-source/output/defs/v0.1/properties/validation/force_prediction_errors.json` | MIT |
+| `stress_prediction_errors.json` | `https://schemas.httk.org/defs/v0.1/properties/validation/stress_prediction_errors` | `httk-schemas-source/output/defs/v0.1/properties/validation/stress_prediction_errors.json` | MIT |
+| `nve_energy_drift.json` | `https://schemas.httk.org/defs/v0.1/properties/validation/nve_energy_drift` | `httk-schemas-source/output/defs/v0.1/properties/validation/nve_energy_drift.json` | MIT |
+| `mode_gruneisen_parameters.json` | `https://schemas.httk.org/defs/v0.1/properties/thermodynamics/mode_gruneisen_parameters` | `httk-schemas-source/output/defs/v0.1/properties/thermodynamics/mode_gruneisen_parameters.json` | MIT |
+| `spin_channel_electronic_density_of_states.json` | `https://schemas.httk.org/defs/v0.1/properties/electronic/spin_channel_electronic_density_of_states` | `httk-schemas-source/output/defs/v0.1/properties/electronic/spin_channel_electronic_density_of_states.json` | MIT |
+| `chemical_potential_region.json` | `https://schemas.httk.org/defs/v0.1/properties/energetics/chemical_potential_region` | `httk-schemas-source/output/defs/v0.1/properties/energetics/chemical_potential_region.json` | MIT |
+| `convex_hull_phase_diagram.json` | `https://schemas.httk.org/defs/v0.1/properties/energetics/convex_hull_phase_diagram` | `httk-schemas-source/output/defs/v0.1/properties/energetics/convex_hull_phase_diagram.json` | MIT |
 
 ## License
 

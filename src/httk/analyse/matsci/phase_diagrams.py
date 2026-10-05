@@ -9,6 +9,8 @@ from typing import Any, Literal, Self
 from httk.atomistic import StructureLike, UnitcellStructureView
 from httk.core import register_citation
 
+from httk.analyse import definitions as defs
+from httk.analyse.definitions import BoundValue, _reject_selection, _series
 from httk.analyse.generic import LowerConvexHull
 
 __all__ = ["PhaseDiagram", "PhaseDiagramBuilder"]
@@ -280,6 +282,14 @@ class PhaseDiagram:
         return self._hull.values
 
     @property
+    def tolerance(self) -> float:
+        """Return the maximum energy excess treated as stable.
+
+        :return: The energy tolerance in per-atom units.
+        """
+        return self._hull.tolerance
+
+    @property
     def hull_indices(self) -> tuple[int, ...]:
         """Return stable phase indices in input order.
 
@@ -318,6 +328,25 @@ class PhaseDiagram:
         :return: Whether the phase is stable.
         """
         return self._hull.is_on_hull(index)
+
+    def _bound_values(self, **selection: Any) -> tuple[BoundValue, ...]:
+        """Bind the energy-known phases and their hull distances as one dictionary value.
+
+        Unknown-energy phases are excluded; ``stable`` follows :meth:`is_stable` at the construction tolerance.
+        """
+        _reject_selection(self, selection)
+        return (
+            _series(
+                defs.CONVEX_HULL_PHASE_DIAGRAM,
+                elements=list(self.elements),
+                phase_ids=list(self.ids),
+                compositions=[list(row) for row in self.compositions],
+                energies_per_atom=list(self.energies_per_atom),
+                energies_above_hull_per_atom=list(self.energy_above_hull),
+                stable=[self.is_stable(index) for index in range(len(self))],
+                tolerance=float(self.tolerance),
+            ),
+        )
 
     def __len__(self) -> int:
         """Return the number of energy-known phases.

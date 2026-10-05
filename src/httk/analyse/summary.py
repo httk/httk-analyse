@@ -93,7 +93,7 @@ def analysis_summary(
     :param \*\*bound_selection: Selection keywords of the result's bindings, such as ``lag_index``.
     :return: Immutable canonical JSON result and provenance envelope.
     :raises ValueError: If a bound value fails its property definition, metadata is incomplete, nonfinite or unsupported, a unit expression is invalid,
-        or a unit is given for a field that has a property definition.
+        a unit is given for a field that has a property definition, or two bound values share a binding name.
     :raises TypeError: If binding selection keywords are missing or unsupported for the result type.
     :raises OSError: If a source cannot be read.
     """
@@ -102,6 +102,9 @@ def analysis_summary(
     fields: dict[str, Any] = {}
     if hasattr(result, "_bound_values"):
         bound = bound_values(result, **bound_selection)
+        names = [item.field for item in bound]
+        if len(set(names)) != len(names):
+            raise ValueError(f"{type(result).__name__} binds duplicate field names: {sorted(names)}")
         for item, record in zip(bound, records(result, product_of=product_of, **bound_selection), strict=True):
             fields[item.field] = {
                 "definition": item.binding.definition,

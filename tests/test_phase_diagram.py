@@ -252,6 +252,7 @@ def test_default_tolerance_counts_tiny_positive_distance_as_stable() -> None:
         [0.0, 0.0, 2e-12],
     )
     assert diagram.hull_indices == (0, 1, 2)
+    assert diagram.tolerance == 1e-8
     assert diagram.energy_above_hull[2] == pytest.approx(1e-12)
 
 

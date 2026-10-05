@@ -124,3 +124,27 @@ def test_summary_content_ids_match_records_and_depend_on_product_of():
     bare = _summary(result, product_of=edges, field_values=False).value['fields']
     assert all('value' not in f for f in bare.values())
     assert ids(bare) == ids(linked)
+
+
+def test_summary_rejects_duplicate_binding_names():
+    from dataclasses import dataclass
+
+    @dataclass(frozen=True)
+    class Fake:
+        def _bound_values(self):
+            one = defs.BoundValue("same", defs.FieldBinding(defs.FERMI_ENERGY), 1.0)
+            return (one, one)
+
+    with pytest.raises(ValueError, match="duplicate"):
+        analysis_summary(Fake(), algorithm="x", parameters={}, selection={}, sources=[], assumptions=[])
+
+
+def test_summary_energy_errors_has_raw_and_corrected_fields():
+    from httk.analyse.matsci.mlip import energy_errors
+
+    result = energy_errors([0.0, 0.0], [0.0, 10.0], atom_counts=[1, 4], offset_per_atom=1.0)
+    fields = _summary(result).value["fields"]
+    raw, corrected = fields["energy_prediction_errors"], fields["corrected_energy_prediction_errors"]
+    assert raw["definition"] == corrected["definition"] == defs.ENERGY_PREDICTION_ERRORS
+    assert raw["content_id"] != corrected["content_id"]
+    assert raw["value"]["offset_per_atom"] is None and corrected["value"]["offset_per_atom"] == 1.0

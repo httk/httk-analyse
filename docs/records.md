@@ -53,8 +53,10 @@ compliance, Voigt/Reuss/Hill moduli, universal anisotropy), `FormationEnergy`,
 `BandEdges` (gaps are 0.0 for a metal), `EquilibriumResponse`,
 `HarmonicThermodynamics`, `QuasiHarmonicResult`, `DiffusionFit`,
 `TensorSeries`, `RadialDistribution`, `TransportResult`, `ReplicaTransport`,
-`PropertyParity` (statistics of its `definition`) and the spin-summed
-`httk.analyse.integrations.vasp.VaspDOS`.
+`PropertyParity` (statistics of its `definition`), `ElasticFit` (delegates to
+its `tensor`, so an unstable or singular tensor raises as `ElasticTensor` does),
+`GruneisenFit`, `ChemicalPotentialRegion`, `PhaseDiagram` and
+`httk.analyse.integrations.vasp.VaspDOS` (spin-summed or one collinear spin channel).
 
 Scalar, dictionary and statistic bindings of the electronic, defect, kinetics
 and MLIP results:
@@ -69,17 +71,24 @@ and MLIP results:
 | `SurfaceEnergy` | `surface_energy` | `surface_energy` (J/m²) |
 | `NEBProfile` | `forward_barrier`, `reverse_barrier` | `migration_barrier_forward`, `migration_barrier_reverse` |
 | `ArrheniusFit` | `activation_energy` | `activation_energy` |
-| `EnergyErrors` | `statistics.<stat>` | `total_energy_per_atom` with `RMSE`, `MAE`, `BIAS`, `MAXIMUM_ABSOLUTE_ERROR` |
+| `EnergyDrift` | `nve_energy_drift` | `nve_energy_drift` (one dictionary) |
+| `EnergyErrors` | `statistics.<stat>` | `total_energy_per_atom` with `RMSE`, `MAE`, `BIAS`, `MAXIMUM_ABSOLUTE_ERROR` (configuration weighting only) |
+| `EnergyErrors` | `energy_prediction_errors`, and `corrected_energy_prediction_errors` when an offset was applied | `energy_prediction_errors` (always; the two values are distinct records) |
+| `ForceErrors` | `component_statistics.<stat>` | `atomic_force` with the same four derivations (atom weighting only) |
+| `ForceErrors` | `force_prediction_errors` | `force_prediction_errors` (always) |
 | `StressErrors` | `component_statistics.<stat>` | `stress_tensor` (Voigt list of six) with the same four derivations |
+| `StressErrors` | `stress_prediction_errors` | `stress_prediction_errors` (always) |
 
-Not bound: `ForceErrors`, the offset-corrected energy statistics and the
-Arrhenius prefactor (its unit is caller-chosen).
+The prediction-error dictionaries carry weighting, offset and species conditions
+as members; the derivation records are the natural-population equivalents of
+their members and are kept for querying. Not bound: the Arrhenius prefactor (its
+unit is caller-chosen).
 
 ```python
 from httk.analyse.matsci.mlip import energy_errors
 
 made = records(energy_errors([0.0, 0.0], [1.0, 3.0], atom_counts=[1, 1]))
-assert [record.derivation for record in made] == [defs.RMSE, defs.MAE, defs.BIAS, defs.MAXIMUM_ABSOLUTE_ERROR]
+assert [getattr(record, "derivation", None) for record in made] == [defs.RMSE, defs.MAE, defs.BIAS, defs.MAXIMUM_ABSOLUTE_ERROR, None]
 ```
 
 ## Series
@@ -102,10 +111,15 @@ binding name is the definition name:
 | `RadialDistribution` | `radial_distribution_function` | `bin_edges`, `g`, and `pair` for a partial RDF |
 | `TransportResult` | `thermal_conductivity_running_integral` or `shear_viscosity_running_integral` | `lag_times`, `thermal_conductivity_tensors` (3×3 per lag) or `shear_viscosities` (xy, xz, yz per lag) |
 | `VaspDOS` (spin-summed) | `electronic_density_of_states` | `energies`, `density`, `integrated_density` |
+| `VaspDOS` (up or down channel) | `spin_channel_electronic_density_of_states` | `spin`, `energies`, `density`, `integrated_density` |
+| `GruneisenFit` | `mode_gruneisen_parameters` | `reference_volume`, `values` (per mode), `degree` |
+| `ChemicalPotentialRegion` | `chemical_potential_region` | `elements`, `host_coefficients`, `host_energy`, `competing_coefficients`, `competing_energies` (competing lists may be empty) |
+| `PhaseDiagram` | `convex_hull_phase_diagram` | `elements`, `phase_ids`, `compositions`, `energies_per_atom`, `energies_above_hull_per_atom`, `stable` and `tolerance`, for the phases with known energy |
 
 The harmonic zero-point energy and the DOS Fermi energy are separate scalar
-records. A `RadialDistribution` needs exactly one more bin edge than `g` value,
-and a spin-resolved `VaspDOS` has no definition; both raise `ValueError`.
+records for every DOS channel. A `RadialDistribution` needs exactly one more bin
+edge than `g` value, otherwise `ValueError` is raised; a non-collinear `VaspDOS`
+is not bound.
 
 ```python
 import json

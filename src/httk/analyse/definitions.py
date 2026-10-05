@@ -27,7 +27,9 @@ __all__ = [
     "BULK_MODULUS_VOIGT",
     "CHARGED_DEFECT_FORMATION_ENERGY",
     "CHARGE_TRANSITION_LEVEL",
+    "CHEMICAL_POTENTIAL_REGION",
     "COMPLIANCE_TENSOR",
+    "CONVEX_HULL_PHASE_DIAGRAM",
     "DIFFUSION_COEFFICIENT",
     "DIFFUSION_PREFACTOR",
     "DIFFUSION_RUNNING_INTEGRAL",
@@ -37,9 +39,11 @@ __all__ = [
     "ELASTIC_TENSOR",
     "ELECTRONIC_DENSITY_OF_STATES",
     "ENERGY_ABOVE_HULL_PER_ATOM",
+    "ENERGY_PREDICTION_ERRORS",
     "EQUILIBRIUM_ENERGY",
     "EQUILIBRIUM_VOLUME",
     "FERMI_ENERGY",
+    "FORCE_PREDICTION_ERRORS",
     "FORMATION_ENERGY_PER_ATOM",
     "HEAT_CAPACITY_CONSTANT_PRESSURE",
     "HEAT_CAPACITY_CONSTANT_VOLUME",
@@ -53,6 +57,8 @@ __all__ = [
     "MEAN_SQUARED_DISPLACEMENT",
     "MIGRATION_BARRIER_FORWARD",
     "MIGRATION_BARRIER_REVERSE",
+    "MODE_GRUNEISEN_PARAMETERS",
+    "NVE_ENERGY_DRIFT",
     "QUASIHARMONIC_THERMODYNAMICS",
     "RADIAL_DISTRIBUTION_FUNCTION",
     "REACTION_ENERGY",
@@ -66,10 +72,12 @@ __all__ = [
     "SHEAR_MODULUS_VOIGT",
     "SHEAR_VISCOSITY",
     "SHEAR_VISCOSITY_RUNNING_INTEGRAL",
+    "SPIN_CHANNEL_ELECTRONIC_DENSITY_OF_STATES",
     "STANDARD_DEVIATION",
     "STANDARD_ERROR",
     "STATIC_RELATIVE_PERMITTIVITY",
     "STEINHARDT_BOND_ORDER",
+    "STRESS_PREDICTION_ERRORS",
     "SURFACE_ENERGY",
     "THERMAL_CONDUCTIVITY",
     "THERMAL_CONDUCTIVITY_RUNNING_INTEGRAL",
@@ -320,6 +328,32 @@ STEINHARDT_BOND_ORDER = "https://schemas.httk.org/defs/v0.1/properties/structure
 
 #: Property definition ``total_energy_per_atom``.
 TOTAL_ENERGY_PER_ATOM = "https://schemas.httk.org/defs/v0.1/properties/energetics/total_energy_per_atom"
+
+#: Property definition ``chemical_potential_region``.
+CHEMICAL_POTENTIAL_REGION = "https://schemas.httk.org/defs/v0.1/properties/energetics/chemical_potential_region"
+
+#: Property definition ``convex_hull_phase_diagram``.
+CONVEX_HULL_PHASE_DIAGRAM = "https://schemas.httk.org/defs/v0.1/properties/energetics/convex_hull_phase_diagram"
+
+#: Property definition ``energy_prediction_errors``.
+ENERGY_PREDICTION_ERRORS = "https://schemas.httk.org/defs/v0.1/properties/validation/energy_prediction_errors"
+
+#: Property definition ``force_prediction_errors``.
+FORCE_PREDICTION_ERRORS = "https://schemas.httk.org/defs/v0.1/properties/validation/force_prediction_errors"
+
+#: Property definition ``stress_prediction_errors``.
+STRESS_PREDICTION_ERRORS = "https://schemas.httk.org/defs/v0.1/properties/validation/stress_prediction_errors"
+
+#: Property definition ``nve_energy_drift``.
+NVE_ENERGY_DRIFT = "https://schemas.httk.org/defs/v0.1/properties/validation/nve_energy_drift"
+
+#: Property definition ``mode_gruneisen_parameters``.
+MODE_GRUNEISEN_PARAMETERS = "https://schemas.httk.org/defs/v0.1/properties/thermodynamics/mode_gruneisen_parameters"
+
+#: Property definition ``spin_channel_electronic_density_of_states``.
+SPIN_CHANNEL_ELECTRONIC_DENSITY_OF_STATES = (
+    "https://schemas.httk.org/defs/v0.1/properties/electronic/spin_channel_electronic_density_of_states"
+)
 
 
 @dataclass(frozen=True, slots=True)

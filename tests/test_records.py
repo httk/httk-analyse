@@ -13,17 +13,22 @@ from httk.analyse._constants import M2_PER_S_PER_A2_PER_PS
 from httk.analyse.integrations.vasp import VaspDOS
 from httk.analyse.matsci import (
     ElasticTensor,
+    PhaseDiagram,
     RadialDistribution,
     TensorSeries,
     band_edges,
+    chemical_potential_region,
     diffusion_from_msd,
+    energy_drift,
     equilibrium_response,
     fit_birch_murnaghan,
     fit_eos,
+    fit_stress_strain,
     formation_energy,
     harmonic_thermodynamics,
     integrate_vacf,
     mean_squared_displacement,
+    mode_gruneisen,
     property_parity,
     quasiharmonic,
     radial_distribution,
@@ -254,12 +259,93 @@ def test_rdf_series_and_edge_count():
         records(broken)
 
 
-def test_dos_binds_only_spin_summed_data():
+def test_dos_binds_spin_summed_and_spin_channel_data():
     made = _record_values(_dos())
     assert made["electronic_density_of_states"]["density"] == [0.5, 2.0, 0.5]
     assert made["fermi_energy"] == 0.1
-    with pytest.raises(ValueError, match="spin-summed"):
-        records(_dos("up"))
+    channel = _record_values(_dos("up"))
+    assert list(channel) == ["spin_channel_electronic_density_of_states", "fermi_energy"]
+    assert channel["spin_channel_electronic_density_of_states"]["spin"] == "up"
+    assert channel["spin_channel_electronic_density_of_states"]["density"] == [0.5, 2.0, 0.5]
+    assert channel["fermi_energy"] == 0.1
+    down = _record_values(_dos("down"))
+    assert down["spin_channel_electronic_density_of_states"]["spin"] == "down"
+    assert down["fermi_energy"] == 0.1
+
+
+def test_gruneisen_fit_binds_exact_degree():
+    volumes = [9.0, 10.0, 11.0]
+    result = mode_gruneisen(volumes, [[2.0 * (v / 10.0) ** -2, 4.0] for v in volumes], reference_volume=10.0)
+    (value,) = bound_values(result)
+    assert list(value.value) == ["reference_volume", "values", "degree"]
+    assert type(value.value["degree"]) is int and value.value["degree"] == 2
+    assert value.value["values"] == list(result.values)
+    assert len(records(result)) == 1
+
+
+def test_energy_drift_binds_exact_sample_count():
+    time = np.linspace(0.0, 10.0, 11)
+    result = energy_drift(time, (-3 + 0.01 * time) * 20, atom_count=20, ensemble="NVE")
+    (value,) = bound_values(result)
+    assert type(value.value["samples"]) is int and value.value["samples"] == 11
+    assert value.value["slope"] == pytest.approx(0.01)
+    assert value.value["stop"] == 10.0
+    assert len(records(result)) == 1
+
+
+def test_chemical_potential_region_binds_with_and_without_competitors():
+    region = chemical_potential_region({"A": 1, "B": 2}, -9.0, [{"A": 1}, {"B": 1, "C": 1}], [-2.0, -5.0])
+    (value,) = bound_values(region)
+    assert value.value == {
+        "elements": ["A", "B", "C"],
+        "host_coefficients": [1.0, 2.0, 0.0],
+        "host_energy": -9.0,
+        "competing_coefficients": [[1.0, 0.0, 0.0], [0.0, 1.0, 1.0]],
+        "competing_energies": [-2.0, -5.0],
+    }
+    assert len(records(region)) == 1
+    alone = records(chemical_potential_region({"A": 1}, -2.0, [], []))
+    assert json.loads(alone[0].value_json)["competing_coefficients"] == []
+
+
+def test_elastic_fit_delegates_to_its_tensor():
+    strains = np.random.default_rng(3).normal(scale=0.01, size=(20, 6))
+    tensor = _cubic()
+    fit = fit_stress_strain(strains, strains @ np.asarray(tensor.stiffness).T)
+    assert [r.value_json for r in records(fit)] == [r.value_json for r in records(fit.tensor)]
+    with pytest.raises(TypeError):
+        records(fit, lag_index=1)
+
+
+def test_phase_diagram_unknown_energy_element_widens_elements():
+    diagram = PhaseDiagram.from_compositions(
+        [{"A": 1}, {"B": 1}, {"A": 1, "B": 1}, {"C": 1, "A": 1}], [0.0, 0.0, -1.0, None], ids=["A", "B", "AB", "CA"]
+    )
+    (value,) = bound_values(diagram)
+    assert value.value["elements"] == ["A", "B", "C"]
+    assert value.value["phase_ids"] == ["A", "B", "AB"]
+    assert value.value["compositions"] == [[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.5, 0.5, 0.0]]
+    assert len(records(diagram)) == 1
+
+
+def test_phase_diagram_binds_hull_distances_and_tolerance():
+    diagram = PhaseDiagram.from_compositions(
+        [{"A": 1}, {"B": 1}, {"A": 1, "B": 1}, {"A": 1, "B": 1}, {"A": 1, "B": 3}, {"A": 2, "B": 2}],
+        [0.0, 0.0, -2.0, -1.0, None, -4.0 + 0.0005],
+        ids=["A", "B", "AB", "AB2", "AB3?", "AB-near"],
+        tolerance=1e-3,
+    )
+    (value,) = bound_values(diagram)
+    data = value.value
+    assert data["phase_ids"] == ["A", "B", "AB", "AB2", "AB-near"]
+    assert data["elements"] == ["A", "B"]
+    assert data["compositions"] == [[1.0, 0.0], [0.0, 1.0], [0.5, 0.5], [0.5, 0.5], [0.5, 0.5]]
+    assert data["energies_per_atom"] == pytest.approx([0.0, 0.0, -1.0, -0.5, -1.0 + 0.000125])
+    assert data["stable"] == [True, True, True, False, True]
+    assert type(data["stable"][0]) is bool
+    assert data["energies_above_hull_per_atom"] == pytest.approx([0.0, 0.0, 0.0, 0.5, 0.000125], abs=1e-12)
+    assert data["tolerance"] == 1e-3
+    assert len(records(diagram)) == 1
 
 
 def test_transport_series_and_optional_plateau():

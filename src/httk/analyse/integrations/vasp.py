@@ -40,17 +40,25 @@ class VaspDOS:
         object.__setattr__(self, "fermi_energy", float(self.fermi_energy))
 
     def _bound_values(self, **selection: Any) -> tuple[BoundValue, ...]:
-        """Bind the DOS series and Fermi energy; raise ValueError for a spin-resolved DOS (no definition)."""
+        """Bind the DOS series and Fermi energy; a single collinear spin channel binds its own definition."""
         _reject_selection(self, selection)
-        if self.spin_basis != "spin-summed":
-            raise ValueError(f"only a spin-summed DOS binds to a property definition, not {self.spin_basis!r}")
-        return (
-            _series(
+        if self.spin_basis == "spin-summed":
+            series = _series(
                 defs.ELECTRONIC_DENSITY_OF_STATES,
                 energies=list(self.energies),
                 density=list(self.density),
                 integrated_density=list(self.integrated_density),
-            ),
+            )
+        else:
+            series = _series(
+                defs.SPIN_CHANNEL_ELECTRONIC_DENSITY_OF_STATES,
+                spin=self.spin_basis,
+                energies=list(self.energies),
+                density=list(self.density),
+                integrated_density=list(self.integrated_density),
+            )
+        return (
+            series,
             BoundValue("fermi_energy", FieldBinding(defs.FERMI_ENERGY), self.fermi_energy),
         )
 

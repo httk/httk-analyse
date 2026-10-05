@@ -92,6 +92,18 @@ class GruneisenFit:
         """Copy mode estimates into an immutable tuple."""
         object.__setattr__(self, "values", tuple(float(value) for value in self.values))
 
+    def _bound_values(self, **selection: Any) -> tuple[BoundValue, ...]:
+        """Bind the mode Grüneisen parameters as one dictionary value."""
+        _reject_selection(self, selection)
+        return (
+            _series(
+                defs.MODE_GRUNEISEN_PARAMETERS,
+                reference_volume=float(self.reference_volume),
+                values=list(self.values),
+                degree=int(self.degree),
+            ),
+        )
+
 
 @dataclass(frozen=True, slots=True)
 class QuasiHarmonicResult:

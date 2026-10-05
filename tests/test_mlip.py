@@ -6,6 +6,7 @@ import numpy as np
 import pytest
 from httk.core import DerivedDataRecord, load_property_definition
 from httk.core.definition_ids import ATOMIC_FORCE, STRESS_TENSOR
+from httk.core.storage import content_id
 
 from httk.analyse import definitions as defs
 from httk.analyse.matsci.mlip import energy_errors, force_errors, stress_errors
@@ -160,42 +161,109 @@ def test_force_statistics_remain_finite_at_small_and_large_scales(scale: float) 
 _DERIVATIONS = (defs.RMSE, defs.MAE, defs.BIAS, defs.MAXIMUM_ABSOLUTE_ERROR)
 
 
-def test_energy_error_statistics_bind_raw_only() -> None:
+def _derived(bound):
+    return [b for b in bound if b.binding.derivation is not None]
+
+
+def _check_all(result):
+    for b in bound_values(result):
+        load_property_definition(b.binding.definition).check(b.value)
+    return records(result)
+
+
+def test_energy_error_derivations_bind_raw_only_and_summaries_are_added() -> None:
     result = energy_errors([0.0, 0.0], [0.0, 10.0], atom_counts=[1, 4], offset_per_atom=1.0)
     bound = bound_values(result)
-    assert tuple(b.binding.derivation for b in bound) == _DERIVATIONS
-    assert {b.binding.definition for b in bound} == {defs.TOTAL_ENERGY_PER_ATOM}
-    assert next(b.field for b in bound) == "statistics.rmse"
-    assert [b.value for b in bound] == pytest.approx([3.125**0.5, 1.25, 1.25, 2.5])
-    for b in bound:
-        load_property_definition(b.binding.definition).check(b.value)
-    made = records(result)
-    assert all(isinstance(r, DerivedDataRecord) for r in made)
+    derived = _derived(bound)
+    assert tuple(b.binding.derivation for b in derived) == _DERIVATIONS
+    assert {b.binding.definition for b in derived} == {defs.TOTAL_ENERGY_PER_ATOM}
+    assert derived[0].field == "statistics.rmse"
+    assert [b.value for b in derived] == pytest.approx([3.125**0.5, 1.25, 1.25, 2.5])
+    made = _check_all(result)
     assert (made[0].definition_id, made[0].derivation) == (defs.TOTAL_ENERGY_PER_ATOM, defs.RMSE)
+    assert isinstance(made[0], DerivedDataRecord)
 
 
-def test_stress_error_statistics_bind_voigt_lists() -> None:
-    pred = np.array([[[1.0, 2.0, 3.0], [2.0, 4.0, 5.0], [3.0, 5.0, 6.0]]])
-    bound = bound_values(stress_errors(np.zeros((1, 3, 3)), pred))
-    assert tuple(b.binding.derivation for b in bound) == _DERIVATIONS
-    assert {b.binding.definition for b in bound} == {STRESS_TENSOR}
-    assert bound[2].value == [1.0, 4.0, 6.0, 5.0, 3.0, 2.0]  # bias, Voigt xx yy zz yz xz xy
-    for b in bound:
-        load_property_definition(b.binding.definition).check(b.value)
+def test_energy_raw_and_corrected_summaries_are_distinct_values() -> None:
+    result = energy_errors([0.0, 0.0], [0.0, 10.0], atom_counts=[1, 4], offset_per_atom=1.0)
+    summaries = [b for b in bound_values(result) if b.binding.definition == defs.ENERGY_PREDICTION_ERRORS]
+    assert [b.field for b in summaries] == ["energy_prediction_errors", "corrected_energy_prediction_errors"]
+    raw, corrected = (b.value for b in summaries)
+    assert raw["offset_per_atom"] is None and corrected["offset_per_atom"] == 1.0
+    assert type(raw["count"]) is int and raw["count"] == 2 and raw["weighting"] == "configuration"
+    assert raw["residuals"] == [0.0, 2.5] and corrected["residuals"] == [-1.0, 1.5]
+    assert raw["bias"] == 1.25 and corrected["bias"] == 0.25
+    made = _check_all(result)
+    ids = [content_id(r) for r in made[-2:]]
+    assert ids[0] != ids[1]
+    # no offset: the raw summary only
+    assert [
+        b.field for b in bound_values(energy_errors([0.0], [1.0], atom_counts=[1])) if not b.binding.derivation
+    ] == ["energy_prediction_errors"]
 
 
-def test_statistics_bind_only_for_their_natural_population(caplog) -> None:
+def test_atom_weighted_energy_binds_summary_only(caplog) -> None:
+    result = energy_errors([0.0, 0.0], [0.0, 10.0], atom_counts=[1, 4], weighting="atom")
     with caplog.at_level("WARNING", logger="httk.analyse.records"):
-        assert records(energy_errors([0.0], [1.0], atom_counts=[1], weighting="atom")) == ()
-    assert "EnergyErrors binds no property values" in caplog.text
-    assert bound_values(energy_errors([0.0, 0.0], [0.0, 10.0], atom_counts=[1, 4], weighting="atom")) == ()
+        made = _check_all(result)
+    assert caplog.text == ""
+    assert len(made) == 1 and not isinstance(made[0], DerivedDataRecord)
+    (summary,) = bound_values(result)
+    assert summary.value["weighting"] == "atom"
+    assert summary.value["rmse"] == pytest.approx((0.2 * 0 + 0.8 * 2.5**2) ** 0.5)
+
+
+def test_force_summary_has_sorted_aligned_species_and_exact_types() -> None:
+    reference = [np.zeros((1, 3)), np.zeros((3, 3))]
+    predicted = [np.array([[3.0, 4.0, 0.0]]), np.zeros((3, 3))]
+    result = force_errors(reference, predicted, species=[["Si"], ["O", "Si", "O"]])
+    summary = bound_values(result)[-1]
+    assert summary.field == "force_prediction_errors"
+    v = summary.value
+    assert v["species_labels"] == ["O", "Si"]
+    assert v["per_species_count"] == [2, 2] and type(v["per_species_count"][0]) is int
+    assert v["count"] == 4 and v["weighting"] == "atom"
+    assert v["per_species_component_bias"] == [[0.0, 0.0, 0.0], [1.5, 2.0, 0.0]]
+    assert v["per_configuration_mean_vector_errors"] == [5.0, 0.0]
+    assert v["per_configuration_component_rmse"] == [[3.0, 4.0, 0.0], [0.0, 0.0, 0.0]]
+    assert v["mean_vector_error"] == pytest.approx(1.25) and v["rms_vector_error"] == pytest.approx(2.5)
+    for name in ("bias", "mae", "rmse", "maximum_absolute_error", "percentile95_absolute_error"):
+        assert len(v[f"component_{name}"]) == 3
+        assert len(v[f"per_species_component_{name}"]) == 2
+    _check_all(result)
+
+
+def test_species_labels_sort_by_code_point_not_attribute_order() -> None:
+    result = force_errors([np.zeros((3, 3))], [np.ones((3, 3))], species=[["b", "Z", "a"]])
+    assert bound_values(result)[-1].value["species_labels"] == ["Z", "a", "b"]
+
+
+def test_force_configuration_weighting_binds_summary_only() -> None:
     forces = ([[[0.0, 0.0, 0.0], [0.0, 0.0, 0.0]]], [[[1.0, 2.0, 3.0], [-1.0, 0.0, 0.0]]])
-    assert bound_values(force_errors(*forces, species=[["Si", "Si"]], weighting="configuration")) == ()
-    result = force_errors(*forces, species=[["Si", "Si"]], weighting="atom")
-    made = records(result)
-    assert len(made) == 4 and all(isinstance(r, DerivedDataRecord) for r in made)
-    assert {r.definition_id for r in made} == {ATOMIC_FORCE}
-    assert tuple(r.derivation for r in made) == _DERIVATIONS
+    result = force_errors(*forces, species=[["Si", "Si"]], weighting="configuration")
     bound = bound_values(result)
-    assert bound[2].value == pytest.approx([0.0, 1.0, 1.5])  # bias
-    assert all(len(b.value) == 3 for b in bound)
+    assert [b.field for b in bound] == ["force_prediction_errors"]
+    assert bound[0].value["weighting"] == "configuration"
+    assert len(_check_all(result)) == 1
+    atom = force_errors(*forces, species=[["Si", "Si"]], weighting="atom")
+    made = _check_all(atom)
+    assert len(made) == 5 and all(isinstance(r, DerivedDataRecord) for r in made[:4])
+    assert {r.definition_id for r in made[:4]} == {ATOMIC_FORCE}
+    assert tuple(r.derivation for r in made[:4]) == _DERIVATIONS
+    assert bound_values(atom)[2].value == pytest.approx([0.0, 1.0, 1.5])  # bias
+
+
+def test_stress_summary_uses_voigt_order() -> None:
+    pred = np.array([[[1.0, 2.0, 3.0], [2.0, 4.0, 5.0], [3.0, 5.0, 6.0]]])
+    result = stress_errors(np.zeros((1, 3, 3)), pred)
+    bound = bound_values(result)
+    derived = _derived(bound)
+    assert tuple(b.binding.derivation for b in derived) == _DERIVATIONS
+    assert {b.binding.definition for b in derived} == {STRESS_TENSOR}
+    assert derived[2].value == [1.0, 4.0, 6.0, 5.0, 3.0, 2.0]  # bias, Voigt xx yy zz yz xz xy
+    summary = bound[-1]
+    assert summary.field == "stress_prediction_errors"
+    assert summary.value["component_bias"] == [1.0, 4.0, 6.0, 5.0, 3.0, 2.0]
+    assert summary.value["residuals"] == [[1.0, 4.0, 6.0, 5.0, 3.0, 2.0]]
+    assert type(summary.value["count"]) is int
+    _check_all(result)

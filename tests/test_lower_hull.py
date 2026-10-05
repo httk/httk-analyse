@@ -195,6 +195,7 @@ def test_segment_topology_is_scale_and_translation_invariant(
     transformed = [tuple(origin[axis] + scale[axis] * coordinate[axis] for axis in range(2)) for coordinate in points]
 
     assert LowerConvexHull(transformed, [0.0, 0.0, 0.0]).supported_segments == ((0, 2), (1, 2))
+    assert LowerConvexHull(transformed, [0.0, 0.0, 0.0], tolerance=0.5).tolerance == 0.5
 
 
 @pytest.mark.parametrize(
