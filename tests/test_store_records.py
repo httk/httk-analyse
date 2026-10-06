@@ -14,7 +14,7 @@ pytest.importorskip("httk.store")
 
 from httk.core import RunEdge
 from httk.core.data_records import DataRecord, DataRecordEntry, DerivedDataRecord
-from httk.store import EntryIdScheme
+from httk.store import EntryIdScheme, FilterTranslationError
 from httk.store.backend.sql import Backend, SqlStore, stored_property_sql_plan
 from httk.store.storage_layout import family_entry_type_definition
 
@@ -31,8 +31,8 @@ def _bm3(b0: float) -> Any:
     return -5.0 + 9 * 10.0 * b0 / 16 * (2 * q**2 + 0.5 * q**3)
 
 
-def _hull(ids: list[str]) -> PhaseDiagram:
-    return PhaseDiagram.from_compositions([{"A": 1}, {"B": 1}, {"A": 1, "B": 1}], [0.0, 0.0, -1.0], ids=ids)
+def _hull(ids: list[str], mixed: float = -1.0) -> PhaseDiagram:
+    return PhaseDiagram.from_compositions([{"A": 1}, {"B": 1}, {"A": 1, "B": 1}], [0.0, 0.0, mixed], ids=ids)
 
 
 POSITIONS = [[0, 0, 0], [0.5, 0, 0], [5, 5, 5]]
@@ -46,6 +46,7 @@ RESULTS = {
     "q4": bond_order(POSITIONS, np.eye(3) * 10, 1, 4),
     "hull_ab": _hull(["A", "B", "AB"]),
     "hull_ba": _hull(["A", "B", "BA"]),
+    "hull_up": _hull(["A", "B", "AB"], mixed=1.0),  # AB above the hull: unstable
 }
 # Each result's records carry an edge naming it, so equal values of different results stay distinct entries.
 RECORDS = [
@@ -88,6 +89,9 @@ def test_typed_records_round_trip(store: SqlStore) -> None:
         assert record.value == next(original for original in RECORDS if original == record).value
 
 
+HULL = "_httk_convex_hull_phase_diagram"
+
+
 @pytest.mark.parametrize(
     ("filter_string", "expected"),
     (
@@ -102,9 +106,24 @@ def test_typed_records_round_trip(store: SqlStore) -> None:
         # Statistics of a fixed base are typed derived kinds, served under synthesized names.
         ("_httk_total_energy_per_atom_rmse < 0.01", {"conf_small"}),
         ("_httk_total_energy_rmse IS KNOWN", {"soft", "stiff"}),
-        ('_httk_convex_hull_phase_diagram.phase_ids HAS "AB"', {"hull_ab"}),
+        ('_httk_convex_hull_phase_diagram.phase_ids HAS "AB"', {"hull_ab", "hull_up"}),
+        # Zip filters correlate members sharing the phases dimension position by position.
+        (f'{HULL}.phase_ids:{HULL}.stable HAS "AB":TRUE', {"hull_ab"}),
+        (f'{HULL}.phase_ids:{HULL}.stable HAS "AB":FALSE', {"hull_up"}),
+        (f'{HULL}.phase_ids:{HULL}.stable HAS "BA":FALSE', set()),
+        (f'{HULL}.phase_ids:{HULL}.stable HAS ALL "A":TRUE, "AB":TRUE', {"hull_ab"}),
+        (f'{HULL}.phase_ids:{HULL}.stable HAS ANY "BA":TRUE, "AB":FALSE', {"hull_ba", "hull_up"}),
+        (f'{HULL}.phase_ids:{HULL}.stable HAS ONLY "A":TRUE, "B":TRUE, "AB":TRUE', {"hull_ab"}),
+        (f'{HULL}.phase_ids:{HULL}.energies_above_hull_per_atom HAS "AB":>0.1', {"hull_up"}),
+        (f'NOT {HULL}.phase_ids:{HULL}.stable HAS "AB":TRUE', {"hull_ba", "hull_up"}),
     ),
 )
 def test_filters_select_strict_subsets(store: SqlStore, filter_string: str, expected: set[str]) -> None:
     assert expected < set(RESULTS)
     assert _labels(store, filter_string) == expected
+
+
+def test_zip_over_different_dimensions_is_not_implemented(store: SqlStore) -> None:
+    with pytest.raises(FilterTranslationError) as excinfo:
+        _labels(store, f'{HULL}.phase_ids:{HULL}.elements HAS "A":"A"')
+    assert excinfo.value.category == "not-implemented"
