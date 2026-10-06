@@ -210,19 +210,19 @@ class ChargeTransitionLevelRecord(TypedRecord):
 class ChargedDefectFormationEnergyRecord(TypedRecord):
     """Charged defect formation energy as a typed record.
 
-    The formation energy of a charged point defect in one charge state, in electronvolt, together with all quantities that entered it. List members `elements`, `atom_changes` and `chemical_potentials` are parallel lists sharing the dimension `_httk_dim_elements`, since dictionaries cannot have free-form keys; they MUST have equal length.
+    The formation energy of a charged point defect in one charge state, in electronvolt, together with all quantities that entered it. List members ``elements``, ``atom_changes`` and ``chemical_potentials`` are parallel lists sharing the dimension ``_httk_dim_elements``, since dictionaries cannot have free-form keys; they MUST have equal length.
     E_f = E_def - E_host - sum_i n_i mu_i + q (E_F + E_VBM + dV) + E_corr.
     A null value means the quantity is not available or not recorded.
 
     :param charge: Charge state q, in units of the elementary charge; positive when electrons are removed from the neutral defect.
-    :param energy: Formation energy E_f = E_def - E_host - sum_i n_i mu_i + q (E_F + E_VBM + dV) + E_corr, with n_i the entries of `atom_changes`, mu_i the `chemical_potentials`, E_F = `fermi_level`, E_VBM = `vbm`, dV = `alignment` and E_corr = `correction`. Unit: eV.
+    :param energy: Formation energy E_f = E_def - E_host - sum_i n_i mu_i + q (E_F + E_VBM + dV) + E_corr, with n_i the entries of ``atom_changes``, mu_i the ``chemical_potentials``, E_F = ``fermi_level``, E_VBM = ``vbm``, dV = ``alignment`` and E_corr = ``correction``. Unit: eV.
     :param fermi_level: Fermi level E_F at which the formation energy is evaluated, relative to the valence-band maximum (the alignment dV is not included in it). Unit: eV.
     :param vbm: Valence-band maximum E_VBM of the host, on the energy scale of the defect and host total energies of the calculation. Unit: eV.
     :param alignment: Potential alignment dV = V_def(far) - V_host(far), the difference of the electrostatic potential far from the defect and in the host. Unit: eV.
-    :param correction: Finite-size or electrostatic correction E_corr as supplied. By convention, a correction that already contains the term -q dV is recorded with `alignment` 0, so the alignment is not counted twice. Unit: eV.
+    :param correction: Finite-size or electrostatic correction E_corr as supplied. By convention, a correction that already contains the term -q dV is recorded with ``alignment`` 0, so the alignment is not counted twice. Unit: eV.
     :param elements: Element symbols the atom changes and chemical potentials refer to, in order.
-    :param atom_changes: Number of atoms of each element in `elements` added to the host to form the defect cell (+1 = one atom added, -1 = one atom removed).
-    :param chemical_potentials: Absolute per-atom chemical potential mu_i of each element in `elements`, on the same total-energy scale as the host and defect energies. Unit: eV.
+    :param atom_changes: Number of atoms of each element in ``elements`` added to the host to form the defect cell (+1 = one atom added, -1 = one atom removed).
+    :param chemical_potentials: Absolute per-atom chemical potential mu_i of each element in ``elements``, on the same total-energy scale as the host and defect energies. Unit: eV.
     :param product_of: The entries this value is a product of, as labeled edges.
     :param id: The human-readable entry id shared by all revisions; minted by the store when None.
     :param immutable_id: The per-revision immutable id; minted by the store when None.
@@ -329,11 +329,11 @@ class DistinctVanHoveFunctionRecord(TypedRecord):
 
     **Requirements/Conventions**:
 
-    - `lag_time` (ps) is the lag.
-    - `bin_edges` (angstrom, dimension `_httk_dim_radial_bin_edges`) are the shell edges; its length is the number of bins plus one.
-    - `density` (angstrom^-3, dimension `_httk_dim_radial_bins`) is counts / (samples * (4 pi / 3) * (r_hi^3 - r_lo^3)) for each shell between consecutive edges, from directed (i, j) pairs with i != j; it integrates to N - 1 over all space, and a finite radial range is not renormalized.
-    - `samples` (optional, integer) is the number of centre-atom-origin samples, N times the number of time origins.
-    - `counts` (optional, dimensionless integers, dimension `_httk_dim_radial_bins`) are the raw histogram counts per shell.
+    - ``lag_time`` (ps) is the lag.
+    - ``bin_edges`` (angstrom, dimension ``_httk_dim_radial_bin_edges``) are the shell edges; its length is the number of bins plus one.
+    - ``density`` (angstrom^-3, dimension ``_httk_dim_radial_bins``) is counts / (samples * (4 pi / 3) * (r_hi^3 - r_lo^3)) for each shell between consecutive edges, from directed (i, j) pairs with i != j; it integrates to N - 1 over all space, and a finite radial range is not renormalized.
+    - ``samples`` (optional, integer) is the number of centre-atom-origin samples, N times the number of time origins.
+    - ``counts`` (optional, dimensionless integers, dimension ``_httk_dim_radial_bins``) are the raw histogram counts per shell.
 
     A null value means the quantity is not available or not recorded.
 
@@ -376,14 +376,14 @@ class IntermediateScatteringFunctionRecord(TypedRecord):
 
     Coherent intermediate scattering function F(q,t) = <conj(rho_q(t0)) rho_q(t0 + t)> / N with rho_q = sum_j exp(i q . r_j) over the N atoms (a phase exp(+i q . r) per atom, the complex conjugate taken on the earlier time), averaged over time origins t0; F(q,0) = S(q), the static structure factor including the forward peak at q = 0.
 
-    All lists share the dimensions named below; the same `_httk_dim_lags` and `_httk_dim_wavevectors` lengths apply in every member that uses them.
+    All lists share the dimensions named below; the same ``_httk_dim_lags`` and ``_httk_dim_wavevectors`` lengths apply in every member that uses them.
 
     **Requirements/Conventions**:
 
-    - `lag_times` (ps, dimension `_httk_dim_lags`) are the lag times.
-    - `wavevectors` (angstrom^-1, Cartesian, 2 pi included) is a list over `_httk_dim_wavevectors` of vectors over `dim_spatial` (x, y, z).
-    - `real` and `imaginary` (dimensionless) are the real and imaginary parts of the function: lists over `_httk_dim_lags` of lists over `_httk_dim_wavevectors`.
-    - `origin_counts` (optional, dimensionless integers, dimension `_httk_dim_lags`) gives the number of time origins averaged for each lag.
+    - ``lag_times`` (ps, dimension ``_httk_dim_lags``) are the lag times.
+    - ``wavevectors`` (angstrom^-1, Cartesian, 2 pi included) is a list over ``_httk_dim_wavevectors`` of vectors over ``dim_spatial`` (x, y, z).
+    - ``real`` and ``imaginary`` (dimensionless) are the real and imaginary parts of the function: lists over ``_httk_dim_lags`` of lists over ``_httk_dim_wavevectors``.
+    - ``origin_counts`` (optional, dimensionless integers, dimension ``_httk_dim_lags``) gives the number of time origins averaged for each lag.
 
     A null value means the quantity is not available or not recorded.
 
@@ -426,14 +426,14 @@ class SelfIntermediateScatteringFunctionRecord(TypedRecord):
 
     Self intermediate scattering function F_s(q,t) = mean over atoms and time origins t0 of exp(i q . [r(t0 + t) - r(t0)]), with q the Cartesian wavevector (2 pi included) and r the unwrapped position of an atom; F_s(q,0) = 1.
 
-    All lists share the dimensions named below; the same `_httk_dim_lags` and `_httk_dim_wavevectors` lengths apply in every member that uses them.
+    All lists share the dimensions named below; the same ``_httk_dim_lags`` and ``_httk_dim_wavevectors`` lengths apply in every member that uses them.
 
     **Requirements/Conventions**:
 
-    - `lag_times` (ps, dimension `_httk_dim_lags`) are the lag times.
-    - `wavevectors` (angstrom^-1, Cartesian, 2 pi included) is a list over `_httk_dim_wavevectors` of vectors over `dim_spatial` (x, y, z).
-    - `real` and `imaginary` (dimensionless) are the real and imaginary parts of the function: lists over `_httk_dim_lags` of lists over `_httk_dim_wavevectors`.
-    - `origin_counts` (optional, dimensionless integers, dimension `_httk_dim_lags`) gives the number of time origins averaged for each lag.
+    - ``lag_times`` (ps, dimension ``_httk_dim_lags``) are the lag times.
+    - ``wavevectors`` (angstrom^-1, Cartesian, 2 pi included) is a list over ``_httk_dim_wavevectors`` of vectors over ``dim_spatial`` (x, y, z).
+    - ``real`` and ``imaginary`` (dimensionless) are the real and imaginary parts of the function: lists over ``_httk_dim_lags`` of lists over ``_httk_dim_wavevectors``.
+    - ``origin_counts`` (optional, dimensionless integers, dimension ``_httk_dim_lags``) gives the number of time origins averaged for each lag.
 
     A null value means the quantity is not available or not recorded.
 
@@ -478,11 +478,11 @@ class SelfVanHoveFunctionRecord(TypedRecord):
 
     **Requirements/Conventions**:
 
-    - `lag_time` (ps) is the lag.
-    - `bin_edges` (angstrom, dimension `_httk_dim_radial_bin_edges`) are the shell edges; its length is the number of bins plus one.
-    - `density` (angstrom^-3, dimension `_httk_dim_radial_bins`) is counts / (samples * (4 pi / 3) * (r_hi^3 - r_lo^3)) for each shell between consecutive edges; it integrates to 1 over all space, and a finite radial range is not renormalized.
-    - `samples` (optional, integer) is the number of atom-origin samples, the number of displacement vectors histogrammed.
-    - `counts` (optional, dimensionless integers, dimension `_httk_dim_radial_bins`) are the raw histogram counts per shell.
+    - ``lag_time`` (ps) is the lag.
+    - ``bin_edges`` (angstrom, dimension ``_httk_dim_radial_bin_edges``) are the shell edges; its length is the number of bins plus one.
+    - ``density`` (angstrom^-3, dimension ``_httk_dim_radial_bins``) is counts / (samples * (4 pi / 3) * (r_hi^3 - r_lo^3)) for each shell between consecutive edges; it integrates to 1 over all space, and a finite radial range is not renormalized.
+    - ``samples`` (optional, integer) is the number of atom-origin samples, the number of displacement vectors histogrammed.
+    - ``counts`` (optional, dimensionless integers, dimension ``_httk_dim_radial_bins``) are the raw histogram counts per shell.
 
     A null value means the quantity is not available or not recorded.
 
@@ -527,11 +527,11 @@ class VelocityPowerSpectrumRecord(TypedRecord):
 
     **Requirements/Conventions**:
 
-    - `frequencies` (THz, ordinary frequency, dimension `_httk_dim_frequencies`) are the frequencies of the discrete Fourier transform.
-    - `power` (angstrom^2*ps^-1, i.e. (angstrom/ps)^2 per THz, dimension `_httk_dim_frequencies`) is averaged equally over atoms and Cartesian components. It is one-sided: every bin except the zero-frequency bin (and the Nyquist bin for an even number of frames) is doubled. It is normalized so that the sum of power times the frequency spacing equals the window-weighted mean square velocity.
-    - `window` is the window applied to each velocity series before the transform: `none` (rectangular) or `hann`.
-    - `mean_removed` states whether the time mean of each atom and Cartesian component was subtracted before windowing.
-    - `mean_square` (optional, angstrom^2*ps^-2) is the window-weighted mean square velocity.
+    - ``frequencies`` (THz, ordinary frequency, dimension ``_httk_dim_frequencies``) are the frequencies of the discrete Fourier transform.
+    - ``power`` (angstrom^2*ps^-1, i.e. (angstrom/ps)^2 per THz, dimension ``_httk_dim_frequencies``) is averaged equally over atoms and Cartesian components. It is one-sided: every bin except the zero-frequency bin (and the Nyquist bin for an even number of frames) is doubled. It is normalized so that the sum of power times the frequency spacing equals the window-weighted mean square velocity.
+    - ``window`` is the window applied to each velocity series before the transform: ``none`` (rectangular) or ``hann``.
+    - ``mean_removed`` states whether the time mean of each atom and Cartesian component was subtracted before windowing.
+    - ``mean_square`` (optional, angstrom^2*ps^-2) is the window-weighted mean square velocity.
 
     A null value means the quantity is not available or not recorded.
 
@@ -638,13 +638,13 @@ class ElectronicDensityOfStatesRecord(TypedRecord):
 
     Electronic density of states of a simulation cell.
 
-    All lists share the dimension `_httk_dim_energies`; `energies` gives the energy of each entry.
+    All lists share the dimension ``_httk_dim_energies``; ``energies`` gives the energy of each entry.
 
     **Requirements/Conventions**:
 
-    - `energies` (eV) are on the absolute energy scale of the calculation.
-    - `density` (eV^-1) is the number of electronic states per eV per simulation cell, summed over spin.
-    - `integrated_density` (dimensionless) is the number of states per cell integrated from the lowest energy.
+    - ``energies`` (eV) are on the absolute energy scale of the calculation.
+    - ``density`` (eV^-1) is the number of electronic states per eV per simulation cell, summed over spin.
+    - ``integrated_density`` (dimensionless) is the number of states per cell integrated from the lowest energy.
 
     A null value means the quantity is not available or not recorded.
 
@@ -746,12 +746,12 @@ class HighFrequencyRelativePermittivityRecord(TypedRecord):
 class RelativeEffectiveMassRecord(TypedRecord):
     """Relative effective mass as a typed record.
 
-    The effective-mass tensor of one band at the wavevector `center`, relative to the free-electron mass: m*/m_e = m_e^-1 hbar^2 (d^2E/dk_i dk_j)^-1, the inverse of the band-energy curvature matrix at `center`. `center` is in angstrom^-1 (2 pi included); `tensor` is dimensionless.
+    The effective-mass tensor of one band at the wavevector ``center``, relative to the free-electron mass: m*/m_e = m_e^-1 hbar^2 (d^2E/dk_i dk_j)^-1, the inverse of the band-energy curvature matrix at ``center``. ``center`` is in angstrom^-1 (2 pi included); ``tensor`` is dimensionless.
     The tensor is signed: negative values correspond to hole-like (downward) curvature, and mixed-sign eigenvalues occur at saddle points. Where the curvature matrix is singular the effective mass is undefined and the value is null.
     A null value means the quantity is not available or not recorded.
 
     :param center: Cartesian wavevector at which the tensor is evaluated, in reciprocal angstrom with the factor 2 pi included (k = 2 pi / wavelength), in the Cartesian frame of the referenced cell. Unit: angstrom^-1.
-    :param tensor: The 3x3 relative effective-mass tensor, rows and columns over `dim_spatial` in the Cartesian frame of the referenced cell.
+    :param tensor: The 3x3 relative effective-mass tensor, rows and columns over ``dim_spatial`` in the Cartesian frame of the referenced cell.
     :param product_of: The entries this value is a product of, as labeled edges.
     :param id: The human-readable entry id shared by all revisions; minted by the store when None.
     :param immutable_id: The per-revision immutable id; minted by the store when None.
@@ -783,14 +783,14 @@ class SpinChannelElectronicDensityOfStatesRecord(TypedRecord):
 
     Electronic density of states of a simulation cell in one collinear spin channel.
 
-    All lists share the dimension `_httk_dim_energies`; `energies` gives the energy of each entry. Non-collinear calculations are out of scope; see `electronic_density_of_states` for the spin-summed density.
+    All lists share the dimension ``_httk_dim_energies``; ``energies`` gives the energy of each entry. Non-collinear calculations are out of scope; see ``electronic_density_of_states`` for the spin-summed density.
 
     **Requirements/Conventions**:
 
-    - `spin` is the spin channel: `up` or `down`.
-    - `energies` (eV) are on the absolute energy scale of the calculation.
-    - `density` (eV^-1) is the number of electronic states per eV per simulation cell in this one spin channel.
-    - `integrated_density` (dimensionless) is the number of states of this channel per cell integrated from the lowest energy.
+    - ``spin`` is the spin channel: ``up`` or ``down``.
+    - ``energies`` (eV) are on the absolute energy scale of the calculation.
+    - ``density`` (eV^-1) is the number of electronic states per eV per simulation cell in this one spin channel.
+    - ``integrated_density`` (dimensionless) is the number of states of this channel per cell integrated from the lowest energy.
 
     A null value means the quantity is not available or not recorded.
 
@@ -863,15 +863,15 @@ class ChemicalPotentialRegionRecord(TypedRecord):
 
     Linear constraints defining the allowed region of absolute per-atom chemical potentials mu_i of a host compound against competing phases.
 
-    Lists `elements`, `host_coefficients` share the dimension `_httk_dim_elements`; `competing_coefficients` has dimensions `_httk_dim_competing_phases` then `_httk_dim_elements`; `competing_energies` has the dimension `_httk_dim_competing_phases`. They MUST have consistent lengths. The competing lists may be empty.
+    Lists ``elements``, ``host_coefficients`` share the dimension ``_httk_dim_elements``; ``competing_coefficients`` has dimensions ``_httk_dim_competing_phases`` then ``_httk_dim_elements``; ``competing_energies`` has the dimension ``_httk_dim_competing_phases``. They MUST have consistent lengths. The competing lists may be empty.
 
     **Requirements/Conventions**:
 
-    - `elements` are the element labels, sorted by code point, defining the order of the potential vector.
-    - `host_coefficients` (dimensionless) are the host stoichiometry n_i as supplied, in `elements` order; they may be fractional, with zero for elements absent from the host.
-    - `host_energy` (eV) is the host total energy on that stoichiometric basis.
-    - `competing_coefficients` (dimensionless) are the competing-phase stoichiometries c_ji, with zero for absent elements; `competing_energies` (eV) are the matching total energies E_j. Elemental reference phases are present only if supplied as competing phases.
-    - The region is: sum_i n_i mu_i = `host_energy`, and for each competing phase j, sum_i c_ji mu_i <= E_j; the mu_i are absolute per-atom chemical potentials in eV on the same total-energy scale as the energies.
+    - ``elements`` are the element labels, sorted by code point, defining the order of the potential vector.
+    - ``host_coefficients`` (dimensionless) are the host stoichiometry n_i as supplied, in ``elements`` order; they may be fractional, with zero for elements absent from the host.
+    - ``host_energy`` (eV) is the host total energy on that stoichiometric basis.
+    - ``competing_coefficients`` (dimensionless) are the competing-phase stoichiometries c_ji, with zero for absent elements; ``competing_energies`` (eV) are the matching total energies E_j. Elemental reference phases are present only if supplied as competing phases.
+    - The region is: sum_i n_i mu_i = ``host_energy``, and for each competing phase j, sum_i c_ji mu_i <= E_j; the mu_i are absolute per-atom chemical potentials in eV on the same total-energy scale as the energies.
 
     A null value means the quantity is not available or not recorded.
 
@@ -914,17 +914,17 @@ class ConvexHullPhaseDiagramRecord(TypedRecord):
 
     A convex-hull phase diagram over a set of phases with known energies.
 
-    Lists `phase_ids`, `energies_per_atom`, `energies_above_hull_per_atom` and `stable` share the dimension `_httk_dim_phases`; `compositions` has dimensions `_httk_dim_phases` then `_httk_dim_elements`; `elements` has the dimension `_httk_dim_elements`. They MUST have consistent lengths.
+    Lists ``phase_ids``, ``energies_per_atom``, ``energies_above_hull_per_atom`` and ``stable`` share the dimension ``_httk_dim_phases``; ``compositions`` has dimensions ``_httk_dim_phases`` then ``_httk_dim_elements``; ``elements`` has the dimension ``_httk_dim_elements``. They MUST have consistent lengths.
 
     **Requirements/Conventions**:
 
-    - `elements` are the element labels, sorted by code point. Phases whose energy is unknown are excluded from the hull and from all lists here, but their elements may still widen `elements`.
-    - `phase_ids` (optional) are caller labels of the phases, possibly not unique.
-    - `compositions` (dimensionless) are atomic fractions of each phase over `elements`.
-    - `energies_per_atom` (eV) are the per-atom energies on the caller's consistent linear energy scale (total or formation energy); only hull distances are independent of that scale.
-    - `energies_above_hull_per_atom` (eV) holds, for each phase, the nonnegative `energy_above_hull_per_atom` of that phase against the other listed phases.
-    - `stable` states, for each phase, whether its energy excess over the hull is at most `tolerance`; a stable phase may therefore have a small positive hull distance, and polymorphs tied within `tolerance` are all stable.
-    - `tolerance` (eV) is the maximum energy excess treated as stable.
+    - ``elements`` are the element labels, sorted by code point. Phases whose energy is unknown are excluded from the hull and from all lists here, but their elements may still widen ``elements``.
+    - ``phase_ids`` (optional) are caller labels of the phases, possibly not unique.
+    - ``compositions`` (dimensionless) are atomic fractions of each phase over ``elements``.
+    - ``energies_per_atom`` (eV) are the per-atom energies on the caller's consistent linear energy scale (total or formation energy); only hull distances are independent of that scale.
+    - ``energies_above_hull_per_atom`` (eV) holds, for each phase, the nonnegative ``energy_above_hull_per_atom`` of that phase against the other listed phases.
+    - ``stable`` states, for each phase, whether its energy excess over the hull is at most ``tolerance``; a stable phase may therefore have a small positive hull distance, and polymorphs tied within ``tolerance`` are all stable.
+    - ``tolerance`` (eV) is the maximum energy excess treated as stable.
 
     A null value means the quantity is not available or not recorded.
 
@@ -1131,7 +1131,7 @@ class ActivationEnergyRecord(TypedRecord):
 class ArrheniusPrefactorRecord(TypedRecord):
     """Arrhenius prefactor as a typed record.
 
-    The Arrhenius prefactor A, in inverse seconds, of a first-order rate constant k = A exp(-E_a / (k_B T)), for example a jump frequency; E_a is the `activation_energy`.
+    The Arrhenius prefactor A, in inverse seconds, of a first-order rate constant k = A exp(-E_a / (k_B T)), for example a jump frequency; E_a is the ``activation_energy``.
     A null value means the quantity is not available or not recorded.
 
     :param arrhenius_prefactor: The arrhenius prefactor value. Unit: s^-1.
@@ -1227,7 +1227,7 @@ class MigrationBarrierReverseRecord(TypedRecord):
 class TotalMagneticMomentRecord(TypedRecord):
     """Total magnetic moment as a typed record.
 
-    The total magnetic moment of the cell, in Bohr magnetons, as a vector over `dim_spatial`: the vector sum of the site moments in the Cartesian frame of the structure (the frame of `lattice_vectors` and `cartesian_site_positions`).
+    The total magnetic moment of the cell, in Bohr magnetons, as a vector over ``dim_spatial``: the vector sum of the site moments in the Cartesian frame of the structure (the frame of ``lattice_vectors`` and ``cartesian_site_positions``).
     Only the sum of the site moments is recorded; contributions outside the sites (interstitial regions) are not included unless the producing analysis states so.
     A null value means the quantity is not available or not recorded.
 
@@ -1682,9 +1682,9 @@ class RadialDistributionFunctionRecord(TypedRecord):
 
     **Requirements/Conventions**:
 
-    - `bin_edges` (angstrom, dimension `_httk_dim_radial_bin_edges`) are the bin edges; its length is the number of bins plus one.
-    - `g` (dimensionless, dimension `_httk_dim_radial_bins`) is the value of each bin between consecutive edges.
-    - `pair` (optional, a list of two strings over `_httk_dim_species_pair`) gives the ordered central and neighbour species; it is absent for the total radial distribution function.
+    - ``bin_edges`` (angstrom, dimension ``_httk_dim_radial_bin_edges``) are the bin edges; its length is the number of bins plus one.
+    - ``g`` (dimensionless, dimension ``_httk_dim_radial_bins``) is the value of each bin between consecutive edges.
+    - ``pair`` (optional, a list of two strings over ``_httk_dim_species_pair``) gives the ordered central and neighbour species; it is absent for the total radial distribution function.
     - Normalization: directed pair counts excluding self pairs, divided by the ideal-gas expectation N_A (N_B - delta_AB)/V and the shell volume; g is the ratio of the frame-summed counts to the frame-summed ideal-gas expectations, which differs from the mean of per-frame g when N or V vary between frames.
 
     A null value means the quantity is not available or not recorded.
@@ -1726,11 +1726,11 @@ class SteinhardtBondOrderRecord(TypedRecord):
 
     **Requirements/Conventions**:
 
-    - `degree` (integer) is the harmonic degree l.
-    - `cutoff` (angstrom) is the neighbour cutoff, inclusive.
-    - `global_order` (dimensionless, null when there are no bonds) is the bond-weighted Q_l = sqrt(4 pi / (2 l + 1) * sum_m abs(<Y_lm>_bonds)^2), pooling all directed bonds (each pair contributes both r and -r); it is identically zero (to rounding) for odd l.
-    - `local_orders` (dimensionless, dimension `_httk_dim_atoms`) is the per-atom q_l, null for an atom without neighbours.
-    - `coordination_numbers` (dimensionless integers, dimension `_httk_dim_atoms`) is the number of neighbour bonds per atom.
+    - ``degree`` (integer) is the harmonic degree l.
+    - ``cutoff`` (angstrom) is the neighbour cutoff, inclusive.
+    - ``global_order`` (dimensionless, null when there are no bonds) is the bond-weighted Q_l = sqrt(4 pi / (2 l + 1) * sum_m abs(<Y_lm>_bonds)^2), pooling all directed bonds (each pair contributes both r and -r); it is identically zero (to rounding) for odd l.
+    - ``local_orders`` (dimensionless, dimension ``_httk_dim_atoms``) is the per-atom q_l, null for an atom without neighbours.
+    - ``coordination_numbers`` (dimensionless integers, dimension ``_httk_dim_atoms``) is the number of neighbour bonds per atom.
     - Atoms are in the order of the analysed positions.
 
     A null value means the quantity is not available or not recorded.
@@ -1909,9 +1909,9 @@ class ModeGruneisenParametersRecord(TypedRecord):
 
     **Requirements/Conventions**:
 
-    - `reference_volume` (angstrom^3) is the volume at which the derivatives are evaluated.
-    - `values` (dimensionless, dimension `_httk_dim_modes`) holds gamma_i = -d ln(nu_i) / d ln(V) at the reference volume. Modes are caller-matched frequency columns across the volumes; there are no q-point or band labels and no automatic branch matching.
-    - `degree` is the degree of the polynomial of ln(nu) against ln(V): 2 with three or more volumes, otherwise 1.
+    - ``reference_volume`` (angstrom^3) is the volume at which the derivatives are evaluated.
+    - ``values`` (dimensionless, dimension ``_httk_dim_modes``) holds gamma_i = -d ln(nu_i) / d ln(V) at the reference volume. Modes are caller-matched frequency columns across the volumes; there are no q-point or band labels and no automatic branch matching.
+    - ``degree`` is the degree of the polynomial of ln(nu) against ln(V): 2 with three or more volumes, otherwise 1.
 
     A null value means the quantity is not available or not recorded.
 
@@ -1950,14 +1950,14 @@ class QuasiharmonicThermodynamicsRecord(TypedRecord):
 
     Quasiharmonic equilibrium properties as a function of temperature at zero pressure.
 
-    All lists share the dimension `_httk_dim_temperatures`; `temperatures` (K) gives the temperature of each entry.
+    All lists share the dimension ``_httk_dim_temperatures``; ``temperatures`` (K) gives the temperature of each entry.
 
     **Requirements/Conventions**:
 
-    - `equilibrium_volumes` (angstrom^3) is the volume of the whole cell that minimizes the Helmholtz free energy at each temperature.
-    - `total_helmholtz_free_energies` (eV) INCLUDES the static lattice energy: the minimum over volume V of E_static(V) + F_vib(V, T). It equals the Gibbs energy only at zero pressure, which is the pressure of this property.
-    - `bulk_moduli` (GPa) is the isothermal bulk modulus B_T obtained from a third-order Birch-Murnaghan fit of F(V, T) at each temperature.
-    - `volumetric_thermal_expansions` (K^-1) is (1/V_eq) dV_eq/dT, evaluated by second-order finite differences on the supplied temperature grid; endpoint values are one-sided.
+    - ``equilibrium_volumes`` (angstrom^3) is the volume of the whole cell that minimizes the Helmholtz free energy at each temperature.
+    - ``total_helmholtz_free_energies`` (eV) INCLUDES the static lattice energy: the minimum over volume V of E_static(V) + F_vib(V, T). It equals the Gibbs energy only at zero pressure, which is the pressure of this property.
+    - ``bulk_moduli`` (GPa) is the isothermal bulk modulus B_T obtained from a third-order Birch-Murnaghan fit of F(V, T) at each temperature.
+    - ``volumetric_thermal_expansions`` (K^-1) is (1/V_eq) dV_eq/dT, evaluated by second-order finite differences on the supplied temperature grid; endpoint values are one-sided.
 
     A null value means the quantity is not available or not recorded.
 
@@ -2099,12 +2099,12 @@ class VibrationalThermodynamicsRecord(TypedRecord):
 
     Harmonic phonon thermodynamics of the vibrational modes of the referenced cell, tabulated as a function of temperature.
 
-    All lists share the dimension `_httk_dim_temperatures`; `temperatures` (K) gives the temperature of each entry.
+    All lists share the dimension ``_httk_dim_temperatures``; ``temperatures`` (K) gives the temperature of each entry.
 
     **Requirements/Conventions**:
 
-    - `helmholtz_free_energies` (eV) and `internal_energies` (eV) are vibrational contributions only and include the zero-point energy. The static lattice energy is NOT included.
-    - `entropies` (K^-1 eV) and `heat_capacities` (K^-1 eV, at constant volume) are given for the whole referenced cell.
+    - ``helmholtz_free_energies`` (eV) and ``internal_energies`` (eV) are vibrational contributions only and include the zero-point energy. The static lattice energy is NOT included.
+    - ``entropies`` (K^-1 eV) and ``heat_capacities`` (K^-1 eV, at constant volume) are given for the whole referenced cell.
     - All quantities are in the harmonic approximation.
 
     A null value means the quantity is not available or not recorded.
@@ -2246,7 +2246,7 @@ class DiffusionCoefficientRecord(TypedRecord):
 class DiffusionPrefactorRecord(TypedRecord):
     """Diffusion prefactor as a typed record.
 
-    The diffusion prefactor D_0, in square metres per second, of an Arrhenius diffusion coefficient D = D_0 exp(-E_a / (k_B T)); E_a is the `activation_energy`.
+    The diffusion prefactor D_0, in square metres per second, of an Arrhenius diffusion coefficient D = D_0 exp(-E_a / (k_B T)); E_a is the ``activation_energy``.
     A null value means the quantity is not available or not recorded.
 
     :param diffusion_prefactor: The diffusion prefactor value. Unit: m^2*s^-1.
@@ -2280,11 +2280,11 @@ class DiffusionRunningIntegralRecord(TypedRecord):
 
     Running integral of the velocity autocorrelation tensor, as a function of upper integration limit.
 
-    All lists of the dictionary share the dimension `_httk_dim_lags`; `lag_times` gives the lag time of each entry.
+    All lists of the dictionary share the dimension ``_httk_dim_lags``; ``lag_times`` gives the lag time of each entry.
 
     **Requirements/Conventions**:
 
-    - `diffusion_tensors` (m^2 s^-1) is the trapezoidal running integral of the velocity autocorrelation tensor from 0 to each lag time. Each tensor member has the shared lag dimension first, followed by two `dim_spatial` axes (Cartesian x, y, z) giving the tensor components; the tensor is not symmetrized.
+    - ``diffusion_tensors`` (m^2 s^-1) is the trapezoidal running integral of the velocity autocorrelation tensor from 0 to each lag time. Each tensor member has the shared lag dimension first, followed by two ``dim_spatial`` axes (Cartesian x, y, z) giving the tensor components; the tensor is not symmetrized.
     - Selection of a plateau value, giving the diffusion tensor, is left to the user.
 
     A null value means the quantity is not available or not recorded.
@@ -2320,7 +2320,7 @@ class DiffusionRunningIntegralRecord(TypedRecord):
 class DiffusionTensorRecord(TypedRecord):
     """Diffusion tensor as a typed record.
 
-    The self-diffusion tensor D_ij, in square metre per second (m^2 s^-1), a 3x3 Cartesian tensor with both indices over `dim_spatial` in the Cartesian frame of the referenced cell.
+    The self-diffusion tensor D_ij, in square metre per second (m^2 s^-1), a 3x3 Cartesian tensor with both indices over ``dim_spatial`` in the Cartesian frame of the referenced cell.
     Obtained from Green-Kubo or Einstein relations. The tensor is not assumed to be symmetric. The species or selection it refers to is recorded alongside.
     A null value means the quantity is not available or not recorded.
 
@@ -2355,13 +2355,13 @@ class MeanSquaredDisplacementRecord(TypedRecord):
 
     Mean squared displacement tensor as a function of lag time.
 
-    All lists of the dictionary share the dimension `_httk_dim_lags`; `lag_times` gives the lag time of each entry.
+    All lists of the dictionary share the dimension ``_httk_dim_lags``; ``lag_times`` gives the lag time of each entry.
 
     **Requirements/Conventions**:
 
-    - `lag_times` (ps) are the lag times.
-    - `msd` (angstrom^2) is the mean over atoms and time origins of the displacement tensor Delta r_i Delta r_j, where Delta r is the displacement over the lag. Each tensor member has the shared lag dimension first, followed by two `dim_spatial` axes (Cartesian x, y, z) giving the tensor components; the tensor is not symmetrized.
-    - `origin_counts` (optional, dimensionless integers) gives the number of time origins averaged for each lag.
+    - ``lag_times`` (ps) are the lag times.
+    - ``msd`` (angstrom^2) is the mean over atoms and time origins of the displacement tensor Delta r_i Delta r_j, where Delta r is the displacement over the lag. Each tensor member has the shared lag dimension first, followed by two ``dim_spatial`` axes (Cartesian x, y, z) giving the tensor components; the tensor is not symmetrized.
+    - ``origin_counts`` (optional, dimensionless integers) gives the number of time origins averaged for each lag.
 
     A null value means the quantity is not available or not recorded.
 
@@ -2433,11 +2433,11 @@ class ShearViscosityRunningIntegralRecord(TypedRecord):
 
     Green-Kubo running integral of the shear stress autocorrelation, as a function of upper integration limit.
 
-    All lists of the dictionary share the dimension `_httk_dim_lags`; `lag_times` gives the lag time of each entry.
+    All lists of the dictionary share the dimension ``_httk_dim_lags``; ``lag_times`` gives the lag time of each entry.
 
     **Requirements/Conventions**:
 
-    - `shear_viscosities` (Pa s) has the lag dimension first, then the dimension `_httk_dim_shear_components` of size 3 with components in the order xy, xz, yz.
+    - ``shear_viscosities`` (Pa s) has the lag dimension first, then the dimension ``_httk_dim_shear_components`` of size 3 with components in the order xy, xz, yz.
     - Each entry is eta_ab(tau) = V/(kB T) integral from 0 to tau of <sigma_ab(0) sigma_ab(t)> dt, with tensile-positive stress.
 
     A null value means the quantity is not available or not recorded.
@@ -2508,11 +2508,11 @@ class ThermalConductivityRunningIntegralRecord(TypedRecord):
 
     Green-Kubo running integral of the heat-current autocorrelation, as a function of upper integration limit.
 
-    All lists of the dictionary share the dimension `_httk_dim_lags`; `lag_times` gives the lag time of each entry.
+    All lists of the dictionary share the dimension ``_httk_dim_lags``; ``lag_times`` gives the lag time of each entry.
 
     **Requirements/Conventions**:
 
-    - `thermal_conductivity_tensors` (W m^-1 K^-1) is kappa_ij(tau) = (1/(V kB T^2)) integral from 0 to tau of <J_i(0) J_j(t)> dt, with J the extensive heat current. Each tensor member has the shared lag dimension first, followed by two `dim_spatial` axes (Cartesian x, y, z) giving the tensor components; the tensor is not symmetrized.
+    - ``thermal_conductivity_tensors`` (W m^-1 K^-1) is kappa_ij(tau) = (1/(V kB T^2)) integral from 0 to tau of <J_i(0) J_j(t)> dt, with J the extensive heat current. Each tensor member has the shared lag dimension first, followed by two ``dim_spatial`` axes (Cartesian x, y, z) giving the tensor components; the tensor is not symmetrized.
 
     A null value means the quantity is not available or not recorded.
 
@@ -2547,7 +2547,7 @@ class ThermalConductivityRunningIntegralRecord(TypedRecord):
 class ThermalConductivityTensorRecord(TypedRecord):
     """Thermal conductivity tensor as a typed record.
 
-    The thermal conductivity tensor kappa_ij, in watt per metre per kelvin (W m^-1 K^-1), a 3x3 Cartesian tensor with both indices over `dim_spatial` in the Cartesian frame of the referenced cell.
+    The thermal conductivity tensor kappa_ij, in watt per metre per kelvin (W m^-1 K^-1), a 3x3 Cartesian tensor with both indices over ``dim_spatial`` in the Cartesian frame of the referenced cell.
     Obtained from Green-Kubo or Einstein relations. By the Green-Kubo relation kappa_ij = 1 / (V kB T^2) times the time integral of <J_i(0) J_j(t)>, where J is the extensive heat current. The tensor is not assumed to be symmetric.
     A null value means the quantity is not available or not recorded.
 
@@ -2582,13 +2582,13 @@ class VelocityAutocorrelationRecord(TypedRecord):
 
     Velocity autocorrelation tensor as a function of lag time.
 
-    All lists of the dictionary share the dimension `_httk_dim_lags`; `lag_times` gives the lag time of each entry.
+    All lists of the dictionary share the dimension ``_httk_dim_lags``; ``lag_times`` gives the lag time of each entry.
 
     **Requirements/Conventions**:
 
-    - `lag_times` (ps) are the lag times.
-    - `vacf` (angstrom^2 ps^-2) is the per-atom, per-origin mean of v_i(t) v_j(t + tau). It is not normalized by C(0). Each tensor member has the shared lag dimension first, followed by two `dim_spatial` axes (Cartesian x, y, z) giving the tensor components; the tensor is not symmetrized.
-    - `origin_counts` (optional, dimensionless integers) gives the number of time origins averaged for each lag.
+    - ``lag_times`` (ps) are the lag times.
+    - ``vacf`` (angstrom^2 ps^-2) is the per-atom, per-origin mean of v_i(t) v_j(t + tau). It is not normalized by C(0). Each tensor member has the shared lag dimension first, followed by two ``dim_spatial`` axes (Cartesian x, y, z) giving the tensor components; the tensor is not symmetrized.
+    - ``origin_counts`` (optional, dimensionless integers) gives the number of time origins averaged for each lag.
 
     A null value means the quantity is not available or not recorded.
 
@@ -2627,16 +2627,16 @@ class EnergyPredictionErrorsRecord(TypedRecord):
 
     Per-atom total-energy prediction errors of a model against reference energies over a set of configurations.
 
-    All errors are predicted minus reference, per atom, in eV, after subtracting `offset_per_atom` from every predicted per-atom energy when it is not null. `residuals` has the dimension `_httk_dim_configurations`, one entry per configuration in input order.
+    All errors are predicted minus reference, per atom, in eV, after subtracting ``offset_per_atom`` from every predicted per-atom energy when it is not null. ``residuals`` has the dimension ``_httk_dim_configurations``, one entry per configuration in input order.
 
     **Requirements/Conventions**:
 
-    - `weighting` is `configuration` (every configuration weighted equally) or `atom` (every atom weighted equally, i.e. configurations weighted by atom count). It applies to `bias`, `mae` and `rmse`.
-    - `offset_per_atom` (eV per atom) is the explicit offset that was subtracted from the predicted energies; null means a raw comparison, no offset was applied and none is inferred from the data.
-    - `count` is the number of configurations.
-    - `bias`, `mae` and `rmse` (eV per atom) are the weighted mean signed residual, weighted mean absolute residual and weighted root mean square residual.
-    - `maximum_absolute_error` and `percentile95_absolute_error` (eV per atom) are the largest absolute residual and the 95th percentile absolute residual (linear interpolation); both are unweighted under every weighting.
-    - For the natural population (`weighting` configuration, `offset_per_atom` null) `bias`, `mae`, `rmse` and `maximum_absolute_error` equal the derivation records of `total_energy_per_atom`.
+    - ``weighting`` is ``configuration`` (every configuration weighted equally) or ``atom`` (every atom weighted equally, i.e. configurations weighted by atom count). It applies to ``bias``, ``mae`` and ``rmse``.
+    - ``offset_per_atom`` (eV per atom) is the explicit offset that was subtracted from the predicted energies; null means a raw comparison, no offset was applied and none is inferred from the data.
+    - ``count`` is the number of configurations.
+    - ``bias``, ``mae`` and ``rmse`` (eV per atom) are the weighted mean signed residual, weighted mean absolute residual and weighted root mean square residual.
+    - ``maximum_absolute_error`` and ``percentile95_absolute_error`` (eV per atom) are the largest absolute residual and the 95th percentile absolute residual (linear interpolation); both are unweighted under every weighting.
+    - For the natural population (``weighting`` configuration, ``offset_per_atom`` null) ``bias``, ``mae``, ``rmse`` and ``maximum_absolute_error`` equal the derivation records of ``total_energy_per_atom``.
 
     A null value means the quantity is not available or not recorded.
 
@@ -2687,17 +2687,17 @@ class ForcePredictionErrorsRecord(TypedRecord):
 
     Force prediction errors of a model against reference forces over a set of configurations; atoms are matched in order between reference and prediction.
 
-    All errors are predicted minus reference, in eV/angstrom, per Cartesian component in x, y, z order (dimension `dim_spatial`). Dimension `_httk_dim_configurations` has one entry per configuration in input order; dimension `_httk_dim_species` has one entry per species label.
+    All errors are predicted minus reference, in eV/angstrom, per Cartesian component in x, y, z order (dimension ``dim_spatial``). Dimension ``_httk_dim_configurations`` has one entry per configuration in input order; dimension ``_httk_dim_species`` has one entry per species label.
 
     **Requirements/Conventions**:
 
-    - `weighting` is `atom` (every atom weighted equally) or `configuration` (every configuration given equal total weight). It applies to the weighted statistics: `component_bias`, `component_mae`, `component_rmse`, `mean_vector_error`, `rms_vector_error`, and the per-species bias, MAE and RMSE (which condition and renormalize the same weights on atoms of that species).
-    - `count` is the total number of atoms (force residual vectors); `per_species_count` is the number of atoms of each species.
-    - `component_*` are the statistics of the pooled residual components (bias, mean absolute error, root mean square error, maximum absolute error, 95th percentile absolute error with linear interpolation). `component_maximum_absolute_error` and `component_percentile95_absolute_error` are unweighted under every weighting.
-    - `mean_vector_error` and `rms_vector_error` are the weighted mean and weighted root mean square of the Euclidean norms of the residual vectors. The pooled per-component RMSE common in the literature equals `rms_vector_error` divided by sqrt(3) for `atom` weighting.
-    - `per_configuration_mean_vector_errors`, `per_configuration_rms_vector_errors` and `per_configuration_component_rmse` are computed within each configuration with every atom of the configuration weighted equally; they are independent of `weighting`.
-    - `species_labels` are the species labels, sorted by code point; the `per_species_*` members follow this order. `per_species_component_maximum_absolute_error` and `per_species_component_percentile95_absolute_error` are unweighted.
-    - For the natural population (`weighting` atom) `component_bias`, `component_mae`, `component_rmse` and `component_maximum_absolute_error` equal the derivation records of `atomic_force`.
+    - ``weighting`` is ``atom`` (every atom weighted equally) or ``configuration`` (every configuration given equal total weight). It applies to the weighted statistics: ``component_bias``, ``component_mae``, ``component_rmse``, ``mean_vector_error``, ``rms_vector_error``, and the per-species bias, MAE and RMSE (which condition and renormalize the same weights on atoms of that species).
+    - ``count`` is the total number of atoms (force residual vectors); ``per_species_count`` is the number of atoms of each species.
+    - ``component_*`` are the statistics of the pooled residual components (bias, mean absolute error, root mean square error, maximum absolute error, 95th percentile absolute error with linear interpolation). ``component_maximum_absolute_error`` and ``component_percentile95_absolute_error`` are unweighted under every weighting.
+    - ``mean_vector_error`` and ``rms_vector_error`` are the weighted mean and weighted root mean square of the Euclidean norms of the residual vectors. The pooled per-component RMSE common in the literature equals ``rms_vector_error`` divided by sqrt(3) for ``atom`` weighting.
+    - ``per_configuration_mean_vector_errors``, ``per_configuration_rms_vector_errors`` and ``per_configuration_component_rmse`` are computed within each configuration with every atom of the configuration weighted equally; they are independent of ``weighting``.
+    - ``species_labels`` are the species labels, sorted by code point; the ``per_species_*`` members follow this order. ``per_species_component_maximum_absolute_error`` and ``per_species_component_percentile95_absolute_error`` are unweighted.
+    - For the natural population (``weighting`` atom) ``component_bias``, ``component_mae``, ``component_rmse`` and ``component_maximum_absolute_error`` equal the derivation records of ``atomic_force``.
 
     A null value means the quantity is not available or not recorded.
 
@@ -2772,12 +2772,12 @@ class NveEnergyDriftRecord(TypedRecord):
 
     **Requirements/Conventions**:
 
-    - `slope` (eV per atom per ps, unit `eV*ps^-1`) is the fitted slope.
-    - `intercept` (eV per atom) is the fitted energy at `start`.
-    - `residual_rms` (eV per atom) is the root mean square of the fit residuals over all samples, of the per-atom energies.
-    - `endpoint_change` (eV per atom) is the observed energy at the last sample minus that at the first.
-    - `start` and `stop` (ps) are the first and last sample times.
-    - `samples` is the number of samples (at least three).
+    - ``slope`` (eV per atom per ps, unit ``eV*ps^-1``) is the fitted slope.
+    - ``intercept`` (eV per atom) is the fitted energy at ``start``.
+    - ``residual_rms`` (eV per atom) is the root mean square of the fit residuals over all samples, of the per-atom energies.
+    - ``endpoint_change`` (eV per atom) is the observed energy at the last sample minus that at the first.
+    - ``start`` and ``stop`` (ps) are the first and last sample times.
+    - ``samples`` is the number of samples (at least three).
 
     A null value means the quantity is not available or not recorded.
 
@@ -2824,13 +2824,13 @@ class StressPredictionErrorsRecord(TypedRecord):
 
     Stress prediction errors of a model against reference stress tensors over a set of configurations.
 
-    All errors are predicted minus reference, in gigapascal (GPa), in Voigt order xx, yy, zz, yz, xz, xy (dimension `_httk_dim_voigt`), tensile positive, as for `stress_tensor`. Each shear component is taken from the upper triangle of the compared symmetric tensors. `residuals` has the dimensions `_httk_dim_configurations` then `_httk_dim_voigt`.
+    All errors are predicted minus reference, in gigapascal (GPa), in Voigt order xx, yy, zz, yz, xz, xy (dimension ``_httk_dim_voigt``), tensile positive, as for ``stress_tensor``. Each shear component is taken from the upper triangle of the compared symmetric tensors. ``residuals`` has the dimensions ``_httk_dim_configurations`` then ``_httk_dim_voigt``.
 
     **Requirements/Conventions**:
 
-    - `count` is the number of configurations.
-    - `component_bias`, `component_mae`, `component_rmse`, `component_maximum_absolute_error` and `component_percentile95_absolute_error` are the mean signed, mean absolute, root mean square, largest absolute and 95th percentile absolute (linear interpolation) residual of each component, all equally weighted over configurations.
-    - `component_bias`, `component_mae`, `component_rmse` and `component_maximum_absolute_error` equal the derivation records of `stress_tensor`.
+    - ``count`` is the number of configurations.
+    - ``component_bias``, ``component_mae``, ``component_rmse``, ``component_maximum_absolute_error`` and ``component_percentile95_absolute_error`` are the mean signed, mean absolute, root mean square, largest absolute and 95th percentile absolute (linear interpolation) residual of each component, all equally weighted over configurations.
+    - ``component_bias``, ``component_mae``, ``component_rmse`` and ``component_maximum_absolute_error`` equal the derivation records of ``stress_tensor``.
 
     A null value means the quantity is not available or not recorded.
 
@@ -2877,7 +2877,7 @@ class AtomicForceBiasRecord(TypedRecord):
 
     The bias of the property https://schemas.httk.org/defs/v0.1/properties/core/atomic_force, as identified by the derivation term https://schemas.httk.org/defs/v0.1/derivations/bias.
 
-    The force on one atom (the negative gradient of the energy with respect to the position of the atom), in electronvolt per angstrom, as a vector over `dim_spatial` in the Cartesian frame of the structure it belongs to.
+    The force on one atom (the negative gradient of the energy with respect to the position of the atom), in electronvolt per angstrom, as a vector over ``dim_spatial`` in the Cartesian frame of the structure it belongs to.
     This property is the base of force statistics: a statistic of it (such as an error or a bias over a population of atoms) has the same shape, one value per Cartesian component.
     A null value means the quantity is not available or not recorded.
 
@@ -2914,7 +2914,7 @@ class AtomicForceMaeRecord(TypedRecord):
 
     The mean absolute error of the property https://schemas.httk.org/defs/v0.1/properties/core/atomic_force, as identified by the derivation term https://schemas.httk.org/defs/v0.1/derivations/mae.
 
-    The force on one atom (the negative gradient of the energy with respect to the position of the atom), in electronvolt per angstrom, as a vector over `dim_spatial` in the Cartesian frame of the structure it belongs to.
+    The force on one atom (the negative gradient of the energy with respect to the position of the atom), in electronvolt per angstrom, as a vector over ``dim_spatial`` in the Cartesian frame of the structure it belongs to.
     This property is the base of force statistics: a statistic of it (such as an error or a bias over a population of atoms) has the same shape, one value per Cartesian component.
     A null value means the quantity is not available or not recorded.
 
@@ -2951,7 +2951,7 @@ class AtomicForceMaximumAbsoluteErrorRecord(TypedRecord):
 
     The maximum absolute error of the property https://schemas.httk.org/defs/v0.1/properties/core/atomic_force, as identified by the derivation term https://schemas.httk.org/defs/v0.1/derivations/maximum_absolute_error.
 
-    The force on one atom (the negative gradient of the energy with respect to the position of the atom), in electronvolt per angstrom, as a vector over `dim_spatial` in the Cartesian frame of the structure it belongs to.
+    The force on one atom (the negative gradient of the energy with respect to the position of the atom), in electronvolt per angstrom, as a vector over ``dim_spatial`` in the Cartesian frame of the structure it belongs to.
     This property is the base of force statistics: a statistic of it (such as an error or a bias over a population of atoms) has the same shape, one value per Cartesian component.
     A null value means the quantity is not available or not recorded.
 
@@ -2988,7 +2988,7 @@ class AtomicForceRmseRecord(TypedRecord):
 
     The root-mean-square error of the property https://schemas.httk.org/defs/v0.1/properties/core/atomic_force, as identified by the derivation term https://schemas.httk.org/defs/v0.1/derivations/rmse.
 
-    The force on one atom (the negative gradient of the energy with respect to the position of the atom), in electronvolt per angstrom, as a vector over `dim_spatial` in the Cartesian frame of the structure it belongs to.
+    The force on one atom (the negative gradient of the energy with respect to the position of the atom), in electronvolt per angstrom, as a vector over ``dim_spatial`` in the Cartesian frame of the structure it belongs to.
     This property is the base of force statistics: a statistic of it (such as an error or a bias over a population of atoms) has the same shape, one value per Cartesian component.
     A null value means the quantity is not available or not recorded.
 
@@ -3575,7 +3575,7 @@ class ThermalConductivityTensorMeanRecord(TypedRecord):
 
     The mean of the property https://schemas.httk.org/defs/v0.1/properties/transport/thermal_conductivity_tensor, as identified by the derivation term https://schemas.httk.org/defs/v0.1/derivations/mean.
 
-    The thermal conductivity tensor kappa_ij, in watt per metre per kelvin (W m^-1 K^-1), a 3x3 Cartesian tensor with both indices over `dim_spatial` in the Cartesian frame of the referenced cell.
+    The thermal conductivity tensor kappa_ij, in watt per metre per kelvin (W m^-1 K^-1), a 3x3 Cartesian tensor with both indices over ``dim_spatial`` in the Cartesian frame of the referenced cell.
     Obtained from Green-Kubo or Einstein relations. By the Green-Kubo relation kappa_ij = 1 / (V kB T^2) times the time integral of <J_i(0) J_j(t)>, where J is the extensive heat current. The tensor is not assumed to be symmetric.
     A null value means the quantity is not available or not recorded.
 
@@ -3612,7 +3612,7 @@ class ThermalConductivityTensorStandardErrorRecord(TypedRecord):
 
     The standard error of the property https://schemas.httk.org/defs/v0.1/properties/transport/thermal_conductivity_tensor, as identified by the derivation term https://schemas.httk.org/defs/v0.1/derivations/standard_error.
 
-    The thermal conductivity tensor kappa_ij, in watt per metre per kelvin (W m^-1 K^-1), a 3x3 Cartesian tensor with both indices over `dim_spatial` in the Cartesian frame of the referenced cell.
+    The thermal conductivity tensor kappa_ij, in watt per metre per kelvin (W m^-1 K^-1), a 3x3 Cartesian tensor with both indices over ``dim_spatial`` in the Cartesian frame of the referenced cell.
     Obtained from Green-Kubo or Einstein relations. By the Green-Kubo relation kappa_ij = 1 / (V kB T^2) times the time integral of <J_i(0) J_j(t)>, where J is the extensive heat current. The tensor is not assumed to be symmetric.
     A null value means the quantity is not available or not recorded.
 
