@@ -23,7 +23,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        extras: [dev, 'dev,default', 'dev,crysviz']
+        extras: [dev, 'dev,ci,default', 'dev,crysviz']
 
     steps:
       - uses: actions/checkout@v4
@@ -40,7 +40,7 @@ jobs:
           pip install -e '.[${{ matrix.extras }}]'
 
       - name: Verify default extra selects HiGHS
-        if: matrix.extras == 'dev,default'
+        if: matrix.extras == 'dev,ci,default'
         run: >-
           python -c 'from httk.analyse.generic import LowerConvexHull;
           assert LowerConvexHull([(0.0,)], [0.0]).solver == "highs"'

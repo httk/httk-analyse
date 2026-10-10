@@ -52,6 +52,8 @@ dev = [
   "pyright",
   "mypy"
 ]
+# Optional integrations exercised only by the full CI gate, which installs [dev,ci].
+ci = ["httk-analyse[scipy]"]
 docs = [
   "sphinx",
   "furo",

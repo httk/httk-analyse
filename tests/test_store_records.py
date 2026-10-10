@@ -11,6 +11,7 @@ import numpy as np
 import pytest
 
 pytest.importorskip("httk.store")
+pytest.importorskip("scipy")
 
 from httk.core import RunEdge
 from httk.core.data_records import DataRecord, DataRecordEntry, DerivedDataRecord

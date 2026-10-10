@@ -2,6 +2,7 @@
 
 import dataclasses
 import json
+from importlib.util import find_spec
 
 import numpy as np
 import pytest
@@ -44,6 +45,9 @@ from httk.analyse.property_records import DERIVED_RECORD_KINDS as DERIVED_KINDS
 from httk.analyse.property_records import RECORD_KINDS as ANALYSE_KINDS
 from httk.analyse.property_records import ThermalConductivityTensorStandardErrorRecord, TotalEnergyRmseRecord
 from httk.analyse.records import bound_values, records
+
+# Nonlinear EOS fits and bond orders need SciPy, in the [ci] extra; those tests skip without it.
+NEEDS_SCIPY = pytest.mark.skipif(find_spec("scipy") is None, reason="needs the httk-analyse[scipy] extra")
 
 
 def _bm3(volumes, v0=10.0, e0=-5.0, b0=0.2, bp=4.5):
@@ -163,7 +167,9 @@ def _json(value):
     return json.loads(json.dumps(value))
 
 
-@pytest.mark.parametrize("case", sorted(CASES))
+@pytest.mark.parametrize(
+    "case", [pytest.param(case, marks=NEEDS_SCIPY) if case == "eos" else case for case in sorted(CASES)]
+)
 def test_every_bound_value_is_a_checked_record(case):
     factory, selection, derived = CASES[case]
     result = factory()
@@ -187,6 +193,7 @@ def test_every_bound_value_is_a_checked_record(case):
             assert (record.definition_id, record.derivation) == key
 
 
+@NEEDS_SCIPY
 def test_cases_emit_every_generated_statistic_kind():
     emitted = {
         (record.definition_id, record.derivation)
@@ -217,6 +224,7 @@ def test_core_definitions_yield_core_and_hand_written_records():
     assert energy.product_of[0].label == "source"
 
 
+@NEEDS_SCIPY
 def test_every_binding_definition_resolves():
     for factory, selection, _ in CASES.values():
         for value in bound_values(factory(), **selection):
@@ -527,6 +535,7 @@ def test_dynamics_series_bind_and_check():
     assert value["mean_removed"] is True and value["window"] == spectrum.window
 
 
+@NEEDS_SCIPY
 def test_bond_order_binds_cutoff_and_none_entries():
     from httk.analyse.matsci.local_order import bond_order
 
