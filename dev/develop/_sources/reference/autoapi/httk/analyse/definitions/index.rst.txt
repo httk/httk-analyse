@@ -1,0 +1,474 @@
+httk.analyse.definitions
+========================
+
+.. py:module:: httk.analyse.definitions
+
+.. autoapi-nested-parse::
+
+   Identities binding analysis results to published httk property definitions.
+
+   Each constant is the IRI of a property definition vendored under
+   ``httk.registry.schemas.analyse`` (units, shapes and conventions come from the
+   definition, not from this package). The derivation terms qualify a base
+   property so that statistics of it (mean, standard error, ...) are identified
+   without defining a new property. Core-level IRIs such as pressure or
+   temperature live in ``httk.core.definition_ids``. :class:`FieldBinding` and
+   :class:`BoundValue` describe how fields of analysis results bind to these
+   identities; :mod:`httk.analyse.records` turns them into data records.
+
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   httk.analyse.definitions.BULK_MODULUS
+   httk.analyse.definitions.BULK_MODULUS_HILL
+   httk.analyse.definitions.BULK_MODULUS_PRESSURE_DERIVATIVE
+   httk.analyse.definitions.BULK_MODULUS_REUSS
+   httk.analyse.definitions.BULK_MODULUS_VOIGT
+   httk.analyse.definitions.COMPLIANCE_TENSOR
+   httk.analyse.definitions.ELASTIC_TENSOR
+   httk.analyse.definitions.EQUILIBRIUM_ENERGY
+   httk.analyse.definitions.EQUILIBRIUM_VOLUME
+   httk.analyse.definitions.SHEAR_MODULUS_HILL
+   httk.analyse.definitions.SHEAR_MODULUS_REUSS
+   httk.analyse.definitions.SHEAR_MODULUS_VOIGT
+   httk.analyse.definitions.UNIVERSAL_ANISOTROPY_INDEX
+   httk.analyse.definitions.ENERGY_ABOVE_HULL_PER_ATOM
+   httk.analyse.definitions.FORMATION_ENERGY_PER_ATOM
+   httk.analyse.definitions.REACTION_ENERGY
+   httk.analyse.definitions.HEAT_CAPACITY_CONSTANT_PRESSURE
+   httk.analyse.definitions.HEAT_CAPACITY_CONSTANT_VOLUME
+   httk.analyse.definitions.HELMHOLTZ_FREE_ENERGY
+   httk.analyse.definitions.ISOTHERMAL_COMPRESSIBILITY
+   httk.analyse.definitions.VIBRATIONAL_ENTROPY
+   httk.analyse.definitions.VIBRATIONAL_HEAT_CAPACITY
+   httk.analyse.definitions.VIBRATIONAL_INTERNAL_ENERGY
+   httk.analyse.definitions.VOLUMETRIC_THERMAL_EXPANSION
+   httk.analyse.definitions.ZERO_POINT_ENERGY
+   httk.analyse.definitions.DIFFUSION_COEFFICIENT
+   httk.analyse.definitions.DIFFUSION_TENSOR
+   httk.analyse.definitions.SHEAR_VISCOSITY
+   httk.analyse.definitions.THERMAL_CONDUCTIVITY
+   httk.analyse.definitions.THERMAL_CONDUCTIVITY_TENSOR
+   httk.analyse.definitions.BAND_GAP
+   httk.analyse.definitions.DIRECT_BAND_GAP
+   httk.analyse.definitions.MEAN
+   httk.analyse.definitions.STANDARD_ERROR
+   httk.analyse.definitions.STANDARD_DEVIATION
+   httk.analyse.definitions.RMSE
+   httk.analyse.definitions.MAE
+   httk.analyse.definitions.BIAS
+   httk.analyse.definitions.MAXIMUM_ABSOLUTE_ERROR
+   httk.analyse.definitions.VIBRATIONAL_THERMODYNAMICS
+   httk.analyse.definitions.QUASIHARMONIC_THERMODYNAMICS
+   httk.analyse.definitions.MEAN_SQUARED_DISPLACEMENT
+   httk.analyse.definitions.VELOCITY_AUTOCORRELATION
+   httk.analyse.definitions.DIFFUSION_RUNNING_INTEGRAL
+   httk.analyse.definitions.THERMAL_CONDUCTIVITY_RUNNING_INTEGRAL
+   httk.analyse.definitions.SHEAR_VISCOSITY_RUNNING_INTEGRAL
+   httk.analyse.definitions.RADIAL_DISTRIBUTION_FUNCTION
+   httk.analyse.definitions.ELECTRONIC_DENSITY_OF_STATES
+   httk.analyse.definitions.RELATIVE_EFFECTIVE_MASS
+   httk.analyse.definitions.FERMI_ENERGY
+   httk.analyse.definitions.STATIC_RELATIVE_PERMITTIVITY
+   httk.analyse.definitions.HIGH_FREQUENCY_RELATIVE_PERMITTIVITY
+   httk.analyse.definitions.TOTAL_MAGNETIC_MOMENT
+   httk.analyse.definitions.CHARGED_DEFECT_FORMATION_ENERGY
+   httk.analyse.definitions.CHARGE_TRANSITION_LEVEL
+   httk.analyse.definitions.SURFACE_ENERGY
+   httk.analyse.definitions.ADSORPTION_ENERGY
+   httk.analyse.definitions.SEGREGATION_ENERGY
+   httk.analyse.definitions.MIGRATION_BARRIER_FORWARD
+   httk.analyse.definitions.MIGRATION_BARRIER_REVERSE
+   httk.analyse.definitions.ACTIVATION_ENERGY
+   httk.analyse.definitions.ARRHENIUS_PREFACTOR
+   httk.analyse.definitions.DIFFUSION_PREFACTOR
+   httk.analyse.definitions.SELF_INTERMEDIATE_SCATTERING_FUNCTION
+   httk.analyse.definitions.INTERMEDIATE_SCATTERING_FUNCTION
+   httk.analyse.definitions.SELF_VAN_HOVE_FUNCTION
+   httk.analyse.definitions.DISTINCT_VAN_HOVE_FUNCTION
+   httk.analyse.definitions.VELOCITY_POWER_SPECTRUM
+   httk.analyse.definitions.STEINHARDT_BOND_ORDER
+   httk.analyse.definitions.TOTAL_ENERGY_PER_ATOM
+   httk.analyse.definitions.CHEMICAL_POTENTIAL_REGION
+   httk.analyse.definitions.CONVEX_HULL_PHASE_DIAGRAM
+   httk.analyse.definitions.ENERGY_PREDICTION_ERRORS
+   httk.analyse.definitions.FORCE_PREDICTION_ERRORS
+   httk.analyse.definitions.STRESS_PREDICTION_ERRORS
+   httk.analyse.definitions.NVE_ENERGY_DRIFT
+   httk.analyse.definitions.MODE_GRUNEISEN_PARAMETERS
+   httk.analyse.definitions.SPIN_CHANNEL_ELECTRONIC_DENSITY_OF_STATES
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   httk.analyse.definitions.FieldBinding
+   httk.analyse.definitions.BoundValue
+
+
+Module Contents
+---------------
+
+.. py:data:: BULK_MODULUS
+   :value: 'https://schemas.httk.org/defs/v0.1/properties/mechanics/bulk_modulus'
+
+
+.. py:data:: BULK_MODULUS_HILL
+   :value: 'https://schemas.httk.org/defs/v0.1/properties/mechanics/bulk_modulus_hill'
+
+
+.. py:data:: BULK_MODULUS_PRESSURE_DERIVATIVE
+   :value: 'https://schemas.httk.org/defs/v0.1/properties/mechanics/bulk_modulus_pressure_derivative'
+
+
+.. py:data:: BULK_MODULUS_REUSS
+   :value: 'https://schemas.httk.org/defs/v0.1/properties/mechanics/bulk_modulus_reuss'
+
+
+.. py:data:: BULK_MODULUS_VOIGT
+   :value: 'https://schemas.httk.org/defs/v0.1/properties/mechanics/bulk_modulus_voigt'
+
+
+.. py:data:: COMPLIANCE_TENSOR
+   :value: 'https://schemas.httk.org/defs/v0.1/properties/mechanics/compliance_tensor'
+
+
+.. py:data:: ELASTIC_TENSOR
+   :value: 'https://schemas.httk.org/defs/v0.1/properties/mechanics/elastic_tensor'
+
+
+.. py:data:: EQUILIBRIUM_ENERGY
+   :value: 'https://schemas.httk.org/defs/v0.1/properties/mechanics/equilibrium_energy'
+
+
+.. py:data:: EQUILIBRIUM_VOLUME
+   :value: 'https://schemas.httk.org/defs/v0.1/properties/mechanics/equilibrium_volume'
+
+
+.. py:data:: SHEAR_MODULUS_HILL
+   :value: 'https://schemas.httk.org/defs/v0.1/properties/mechanics/shear_modulus_hill'
+
+
+.. py:data:: SHEAR_MODULUS_REUSS
+   :value: 'https://schemas.httk.org/defs/v0.1/properties/mechanics/shear_modulus_reuss'
+
+
+.. py:data:: SHEAR_MODULUS_VOIGT
+   :value: 'https://schemas.httk.org/defs/v0.1/properties/mechanics/shear_modulus_voigt'
+
+
+.. py:data:: UNIVERSAL_ANISOTROPY_INDEX
+   :value: 'https://schemas.httk.org/defs/v0.1/properties/mechanics/universal_anisotropy_index'
+
+
+.. py:data:: ENERGY_ABOVE_HULL_PER_ATOM
+   :value: 'https://schemas.httk.org/defs/v0.1/properties/energetics/energy_above_hull_per_atom'
+
+
+.. py:data:: FORMATION_ENERGY_PER_ATOM
+   :value: 'https://schemas.httk.org/defs/v0.1/properties/energetics/formation_energy_per_atom'
+
+
+.. py:data:: REACTION_ENERGY
+   :value: 'https://schemas.httk.org/defs/v0.1/properties/energetics/reaction_energy'
+
+
+.. py:data:: HEAT_CAPACITY_CONSTANT_PRESSURE
+   :value: 'https://schemas.httk.org/defs/v0.1/properties/thermodynamics/heat_capacity_constant_pressure'
+
+
+.. py:data:: HEAT_CAPACITY_CONSTANT_VOLUME
+   :value: 'https://schemas.httk.org/defs/v0.1/properties/thermodynamics/heat_capacity_constant_volume'
+
+
+.. py:data:: HELMHOLTZ_FREE_ENERGY
+   :value: 'https://schemas.httk.org/defs/v0.1/properties/thermodynamics/helmholtz_free_energy'
+
+
+.. py:data:: ISOTHERMAL_COMPRESSIBILITY
+   :value: 'https://schemas.httk.org/defs/v0.1/properties/thermodynamics/isothermal_compressibility'
+
+
+.. py:data:: VIBRATIONAL_ENTROPY
+   :value: 'https://schemas.httk.org/defs/v0.1/properties/thermodynamics/vibrational_entropy'
+
+
+.. py:data:: VIBRATIONAL_HEAT_CAPACITY
+   :value: 'https://schemas.httk.org/defs/v0.1/properties/thermodynamics/vibrational_heat_capacity'
+
+
+.. py:data:: VIBRATIONAL_INTERNAL_ENERGY
+   :value: 'https://schemas.httk.org/defs/v0.1/properties/thermodynamics/vibrational_internal_energy'
+
+
+.. py:data:: VOLUMETRIC_THERMAL_EXPANSION
+   :value: 'https://schemas.httk.org/defs/v0.1/properties/thermodynamics/volumetric_thermal_expansion'
+
+
+.. py:data:: ZERO_POINT_ENERGY
+   :value: 'https://schemas.httk.org/defs/v0.1/properties/thermodynamics/zero_point_energy'
+
+
+.. py:data:: DIFFUSION_COEFFICIENT
+   :value: 'https://schemas.httk.org/defs/v0.1/properties/transport/diffusion_coefficient'
+
+
+.. py:data:: DIFFUSION_TENSOR
+   :value: 'https://schemas.httk.org/defs/v0.1/properties/transport/diffusion_tensor'
+
+
+.. py:data:: SHEAR_VISCOSITY
+   :value: 'https://schemas.httk.org/defs/v0.1/properties/transport/shear_viscosity'
+
+
+.. py:data:: THERMAL_CONDUCTIVITY
+   :value: 'https://schemas.httk.org/defs/v0.1/properties/transport/thermal_conductivity'
+
+
+.. py:data:: THERMAL_CONDUCTIVITY_TENSOR
+   :value: 'https://schemas.httk.org/defs/v0.1/properties/transport/thermal_conductivity_tensor'
+
+
+.. py:data:: BAND_GAP
+   :value: 'https://schemas.httk.org/defs/v0.1/properties/electronic/band_gap'
+
+
+.. py:data:: DIRECT_BAND_GAP
+   :value: 'https://schemas.httk.org/defs/v0.1/properties/electronic/direct_band_gap'
+
+
+.. py:data:: MEAN
+   :value: 'https://schemas.httk.org/defs/v0.1/derivations/mean'
+
+
+.. py:data:: STANDARD_ERROR
+   :value: 'https://schemas.httk.org/defs/v0.1/derivations/standard_error'
+
+
+.. py:data:: STANDARD_DEVIATION
+   :value: 'https://schemas.httk.org/defs/v0.1/derivations/standard_deviation'
+
+
+.. py:data:: RMSE
+   :value: 'https://schemas.httk.org/defs/v0.1/derivations/rmse'
+
+
+.. py:data:: MAE
+   :value: 'https://schemas.httk.org/defs/v0.1/derivations/mae'
+
+
+.. py:data:: BIAS
+   :value: 'https://schemas.httk.org/defs/v0.1/derivations/bias'
+
+
+.. py:data:: MAXIMUM_ABSOLUTE_ERROR
+   :value: 'https://schemas.httk.org/defs/v0.1/derivations/maximum_absolute_error'
+
+
+.. py:data:: VIBRATIONAL_THERMODYNAMICS
+   :value: 'https://schemas.httk.org/defs/v0.1/properties/thermodynamics/vibrational_thermodynamics'
+
+
+.. py:data:: QUASIHARMONIC_THERMODYNAMICS
+   :value: 'https://schemas.httk.org/defs/v0.1/properties/thermodynamics/quasiharmonic_thermodynamics'
+
+
+.. py:data:: MEAN_SQUARED_DISPLACEMENT
+   :value: 'https://schemas.httk.org/defs/v0.1/properties/transport/mean_squared_displacement'
+
+
+.. py:data:: VELOCITY_AUTOCORRELATION
+   :value: 'https://schemas.httk.org/defs/v0.1/properties/transport/velocity_autocorrelation'
+
+
+.. py:data:: DIFFUSION_RUNNING_INTEGRAL
+   :value: 'https://schemas.httk.org/defs/v0.1/properties/transport/diffusion_running_integral'
+
+
+.. py:data:: THERMAL_CONDUCTIVITY_RUNNING_INTEGRAL
+   :value: 'https://schemas.httk.org/defs/v0.1/properties/transport/thermal_conductivity_running_integral'
+
+
+.. py:data:: SHEAR_VISCOSITY_RUNNING_INTEGRAL
+   :value: 'https://schemas.httk.org/defs/v0.1/properties/transport/shear_viscosity_running_integral'
+
+
+.. py:data:: RADIAL_DISTRIBUTION_FUNCTION
+   :value: 'https://schemas.httk.org/defs/v0.1/properties/structure/radial_distribution_function'
+
+
+.. py:data:: ELECTRONIC_DENSITY_OF_STATES
+   :value: 'https://schemas.httk.org/defs/v0.1/properties/electronic/electronic_density_of_states'
+
+
+.. py:data:: RELATIVE_EFFECTIVE_MASS
+   :value: 'https://schemas.httk.org/defs/v0.1/properties/electronic/relative_effective_mass'
+
+
+.. py:data:: FERMI_ENERGY
+   :value: 'https://schemas.httk.org/defs/v0.1/properties/electronic/fermi_energy'
+
+
+.. py:data:: STATIC_RELATIVE_PERMITTIVITY
+   :value: 'https://schemas.httk.org/defs/v0.1/properties/electronic/static_relative_permittivity'
+
+
+.. py:data:: HIGH_FREQUENCY_RELATIVE_PERMITTIVITY
+   :value: 'https://schemas.httk.org/defs/v0.1/properties/electronic/high_frequency_relative_permittivity'
+
+
+.. py:data:: TOTAL_MAGNETIC_MOMENT
+   :value: 'https://schemas.httk.org/defs/v0.1/properties/magnetism/total_magnetic_moment'
+
+
+.. py:data:: CHARGED_DEFECT_FORMATION_ENERGY
+   :value: 'https://schemas.httk.org/defs/v0.1/properties/defects/charged_defect_formation_energy'
+
+
+.. py:data:: CHARGE_TRANSITION_LEVEL
+   :value: 'https://schemas.httk.org/defs/v0.1/properties/defects/charge_transition_level'
+
+
+.. py:data:: SURFACE_ENERGY
+   :value: 'https://schemas.httk.org/defs/v0.1/properties/defects/surface_energy'
+
+
+.. py:data:: ADSORPTION_ENERGY
+   :value: 'https://schemas.httk.org/defs/v0.1/properties/defects/adsorption_energy'
+
+
+.. py:data:: SEGREGATION_ENERGY
+   :value: 'https://schemas.httk.org/defs/v0.1/properties/defects/segregation_energy'
+
+
+.. py:data:: MIGRATION_BARRIER_FORWARD
+   :value: 'https://schemas.httk.org/defs/v0.1/properties/kinetics/migration_barrier_forward'
+
+
+.. py:data:: MIGRATION_BARRIER_REVERSE
+   :value: 'https://schemas.httk.org/defs/v0.1/properties/kinetics/migration_barrier_reverse'
+
+
+.. py:data:: ACTIVATION_ENERGY
+   :value: 'https://schemas.httk.org/defs/v0.1/properties/kinetics/activation_energy'
+
+
+.. py:data:: ARRHENIUS_PREFACTOR
+   :value: 'https://schemas.httk.org/defs/v0.1/properties/kinetics/arrhenius_prefactor'
+
+
+.. py:data:: DIFFUSION_PREFACTOR
+   :value: 'https://schemas.httk.org/defs/v0.1/properties/transport/diffusion_prefactor'
+
+
+.. py:data:: SELF_INTERMEDIATE_SCATTERING_FUNCTION
+   :value: 'https://schemas.httk.org/defs/v0.1/properties/dynamics/self_intermediate_scattering_function'
+
+
+.. py:data:: INTERMEDIATE_SCATTERING_FUNCTION
+   :value: 'https://schemas.httk.org/defs/v0.1/properties/dynamics/intermediate_scattering_function'
+
+
+.. py:data:: SELF_VAN_HOVE_FUNCTION
+   :value: 'https://schemas.httk.org/defs/v0.1/properties/dynamics/self_van_hove_function'
+
+
+.. py:data:: DISTINCT_VAN_HOVE_FUNCTION
+   :value: 'https://schemas.httk.org/defs/v0.1/properties/dynamics/distinct_van_hove_function'
+
+
+.. py:data:: VELOCITY_POWER_SPECTRUM
+   :value: 'https://schemas.httk.org/defs/v0.1/properties/dynamics/velocity_power_spectrum'
+
+
+.. py:data:: STEINHARDT_BOND_ORDER
+   :value: 'https://schemas.httk.org/defs/v0.1/properties/structure/steinhardt_bond_order'
+
+
+.. py:data:: TOTAL_ENERGY_PER_ATOM
+   :value: 'https://schemas.httk.org/defs/v0.1/properties/energetics/total_energy_per_atom'
+
+
+.. py:data:: CHEMICAL_POTENTIAL_REGION
+   :value: 'https://schemas.httk.org/defs/v0.1/properties/energetics/chemical_potential_region'
+
+
+.. py:data:: CONVEX_HULL_PHASE_DIAGRAM
+   :value: 'https://schemas.httk.org/defs/v0.1/properties/energetics/convex_hull_phase_diagram'
+
+
+.. py:data:: ENERGY_PREDICTION_ERRORS
+   :value: 'https://schemas.httk.org/defs/v0.1/properties/validation/energy_prediction_errors'
+
+
+.. py:data:: FORCE_PREDICTION_ERRORS
+   :value: 'https://schemas.httk.org/defs/v0.1/properties/validation/force_prediction_errors'
+
+
+.. py:data:: STRESS_PREDICTION_ERRORS
+   :value: 'https://schemas.httk.org/defs/v0.1/properties/validation/stress_prediction_errors'
+
+
+.. py:data:: NVE_ENERGY_DRIFT
+   :value: 'https://schemas.httk.org/defs/v0.1/properties/validation/nve_energy_drift'
+
+
+.. py:data:: MODE_GRUNEISEN_PARAMETERS
+   :value: 'https://schemas.httk.org/defs/v0.1/properties/thermodynamics/mode_gruneisen_parameters'
+
+
+.. py:data:: SPIN_CHANNEL_ELECTRONIC_DENSITY_OF_STATES
+   :value: 'https://schemas.httk.org/defs/v0.1/properties/electronic/spin_channel_electronic_density_of_states'
+
+
+.. py:class:: FieldBinding
+
+   The property identity of one analysis-result field.
+
+   The field value is in the unit of ``definition``. With a ``derivation`` the
+   value is that statistic of the base property (same unit). A series is one
+   value of a dictionary-typed definition whose members are equal-length lists.
+
+   :param definition: Property-definition IRI.
+   :param derivation: Derivation-term IRI qualifying the property, or ``None``.
+
+
+   .. py:attribute:: definition
+      :type:  str
+
+
+   .. py:attribute:: derivation
+      :type:  str | None
+      :value: None
+
+
+
+.. py:class:: BoundValue
+
+   One result value with its property binding, as plain JSON-compatible data.
+
+   :param field: Result field name, such as ``bulk_modulus`` or ``integrals[10]``, or the
+       definition name of a series.
+   :param binding: Property binding of the value.
+   :param value: Float, nested lists of floats, or a dictionary of member lists (a series), in the
+       units of ``binding.definition``.
+
+
+   .. py:attribute:: field
+      :type:  str
+
+
+   .. py:attribute:: binding
+      :type:  FieldBinding
+
+
+   .. py:attribute:: value
+      :type:  Any
+
+

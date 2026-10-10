@@ -1,0 +1,1171 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../../../../../">
+  <head><meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../../../../../genindex.html"><link rel="search" title="Search" href="../../../../../search.html"><link rel="next" title="httk.analyse.generic" href="../generic/index.html"><link rel="prev" title="httk.analyse.crysviz" href="../crysviz/index.html">
+
+    <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
+        <title>httk.analyse.definitions - httk-analyse dev:develop documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css?v=d111a655" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/styles/furo.css?v=7bdb33bb" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/selector.css?v=626bada3" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f2f2f2;
+  --color-code-foreground: #1e1e1e;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle site navigation sidebar">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc" aria-label="Toggle table of contents sidebar">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+<div class="announcement">
+  <aside class="announcement-content">
+     Development documentation (dev:develop) — built from the GitHub develop branch; content may differ from any release. 
+  </aside>
+</div>
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <span class="icon"><svg><use href="#svg-menu"></use></svg></span>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../../../../index.html"><div class="brand">httk-analyse dev:develop documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../../../index.html">
+  
+  <span class="sidebar-brand-text">httk-analyse dev:develop documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../../../../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../../../generic-hulls.html">Generic lower convex hulls</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../phase-diagrams.html">Materials phase diagrams</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../equations-of-state.html">Static equation-of-state fitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../energetics.html">Static energy bookkeeping</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../time-series.html">Simulation time series</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../mlip-validation.html">Validate MLIP predictions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../elasticity.html">Elasticity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../md-structure.html">Molecular-dynamics structure analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../dynamics.html">Dynamics and diffusion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../thermal-response.html">Equilibrium response and transport</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../phonons.html">Harmonic phonon thermodynamics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../electronic.html">Electronic and magnetic quantities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../vasp-analysis.html">VASP electronic analysis adapters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../defects.html">Defects, surfaces, and kinetics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../analysis-artifacts.html">Summaries and figures</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../records.html">Recording results</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../analysis-recipes.html">Analysis recipes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../crysviz.html">CrysViz structure viewer</a></li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="../../../../index.html">Reference</a><input aria-label="Toggle navigation of Reference" checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
+<li class="toctree-l2 current has-children"><a class="reference internal" href="../index.html">httk.analyse</a><input aria-label="Toggle navigation of httk.analyse" checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../crysviz/index.html">httk.analyse.crysviz</a></li>
+<li class="toctree-l3 current current-page"><a class="current reference internal" href="#">httk.analyse.definitions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generic/index.html">httk.analyse.generic</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../integrations/index.html">httk.analyse.integrations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../matsci/index.html">httk.analyse.matsci</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../plotting/index.html">httk.analyse.plotting</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../property_records/index.html">httk.analyse.property_records</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../records/index.html">httk.analyse.records</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../summary/index.html">httk.analyse.summary</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../notebooks/examples.html">Convex-hull and phase-diagram examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../notebooks/materials-toolbox.html">Materials toolbox example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../notebooks/materials-response.html">Materials response toolbox</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../index.html">API Reference</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="../../../../../_sources/reference/autoapi/httk/analyse/definitions/index.rst.txt" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section id="module-httk.analyse.definitions">
+<span id="httk-analyse-definitions"></span><h1>httk.analyse.definitions<a class="headerlink" href="#module-httk.analyse.definitions" title="Link to this heading">¶</a></h1>
+<p>Identities binding analysis results to published httk property definitions.</p>
+<p>Each constant is the IRI of a property definition vendored under
+<code class="docutils literal notranslate"><span class="pre">httk.registry.schemas.analyse</span></code> (units, shapes and conventions come from the
+definition, not from this package). The derivation terms qualify a base
+property so that statistics of it (mean, standard error, …) are identified
+without defining a new property. Core-level IRIs such as pressure or
+temperature live in <code class="docutils literal notranslate"><span class="pre">httk.core.definition_ids</span></code>. <a class="reference internal" href="#httk.analyse.definitions.FieldBinding" title="httk.analyse.definitions.FieldBinding"><code class="xref py py-class docutils literal notranslate"><span class="pre">FieldBinding</span></code></a> and
+<a class="reference internal" href="#httk.analyse.definitions.BoundValue" title="httk.analyse.definitions.BoundValue"><code class="xref py py-class docutils literal notranslate"><span class="pre">BoundValue</span></code></a> describe how fields of analysis results bind to these
+identities; <a class="reference internal" href="../records/index.html#module-httk.analyse.records" title="httk.analyse.records"><code class="xref py py-mod docutils literal notranslate"><span class="pre">httk.analyse.records</span></code></a> turns them into data records.</p>
+<section id="attributes">
+<h2>Attributes<a class="headerlink" href="#attributes" title="Link to this heading">¶</a></h2>
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#httk.analyse.definitions.BULK_MODULUS" title="httk.analyse.definitions.BULK_MODULUS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BULK_MODULUS</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#httk.analyse.definitions.BULK_MODULUS_HILL" title="httk.analyse.definitions.BULK_MODULUS_HILL"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BULK_MODULUS_HILL</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#httk.analyse.definitions.BULK_MODULUS_PRESSURE_DERIVATIVE" title="httk.analyse.definitions.BULK_MODULUS_PRESSURE_DERIVATIVE"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BULK_MODULUS_PRESSURE_DERIVATIVE</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#httk.analyse.definitions.BULK_MODULUS_REUSS" title="httk.analyse.definitions.BULK_MODULUS_REUSS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BULK_MODULUS_REUSS</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#httk.analyse.definitions.BULK_MODULUS_VOIGT" title="httk.analyse.definitions.BULK_MODULUS_VOIGT"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BULK_MODULUS_VOIGT</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#httk.analyse.definitions.COMPLIANCE_TENSOR" title="httk.analyse.definitions.COMPLIANCE_TENSOR"><code class="xref py py-obj docutils literal notranslate"><span class="pre">COMPLIANCE_TENSOR</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#httk.analyse.definitions.ELASTIC_TENSOR" title="httk.analyse.definitions.ELASTIC_TENSOR"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ELASTIC_TENSOR</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#httk.analyse.definitions.EQUILIBRIUM_ENERGY" title="httk.analyse.definitions.EQUILIBRIUM_ENERGY"><code class="xref py py-obj docutils literal notranslate"><span class="pre">EQUILIBRIUM_ENERGY</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#httk.analyse.definitions.EQUILIBRIUM_VOLUME" title="httk.analyse.definitions.EQUILIBRIUM_VOLUME"><code class="xref py py-obj docutils literal notranslate"><span class="pre">EQUILIBRIUM_VOLUME</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#httk.analyse.definitions.SHEAR_MODULUS_HILL" title="httk.analyse.definitions.SHEAR_MODULUS_HILL"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SHEAR_MODULUS_HILL</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#httk.analyse.definitions.SHEAR_MODULUS_REUSS" title="httk.analyse.definitions.SHEAR_MODULUS_REUSS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SHEAR_MODULUS_REUSS</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#httk.analyse.definitions.SHEAR_MODULUS_VOIGT" title="httk.analyse.definitions.SHEAR_MODULUS_VOIGT"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SHEAR_MODULUS_VOIGT</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#httk.analyse.definitions.UNIVERSAL_ANISOTROPY_INDEX" title="httk.analyse.definitions.UNIVERSAL_ANISOTROPY_INDEX"><code class="xref py py-obj docutils literal notranslate"><span class="pre">UNIVERSAL_ANISOTROPY_INDEX</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#httk.analyse.definitions.ENERGY_ABOVE_HULL_PER_ATOM" title="httk.analyse.definitions.ENERGY_ABOVE_HULL_PER_ATOM"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ENERGY_ABOVE_HULL_PER_ATOM</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#httk.analyse.definitions.FORMATION_ENERGY_PER_ATOM" title="httk.analyse.definitions.FORMATION_ENERGY_PER_ATOM"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FORMATION_ENERGY_PER_ATOM</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#httk.analyse.definitions.REACTION_ENERGY" title="httk.analyse.definitions.REACTION_ENERGY"><code class="xref py py-obj docutils literal notranslate"><span class="pre">REACTION_ENERGY</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#httk.analyse.definitions.HEAT_CAPACITY_CONSTANT_PRESSURE" title="httk.analyse.definitions.HEAT_CAPACITY_CONSTANT_PRESSURE"><code class="xref py py-obj docutils literal notranslate"><span class="pre">HEAT_CAPACITY_CONSTANT_PRESSURE</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#httk.analyse.definitions.HEAT_CAPACITY_CONSTANT_VOLUME" title="httk.analyse.definitions.HEAT_CAPACITY_CONSTANT_VOLUME"><code class="xref py py-obj docutils literal notranslate"><span class="pre">HEAT_CAPACITY_CONSTANT_VOLUME</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#httk.analyse.definitions.HELMHOLTZ_FREE_ENERGY" title="httk.analyse.definitions.HELMHOLTZ_FREE_ENERGY"><code class="xref py py-obj docutils literal notranslate"><span class="pre">HELMHOLTZ_FREE_ENERGY</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#httk.analyse.definitions.ISOTHERMAL_COMPRESSIBILITY" title="httk.analyse.definitions.ISOTHERMAL_COMPRESSIBILITY"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ISOTHERMAL_COMPRESSIBILITY</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#httk.analyse.definitions.VIBRATIONAL_ENTROPY" title="httk.analyse.definitions.VIBRATIONAL_ENTROPY"><code class="xref py py-obj docutils literal notranslate"><span class="pre">VIBRATIONAL_ENTROPY</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#httk.analyse.definitions.VIBRATIONAL_HEAT_CAPACITY" title="httk.analyse.definitions.VIBRATIONAL_HEAT_CAPACITY"><code class="xref py py-obj docutils literal notranslate"><span class="pre">VIBRATIONAL_HEAT_CAPACITY</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#httk.analyse.definitions.VIBRATIONAL_INTERNAL_ENERGY" title="httk.analyse.definitions.VIBRATIONAL_INTERNAL_ENERGY"><code class="xref py py-obj docutils literal notranslate"><span class="pre">VIBRATIONAL_INTERNAL_ENERGY</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#httk.analyse.definitions.VOLUMETRIC_THERMAL_EXPANSION" title="httk.analyse.definitions.VOLUMETRIC_THERMAL_EXPANSION"><code class="xref py py-obj docutils literal notranslate"><span class="pre">VOLUMETRIC_THERMAL_EXPANSION</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#httk.analyse.definitions.ZERO_POINT_ENERGY" title="httk.analyse.definitions.ZERO_POINT_ENERGY"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ZERO_POINT_ENERGY</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#httk.analyse.definitions.DIFFUSION_COEFFICIENT" title="httk.analyse.definitions.DIFFUSION_COEFFICIENT"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DIFFUSION_COEFFICIENT</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#httk.analyse.definitions.DIFFUSION_TENSOR" title="httk.analyse.definitions.DIFFUSION_TENSOR"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DIFFUSION_TENSOR</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#httk.analyse.definitions.SHEAR_VISCOSITY" title="httk.analyse.definitions.SHEAR_VISCOSITY"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SHEAR_VISCOSITY</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#httk.analyse.definitions.THERMAL_CONDUCTIVITY" title="httk.analyse.definitions.THERMAL_CONDUCTIVITY"><code class="xref py py-obj docutils literal notranslate"><span class="pre">THERMAL_CONDUCTIVITY</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#httk.analyse.definitions.THERMAL_CONDUCTIVITY_TENSOR" title="httk.analyse.definitions.THERMAL_CONDUCTIVITY_TENSOR"><code class="xref py py-obj docutils literal notranslate"><span class="pre">THERMAL_CONDUCTIVITY_TENSOR</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#httk.analyse.definitions.BAND_GAP" title="httk.analyse.definitions.BAND_GAP"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BAND_GAP</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#httk.analyse.definitions.DIRECT_BAND_GAP" title="httk.analyse.definitions.DIRECT_BAND_GAP"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DIRECT_BAND_GAP</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#httk.analyse.definitions.MEAN" title="httk.analyse.definitions.MEAN"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MEAN</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#httk.analyse.definitions.STANDARD_ERROR" title="httk.analyse.definitions.STANDARD_ERROR"><code class="xref py py-obj docutils literal notranslate"><span class="pre">STANDARD_ERROR</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#httk.analyse.definitions.STANDARD_DEVIATION" title="httk.analyse.definitions.STANDARD_DEVIATION"><code class="xref py py-obj docutils literal notranslate"><span class="pre">STANDARD_DEVIATION</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#httk.analyse.definitions.RMSE" title="httk.analyse.definitions.RMSE"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RMSE</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#httk.analyse.definitions.MAE" title="httk.analyse.definitions.MAE"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MAE</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#httk.analyse.definitions.BIAS" title="httk.analyse.definitions.BIAS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BIAS</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#httk.analyse.definitions.MAXIMUM_ABSOLUTE_ERROR" title="httk.analyse.definitions.MAXIMUM_ABSOLUTE_ERROR"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MAXIMUM_ABSOLUTE_ERROR</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#httk.analyse.definitions.VIBRATIONAL_THERMODYNAMICS" title="httk.analyse.definitions.VIBRATIONAL_THERMODYNAMICS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">VIBRATIONAL_THERMODYNAMICS</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#httk.analyse.definitions.QUASIHARMONIC_THERMODYNAMICS" title="httk.analyse.definitions.QUASIHARMONIC_THERMODYNAMICS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">QUASIHARMONIC_THERMODYNAMICS</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#httk.analyse.definitions.MEAN_SQUARED_DISPLACEMENT" title="httk.analyse.definitions.MEAN_SQUARED_DISPLACEMENT"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MEAN_SQUARED_DISPLACEMENT</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#httk.analyse.definitions.VELOCITY_AUTOCORRELATION" title="httk.analyse.definitions.VELOCITY_AUTOCORRELATION"><code class="xref py py-obj docutils literal notranslate"><span class="pre">VELOCITY_AUTOCORRELATION</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#httk.analyse.definitions.DIFFUSION_RUNNING_INTEGRAL" title="httk.analyse.definitions.DIFFUSION_RUNNING_INTEGRAL"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DIFFUSION_RUNNING_INTEGRAL</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#httk.analyse.definitions.THERMAL_CONDUCTIVITY_RUNNING_INTEGRAL" title="httk.analyse.definitions.THERMAL_CONDUCTIVITY_RUNNING_INTEGRAL"><code class="xref py py-obj docutils literal notranslate"><span class="pre">THERMAL_CONDUCTIVITY_RUNNING_INTEGRAL</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#httk.analyse.definitions.SHEAR_VISCOSITY_RUNNING_INTEGRAL" title="httk.analyse.definitions.SHEAR_VISCOSITY_RUNNING_INTEGRAL"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SHEAR_VISCOSITY_RUNNING_INTEGRAL</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#httk.analyse.definitions.RADIAL_DISTRIBUTION_FUNCTION" title="httk.analyse.definitions.RADIAL_DISTRIBUTION_FUNCTION"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RADIAL_DISTRIBUTION_FUNCTION</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#httk.analyse.definitions.ELECTRONIC_DENSITY_OF_STATES" title="httk.analyse.definitions.ELECTRONIC_DENSITY_OF_STATES"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ELECTRONIC_DENSITY_OF_STATES</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#httk.analyse.definitions.RELATIVE_EFFECTIVE_MASS" title="httk.analyse.definitions.RELATIVE_EFFECTIVE_MASS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RELATIVE_EFFECTIVE_MASS</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#httk.analyse.definitions.FERMI_ENERGY" title="httk.analyse.definitions.FERMI_ENERGY"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FERMI_ENERGY</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#httk.analyse.definitions.STATIC_RELATIVE_PERMITTIVITY" title="httk.analyse.definitions.STATIC_RELATIVE_PERMITTIVITY"><code class="xref py py-obj docutils literal notranslate"><span class="pre">STATIC_RELATIVE_PERMITTIVITY</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#httk.analyse.definitions.HIGH_FREQUENCY_RELATIVE_PERMITTIVITY" title="httk.analyse.definitions.HIGH_FREQUENCY_RELATIVE_PERMITTIVITY"><code class="xref py py-obj docutils literal notranslate"><span class="pre">HIGH_FREQUENCY_RELATIVE_PERMITTIVITY</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#httk.analyse.definitions.TOTAL_MAGNETIC_MOMENT" title="httk.analyse.definitions.TOTAL_MAGNETIC_MOMENT"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TOTAL_MAGNETIC_MOMENT</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#httk.analyse.definitions.CHARGED_DEFECT_FORMATION_ENERGY" title="httk.analyse.definitions.CHARGED_DEFECT_FORMATION_ENERGY"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CHARGED_DEFECT_FORMATION_ENERGY</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#httk.analyse.definitions.CHARGE_TRANSITION_LEVEL" title="httk.analyse.definitions.CHARGE_TRANSITION_LEVEL"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CHARGE_TRANSITION_LEVEL</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#httk.analyse.definitions.SURFACE_ENERGY" title="httk.analyse.definitions.SURFACE_ENERGY"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SURFACE_ENERGY</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#httk.analyse.definitions.ADSORPTION_ENERGY" title="httk.analyse.definitions.ADSORPTION_ENERGY"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ADSORPTION_ENERGY</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#httk.analyse.definitions.SEGREGATION_ENERGY" title="httk.analyse.definitions.SEGREGATION_ENERGY"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SEGREGATION_ENERGY</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#httk.analyse.definitions.MIGRATION_BARRIER_FORWARD" title="httk.analyse.definitions.MIGRATION_BARRIER_FORWARD"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MIGRATION_BARRIER_FORWARD</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#httk.analyse.definitions.MIGRATION_BARRIER_REVERSE" title="httk.analyse.definitions.MIGRATION_BARRIER_REVERSE"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MIGRATION_BARRIER_REVERSE</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#httk.analyse.definitions.ACTIVATION_ENERGY" title="httk.analyse.definitions.ACTIVATION_ENERGY"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ACTIVATION_ENERGY</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#httk.analyse.definitions.ARRHENIUS_PREFACTOR" title="httk.analyse.definitions.ARRHENIUS_PREFACTOR"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ARRHENIUS_PREFACTOR</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#httk.analyse.definitions.DIFFUSION_PREFACTOR" title="httk.analyse.definitions.DIFFUSION_PREFACTOR"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DIFFUSION_PREFACTOR</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#httk.analyse.definitions.SELF_INTERMEDIATE_SCATTERING_FUNCTION" title="httk.analyse.definitions.SELF_INTERMEDIATE_SCATTERING_FUNCTION"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SELF_INTERMEDIATE_SCATTERING_FUNCTION</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#httk.analyse.definitions.INTERMEDIATE_SCATTERING_FUNCTION" title="httk.analyse.definitions.INTERMEDIATE_SCATTERING_FUNCTION"><code class="xref py py-obj docutils literal notranslate"><span class="pre">INTERMEDIATE_SCATTERING_FUNCTION</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#httk.analyse.definitions.SELF_VAN_HOVE_FUNCTION" title="httk.analyse.definitions.SELF_VAN_HOVE_FUNCTION"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SELF_VAN_HOVE_FUNCTION</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#httk.analyse.definitions.DISTINCT_VAN_HOVE_FUNCTION" title="httk.analyse.definitions.DISTINCT_VAN_HOVE_FUNCTION"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DISTINCT_VAN_HOVE_FUNCTION</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#httk.analyse.definitions.VELOCITY_POWER_SPECTRUM" title="httk.analyse.definitions.VELOCITY_POWER_SPECTRUM"><code class="xref py py-obj docutils literal notranslate"><span class="pre">VELOCITY_POWER_SPECTRUM</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#httk.analyse.definitions.STEINHARDT_BOND_ORDER" title="httk.analyse.definitions.STEINHARDT_BOND_ORDER"><code class="xref py py-obj docutils literal notranslate"><span class="pre">STEINHARDT_BOND_ORDER</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#httk.analyse.definitions.TOTAL_ENERGY_PER_ATOM" title="httk.analyse.definitions.TOTAL_ENERGY_PER_ATOM"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TOTAL_ENERGY_PER_ATOM</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#httk.analyse.definitions.CHEMICAL_POTENTIAL_REGION" title="httk.analyse.definitions.CHEMICAL_POTENTIAL_REGION"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CHEMICAL_POTENTIAL_REGION</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#httk.analyse.definitions.CONVEX_HULL_PHASE_DIAGRAM" title="httk.analyse.definitions.CONVEX_HULL_PHASE_DIAGRAM"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CONVEX_HULL_PHASE_DIAGRAM</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#httk.analyse.definitions.ENERGY_PREDICTION_ERRORS" title="httk.analyse.definitions.ENERGY_PREDICTION_ERRORS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ENERGY_PREDICTION_ERRORS</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#httk.analyse.definitions.FORCE_PREDICTION_ERRORS" title="httk.analyse.definitions.FORCE_PREDICTION_ERRORS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FORCE_PREDICTION_ERRORS</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#httk.analyse.definitions.STRESS_PREDICTION_ERRORS" title="httk.analyse.definitions.STRESS_PREDICTION_ERRORS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">STRESS_PREDICTION_ERRORS</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#httk.analyse.definitions.NVE_ENERGY_DRIFT" title="httk.analyse.definitions.NVE_ENERGY_DRIFT"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NVE_ENERGY_DRIFT</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#httk.analyse.definitions.MODE_GRUNEISEN_PARAMETERS" title="httk.analyse.definitions.MODE_GRUNEISEN_PARAMETERS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MODE_GRUNEISEN_PARAMETERS</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#httk.analyse.definitions.SPIN_CHANNEL_ELECTRONIC_DENSITY_OF_STATES" title="httk.analyse.definitions.SPIN_CHANNEL_ELECTRONIC_DENSITY_OF_STATES"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SPIN_CHANNEL_ELECTRONIC_DENSITY_OF_STATES</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Link to this heading">¶</a></h2>
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#httk.analyse.definitions.FieldBinding" title="httk.analyse.definitions.FieldBinding"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FieldBinding</span></code></a></p></td>
+<td><p>The property identity of one analysis-result field.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#httk.analyse.definitions.BoundValue" title="httk.analyse.definitions.BoundValue"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BoundValue</span></code></a></p></td>
+<td><p>One result value with its property binding, as plain JSON-compatible data.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading">¶</a></h2>
+<dl class="py data">
+<dt class="sig sig-object py" id="httk.analyse.definitions.BULK_MODULUS">
+<span class="sig-prename descclassname"><span class="pre">httk.analyse.definitions.</span></span><span class="sig-name descname"><span class="pre">BULK_MODULUS</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'https://schemas.httk.org/defs/v0.1/properties/mechanics/bulk_modulus'</span></span><a class="reference internal" href="../../../../../_modules/httk/analyse/definitions.html#BULK_MODULUS"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.definitions.BULK_MODULUS" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="httk.analyse.definitions.BULK_MODULUS_HILL">
+<span class="sig-prename descclassname"><span class="pre">httk.analyse.definitions.</span></span><span class="sig-name descname"><span class="pre">BULK_MODULUS_HILL</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'https://schemas.httk.org/defs/v0.1/properties/mechanics/bulk_modulus_hill'</span></span><a class="reference internal" href="../../../../../_modules/httk/analyse/definitions.html#BULK_MODULUS_HILL"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.definitions.BULK_MODULUS_HILL" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="httk.analyse.definitions.BULK_MODULUS_PRESSURE_DERIVATIVE">
+<span class="sig-prename descclassname"><span class="pre">httk.analyse.definitions.</span></span><span class="sig-name descname"><span class="pre">BULK_MODULUS_PRESSURE_DERIVATIVE</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'https://schemas.httk.org/defs/v0.1/properties/mechanics/bulk_modulus_pressure_derivative'</span></span><a class="reference internal" href="../../../../../_modules/httk/analyse/definitions.html#BULK_MODULUS_PRESSURE_DERIVATIVE"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.definitions.BULK_MODULUS_PRESSURE_DERIVATIVE" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="httk.analyse.definitions.BULK_MODULUS_REUSS">
+<span class="sig-prename descclassname"><span class="pre">httk.analyse.definitions.</span></span><span class="sig-name descname"><span class="pre">BULK_MODULUS_REUSS</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'https://schemas.httk.org/defs/v0.1/properties/mechanics/bulk_modulus_reuss'</span></span><a class="reference internal" href="../../../../../_modules/httk/analyse/definitions.html#BULK_MODULUS_REUSS"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.definitions.BULK_MODULUS_REUSS" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="httk.analyse.definitions.BULK_MODULUS_VOIGT">
+<span class="sig-prename descclassname"><span class="pre">httk.analyse.definitions.</span></span><span class="sig-name descname"><span class="pre">BULK_MODULUS_VOIGT</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'https://schemas.httk.org/defs/v0.1/properties/mechanics/bulk_modulus_voigt'</span></span><a class="reference internal" href="../../../../../_modules/httk/analyse/definitions.html#BULK_MODULUS_VOIGT"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.definitions.BULK_MODULUS_VOIGT" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="httk.analyse.definitions.COMPLIANCE_TENSOR">
+<span class="sig-prename descclassname"><span class="pre">httk.analyse.definitions.</span></span><span class="sig-name descname"><span class="pre">COMPLIANCE_TENSOR</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'https://schemas.httk.org/defs/v0.1/properties/mechanics/compliance_tensor'</span></span><a class="reference internal" href="../../../../../_modules/httk/analyse/definitions.html#COMPLIANCE_TENSOR"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.definitions.COMPLIANCE_TENSOR" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="httk.analyse.definitions.ELASTIC_TENSOR">
+<span class="sig-prename descclassname"><span class="pre">httk.analyse.definitions.</span></span><span class="sig-name descname"><span class="pre">ELASTIC_TENSOR</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'https://schemas.httk.org/defs/v0.1/properties/mechanics/elastic_tensor'</span></span><a class="reference internal" href="../../../../../_modules/httk/analyse/definitions.html#ELASTIC_TENSOR"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.definitions.ELASTIC_TENSOR" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="httk.analyse.definitions.EQUILIBRIUM_ENERGY">
+<span class="sig-prename descclassname"><span class="pre">httk.analyse.definitions.</span></span><span class="sig-name descname"><span class="pre">EQUILIBRIUM_ENERGY</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'https://schemas.httk.org/defs/v0.1/properties/mechanics/equilibrium_energy'</span></span><a class="reference internal" href="../../../../../_modules/httk/analyse/definitions.html#EQUILIBRIUM_ENERGY"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.definitions.EQUILIBRIUM_ENERGY" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="httk.analyse.definitions.EQUILIBRIUM_VOLUME">
+<span class="sig-prename descclassname"><span class="pre">httk.analyse.definitions.</span></span><span class="sig-name descname"><span class="pre">EQUILIBRIUM_VOLUME</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'https://schemas.httk.org/defs/v0.1/properties/mechanics/equilibrium_volume'</span></span><a class="reference internal" href="../../../../../_modules/httk/analyse/definitions.html#EQUILIBRIUM_VOLUME"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.definitions.EQUILIBRIUM_VOLUME" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="httk.analyse.definitions.SHEAR_MODULUS_HILL">
+<span class="sig-prename descclassname"><span class="pre">httk.analyse.definitions.</span></span><span class="sig-name descname"><span class="pre">SHEAR_MODULUS_HILL</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'https://schemas.httk.org/defs/v0.1/properties/mechanics/shear_modulus_hill'</span></span><a class="reference internal" href="../../../../../_modules/httk/analyse/definitions.html#SHEAR_MODULUS_HILL"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.definitions.SHEAR_MODULUS_HILL" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="httk.analyse.definitions.SHEAR_MODULUS_REUSS">
+<span class="sig-prename descclassname"><span class="pre">httk.analyse.definitions.</span></span><span class="sig-name descname"><span class="pre">SHEAR_MODULUS_REUSS</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'https://schemas.httk.org/defs/v0.1/properties/mechanics/shear_modulus_reuss'</span></span><a class="reference internal" href="../../../../../_modules/httk/analyse/definitions.html#SHEAR_MODULUS_REUSS"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.definitions.SHEAR_MODULUS_REUSS" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="httk.analyse.definitions.SHEAR_MODULUS_VOIGT">
+<span class="sig-prename descclassname"><span class="pre">httk.analyse.definitions.</span></span><span class="sig-name descname"><span class="pre">SHEAR_MODULUS_VOIGT</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'https://schemas.httk.org/defs/v0.1/properties/mechanics/shear_modulus_voigt'</span></span><a class="reference internal" href="../../../../../_modules/httk/analyse/definitions.html#SHEAR_MODULUS_VOIGT"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.definitions.SHEAR_MODULUS_VOIGT" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="httk.analyse.definitions.UNIVERSAL_ANISOTROPY_INDEX">
+<span class="sig-prename descclassname"><span class="pre">httk.analyse.definitions.</span></span><span class="sig-name descname"><span class="pre">UNIVERSAL_ANISOTROPY_INDEX</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'https://schemas.httk.org/defs/v0.1/properties/mechanics/universal_anisotropy_index'</span></span><a class="reference internal" href="../../../../../_modules/httk/analyse/definitions.html#UNIVERSAL_ANISOTROPY_INDEX"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.definitions.UNIVERSAL_ANISOTROPY_INDEX" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="httk.analyse.definitions.ENERGY_ABOVE_HULL_PER_ATOM">
+<span class="sig-prename descclassname"><span class="pre">httk.analyse.definitions.</span></span><span class="sig-name descname"><span class="pre">ENERGY_ABOVE_HULL_PER_ATOM</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'https://schemas.httk.org/defs/v0.1/properties/energetics/energy_above_hull_per_atom'</span></span><a class="reference internal" href="../../../../../_modules/httk/analyse/definitions.html#ENERGY_ABOVE_HULL_PER_ATOM"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.definitions.ENERGY_ABOVE_HULL_PER_ATOM" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="httk.analyse.definitions.FORMATION_ENERGY_PER_ATOM">
+<span class="sig-prename descclassname"><span class="pre">httk.analyse.definitions.</span></span><span class="sig-name descname"><span class="pre">FORMATION_ENERGY_PER_ATOM</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'https://schemas.httk.org/defs/v0.1/properties/energetics/formation_energy_per_atom'</span></span><a class="reference internal" href="../../../../../_modules/httk/analyse/definitions.html#FORMATION_ENERGY_PER_ATOM"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.definitions.FORMATION_ENERGY_PER_ATOM" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="httk.analyse.definitions.REACTION_ENERGY">
+<span class="sig-prename descclassname"><span class="pre">httk.analyse.definitions.</span></span><span class="sig-name descname"><span class="pre">REACTION_ENERGY</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'https://schemas.httk.org/defs/v0.1/properties/energetics/reaction_energy'</span></span><a class="reference internal" href="../../../../../_modules/httk/analyse/definitions.html#REACTION_ENERGY"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.definitions.REACTION_ENERGY" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="httk.analyse.definitions.HEAT_CAPACITY_CONSTANT_PRESSURE">
+<span class="sig-prename descclassname"><span class="pre">httk.analyse.definitions.</span></span><span class="sig-name descname"><span class="pre">HEAT_CAPACITY_CONSTANT_PRESSURE</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'https://schemas.httk.org/defs/v0.1/properties/thermodynamics/heat_capacity_constant_pressure'</span></span><a class="reference internal" href="../../../../../_modules/httk/analyse/definitions.html#HEAT_CAPACITY_CONSTANT_PRESSURE"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.definitions.HEAT_CAPACITY_CONSTANT_PRESSURE" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="httk.analyse.definitions.HEAT_CAPACITY_CONSTANT_VOLUME">
+<span class="sig-prename descclassname"><span class="pre">httk.analyse.definitions.</span></span><span class="sig-name descname"><span class="pre">HEAT_CAPACITY_CONSTANT_VOLUME</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'https://schemas.httk.org/defs/v0.1/properties/thermodynamics/heat_capacity_constant_volume'</span></span><a class="reference internal" href="../../../../../_modules/httk/analyse/definitions.html#HEAT_CAPACITY_CONSTANT_VOLUME"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.definitions.HEAT_CAPACITY_CONSTANT_VOLUME" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="httk.analyse.definitions.HELMHOLTZ_FREE_ENERGY">
+<span class="sig-prename descclassname"><span class="pre">httk.analyse.definitions.</span></span><span class="sig-name descname"><span class="pre">HELMHOLTZ_FREE_ENERGY</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'https://schemas.httk.org/defs/v0.1/properties/thermodynamics/helmholtz_free_energy'</span></span><a class="reference internal" href="../../../../../_modules/httk/analyse/definitions.html#HELMHOLTZ_FREE_ENERGY"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.definitions.HELMHOLTZ_FREE_ENERGY" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="httk.analyse.definitions.ISOTHERMAL_COMPRESSIBILITY">
+<span class="sig-prename descclassname"><span class="pre">httk.analyse.definitions.</span></span><span class="sig-name descname"><span class="pre">ISOTHERMAL_COMPRESSIBILITY</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'https://schemas.httk.org/defs/v0.1/properties/thermodynamics/isothermal_compressibility'</span></span><a class="reference internal" href="../../../../../_modules/httk/analyse/definitions.html#ISOTHERMAL_COMPRESSIBILITY"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.definitions.ISOTHERMAL_COMPRESSIBILITY" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="httk.analyse.definitions.VIBRATIONAL_ENTROPY">
+<span class="sig-prename descclassname"><span class="pre">httk.analyse.definitions.</span></span><span class="sig-name descname"><span class="pre">VIBRATIONAL_ENTROPY</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'https://schemas.httk.org/defs/v0.1/properties/thermodynamics/vibrational_entropy'</span></span><a class="reference internal" href="../../../../../_modules/httk/analyse/definitions.html#VIBRATIONAL_ENTROPY"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.definitions.VIBRATIONAL_ENTROPY" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="httk.analyse.definitions.VIBRATIONAL_HEAT_CAPACITY">
+<span class="sig-prename descclassname"><span class="pre">httk.analyse.definitions.</span></span><span class="sig-name descname"><span class="pre">VIBRATIONAL_HEAT_CAPACITY</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'https://schemas.httk.org/defs/v0.1/properties/thermodynamics/vibrational_heat_capacity'</span></span><a class="reference internal" href="../../../../../_modules/httk/analyse/definitions.html#VIBRATIONAL_HEAT_CAPACITY"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.definitions.VIBRATIONAL_HEAT_CAPACITY" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="httk.analyse.definitions.VIBRATIONAL_INTERNAL_ENERGY">
+<span class="sig-prename descclassname"><span class="pre">httk.analyse.definitions.</span></span><span class="sig-name descname"><span class="pre">VIBRATIONAL_INTERNAL_ENERGY</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'https://schemas.httk.org/defs/v0.1/properties/thermodynamics/vibrational_internal_energy'</span></span><a class="reference internal" href="../../../../../_modules/httk/analyse/definitions.html#VIBRATIONAL_INTERNAL_ENERGY"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.definitions.VIBRATIONAL_INTERNAL_ENERGY" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="httk.analyse.definitions.VOLUMETRIC_THERMAL_EXPANSION">
+<span class="sig-prename descclassname"><span class="pre">httk.analyse.definitions.</span></span><span class="sig-name descname"><span class="pre">VOLUMETRIC_THERMAL_EXPANSION</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'https://schemas.httk.org/defs/v0.1/properties/thermodynamics/volumetric_thermal_expansion'</span></span><a class="reference internal" href="../../../../../_modules/httk/analyse/definitions.html#VOLUMETRIC_THERMAL_EXPANSION"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.definitions.VOLUMETRIC_THERMAL_EXPANSION" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="httk.analyse.definitions.ZERO_POINT_ENERGY">
+<span class="sig-prename descclassname"><span class="pre">httk.analyse.definitions.</span></span><span class="sig-name descname"><span class="pre">ZERO_POINT_ENERGY</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'https://schemas.httk.org/defs/v0.1/properties/thermodynamics/zero_point_energy'</span></span><a class="reference internal" href="../../../../../_modules/httk/analyse/definitions.html#ZERO_POINT_ENERGY"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.definitions.ZERO_POINT_ENERGY" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="httk.analyse.definitions.DIFFUSION_COEFFICIENT">
+<span class="sig-prename descclassname"><span class="pre">httk.analyse.definitions.</span></span><span class="sig-name descname"><span class="pre">DIFFUSION_COEFFICIENT</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'https://schemas.httk.org/defs/v0.1/properties/transport/diffusion_coefficient'</span></span><a class="reference internal" href="../../../../../_modules/httk/analyse/definitions.html#DIFFUSION_COEFFICIENT"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.definitions.DIFFUSION_COEFFICIENT" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="httk.analyse.definitions.DIFFUSION_TENSOR">
+<span class="sig-prename descclassname"><span class="pre">httk.analyse.definitions.</span></span><span class="sig-name descname"><span class="pre">DIFFUSION_TENSOR</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'https://schemas.httk.org/defs/v0.1/properties/transport/diffusion_tensor'</span></span><a class="reference internal" href="../../../../../_modules/httk/analyse/definitions.html#DIFFUSION_TENSOR"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.definitions.DIFFUSION_TENSOR" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="httk.analyse.definitions.SHEAR_VISCOSITY">
+<span class="sig-prename descclassname"><span class="pre">httk.analyse.definitions.</span></span><span class="sig-name descname"><span class="pre">SHEAR_VISCOSITY</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'https://schemas.httk.org/defs/v0.1/properties/transport/shear_viscosity'</span></span><a class="reference internal" href="../../../../../_modules/httk/analyse/definitions.html#SHEAR_VISCOSITY"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.definitions.SHEAR_VISCOSITY" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="httk.analyse.definitions.THERMAL_CONDUCTIVITY">
+<span class="sig-prename descclassname"><span class="pre">httk.analyse.definitions.</span></span><span class="sig-name descname"><span class="pre">THERMAL_CONDUCTIVITY</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'https://schemas.httk.org/defs/v0.1/properties/transport/thermal_conductivity'</span></span><a class="reference internal" href="../../../../../_modules/httk/analyse/definitions.html#THERMAL_CONDUCTIVITY"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.definitions.THERMAL_CONDUCTIVITY" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="httk.analyse.definitions.THERMAL_CONDUCTIVITY_TENSOR">
+<span class="sig-prename descclassname"><span class="pre">httk.analyse.definitions.</span></span><span class="sig-name descname"><span class="pre">THERMAL_CONDUCTIVITY_TENSOR</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'https://schemas.httk.org/defs/v0.1/properties/transport/thermal_conductivity_tensor'</span></span><a class="reference internal" href="../../../../../_modules/httk/analyse/definitions.html#THERMAL_CONDUCTIVITY_TENSOR"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.definitions.THERMAL_CONDUCTIVITY_TENSOR" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="httk.analyse.definitions.BAND_GAP">
+<span class="sig-prename descclassname"><span class="pre">httk.analyse.definitions.</span></span><span class="sig-name descname"><span class="pre">BAND_GAP</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'https://schemas.httk.org/defs/v0.1/properties/electronic/band_gap'</span></span><a class="reference internal" href="../../../../../_modules/httk/analyse/definitions.html#BAND_GAP"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.definitions.BAND_GAP" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="httk.analyse.definitions.DIRECT_BAND_GAP">
+<span class="sig-prename descclassname"><span class="pre">httk.analyse.definitions.</span></span><span class="sig-name descname"><span class="pre">DIRECT_BAND_GAP</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'https://schemas.httk.org/defs/v0.1/properties/electronic/direct_band_gap'</span></span><a class="reference internal" href="../../../../../_modules/httk/analyse/definitions.html#DIRECT_BAND_GAP"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.definitions.DIRECT_BAND_GAP" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="httk.analyse.definitions.MEAN">
+<span class="sig-prename descclassname"><span class="pre">httk.analyse.definitions.</span></span><span class="sig-name descname"><span class="pre">MEAN</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'https://schemas.httk.org/defs/v0.1/derivations/mean'</span></span><a class="reference internal" href="../../../../../_modules/httk/analyse/definitions.html#MEAN"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.definitions.MEAN" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="httk.analyse.definitions.STANDARD_ERROR">
+<span class="sig-prename descclassname"><span class="pre">httk.analyse.definitions.</span></span><span class="sig-name descname"><span class="pre">STANDARD_ERROR</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'https://schemas.httk.org/defs/v0.1/derivations/standard_error'</span></span><a class="reference internal" href="../../../../../_modules/httk/analyse/definitions.html#STANDARD_ERROR"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.definitions.STANDARD_ERROR" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="httk.analyse.definitions.STANDARD_DEVIATION">
+<span class="sig-prename descclassname"><span class="pre">httk.analyse.definitions.</span></span><span class="sig-name descname"><span class="pre">STANDARD_DEVIATION</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'https://schemas.httk.org/defs/v0.1/derivations/standard_deviation'</span></span><a class="reference internal" href="../../../../../_modules/httk/analyse/definitions.html#STANDARD_DEVIATION"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.definitions.STANDARD_DEVIATION" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="httk.analyse.definitions.RMSE">
+<span class="sig-prename descclassname"><span class="pre">httk.analyse.definitions.</span></span><span class="sig-name descname"><span class="pre">RMSE</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'https://schemas.httk.org/defs/v0.1/derivations/rmse'</span></span><a class="reference internal" href="../../../../../_modules/httk/analyse/definitions.html#RMSE"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.definitions.RMSE" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="httk.analyse.definitions.MAE">
+<span class="sig-prename descclassname"><span class="pre">httk.analyse.definitions.</span></span><span class="sig-name descname"><span class="pre">MAE</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'https://schemas.httk.org/defs/v0.1/derivations/mae'</span></span><a class="reference internal" href="../../../../../_modules/httk/analyse/definitions.html#MAE"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.definitions.MAE" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="httk.analyse.definitions.BIAS">
+<span class="sig-prename descclassname"><span class="pre">httk.analyse.definitions.</span></span><span class="sig-name descname"><span class="pre">BIAS</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'https://schemas.httk.org/defs/v0.1/derivations/bias'</span></span><a class="reference internal" href="../../../../../_modules/httk/analyse/definitions.html#BIAS"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.definitions.BIAS" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="httk.analyse.definitions.MAXIMUM_ABSOLUTE_ERROR">
+<span class="sig-prename descclassname"><span class="pre">httk.analyse.definitions.</span></span><span class="sig-name descname"><span class="pre">MAXIMUM_ABSOLUTE_ERROR</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'https://schemas.httk.org/defs/v0.1/derivations/maximum_absolute_error'</span></span><a class="reference internal" href="../../../../../_modules/httk/analyse/definitions.html#MAXIMUM_ABSOLUTE_ERROR"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.definitions.MAXIMUM_ABSOLUTE_ERROR" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="httk.analyse.definitions.VIBRATIONAL_THERMODYNAMICS">
+<span class="sig-prename descclassname"><span class="pre">httk.analyse.definitions.</span></span><span class="sig-name descname"><span class="pre">VIBRATIONAL_THERMODYNAMICS</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'https://schemas.httk.org/defs/v0.1/properties/thermodynamics/vibrational_thermodynamics'</span></span><a class="reference internal" href="../../../../../_modules/httk/analyse/definitions.html#VIBRATIONAL_THERMODYNAMICS"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.definitions.VIBRATIONAL_THERMODYNAMICS" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="httk.analyse.definitions.QUASIHARMONIC_THERMODYNAMICS">
+<span class="sig-prename descclassname"><span class="pre">httk.analyse.definitions.</span></span><span class="sig-name descname"><span class="pre">QUASIHARMONIC_THERMODYNAMICS</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'https://schemas.httk.org/defs/v0.1/properties/thermodynamics/quasiharmonic_thermodynamics'</span></span><a class="reference internal" href="../../../../../_modules/httk/analyse/definitions.html#QUASIHARMONIC_THERMODYNAMICS"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.definitions.QUASIHARMONIC_THERMODYNAMICS" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="httk.analyse.definitions.MEAN_SQUARED_DISPLACEMENT">
+<span class="sig-prename descclassname"><span class="pre">httk.analyse.definitions.</span></span><span class="sig-name descname"><span class="pre">MEAN_SQUARED_DISPLACEMENT</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'https://schemas.httk.org/defs/v0.1/properties/transport/mean_squared_displacement'</span></span><a class="reference internal" href="../../../../../_modules/httk/analyse/definitions.html#MEAN_SQUARED_DISPLACEMENT"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.definitions.MEAN_SQUARED_DISPLACEMENT" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="httk.analyse.definitions.VELOCITY_AUTOCORRELATION">
+<span class="sig-prename descclassname"><span class="pre">httk.analyse.definitions.</span></span><span class="sig-name descname"><span class="pre">VELOCITY_AUTOCORRELATION</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'https://schemas.httk.org/defs/v0.1/properties/transport/velocity_autocorrelation'</span></span><a class="reference internal" href="../../../../../_modules/httk/analyse/definitions.html#VELOCITY_AUTOCORRELATION"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.definitions.VELOCITY_AUTOCORRELATION" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="httk.analyse.definitions.DIFFUSION_RUNNING_INTEGRAL">
+<span class="sig-prename descclassname"><span class="pre">httk.analyse.definitions.</span></span><span class="sig-name descname"><span class="pre">DIFFUSION_RUNNING_INTEGRAL</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'https://schemas.httk.org/defs/v0.1/properties/transport/diffusion_running_integral'</span></span><a class="reference internal" href="../../../../../_modules/httk/analyse/definitions.html#DIFFUSION_RUNNING_INTEGRAL"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.definitions.DIFFUSION_RUNNING_INTEGRAL" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="httk.analyse.definitions.THERMAL_CONDUCTIVITY_RUNNING_INTEGRAL">
+<span class="sig-prename descclassname"><span class="pre">httk.analyse.definitions.</span></span><span class="sig-name descname"><span class="pre">THERMAL_CONDUCTIVITY_RUNNING_INTEGRAL</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'https://schemas.httk.org/defs/v0.1/properties/transport/thermal_conductivity_running_integral'</span></span><a class="reference internal" href="../../../../../_modules/httk/analyse/definitions.html#THERMAL_CONDUCTIVITY_RUNNING_INTEGRAL"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.definitions.THERMAL_CONDUCTIVITY_RUNNING_INTEGRAL" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="httk.analyse.definitions.SHEAR_VISCOSITY_RUNNING_INTEGRAL">
+<span class="sig-prename descclassname"><span class="pre">httk.analyse.definitions.</span></span><span class="sig-name descname"><span class="pre">SHEAR_VISCOSITY_RUNNING_INTEGRAL</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'https://schemas.httk.org/defs/v0.1/properties/transport/shear_viscosity_running_integral'</span></span><a class="reference internal" href="../../../../../_modules/httk/analyse/definitions.html#SHEAR_VISCOSITY_RUNNING_INTEGRAL"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.definitions.SHEAR_VISCOSITY_RUNNING_INTEGRAL" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="httk.analyse.definitions.RADIAL_DISTRIBUTION_FUNCTION">
+<span class="sig-prename descclassname"><span class="pre">httk.analyse.definitions.</span></span><span class="sig-name descname"><span class="pre">RADIAL_DISTRIBUTION_FUNCTION</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'https://schemas.httk.org/defs/v0.1/properties/structure/radial_distribution_function'</span></span><a class="reference internal" href="../../../../../_modules/httk/analyse/definitions.html#RADIAL_DISTRIBUTION_FUNCTION"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.definitions.RADIAL_DISTRIBUTION_FUNCTION" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="httk.analyse.definitions.ELECTRONIC_DENSITY_OF_STATES">
+<span class="sig-prename descclassname"><span class="pre">httk.analyse.definitions.</span></span><span class="sig-name descname"><span class="pre">ELECTRONIC_DENSITY_OF_STATES</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'https://schemas.httk.org/defs/v0.1/properties/electronic/electronic_density_of_states'</span></span><a class="reference internal" href="../../../../../_modules/httk/analyse/definitions.html#ELECTRONIC_DENSITY_OF_STATES"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.definitions.ELECTRONIC_DENSITY_OF_STATES" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="httk.analyse.definitions.RELATIVE_EFFECTIVE_MASS">
+<span class="sig-prename descclassname"><span class="pre">httk.analyse.definitions.</span></span><span class="sig-name descname"><span class="pre">RELATIVE_EFFECTIVE_MASS</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'https://schemas.httk.org/defs/v0.1/properties/electronic/relative_effective_mass'</span></span><a class="reference internal" href="../../../../../_modules/httk/analyse/definitions.html#RELATIVE_EFFECTIVE_MASS"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.definitions.RELATIVE_EFFECTIVE_MASS" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="httk.analyse.definitions.FERMI_ENERGY">
+<span class="sig-prename descclassname"><span class="pre">httk.analyse.definitions.</span></span><span class="sig-name descname"><span class="pre">FERMI_ENERGY</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'https://schemas.httk.org/defs/v0.1/properties/electronic/fermi_energy'</span></span><a class="reference internal" href="../../../../../_modules/httk/analyse/definitions.html#FERMI_ENERGY"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.definitions.FERMI_ENERGY" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="httk.analyse.definitions.STATIC_RELATIVE_PERMITTIVITY">
+<span class="sig-prename descclassname"><span class="pre">httk.analyse.definitions.</span></span><span class="sig-name descname"><span class="pre">STATIC_RELATIVE_PERMITTIVITY</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'https://schemas.httk.org/defs/v0.1/properties/electronic/static_relative_permittivity'</span></span><a class="reference internal" href="../../../../../_modules/httk/analyse/definitions.html#STATIC_RELATIVE_PERMITTIVITY"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.definitions.STATIC_RELATIVE_PERMITTIVITY" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="httk.analyse.definitions.HIGH_FREQUENCY_RELATIVE_PERMITTIVITY">
+<span class="sig-prename descclassname"><span class="pre">httk.analyse.definitions.</span></span><span class="sig-name descname"><span class="pre">HIGH_FREQUENCY_RELATIVE_PERMITTIVITY</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'https://schemas.httk.org/defs/v0.1/properties/electronic/high_frequency_relative_permittivity'</span></span><a class="reference internal" href="../../../../../_modules/httk/analyse/definitions.html#HIGH_FREQUENCY_RELATIVE_PERMITTIVITY"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.definitions.HIGH_FREQUENCY_RELATIVE_PERMITTIVITY" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="httk.analyse.definitions.TOTAL_MAGNETIC_MOMENT">
+<span class="sig-prename descclassname"><span class="pre">httk.analyse.definitions.</span></span><span class="sig-name descname"><span class="pre">TOTAL_MAGNETIC_MOMENT</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'https://schemas.httk.org/defs/v0.1/properties/magnetism/total_magnetic_moment'</span></span><a class="reference internal" href="../../../../../_modules/httk/analyse/definitions.html#TOTAL_MAGNETIC_MOMENT"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.definitions.TOTAL_MAGNETIC_MOMENT" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="httk.analyse.definitions.CHARGED_DEFECT_FORMATION_ENERGY">
+<span class="sig-prename descclassname"><span class="pre">httk.analyse.definitions.</span></span><span class="sig-name descname"><span class="pre">CHARGED_DEFECT_FORMATION_ENERGY</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'https://schemas.httk.org/defs/v0.1/properties/defects/charged_defect_formation_energy'</span></span><a class="reference internal" href="../../../../../_modules/httk/analyse/definitions.html#CHARGED_DEFECT_FORMATION_ENERGY"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.definitions.CHARGED_DEFECT_FORMATION_ENERGY" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="httk.analyse.definitions.CHARGE_TRANSITION_LEVEL">
+<span class="sig-prename descclassname"><span class="pre">httk.analyse.definitions.</span></span><span class="sig-name descname"><span class="pre">CHARGE_TRANSITION_LEVEL</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'https://schemas.httk.org/defs/v0.1/properties/defects/charge_transition_level'</span></span><a class="reference internal" href="../../../../../_modules/httk/analyse/definitions.html#CHARGE_TRANSITION_LEVEL"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.definitions.CHARGE_TRANSITION_LEVEL" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="httk.analyse.definitions.SURFACE_ENERGY">
+<span class="sig-prename descclassname"><span class="pre">httk.analyse.definitions.</span></span><span class="sig-name descname"><span class="pre">SURFACE_ENERGY</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'https://schemas.httk.org/defs/v0.1/properties/defects/surface_energy'</span></span><a class="reference internal" href="../../../../../_modules/httk/analyse/definitions.html#SURFACE_ENERGY"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.definitions.SURFACE_ENERGY" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="httk.analyse.definitions.ADSORPTION_ENERGY">
+<span class="sig-prename descclassname"><span class="pre">httk.analyse.definitions.</span></span><span class="sig-name descname"><span class="pre">ADSORPTION_ENERGY</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'https://schemas.httk.org/defs/v0.1/properties/defects/adsorption_energy'</span></span><a class="reference internal" href="../../../../../_modules/httk/analyse/definitions.html#ADSORPTION_ENERGY"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.definitions.ADSORPTION_ENERGY" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="httk.analyse.definitions.SEGREGATION_ENERGY">
+<span class="sig-prename descclassname"><span class="pre">httk.analyse.definitions.</span></span><span class="sig-name descname"><span class="pre">SEGREGATION_ENERGY</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'https://schemas.httk.org/defs/v0.1/properties/defects/segregation_energy'</span></span><a class="reference internal" href="../../../../../_modules/httk/analyse/definitions.html#SEGREGATION_ENERGY"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.definitions.SEGREGATION_ENERGY" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="httk.analyse.definitions.MIGRATION_BARRIER_FORWARD">
+<span class="sig-prename descclassname"><span class="pre">httk.analyse.definitions.</span></span><span class="sig-name descname"><span class="pre">MIGRATION_BARRIER_FORWARD</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'https://schemas.httk.org/defs/v0.1/properties/kinetics/migration_barrier_forward'</span></span><a class="reference internal" href="../../../../../_modules/httk/analyse/definitions.html#MIGRATION_BARRIER_FORWARD"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.definitions.MIGRATION_BARRIER_FORWARD" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="httk.analyse.definitions.MIGRATION_BARRIER_REVERSE">
+<span class="sig-prename descclassname"><span class="pre">httk.analyse.definitions.</span></span><span class="sig-name descname"><span class="pre">MIGRATION_BARRIER_REVERSE</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'https://schemas.httk.org/defs/v0.1/properties/kinetics/migration_barrier_reverse'</span></span><a class="reference internal" href="../../../../../_modules/httk/analyse/definitions.html#MIGRATION_BARRIER_REVERSE"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.definitions.MIGRATION_BARRIER_REVERSE" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="httk.analyse.definitions.ACTIVATION_ENERGY">
+<span class="sig-prename descclassname"><span class="pre">httk.analyse.definitions.</span></span><span class="sig-name descname"><span class="pre">ACTIVATION_ENERGY</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'https://schemas.httk.org/defs/v0.1/properties/kinetics/activation_energy'</span></span><a class="reference internal" href="../../../../../_modules/httk/analyse/definitions.html#ACTIVATION_ENERGY"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.definitions.ACTIVATION_ENERGY" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="httk.analyse.definitions.ARRHENIUS_PREFACTOR">
+<span class="sig-prename descclassname"><span class="pre">httk.analyse.definitions.</span></span><span class="sig-name descname"><span class="pre">ARRHENIUS_PREFACTOR</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'https://schemas.httk.org/defs/v0.1/properties/kinetics/arrhenius_prefactor'</span></span><a class="reference internal" href="../../../../../_modules/httk/analyse/definitions.html#ARRHENIUS_PREFACTOR"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.definitions.ARRHENIUS_PREFACTOR" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="httk.analyse.definitions.DIFFUSION_PREFACTOR">
+<span class="sig-prename descclassname"><span class="pre">httk.analyse.definitions.</span></span><span class="sig-name descname"><span class="pre">DIFFUSION_PREFACTOR</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'https://schemas.httk.org/defs/v0.1/properties/transport/diffusion_prefactor'</span></span><a class="reference internal" href="../../../../../_modules/httk/analyse/definitions.html#DIFFUSION_PREFACTOR"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.definitions.DIFFUSION_PREFACTOR" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="httk.analyse.definitions.SELF_INTERMEDIATE_SCATTERING_FUNCTION">
+<span class="sig-prename descclassname"><span class="pre">httk.analyse.definitions.</span></span><span class="sig-name descname"><span class="pre">SELF_INTERMEDIATE_SCATTERING_FUNCTION</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'https://schemas.httk.org/defs/v0.1/properties/dynamics/self_intermediate_scattering_function'</span></span><a class="reference internal" href="../../../../../_modules/httk/analyse/definitions.html#SELF_INTERMEDIATE_SCATTERING_FUNCTION"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.definitions.SELF_INTERMEDIATE_SCATTERING_FUNCTION" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="httk.analyse.definitions.INTERMEDIATE_SCATTERING_FUNCTION">
+<span class="sig-prename descclassname"><span class="pre">httk.analyse.definitions.</span></span><span class="sig-name descname"><span class="pre">INTERMEDIATE_SCATTERING_FUNCTION</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'https://schemas.httk.org/defs/v0.1/properties/dynamics/intermediate_scattering_function'</span></span><a class="reference internal" href="../../../../../_modules/httk/analyse/definitions.html#INTERMEDIATE_SCATTERING_FUNCTION"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.definitions.INTERMEDIATE_SCATTERING_FUNCTION" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="httk.analyse.definitions.SELF_VAN_HOVE_FUNCTION">
+<span class="sig-prename descclassname"><span class="pre">httk.analyse.definitions.</span></span><span class="sig-name descname"><span class="pre">SELF_VAN_HOVE_FUNCTION</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'https://schemas.httk.org/defs/v0.1/properties/dynamics/self_van_hove_function'</span></span><a class="reference internal" href="../../../../../_modules/httk/analyse/definitions.html#SELF_VAN_HOVE_FUNCTION"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.definitions.SELF_VAN_HOVE_FUNCTION" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="httk.analyse.definitions.DISTINCT_VAN_HOVE_FUNCTION">
+<span class="sig-prename descclassname"><span class="pre">httk.analyse.definitions.</span></span><span class="sig-name descname"><span class="pre">DISTINCT_VAN_HOVE_FUNCTION</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'https://schemas.httk.org/defs/v0.1/properties/dynamics/distinct_van_hove_function'</span></span><a class="reference internal" href="../../../../../_modules/httk/analyse/definitions.html#DISTINCT_VAN_HOVE_FUNCTION"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.definitions.DISTINCT_VAN_HOVE_FUNCTION" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="httk.analyse.definitions.VELOCITY_POWER_SPECTRUM">
+<span class="sig-prename descclassname"><span class="pre">httk.analyse.definitions.</span></span><span class="sig-name descname"><span class="pre">VELOCITY_POWER_SPECTRUM</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'https://schemas.httk.org/defs/v0.1/properties/dynamics/velocity_power_spectrum'</span></span><a class="reference internal" href="../../../../../_modules/httk/analyse/definitions.html#VELOCITY_POWER_SPECTRUM"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.definitions.VELOCITY_POWER_SPECTRUM" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="httk.analyse.definitions.STEINHARDT_BOND_ORDER">
+<span class="sig-prename descclassname"><span class="pre">httk.analyse.definitions.</span></span><span class="sig-name descname"><span class="pre">STEINHARDT_BOND_ORDER</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'https://schemas.httk.org/defs/v0.1/properties/structure/steinhardt_bond_order'</span></span><a class="reference internal" href="../../../../../_modules/httk/analyse/definitions.html#STEINHARDT_BOND_ORDER"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.definitions.STEINHARDT_BOND_ORDER" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="httk.analyse.definitions.TOTAL_ENERGY_PER_ATOM">
+<span class="sig-prename descclassname"><span class="pre">httk.analyse.definitions.</span></span><span class="sig-name descname"><span class="pre">TOTAL_ENERGY_PER_ATOM</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'https://schemas.httk.org/defs/v0.1/properties/energetics/total_energy_per_atom'</span></span><a class="reference internal" href="../../../../../_modules/httk/analyse/definitions.html#TOTAL_ENERGY_PER_ATOM"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.definitions.TOTAL_ENERGY_PER_ATOM" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="httk.analyse.definitions.CHEMICAL_POTENTIAL_REGION">
+<span class="sig-prename descclassname"><span class="pre">httk.analyse.definitions.</span></span><span class="sig-name descname"><span class="pre">CHEMICAL_POTENTIAL_REGION</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'https://schemas.httk.org/defs/v0.1/properties/energetics/chemical_potential_region'</span></span><a class="reference internal" href="../../../../../_modules/httk/analyse/definitions.html#CHEMICAL_POTENTIAL_REGION"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.definitions.CHEMICAL_POTENTIAL_REGION" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="httk.analyse.definitions.CONVEX_HULL_PHASE_DIAGRAM">
+<span class="sig-prename descclassname"><span class="pre">httk.analyse.definitions.</span></span><span class="sig-name descname"><span class="pre">CONVEX_HULL_PHASE_DIAGRAM</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'https://schemas.httk.org/defs/v0.1/properties/energetics/convex_hull_phase_diagram'</span></span><a class="reference internal" href="../../../../../_modules/httk/analyse/definitions.html#CONVEX_HULL_PHASE_DIAGRAM"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.definitions.CONVEX_HULL_PHASE_DIAGRAM" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="httk.analyse.definitions.ENERGY_PREDICTION_ERRORS">
+<span class="sig-prename descclassname"><span class="pre">httk.analyse.definitions.</span></span><span class="sig-name descname"><span class="pre">ENERGY_PREDICTION_ERRORS</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'https://schemas.httk.org/defs/v0.1/properties/validation/energy_prediction_errors'</span></span><a class="reference internal" href="../../../../../_modules/httk/analyse/definitions.html#ENERGY_PREDICTION_ERRORS"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.definitions.ENERGY_PREDICTION_ERRORS" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="httk.analyse.definitions.FORCE_PREDICTION_ERRORS">
+<span class="sig-prename descclassname"><span class="pre">httk.analyse.definitions.</span></span><span class="sig-name descname"><span class="pre">FORCE_PREDICTION_ERRORS</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'https://schemas.httk.org/defs/v0.1/properties/validation/force_prediction_errors'</span></span><a class="reference internal" href="../../../../../_modules/httk/analyse/definitions.html#FORCE_PREDICTION_ERRORS"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.definitions.FORCE_PREDICTION_ERRORS" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="httk.analyse.definitions.STRESS_PREDICTION_ERRORS">
+<span class="sig-prename descclassname"><span class="pre">httk.analyse.definitions.</span></span><span class="sig-name descname"><span class="pre">STRESS_PREDICTION_ERRORS</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'https://schemas.httk.org/defs/v0.1/properties/validation/stress_prediction_errors'</span></span><a class="reference internal" href="../../../../../_modules/httk/analyse/definitions.html#STRESS_PREDICTION_ERRORS"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.definitions.STRESS_PREDICTION_ERRORS" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="httk.analyse.definitions.NVE_ENERGY_DRIFT">
+<span class="sig-prename descclassname"><span class="pre">httk.analyse.definitions.</span></span><span class="sig-name descname"><span class="pre">NVE_ENERGY_DRIFT</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'https://schemas.httk.org/defs/v0.1/properties/validation/nve_energy_drift'</span></span><a class="reference internal" href="../../../../../_modules/httk/analyse/definitions.html#NVE_ENERGY_DRIFT"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.definitions.NVE_ENERGY_DRIFT" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="httk.analyse.definitions.MODE_GRUNEISEN_PARAMETERS">
+<span class="sig-prename descclassname"><span class="pre">httk.analyse.definitions.</span></span><span class="sig-name descname"><span class="pre">MODE_GRUNEISEN_PARAMETERS</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'https://schemas.httk.org/defs/v0.1/properties/thermodynamics/mode_gruneisen_parameters'</span></span><a class="reference internal" href="../../../../../_modules/httk/analyse/definitions.html#MODE_GRUNEISEN_PARAMETERS"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.definitions.MODE_GRUNEISEN_PARAMETERS" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="httk.analyse.definitions.SPIN_CHANNEL_ELECTRONIC_DENSITY_OF_STATES">
+<span class="sig-prename descclassname"><span class="pre">httk.analyse.definitions.</span></span><span class="sig-name descname"><span class="pre">SPIN_CHANNEL_ELECTRONIC_DENSITY_OF_STATES</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'https://schemas.httk.org/defs/v0.1/properties/electronic/spin_channel_electronic_density_of_states'</span></span><a class="reference internal" href="../../../../../_modules/httk/analyse/definitions.html#SPIN_CHANNEL_ELECTRONIC_DENSITY_OF_STATES"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.definitions.SPIN_CHANNEL_ELECTRONIC_DENSITY_OF_STATES" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="httk.analyse.definitions.FieldBinding">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">httk.analyse.definitions.</span></span><span class="sig-name descname"><span class="pre">FieldBinding</span></span><a class="reference internal" href="../../../../../_modules/httk/analyse/definitions.html#FieldBinding"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.definitions.FieldBinding" title="Link to this definition">¶</a></dt>
+<dd><p>The property identity of one analysis-result field.</p>
+<p>The field value is in the unit of <code class="docutils literal notranslate"><span class="pre">definition</span></code>. With a <code class="docutils literal notranslate"><span class="pre">derivation</span></code> the
+value is that statistic of the base property (same unit). A series is one
+value of a dictionary-typed definition whose members are equal-length lists.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>definition</strong> – Property-definition IRI.</p></li>
+<li><p><strong>derivation</strong> – Derivation-term IRI qualifying the property, or <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="httk.analyse.definitions.FieldBinding.definition">
+<span class="sig-name descname"><span class="pre">definition</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><a class="reference internal" href="../../../../../_modules/httk/analyse/definitions.html#FieldBinding.definition"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.definitions.FieldBinding.definition" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="httk.analyse.definitions.FieldBinding.derivation">
+<span class="sig-name descname"><span class="pre">derivation</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></span><a class="reference internal" href="../../../../../_modules/httk/analyse/definitions.html#FieldBinding.derivation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.definitions.FieldBinding.derivation" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="httk.analyse.definitions.BoundValue">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">httk.analyse.definitions.</span></span><span class="sig-name descname"><span class="pre">BoundValue</span></span><a class="reference internal" href="../../../../../_modules/httk/analyse/definitions.html#BoundValue"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.definitions.BoundValue" title="Link to this definition">¶</a></dt>
+<dd><p>One result value with its property binding, as plain JSON-compatible data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>field</strong> – Result field name, such as <code class="docutils literal notranslate"><span class="pre">bulk_modulus</span></code> or <code class="docutils literal notranslate"><span class="pre">integrals[10]</span></code>, or the
+definition name of a series.</p></li>
+<li><p><strong>binding</strong> – Property binding of the value.</p></li>
+<li><p><strong>value</strong> – Float, nested lists of floats, or a dictionary of member lists (a series), in the
+units of <code class="docutils literal notranslate"><span class="pre">binding.definition</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="httk.analyse.definitions.BoundValue.field">
+<span class="sig-name descname"><span class="pre">field</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><a class="reference internal" href="../../../../../_modules/httk/analyse/definitions.html#BoundValue.field"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.definitions.BoundValue.field" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="httk.analyse.definitions.BoundValue.binding">
+<span class="sig-name descname"><span class="pre">binding</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#httk.analyse.definitions.FieldBinding" title="httk.analyse.definitions.FieldBinding"><span class="pre">FieldBinding</span></a></span><a class="reference internal" href="../../../../../_modules/httk/analyse/definitions.html#BoundValue.binding"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.definitions.BoundValue.binding" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="httk.analyse.definitions.BoundValue.value">
+<span class="sig-name descname"><span class="pre">value</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Any</span></span><a class="reference internal" href="../../../../../_modules/httk/analyse/definitions.html#BoundValue.value"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.definitions.BoundValue.value" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="../generic/index.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">httk.analyse.generic</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="../crysviz/index.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">httk.analyse.crysviz</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2026, The httk-analyse AUTHORS
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">httk.analyse.definitions</a><ul>
+<li><a class="reference internal" href="#attributes">Attributes</a></li>
+<li><a class="reference internal" href="#classes">Classes</a></li>
+<li><a class="reference internal" href="#module-contents">Module Contents</a><ul>
+<li><a class="reference internal" href="#httk.analyse.definitions.BULK_MODULUS"><code class="docutils literal notranslate"><span class="pre">BULK_MODULUS</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.definitions.BULK_MODULUS_HILL"><code class="docutils literal notranslate"><span class="pre">BULK_MODULUS_HILL</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.definitions.BULK_MODULUS_PRESSURE_DERIVATIVE"><code class="docutils literal notranslate"><span class="pre">BULK_MODULUS_PRESSURE_DERIVATIVE</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.definitions.BULK_MODULUS_REUSS"><code class="docutils literal notranslate"><span class="pre">BULK_MODULUS_REUSS</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.definitions.BULK_MODULUS_VOIGT"><code class="docutils literal notranslate"><span class="pre">BULK_MODULUS_VOIGT</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.definitions.COMPLIANCE_TENSOR"><code class="docutils literal notranslate"><span class="pre">COMPLIANCE_TENSOR</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.definitions.ELASTIC_TENSOR"><code class="docutils literal notranslate"><span class="pre">ELASTIC_TENSOR</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.definitions.EQUILIBRIUM_ENERGY"><code class="docutils literal notranslate"><span class="pre">EQUILIBRIUM_ENERGY</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.definitions.EQUILIBRIUM_VOLUME"><code class="docutils literal notranslate"><span class="pre">EQUILIBRIUM_VOLUME</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.definitions.SHEAR_MODULUS_HILL"><code class="docutils literal notranslate"><span class="pre">SHEAR_MODULUS_HILL</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.definitions.SHEAR_MODULUS_REUSS"><code class="docutils literal notranslate"><span class="pre">SHEAR_MODULUS_REUSS</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.definitions.SHEAR_MODULUS_VOIGT"><code class="docutils literal notranslate"><span class="pre">SHEAR_MODULUS_VOIGT</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.definitions.UNIVERSAL_ANISOTROPY_INDEX"><code class="docutils literal notranslate"><span class="pre">UNIVERSAL_ANISOTROPY_INDEX</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.definitions.ENERGY_ABOVE_HULL_PER_ATOM"><code class="docutils literal notranslate"><span class="pre">ENERGY_ABOVE_HULL_PER_ATOM</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.definitions.FORMATION_ENERGY_PER_ATOM"><code class="docutils literal notranslate"><span class="pre">FORMATION_ENERGY_PER_ATOM</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.definitions.REACTION_ENERGY"><code class="docutils literal notranslate"><span class="pre">REACTION_ENERGY</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.definitions.HEAT_CAPACITY_CONSTANT_PRESSURE"><code class="docutils literal notranslate"><span class="pre">HEAT_CAPACITY_CONSTANT_PRESSURE</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.definitions.HEAT_CAPACITY_CONSTANT_VOLUME"><code class="docutils literal notranslate"><span class="pre">HEAT_CAPACITY_CONSTANT_VOLUME</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.definitions.HELMHOLTZ_FREE_ENERGY"><code class="docutils literal notranslate"><span class="pre">HELMHOLTZ_FREE_ENERGY</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.definitions.ISOTHERMAL_COMPRESSIBILITY"><code class="docutils literal notranslate"><span class="pre">ISOTHERMAL_COMPRESSIBILITY</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.definitions.VIBRATIONAL_ENTROPY"><code class="docutils literal notranslate"><span class="pre">VIBRATIONAL_ENTROPY</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.definitions.VIBRATIONAL_HEAT_CAPACITY"><code class="docutils literal notranslate"><span class="pre">VIBRATIONAL_HEAT_CAPACITY</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.definitions.VIBRATIONAL_INTERNAL_ENERGY"><code class="docutils literal notranslate"><span class="pre">VIBRATIONAL_INTERNAL_ENERGY</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.definitions.VOLUMETRIC_THERMAL_EXPANSION"><code class="docutils literal notranslate"><span class="pre">VOLUMETRIC_THERMAL_EXPANSION</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.definitions.ZERO_POINT_ENERGY"><code class="docutils literal notranslate"><span class="pre">ZERO_POINT_ENERGY</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.definitions.DIFFUSION_COEFFICIENT"><code class="docutils literal notranslate"><span class="pre">DIFFUSION_COEFFICIENT</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.definitions.DIFFUSION_TENSOR"><code class="docutils literal notranslate"><span class="pre">DIFFUSION_TENSOR</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.definitions.SHEAR_VISCOSITY"><code class="docutils literal notranslate"><span class="pre">SHEAR_VISCOSITY</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.definitions.THERMAL_CONDUCTIVITY"><code class="docutils literal notranslate"><span class="pre">THERMAL_CONDUCTIVITY</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.definitions.THERMAL_CONDUCTIVITY_TENSOR"><code class="docutils literal notranslate"><span class="pre">THERMAL_CONDUCTIVITY_TENSOR</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.definitions.BAND_GAP"><code class="docutils literal notranslate"><span class="pre">BAND_GAP</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.definitions.DIRECT_BAND_GAP"><code class="docutils literal notranslate"><span class="pre">DIRECT_BAND_GAP</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.definitions.MEAN"><code class="docutils literal notranslate"><span class="pre">MEAN</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.definitions.STANDARD_ERROR"><code class="docutils literal notranslate"><span class="pre">STANDARD_ERROR</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.definitions.STANDARD_DEVIATION"><code class="docutils literal notranslate"><span class="pre">STANDARD_DEVIATION</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.definitions.RMSE"><code class="docutils literal notranslate"><span class="pre">RMSE</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.definitions.MAE"><code class="docutils literal notranslate"><span class="pre">MAE</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.definitions.BIAS"><code class="docutils literal notranslate"><span class="pre">BIAS</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.definitions.MAXIMUM_ABSOLUTE_ERROR"><code class="docutils literal notranslate"><span class="pre">MAXIMUM_ABSOLUTE_ERROR</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.definitions.VIBRATIONAL_THERMODYNAMICS"><code class="docutils literal notranslate"><span class="pre">VIBRATIONAL_THERMODYNAMICS</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.definitions.QUASIHARMONIC_THERMODYNAMICS"><code class="docutils literal notranslate"><span class="pre">QUASIHARMONIC_THERMODYNAMICS</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.definitions.MEAN_SQUARED_DISPLACEMENT"><code class="docutils literal notranslate"><span class="pre">MEAN_SQUARED_DISPLACEMENT</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.definitions.VELOCITY_AUTOCORRELATION"><code class="docutils literal notranslate"><span class="pre">VELOCITY_AUTOCORRELATION</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.definitions.DIFFUSION_RUNNING_INTEGRAL"><code class="docutils literal notranslate"><span class="pre">DIFFUSION_RUNNING_INTEGRAL</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.definitions.THERMAL_CONDUCTIVITY_RUNNING_INTEGRAL"><code class="docutils literal notranslate"><span class="pre">THERMAL_CONDUCTIVITY_RUNNING_INTEGRAL</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.definitions.SHEAR_VISCOSITY_RUNNING_INTEGRAL"><code class="docutils literal notranslate"><span class="pre">SHEAR_VISCOSITY_RUNNING_INTEGRAL</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.definitions.RADIAL_DISTRIBUTION_FUNCTION"><code class="docutils literal notranslate"><span class="pre">RADIAL_DISTRIBUTION_FUNCTION</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.definitions.ELECTRONIC_DENSITY_OF_STATES"><code class="docutils literal notranslate"><span class="pre">ELECTRONIC_DENSITY_OF_STATES</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.definitions.RELATIVE_EFFECTIVE_MASS"><code class="docutils literal notranslate"><span class="pre">RELATIVE_EFFECTIVE_MASS</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.definitions.FERMI_ENERGY"><code class="docutils literal notranslate"><span class="pre">FERMI_ENERGY</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.definitions.STATIC_RELATIVE_PERMITTIVITY"><code class="docutils literal notranslate"><span class="pre">STATIC_RELATIVE_PERMITTIVITY</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.definitions.HIGH_FREQUENCY_RELATIVE_PERMITTIVITY"><code class="docutils literal notranslate"><span class="pre">HIGH_FREQUENCY_RELATIVE_PERMITTIVITY</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.definitions.TOTAL_MAGNETIC_MOMENT"><code class="docutils literal notranslate"><span class="pre">TOTAL_MAGNETIC_MOMENT</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.definitions.CHARGED_DEFECT_FORMATION_ENERGY"><code class="docutils literal notranslate"><span class="pre">CHARGED_DEFECT_FORMATION_ENERGY</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.definitions.CHARGE_TRANSITION_LEVEL"><code class="docutils literal notranslate"><span class="pre">CHARGE_TRANSITION_LEVEL</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.definitions.SURFACE_ENERGY"><code class="docutils literal notranslate"><span class="pre">SURFACE_ENERGY</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.definitions.ADSORPTION_ENERGY"><code class="docutils literal notranslate"><span class="pre">ADSORPTION_ENERGY</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.definitions.SEGREGATION_ENERGY"><code class="docutils literal notranslate"><span class="pre">SEGREGATION_ENERGY</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.definitions.MIGRATION_BARRIER_FORWARD"><code class="docutils literal notranslate"><span class="pre">MIGRATION_BARRIER_FORWARD</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.definitions.MIGRATION_BARRIER_REVERSE"><code class="docutils literal notranslate"><span class="pre">MIGRATION_BARRIER_REVERSE</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.definitions.ACTIVATION_ENERGY"><code class="docutils literal notranslate"><span class="pre">ACTIVATION_ENERGY</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.definitions.ARRHENIUS_PREFACTOR"><code class="docutils literal notranslate"><span class="pre">ARRHENIUS_PREFACTOR</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.definitions.DIFFUSION_PREFACTOR"><code class="docutils literal notranslate"><span class="pre">DIFFUSION_PREFACTOR</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.definitions.SELF_INTERMEDIATE_SCATTERING_FUNCTION"><code class="docutils literal notranslate"><span class="pre">SELF_INTERMEDIATE_SCATTERING_FUNCTION</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.definitions.INTERMEDIATE_SCATTERING_FUNCTION"><code class="docutils literal notranslate"><span class="pre">INTERMEDIATE_SCATTERING_FUNCTION</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.definitions.SELF_VAN_HOVE_FUNCTION"><code class="docutils literal notranslate"><span class="pre">SELF_VAN_HOVE_FUNCTION</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.definitions.DISTINCT_VAN_HOVE_FUNCTION"><code class="docutils literal notranslate"><span class="pre">DISTINCT_VAN_HOVE_FUNCTION</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.definitions.VELOCITY_POWER_SPECTRUM"><code class="docutils literal notranslate"><span class="pre">VELOCITY_POWER_SPECTRUM</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.definitions.STEINHARDT_BOND_ORDER"><code class="docutils literal notranslate"><span class="pre">STEINHARDT_BOND_ORDER</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.definitions.TOTAL_ENERGY_PER_ATOM"><code class="docutils literal notranslate"><span class="pre">TOTAL_ENERGY_PER_ATOM</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.definitions.CHEMICAL_POTENTIAL_REGION"><code class="docutils literal notranslate"><span class="pre">CHEMICAL_POTENTIAL_REGION</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.definitions.CONVEX_HULL_PHASE_DIAGRAM"><code class="docutils literal notranslate"><span class="pre">CONVEX_HULL_PHASE_DIAGRAM</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.definitions.ENERGY_PREDICTION_ERRORS"><code class="docutils literal notranslate"><span class="pre">ENERGY_PREDICTION_ERRORS</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.definitions.FORCE_PREDICTION_ERRORS"><code class="docutils literal notranslate"><span class="pre">FORCE_PREDICTION_ERRORS</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.definitions.STRESS_PREDICTION_ERRORS"><code class="docutils literal notranslate"><span class="pre">STRESS_PREDICTION_ERRORS</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.definitions.NVE_ENERGY_DRIFT"><code class="docutils literal notranslate"><span class="pre">NVE_ENERGY_DRIFT</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.definitions.MODE_GRUNEISEN_PARAMETERS"><code class="docutils literal notranslate"><span class="pre">MODE_GRUNEISEN_PARAMETERS</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.definitions.SPIN_CHANNEL_ELECTRONIC_DENSITY_OF_STATES"><code class="docutils literal notranslate"><span class="pre">SPIN_CHANNEL_ELECTRONIC_DENSITY_OF_STATES</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.definitions.FieldBinding"><code class="docutils literal notranslate"><span class="pre">FieldBinding</span></code></a><ul>
+<li><a class="reference internal" href="#httk.analyse.definitions.FieldBinding.definition"><code class="docutils literal notranslate"><span class="pre">FieldBinding.definition</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.definitions.FieldBinding.derivation"><code class="docutils literal notranslate"><span class="pre">FieldBinding.derivation</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#httk.analyse.definitions.BoundValue"><code class="docutils literal notranslate"><span class="pre">BoundValue</span></code></a><ul>
+<li><a class="reference internal" href="#httk.analyse.definitions.BoundValue.field"><code class="docutils literal notranslate"><span class="pre">BoundValue.field</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.definitions.BoundValue.binding"><code class="docutils literal notranslate"><span class="pre">BoundValue.binding</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.definitions.BoundValue.value"><code class="docutils literal notranslate"><span class="pre">BoundValue.value</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../../../../../_static/documentation_options.js?v=952df46a"></script>
+    <script src="../../../../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../../../../_static/scripts/furo.js?v=46bd48cc"></script>
+    <script src="../../../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../../../_static/copybutton.js?v=fd10adb8"></script>
+    <script src="../../../../../_static/selector.js?v=d8e9b3ce"></script>
+    <script>window.HTTK_DOCS_VERSIONING = {"channel":"dev","version":"dev:develop","versionPathDepth":2};</script>
+    </body>
+</html>

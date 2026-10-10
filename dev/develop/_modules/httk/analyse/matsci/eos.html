@@ -1,0 +1,642 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../../../../">
+  <head><meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../../genindex.html"><link rel="search" title="Search" href="../../../../search.html">
+
+    <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
+        <title>httk.analyse.matsci.eos - httk-analyse dev:develop documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=d111a655" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=7bdb33bb" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/selector.css?v=626bada3" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f2f2f2;
+  --color-code-foreground: #1e1e1e;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle site navigation sidebar">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc" aria-label="Toggle table of contents sidebar">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+<div class="announcement">
+  <aside class="announcement-content">
+     Development documentation (dev:develop) — built from the GitHub develop branch; content may differ from any release. 
+  </aside>
+</div>
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <span class="icon"><svg><use href="#svg-menu"></use></svg></span>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../../../index.html"><div class="brand">httk-analyse dev:develop documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+        <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../../index.html">
+  
+  <span class="sidebar-brand-text">httk-analyse dev:develop documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../../../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../generic-hulls.html">Generic lower convex hulls</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../phase-diagrams.html">Materials phase diagrams</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../equations-of-state.html">Static equation-of-state fitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../energetics.html">Static energy bookkeeping</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../time-series.html">Simulation time series</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../mlip-validation.html">Validate MLIP predictions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../elasticity.html">Elasticity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../md-structure.html">Molecular-dynamics structure analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../dynamics.html">Dynamics and diffusion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../thermal-response.html">Equilibrium response and transport</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../phonons.html">Harmonic phonon thermodynamics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../electronic.html">Electronic and magnetic quantities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../vasp-analysis.html">VASP electronic analysis adapters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../defects.html">Defects, surfaces, and kinetics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../analysis-artifacts.html">Summaries and figures</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../records.html">Recording results</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../analysis-recipes.html">Analysis recipes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../crysviz.html">CrysViz structure viewer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../reference/index.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../notebooks/examples.html">Convex-hull and phase-diagram examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../notebooks/materials-toolbox.html">Materials toolbox example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../notebooks/materials-response.html">Materials response toolbox</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../reference/autoapi/index.html">API Reference</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+            <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <h1>Source code for httk.analyse.matsci.eos</h1><div class="highlight"><pre>
+<span></span><span class="sd">"""Static materials equations of state."""</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Sequence</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">httk.core</span><span class="w"> </span><span class="kn">import</span> <span class="n">definition_ids</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">..</span><span class="w"> </span><span class="kn">import</span> <span class="n">definitions</span> <span class="k">as</span> <span class="n">defs</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.._constants</span><span class="w"> </span><span class="kn">import</span> <span class="n">GPA_PER_EV_PER_A3</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..definitions</span><span class="w"> </span><span class="kn">import</span> <span class="n">BoundValue</span><span class="p">,</span> <span class="n">FieldBinding</span><span class="p">,</span> <span class="n">_bind_fields</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"BirchMurnaghanFit"</span><span class="p">,</span> <span class="s2">"fit_birch_murnaghan"</span><span class="p">]</span>
+
+<span class="n">_EOS_BINDINGS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">"equilibrium_volume"</span><span class="p">:</span> <span class="n">FieldBinding</span><span class="p">(</span><span class="n">defs</span><span class="o">.</span><span class="n">EQUILIBRIUM_VOLUME</span><span class="p">),</span>
+    <span class="s2">"equilibrium_energy"</span><span class="p">:</span> <span class="n">FieldBinding</span><span class="p">(</span><span class="n">defs</span><span class="o">.</span><span class="n">EQUILIBRIUM_ENERGY</span><span class="p">),</span>
+    <span class="s2">"bulk_modulus"</span><span class="p">:</span> <span class="n">FieldBinding</span><span class="p">(</span><span class="n">defs</span><span class="o">.</span><span class="n">BULK_MODULUS</span><span class="p">),</span>
+    <span class="s2">"bulk_modulus_derivative"</span><span class="p">:</span> <span class="n">FieldBinding</span><span class="p">(</span><span class="n">defs</span><span class="o">.</span><span class="n">BULK_MODULUS_PRESSURE_DERIVATIVE</span><span class="p">),</span>
+    <span class="s2">"rmse"</span><span class="p">:</span> <span class="n">FieldBinding</span><span class="p">(</span><span class="n">definition_ids</span><span class="o">.</span><span class="n">TOTAL_ENERGY</span><span class="p">,</span> <span class="n">derivation</span><span class="o">=</span><span class="n">defs</span><span class="o">.</span><span class="n">RMSE</span><span class="p">),</span>
+<span class="p">}</span>
+
+
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">slots</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="viewcode-block" id="BirchMurnaghanFit">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/index.html#httk.analyse.matsci.eos.BirchMurnaghanFit">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">BirchMurnaghanFit</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""A frozen third-order Birch–Murnaghan energy fit.</span>
+
+<span class="sd">    Energies and volumes retain the input order and use eV and angstrom³ on one</span>
+<span class="sd">    consistent extensive basis. The fit describes static energies for one</span>
+<span class="sd">    composition and phase branch under one relaxation protocol. Its condition</span>
+<span class="sd">    number describes only the scaled linear design, not parameter confidence.</span>
+<span class="sd">    Residuals are observed minus predicted energies and are not uncertainty</span>
+<span class="sd">    estimates.</span>
+
+<span class="sd">    :param equilibrium_volume: Fitted minimum volume in angstrom³.</span>
+<span class="sd">    :param equilibrium_energy: Fitted minimum energy in eV.</span>
+<span class="sd">    :param bulk_modulus: Fitted bulk modulus in GPa.</span>
+<span class="sd">    :param bulk_modulus_derivative: Dimensionless pressure derivative at equilibrium.</span>
+<span class="sd">    :param volumes: Input volumes in original order, in angstrom³.</span>
+<span class="sd">    :param energies: Input energies in original order, in eV.</span>
+<span class="sd">    :param residuals: Observed minus fitted energies in input order, in eV.</span>
+<span class="sd">    :param rmse: Root mean square of the energy residuals, in eV.</span>
+<span class="sd">    :param condition_number: Condition number of the scaled cubic design matrix.</span>
+<span class="sd">    """</span>
+
+<div class="viewcode-block" id="BirchMurnaghanFit.equilibrium_volume">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/eos/index.html#httk.analyse.matsci.eos.BirchMurnaghanFit.equilibrium_volume">[docs]</a>
+    <span class="n">equilibrium_volume</span><span class="p">:</span> <span class="nb">float</span></div>
+
+<div class="viewcode-block" id="BirchMurnaghanFit.equilibrium_energy">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/eos/index.html#httk.analyse.matsci.eos.BirchMurnaghanFit.equilibrium_energy">[docs]</a>
+    <span class="n">equilibrium_energy</span><span class="p">:</span> <span class="nb">float</span></div>
+
+<div class="viewcode-block" id="BirchMurnaghanFit.bulk_modulus">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/eos/index.html#httk.analyse.matsci.eos.BirchMurnaghanFit.bulk_modulus">[docs]</a>
+    <span class="n">bulk_modulus</span><span class="p">:</span> <span class="nb">float</span></div>
+
+<div class="viewcode-block" id="BirchMurnaghanFit.bulk_modulus_derivative">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/eos/index.html#httk.analyse.matsci.eos.BirchMurnaghanFit.bulk_modulus_derivative">[docs]</a>
+    <span class="n">bulk_modulus_derivative</span><span class="p">:</span> <span class="nb">float</span></div>
+
+<div class="viewcode-block" id="BirchMurnaghanFit.volumes">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/eos/index.html#httk.analyse.matsci.eos.BirchMurnaghanFit.volumes">[docs]</a>
+    <span class="n">volumes</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="BirchMurnaghanFit.energies">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/eos/index.html#httk.analyse.matsci.eos.BirchMurnaghanFit.energies">[docs]</a>
+    <span class="n">energies</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="BirchMurnaghanFit.residuals">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/eos/index.html#httk.analyse.matsci.eos.BirchMurnaghanFit.residuals">[docs]</a>
+    <span class="n">residuals</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="BirchMurnaghanFit.rmse">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/eos/index.html#httk.analyse.matsci.eos.BirchMurnaghanFit.rmse">[docs]</a>
+    <span class="n">rmse</span><span class="p">:</span> <span class="nb">float</span></div>
+
+<div class="viewcode-block" id="BirchMurnaghanFit.condition_number">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/eos/index.html#httk.analyse.matsci.eos.BirchMurnaghanFit.condition_number">[docs]</a>
+    <span class="n">condition_number</span><span class="p">:</span> <span class="nb">float</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Copy sequence fields into immutable tuples."""</span>
+        <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">"volumes"</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">volumes</span><span class="p">))</span>
+        <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">"energies"</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">energies</span><span class="p">))</span>
+        <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">"residuals"</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">residuals</span><span class="p">))</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_bound_values</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">selection</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">BoundValue</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""Bind the fitted parameters and the energy RMSE to property definitions."""</span>
+        <span class="k">return</span> <span class="n">_bind_fields</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">selection</span><span class="p">,</span> <span class="n">_EOS_BINDINGS</span><span class="p">)</span>
+
+<div class="viewcode-block" id="BirchMurnaghanFit.energy">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/index.html#httk.analyse.matsci.eos.BirchMurnaghanFit.energy">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">energy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">volume</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Evaluate the fitted energy at a positive volume.</span>
+
+<span class="sd">        Extrapolation is allowed; values outside the sampled volume interval are</span>
+<span class="sd">        model predictions without validated physical accuracy. Finite-temperature</span>
+<span class="sd">        MD mean energies do not define this static energy EOS.</span>
+
+<span class="sd">        :param volume: Query volume in angstrom³.</span>
+<span class="sd">        :return: Predicted energy in eV on the fit's extensive basis.</span>
+<span class="sd">        :raises ValueError: If ``volume`` is not a positive finite scalar or the prediction is non-finite.</span>
+<span class="sd">        """</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="n">_positive_scalar</span><span class="p">(</span><span class="n">volume</span><span class="p">,</span> <span class="s2">"volume"</span><span class="p">)</span>
+        <span class="n">eta_minus_one</span> <span class="o">=</span> <span class="n">_eta_minus_one</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">equilibrium_volume</span><span class="p">,</span> <span class="n">query</span><span class="p">)</span>
+        <span class="n">prediction</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">equilibrium_energy</span> <span class="o">+</span> <span class="p">(</span>
+            <span class="mf">9.0</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">equilibrium_volume</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">bulk_modulus</span> <span class="o">/</span> <span class="n">GPA_PER_EV_PER_A3</span> <span class="o">/</span> <span class="mf">16.0</span>
+        <span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">eta_minus_one</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bulk_modulus_derivative</span> <span class="o">-</span> <span class="mf">4.0</span><span class="p">)</span> <span class="o">*</span> <span class="n">eta_minus_one</span><span class="o">**</span><span class="mi">3</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">math</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">prediction</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"fitted energy is non-finite at the requested volume"</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">prediction</span></div>
+
+
+<div class="viewcode-block" id="BirchMurnaghanFit.pressure">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/index.html#httk.analyse.matsci.eos.BirchMurnaghanFit.pressure">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">pressure</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">volume</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Evaluate pressure, positive in compression, at a positive volume.</span>
+
+<span class="sd">        Extrapolation is allowed as a model prediction, but its physical accuracy</span>
+<span class="sd">        outside the sampled interval is not validated.</span>
+
+<span class="sd">        :param volume: Query volume in angstrom³.</span>
+<span class="sd">        :return: Predicted pressure in GPa.</span>
+<span class="sd">        :raises ValueError: If ``volume`` is not a positive finite scalar or the prediction is non-finite.</span>
+<span class="sd">        """</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="n">_positive_scalar</span><span class="p">(</span><span class="n">volume</span><span class="p">,</span> <span class="s2">"volume"</span><span class="p">)</span>
+        <span class="n">eta_minus_one</span> <span class="o">=</span> <span class="n">_eta_minus_one</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">equilibrium_volume</span><span class="p">,</span> <span class="n">query</span><span class="p">)</span>
+        <span class="n">strain</span> <span class="o">=</span> <span class="n">eta_minus_one</span> <span class="o">/</span> <span class="mf">2.0</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">eta_power</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">exp</span><span class="p">((</span><span class="mf">5.0</span> <span class="o">/</span> <span class="mf">3.0</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">equilibrium_volume</span><span class="p">)</span> <span class="o">-</span> <span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">query</span><span class="p">)))</span>
+        <span class="k">except</span> <span class="p">(</span><span class="ne">OverflowError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">)</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"fitted pressure is non-finite at the requested volume"</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">exc</span>
+        <span class="n">pressure</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="mf">3.0</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">bulk_modulus</span> <span class="o">*</span> <span class="n">strain</span> <span class="o">*</span> <span class="n">eta_power</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">+</span> <span class="mf">1.5</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bulk_modulus_derivative</span> <span class="o">-</span> <span class="mf">4.0</span><span class="p">)</span> <span class="o">*</span> <span class="n">strain</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">math</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">pressure</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"fitted pressure is non-finite at the requested volume"</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">pressure</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="fit_birch_murnaghan">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/index.html#httk.analyse.matsci.eos.fit_birch_murnaghan">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">fit_birch_murnaghan</span><span class="p">(</span><span class="n">volumes</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span> <span class="n">energies</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">float</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">BirchMurnaghanFit</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Fit a third-order Birch–Murnaghan static energy curve by linear least squares.</span>
+
+<span class="sd">    The inputs must be finite one-dimensional sequences in angstrom³ and eV,</span>
+<span class="sd">    respectively, on the same extensive basis. Supply static energies for one</span>
+<span class="sd">    composition and phase branch with a consistent electronic-energy definition</span>
+<span class="sd">    and fixed-volume relaxation protocol. Fixed-shape scaling and cell-shape</span>
+<span class="sd">    relaxation can produce different responses. Finite-temperature MD total or</span>
+<span class="sd">    potential energies are not isothermal pressure EOS data; use free energies</span>
+<span class="sd">    or a separate pressure-versus-volume method for that case.</span>
+
+<span class="sd">    The fit is an ordinary least-squares cubic in ``x = (Vref/V)**(2/3)``. It</span>
+<span class="sd">    requires an interior stable minimum and imposes no fit-quality cutoff or</span>
+<span class="sd">    physical bound on the pressure derivative. The scaled design condition</span>
+<span class="sd">    number diagnoses only that linear solve. Inspect fit-window sensitivity,</span>
+<span class="sd">    especially for the pressure derivative, which may be poorly determined even</span>
+<span class="sd">    when the scaled design is well conditioned.</span>
+
+<span class="sd">    :param volumes: Distinct positive sample volumes in angstrom³.</span>
+<span class="sd">    :param energies: Matching static energies in eV on the same extensive basis.</span>
+<span class="sd">    :return: The immutable fitted EOS and input-order residuals.</span>
+<span class="sd">    :raises ValueError: If inputs are invalid, the cubic design is rank deficient, or there is no interior stable minimum.</span>
+<span class="sd">    """</span>
+    <span class="n">volume_values</span> <span class="o">=</span> <span class="n">_finite_sequence</span><span class="p">(</span><span class="n">volumes</span><span class="p">,</span> <span class="s2">"volumes"</span><span class="p">)</span>
+    <span class="n">energy_values</span> <span class="o">=</span> <span class="n">_finite_sequence</span><span class="p">(</span><span class="n">energies</span><span class="p">,</span> <span class="s2">"energies"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">volume_values</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">energy_values</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"volumes and energies must have the same length"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">volume_values</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">5</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"at least five volume-energy samples are required"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">volume</span> <span class="o">&lt;=</span> <span class="mf">0.0</span> <span class="k">for</span> <span class="n">volume</span> <span class="ow">in</span> <span class="n">volume_values</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"volumes must be positive"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">volume_values</span><span class="p">))</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">volume_values</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"volumes must be distinct"</span><span class="p">)</span>
+
+    <span class="n">log_reference</span> <span class="o">=</span> <span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">volume_values</span><span class="p">))</span> <span class="o">+</span> <span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">volume_values</span><span class="p">)))</span> <span class="o">/</span> <span class="mf">2.0</span>
+    <span class="n">x_reference</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">log_reference</span><span class="p">)</span>
+    <span class="n">x_values</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">_eos_x</span><span class="p">(</span><span class="n">x_reference</span><span class="p">,</span> <span class="n">volume</span><span class="p">)</span> <span class="k">for</span> <span class="n">volume</span> <span class="ow">in</span> <span class="n">volume_values</span><span class="p">)</span>
+    <span class="n">x_min</span><span class="p">,</span> <span class="n">x_max</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">x_values</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="n">x_values</span><span class="p">)</span>
+    <span class="n">x_center</span> <span class="o">=</span> <span class="n">x_min</span> <span class="o">+</span> <span class="p">(</span><span class="n">x_max</span> <span class="o">-</span> <span class="n">x_min</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.0</span>
+    <span class="n">x_scale</span> <span class="o">=</span> <span class="p">(</span><span class="n">x_max</span> <span class="o">-</span> <span class="n">x_min</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.0</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">math</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">x_scale</span><span class="p">)</span> <span class="ow">or</span> <span class="n">x_scale</span> <span class="o">&lt;=</span> <span class="mf">0.0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"volume samples do not span a representable fit interval"</span><span class="p">)</span>
+    <span class="n">z_values</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">((</span><span class="n">x</span> <span class="o">-</span> <span class="n">x_center</span><span class="p">)</span> <span class="o">/</span> <span class="n">x_scale</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">x_values</span><span class="p">)</span>
+
+    <span class="n">energy_min</span><span class="p">,</span> <span class="n">energy_max</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">energy_values</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="n">energy_values</span><span class="p">)</span>
+    <span class="n">energy_offset</span> <span class="o">=</span> <span class="n">energy_min</span> <span class="o">/</span> <span class="mf">2.0</span> <span class="o">+</span> <span class="n">energy_max</span> <span class="o">/</span> <span class="mf">2.0</span>
+    <span class="n">energy_scale</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">energy</span> <span class="o">-</span> <span class="n">energy_offset</span><span class="p">)</span> <span class="k">for</span> <span class="n">energy</span> <span class="ow">in</span> <span class="n">energy_values</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">math</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">energy_scale</span><span class="p">)</span> <span class="ow">or</span> <span class="n">energy_scale</span> <span class="o">==</span> <span class="mf">0.0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"energies do not define a non-flat fit"</span><span class="p">)</span>
+    <span class="n">normalized_energies</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span>
+        <span class="p">[(</span><span class="n">energy</span> <span class="o">-</span> <span class="n">energy_offset</span><span class="p">)</span> <span class="o">/</span> <span class="n">energy_scale</span> <span class="k">for</span> <span class="n">energy</span> <span class="ow">in</span> <span class="n">energy_values</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span>
+    <span class="p">)</span>
+    <span class="n">design</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vander</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">z_values</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">),</span> <span class="n">N</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">increasing</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">coefficients</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">singular_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">lstsq</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="n">normalized_energies</span><span class="p">,</span> <span class="n">rcond</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">rank</span> <span class="o">!=</span> <span class="mi">4</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">coefficients</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span> <span class="ow">or</span> <span class="n">singular_values</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="mf">0.0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"scaled cubic design is rank deficient"</span><span class="p">)</span>
+    <span class="n">condition_number</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">singular_values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="n">singular_values</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">math</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">condition_number</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"scaled cubic design condition number is non-finite"</span><span class="p">)</span>
+    <span class="n">coeffs</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="nb">float</span><span class="p">(</span><span class="n">coefficients</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
+        <span class="nb">float</span><span class="p">(</span><span class="n">coefficients</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
+        <span class="nb">float</span><span class="p">(</span><span class="n">coefficients</span><span class="p">[</span><span class="mi">2</span><span class="p">]),</span>
+        <span class="nb">float</span><span class="p">(</span><span class="n">coefficients</span><span class="p">[</span><span class="mi">3</span><span class="p">]),</span>
+    <span class="p">)</span>
+    <span class="k">if</span> <span class="n">coeffs</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">==</span> <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"energies do not define a non-flat fit"</span><span class="p">)</span>
+
+    <span class="n">stationary</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">root_tolerance</span> <span class="o">=</span> <span class="mf">32.0</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">ulp</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">z</span> <span class="ow">in</span> <span class="n">_stationary_roots</span><span class="p">(</span><span class="n">coeffs</span><span class="p">):</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">x_center</span> <span class="o">+</span> <span class="n">x_scale</span> <span class="o">*</span> <span class="n">z</span>
+        <span class="k">if</span> <span class="n">x</span> <span class="o">&lt;=</span> <span class="mf">0.0</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">math</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+            <span class="k">continue</span>
+        <span class="n">volume</span> <span class="o">=</span> <span class="n">x_reference</span> <span class="o">*</span> <span class="n">x</span><span class="o">**-</span><span class="mf">1.5</span>
+        <span class="n">curvature_z</span> <span class="o">=</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">coeffs</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="mf">6.0</span> <span class="o">*</span> <span class="n">coeffs</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">*</span> <span class="n">z</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="o">-</span><span class="mf">1.0</span> <span class="o">+</span> <span class="n">root_tolerance</span> <span class="o">&lt;</span> <span class="n">z</span> <span class="o">&lt;</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="n">root_tolerance</span>
+            <span class="ow">and</span> <span class="nb">min</span><span class="p">(</span><span class="n">volume_values</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">volume</span> <span class="o">&lt;</span> <span class="nb">max</span><span class="p">(</span><span class="n">volume_values</span><span class="p">)</span>
+            <span class="ow">and</span> <span class="n">curvature_z</span> <span class="o">&gt;</span> <span class="mf">0.0</span>
+        <span class="p">):</span>
+            <span class="n">stationary</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">z</span><span class="p">,</span> <span class="n">volume</span><span class="p">))</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">stationary</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"fit must have one positive-curvature minimum strictly inside the sampled volume interval"</span><span class="p">)</span>
+
+    <span class="n">z0</span><span class="p">,</span> <span class="n">equilibrium_volume</span> <span class="o">=</span> <span class="n">stationary</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">x0</span> <span class="o">=</span> <span class="n">x_center</span> <span class="o">+</span> <span class="n">x_scale</span> <span class="o">*</span> <span class="n">z0</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">c2</span><span class="p">,</span> <span class="n">c3</span> <span class="o">=</span> <span class="n">coeffs</span>
+    <span class="n">p2</span> <span class="o">=</span> <span class="n">energy_scale</span> <span class="o">*</span> <span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">c2</span> <span class="o">+</span> <span class="mf">6.0</span> <span class="o">*</span> <span class="n">c3</span> <span class="o">*</span> <span class="n">z0</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">x_scale</span> <span class="o">*</span> <span class="n">x_scale</span><span class="p">)</span>
+    <span class="n">p3</span> <span class="o">=</span> <span class="n">energy_scale</span> <span class="o">*</span> <span class="mf">6.0</span> <span class="o">*</span> <span class="n">c3</span> <span class="o">/</span> <span class="p">(</span><span class="n">x_scale</span> <span class="o">*</span> <span class="n">x_scale</span> <span class="o">*</span> <span class="n">x_scale</span><span class="p">)</span>
+    <span class="n">bulk_modulus</span> <span class="o">=</span> <span class="mf">4.0</span> <span class="o">*</span> <span class="n">x0</span> <span class="o">*</span> <span class="n">x0</span> <span class="o">*</span> <span class="n">p2</span> <span class="o">/</span> <span class="p">(</span><span class="mf">9.0</span> <span class="o">*</span> <span class="n">equilibrium_volume</span><span class="p">)</span>
+    <span class="n">bulk_modulus_derivative</span> <span class="o">=</span> <span class="mf">4.0</span> <span class="o">+</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">x0</span> <span class="o">*</span> <span class="n">p3</span> <span class="o">/</span> <span class="p">(</span><span class="mf">3.0</span> <span class="o">*</span> <span class="n">p2</span><span class="p">)</span>
+
+    <span class="n">predictions</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">energy_offset</span> <span class="o">+</span> <span class="n">energy_scale</span> <span class="o">*</span> <span class="n">_poly</span><span class="p">(</span><span class="n">coeffs</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span> <span class="k">for</span> <span class="n">z</span> <span class="ow">in</span> <span class="n">z_values</span><span class="p">)</span>
+    <span class="n">residuals</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">observed</span> <span class="o">-</span> <span class="n">predicted</span> <span class="k">for</span> <span class="n">observed</span><span class="p">,</span> <span class="n">predicted</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">energy_values</span><span class="p">,</span> <span class="n">predictions</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+    <span class="n">rmse</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">residual</span> <span class="o">*</span> <span class="n">residual</span> <span class="k">for</span> <span class="n">residual</span> <span class="ow">in</span> <span class="n">residuals</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">residuals</span><span class="p">))</span>
+    <span class="n">equilibrium_energy</span> <span class="o">=</span> <span class="n">energy_offset</span> <span class="o">+</span> <span class="n">energy_scale</span> <span class="o">*</span> <span class="n">_poly</span><span class="p">(</span><span class="n">coeffs</span><span class="p">,</span> <span class="n">z0</span><span class="p">)</span>
+    <span class="n">outputs</span> <span class="o">=</span> <span class="p">(</span><span class="n">equilibrium_volume</span><span class="p">,</span> <span class="n">equilibrium_energy</span><span class="p">,</span> <span class="n">bulk_modulus</span><span class="p">,</span> <span class="n">bulk_modulus_derivative</span><span class="p">,</span> <span class="n">rmse</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">outputs</span> <span class="o">+</span> <span class="n">residuals</span> <span class="o">+</span> <span class="n">predictions</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"fit produced non-finite results"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">bulk_modulus</span> <span class="o">&lt;=</span> <span class="mf">0.0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"fit produced a non-positive bulk modulus"</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">BirchMurnaghanFit</span><span class="p">(</span>
+        <span class="n">equilibrium_volume</span><span class="o">=</span><span class="n">equilibrium_volume</span><span class="p">,</span>
+        <span class="n">equilibrium_energy</span><span class="o">=</span><span class="n">equilibrium_energy</span><span class="p">,</span>
+        <span class="n">bulk_modulus</span><span class="o">=</span><span class="n">bulk_modulus</span> <span class="o">*</span> <span class="n">GPA_PER_EV_PER_A3</span><span class="p">,</span>
+        <span class="n">bulk_modulus_derivative</span><span class="o">=</span><span class="n">bulk_modulus_derivative</span><span class="p">,</span>
+        <span class="n">volumes</span><span class="o">=</span><span class="n">volume_values</span><span class="p">,</span>
+        <span class="n">energies</span><span class="o">=</span><span class="n">energy_values</span><span class="p">,</span>
+        <span class="n">residuals</span><span class="o">=</span><span class="n">residuals</span><span class="p">,</span>
+        <span class="n">rmse</span><span class="o">=</span><span class="n">rmse</span><span class="p">,</span>
+        <span class="n">condition_number</span><span class="o">=</span><span class="n">condition_number</span><span class="p">,</span>
+    <span class="p">)</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_finite_sequence</span><span class="p">(</span><span class="n">values</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">"""Copy and validate a finite one-dimensional real sequence."""</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">rows</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">TypeError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> must be a one-dimensional sequence"</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">exc</span>
+    <span class="n">normalized</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">rows</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">,</span> <span class="nb">complex</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">complexfloating</span><span class="p">)):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> must contain real scalar values"</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">number</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="k">except</span> <span class="p">(</span><span class="ne">TypeError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">,</span> <span class="ne">OverflowError</span><span class="p">)</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> must contain finite real scalar values"</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">exc</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">math</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">number</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> must contain finite real scalar values"</span><span class="p">)</span>
+        <span class="n">normalized</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">number</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">normalized</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_positive_scalar</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Return one positive finite real scalar or raise ``ValueError``."""</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">,</span> <span class="nb">complex</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">complexfloating</span><span class="p">)):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> must be a positive finite scalar"</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+    <span class="k">except</span> <span class="p">(</span><span class="ne">TypeError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">,</span> <span class="ne">OverflowError</span><span class="p">)</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> must be a positive finite scalar"</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">exc</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">math</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">result</span><span class="p">)</span> <span class="ow">or</span> <span class="n">result</span> <span class="o">&lt;=</span> <span class="mf">0.0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> must be a positive finite scalar"</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">result</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_eos_x</span><span class="p">(</span><span class="n">reference</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">volume</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Evaluate the BM3 volume coordinate while detecting overflow."""</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">exp</span><span class="p">((</span><span class="mf">2.0</span> <span class="o">/</span> <span class="mf">3.0</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">reference</span><span class="p">)</span> <span class="o">-</span> <span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">volume</span><span class="p">)))</span>
+    <span class="k">except</span> <span class="ne">OverflowError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"volume range cannot be represented in the EOS coordinate"</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">exc</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">math</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">result</span><span class="p">)</span> <span class="ow">or</span> <span class="n">result</span> <span class="o">&lt;=</span> <span class="mf">0.0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"volume range cannot be represented in the EOS coordinate"</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">result</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_eta_minus_one</span><span class="p">(</span><span class="n">equilibrium_volume</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">volume</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Evaluate ``(V0/V)**(2/3) - 1`` accurately near equilibrium."""</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">expm1</span><span class="p">((</span><span class="mf">2.0</span> <span class="o">/</span> <span class="mf">3.0</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">equilibrium_volume</span><span class="p">)</span> <span class="o">-</span> <span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">volume</span><span class="p">)))</span>
+    <span class="k">except</span> <span class="ne">OverflowError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"volume range cannot be represented in the EOS coordinate"</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">exc</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">math</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">result</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"volume range cannot be represented in the EOS coordinate"</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">result</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_poly</span><span class="p">(</span><span class="n">coefficients</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span> <span class="n">z</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Evaluate a cubic by Horner's rule."""</span>
+    <span class="n">c0</span><span class="p">,</span> <span class="n">c1</span><span class="p">,</span> <span class="n">c2</span><span class="p">,</span> <span class="n">c3</span> <span class="o">=</span> <span class="n">coefficients</span>
+    <span class="k">return</span> <span class="p">((</span><span class="n">c3</span> <span class="o">*</span> <span class="n">z</span> <span class="o">+</span> <span class="n">c2</span><span class="p">)</span> <span class="o">*</span> <span class="n">z</span> <span class="o">+</span> <span class="n">c1</span><span class="p">)</span> <span class="o">*</span> <span class="n">z</span> <span class="o">+</span> <span class="n">c0</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_stationary_roots</span><span class="p">(</span><span class="n">coefficients</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">"""Solve the scaled cubic derivative without leaving scaled coordinates."""</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">c1</span><span class="p">,</span> <span class="n">c2</span><span class="p">,</span> <span class="n">c3</span> <span class="o">=</span> <span class="n">coefficients</span>
+    <span class="n">quadratic</span><span class="p">,</span> <span class="n">linear</span><span class="p">,</span> <span class="n">constant</span> <span class="o">=</span> <span class="mf">3.0</span> <span class="o">*</span> <span class="n">c3</span><span class="p">,</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">c2</span><span class="p">,</span> <span class="n">c1</span>
+    <span class="k">if</span> <span class="n">quadratic</span> <span class="o">==</span> <span class="mf">0.0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">()</span> <span class="k">if</span> <span class="n">linear</span> <span class="o">==</span> <span class="mf">0.0</span> <span class="k">else</span> <span class="p">(</span><span class="o">-</span><span class="n">constant</span> <span class="o">/</span> <span class="n">linear</span><span class="p">,)</span>
+    <span class="n">discriminant</span> <span class="o">=</span> <span class="n">linear</span> <span class="o">*</span> <span class="n">linear</span> <span class="o">-</span> <span class="mf">4.0</span> <span class="o">*</span> <span class="n">quadratic</span> <span class="o">*</span> <span class="n">constant</span>
+    <span class="k">if</span> <span class="n">discriminant</span> <span class="o">&lt;=</span> <span class="mf">32.0</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">ulp</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">linear</span> <span class="o">*</span> <span class="n">linear</span> <span class="o">+</span> <span class="nb">abs</span><span class="p">(</span><span class="mf">4.0</span> <span class="o">*</span> <span class="n">quadratic</span> <span class="o">*</span> <span class="n">constant</span><span class="p">)):</span>
+        <span class="k">return</span> <span class="p">()</span>
+    <span class="n">root_discriminant</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">discriminant</span><span class="p">)</span>
+    <span class="n">stable_term</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">linear</span> <span class="o">+</span> <span class="n">math</span><span class="o">.</span><span class="n">copysign</span><span class="p">(</span><span class="n">root_discriminant</span><span class="p">,</span> <span class="n">linear</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">stable_term</span> <span class="o">==</span> <span class="mf">0.0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">(</span><span class="o">-</span><span class="n">linear</span> <span class="o">/</span> <span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">quadratic</span><span class="p">),)</span>
+    <span class="n">roots</span> <span class="o">=</span> <span class="p">(</span><span class="n">stable_term</span> <span class="o">/</span> <span class="n">quadratic</span><span class="p">,</span> <span class="n">constant</span> <span class="o">/</span> <span class="n">stable_term</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">roots</span> <span class="k">if</span> <span class="n">roots</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="n">roots</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">else</span> <span class="p">(</span><span class="n">roots</span><span class="p">[</span><span class="mi">0</span><span class="p">],)</span>
+</pre></div>
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          
+          
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2026, The httk-analyse AUTHORS
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer no-toc">
+      
+      
+      
+    </aside>
+  </div>
+</div><script src="../../../../_static/documentation_options.js?v=952df46a"></script>
+    <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../../../_static/scripts/furo.js?v=46bd48cc"></script>
+    <script src="../../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../../_static/copybutton.js?v=fd10adb8"></script>
+    <script src="../../../../_static/selector.js?v=d8e9b3ce"></script>
+    <script>window.HTTK_DOCS_VERSIONING = {"channel":"dev","version":"dev:develop","versionPathDepth":2};</script>
+    </body>
+</html>

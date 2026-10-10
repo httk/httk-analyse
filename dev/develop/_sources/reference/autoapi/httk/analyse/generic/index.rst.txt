@@ -1,0 +1,212 @@
+httk.analyse.generic
+====================
+
+.. py:module:: httk.analyse.generic
+
+.. autoapi-nested-parse::
+
+   Generic numerical analysis independent of a scientific domain.
+
+
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 1
+
+   /reference/autoapi/httk/analyse/generic/lower_hull/index
+   /reference/autoapi/httk/analyse/generic/timeseries/index
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   httk.analyse.generic.LowerConvexHull
+   httk.analyse.generic.BlockAverage
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   httk.analyse.generic.autocorrelation
+   httk.analyse.generic.block_average
+
+
+Package Contents
+----------------
+
+.. py:class:: LowerConvexHull(points, values, *, tolerance = 1e-08, solver = 'auto')
+
+   The lower convex hull of scalar values over arbitrary finite coordinates.
+
+   A point belongs to the hull when its value is no greater than the cheapest
+   leave-one-out convex mixture at the same coordinates, within ``tolerance``.
+   The input order is retained throughout, including for tied duplicate points.
+
+   Coordinates and values are converted through ``numpy.float64`` and exposed as
+   ordinary :class:`float` values. Every coordinate equality is retained in the
+   mixture LP, together with the affine ``sum(weights) == 1`` equality.
+
+   :param points: Coordinate rows for the input points.
+   :param values: Scalar values corresponding to ``points``.
+   :param tolerance: Maximum value excess treated as on the lower hull.
+   :param solver: ``"auto"`` (default) selects HiGHS when installed, while ``"simplex"``
+       selects the built-in solver and ``"highs"`` selects the optional HiGHS
+       candidate-basis accelerator.
+   :raises ValueError: If the points, values, or tolerance are invalid.
+
+
+   .. py:property:: points
+      :type: tuple[tuple[float, ...], ...]
+
+
+      Return input coordinates in their original order as float tuples.
+
+      :return: The immutable input coordinate rows.
+
+
+   .. py:property:: values
+      :type: tuple[float, ...]
+
+
+      Return input scalar values in the same order as :attr:`points`.
+
+      :return: The immutable input values.
+
+
+   .. py:property:: tolerance
+      :type: float
+
+
+      Return the maximum value excess treated as on the hull.
+
+
+   .. py:property:: solver
+      :type: Literal['simplex', 'highs']
+
+
+      Return the resolved mixture-solver backend.
+
+
+   .. py:property:: hull_indices
+      :type: tuple[int, ...]
+
+
+      Return indices of points on the lower hull in input order.
+
+      :return: The immutable lower-hull indices.
+
+
+   .. py:property:: value_above_hull
+      :type: tuple[float, ...]
+
+
+      Return non-negative leave-one-out value excesses for every input point.
+
+      :return: The immutable value excesses in input order.
+
+
+   .. py:property:: supported_segments
+      :type: tuple[tuple[int, int], ...]
+
+
+      Return midpoint-supported pairs of distinct lower-hull points.
+
+      :return: The immutable supported index pairs in input order.
+
+
+   .. py:method:: decomposition(index)
+
+      Return lower-hull mixture ``(index, weight)`` pairs, or ``None`` on hull.
+
+      :param index: Input point index.
+      :return: The stable-point mixture, or ``None`` when the point is on the hull.
+
+
+
+   .. py:method:: is_on_hull(index)
+
+      Return whether ``index`` belongs to :attr:`hull_indices`.
+
+      :param index: Input point index.
+      :return: Whether the point is on the lower hull.
+
+
+
+.. py:class:: BlockAverage
+
+   Immutable summary of non-overlapping block means.
+
+   :param block_means: Means of the complete retained blocks.
+   :param mean: Mean of all retained samples.
+   :param standard_deviation: Sample standard deviation of the block means.
+   :param standard_error: Block-mean standard deviation divided by the square root
+       of the number of blocks.
+   :param block_size: Number of samples in each complete block.
+   :param used_samples: Number of samples included in the estimates.
+   :param dropped_samples: Number of trailing samples omitted by explicit policy.
+
+
+   .. py:attribute:: block_means
+      :type:  tuple[float, ...]
+
+
+   .. py:attribute:: mean
+      :type:  float
+
+
+   .. py:attribute:: standard_deviation
+      :type:  float
+
+
+   .. py:attribute:: standard_error
+      :type:  float
+
+
+   .. py:attribute:: block_size
+      :type:  int
+
+
+   .. py:attribute:: used_samples
+      :type:  int
+
+
+   .. py:attribute:: dropped_samples
+      :type:  int
+
+
+.. py:function:: autocorrelation(values, *, max_lag = None)
+
+   Compute the whole-series-centered, pair-count-normalized autocorrelation.
+
+   This estimator assumes finite, stationary data sampled at regular intervals.
+   At lag ``k`` it divides the covariance sum by ``N-k`` before normalization by
+   lag zero. Long-lag values can exceed ``[-1, 1]``; this sequence is not
+   guaranteed positive-semidefinite and is not a transport or spectral kernel.
+
+   :param values: Finite, non-constant real one-dimensional samples.
+   :param max_lag: Largest returned lag, or all lags through ``N - 1``.
+   :return: Autocorrelation values beginning with exactly ``1.0``.
+   :raises ValueError: If samples, lag, or the lag-zero normalization are invalid.
+
+
+.. py:function:: block_average(values, *, block_size, remainder = 'raise')
+
+   Summarize retained samples using non-overlapping block means.
+
+   Blocks are independent only if the caller's sampling assumptions make them so.
+   Sweep block sizes and look for a stable uncertainty estimate; two blocks alone
+   do not establish reliable uncertainty. No equilibration samples are removed.
+
+   :param values: Finite real one-dimensional samples.
+   :param block_size: Positive number of samples per block.
+   :param remainder: Reject a partial final block, or explicitly drop it.
+   :return: Immutable block means and summary statistics.
+   :raises ValueError: If samples, block size, tail policy, or finite statistics are invalid.
+
+

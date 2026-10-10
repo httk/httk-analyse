@@ -1,0 +1,330 @@
+httk.analyse.matsci.elasticity
+==============================
+
+.. py:module:: httk.analyse.matsci.elasticity
+
+.. autoapi-nested-parse::
+
+   Elastic stiffness, compliance, directional response, and linear fits.
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   httk.analyse.matsci.elasticity.ElasticTensor
+   httk.analyse.matsci.elasticity.ElasticFit
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   httk.analyse.matsci.elasticity.fit_stress_strain
+   httk.analyse.matsci.elasticity.fit_energy_strain
+
+
+Module Contents
+---------------
+
+.. py:class:: ElasticTensor(stiffness)
+
+   Hold a symmetric stiffness matrix in engineering-strain Voigt form.
+
+   Entries use GPa, with components ``xx, yy, zz, yz, xz, xy``.
+   Strain shear components are engineering strains ``2*epsilon_ij`` and
+   stress shear components are tensor stresses ``sigma_ij``. Finite unstable
+   stiffnesses are retained so callers can diagnose them.
+
+   :param stiffness: Finite symmetric 6 by 6 stiffness matrix in GPa.
+   :raises ValueError: If the matrix is not finite, real, symmetric, or 6 by 6.
+
+
+   .. py:attribute:: stiffness
+      :type:  tuple[tuple[float, ...], ...]
+
+
+   .. py:method:: from_full(tensor)
+      :classmethod:
+
+
+      Construct from a full fourth-rank stiffness tensor.
+
+      The tensor must satisfy both minor symmetries and major symmetry to
+      relative and absolute tolerance 1e-12.
+
+      :param tensor: Full finite stiffness tensor in GPa.
+      :return: The immutable Voigt representation.
+      :raises ValueError: If shape, values, or elastic symmetries are invalid.
+
+
+
+   .. py:property:: compliance
+      :type: tuple[tuple[float, ...], ...]
+
+
+      Return the inverse stiffness in engineering Voigt form.
+
+      :return: Compliance matrix in GPa⁻¹.
+      :raises ValueError: If stiffness is singular or its inverse is non-finite.
+
+
+   .. py:property:: bulk_modulus_voigt
+      :type: float
+
+
+      Return the Voigt bulk modulus in GPa.
+
+
+   .. py:property:: shear_modulus_voigt
+      :type: float
+
+
+      Return the Voigt shear modulus in GPa.
+
+
+   .. py:property:: bulk_modulus_reuss
+      :type: float
+
+
+      Return the Reuss bulk modulus in GPa.
+
+      :raises ValueError: If compliance is singular or its bulk denominator is not positive.
+
+
+   .. py:property:: shear_modulus_reuss
+      :type: float
+
+
+      Return the Reuss shear modulus in GPa.
+
+      :raises ValueError: If compliance is singular or its shear denominator is not positive.
+
+
+   .. py:property:: bulk_modulus_hill
+      :type: float
+
+
+      Return the Voigt-Reuss-Hill bulk modulus in GPa.
+
+
+   .. py:property:: shear_modulus_hill
+      :type: float
+
+
+      Return the Voigt-Reuss-Hill shear modulus in GPa.
+
+
+   .. py:property:: universal_anisotropy
+      :type: float
+
+
+      Return the universal anisotropy index ``5*Gv/Gr + Kv/Kr - 6``.
+
+      :raises ValueError: If Reuss moduli are undefined or non-positive.
+
+
+   .. py:method:: to_full()
+
+      Return stiffness as a full fourth-rank tensor.
+
+      :return: Tensor ``C_ijkl`` in GPa with all minor and major symmetries.
+
+
+
+   .. py:method:: compliance_full()
+
+      Return compliance as a full fourth-rank tensor.
+
+      :return: Tensor ``S_ijkl`` in GPa⁻¹, including engineering-shear factors.
+      :raises ValueError: If stiffness is singular.
+
+
+
+   .. py:method:: rotate(rotation)
+
+      Rotate stiffness with an active Cartesian rotation matrix.
+
+      :param rotation: Proper orthogonal 3 by 3 Cartesian rotation.
+      :return: Rotated stiffness, with ``C'ijkl = Ria Rjb Rkc Rld Cabcd``.
+      :raises ValueError: If the matrix is not a proper rotation.
+
+
+
+   .. py:property:: stability_eigenvalues
+      :type: tuple[float, ...]
+
+
+      Return ascending Kelvin-basis eigenvalues of zero-pressure stiffness.
+
+
+   .. py:method:: is_stable(tolerance = 0.0)
+
+      Test positive definiteness using the supplied absolute tolerance.
+
+      :param tolerance: Minimum accepted Kelvin-basis eigenvalue in GPa.
+      :return: Whether every stiffness eigenvalue is greater than tolerance.
+      :raises ValueError: If tolerance is negative or non-finite.
+
+
+
+   .. py:method:: pressure_stability_eigenvalues(pressure)
+
+      Return eigenvalues after the hydrostatic pressure correction.
+
+      Pressure is positive in compression and measured in GPa.
+      This is an incremental hydrostatic criterion, not a general
+      pre-stressed finite-strain stability test.
+
+      This tensor must be the thermodynamic stiffness: the second derivative
+      of energy with respect to Lagrangian strain about the pressurised
+      reference state. The correction ``C_ijkl + P*(delta_ij*delta_kl -
+      delta_ik*delta_jl - delta_il*delta_jk)`` yields Wallace's stress-strain
+      coefficients B for ``sigma = -P*I`` (Voigt ``C11-P, C12+P, C44-P``).
+      Stress-strain coefficients, such as the output of
+      ``fit_stress_strain`` or a code's elastic constants computed under
+      pressure, are already B: test them with ``is_stable``, because
+      applying this correction to them double-counts the pressure.
+
+      :param pressure: Applied hydrostatic pressure in GPa.
+      :return: Ascending eigenvalues of the corrected stiffness.
+
+
+
+   .. py:method:: is_stable_under_pressure(pressure, tolerance = 0.0)
+
+      Test positive definiteness under the hydrostatic pressure correction.
+
+      The same input contract as ``pressure_stability_eigenvalues``
+      applies: the tensor must be the thermodynamic stiffness (Lagrangian
+      strain energy derivative). Stress-strain coefficients are already
+      corrected and must be tested with ``is_stable`` instead.
+
+      :param pressure: Hydrostatic pressure in GPa, positive in compression.
+      :param tolerance: Minimum accepted eigenvalue in GPa.
+      :return: Whether all corrected stiffness eigenvalues exceed tolerance.
+      :raises ValueError: If pressure or tolerance is not finite, or tolerance is negative.
+
+
+
+   .. py:method:: young_modulus(direction)
+
+      Return directional Young's modulus in GPa.
+
+      :param direction: Nonzero Cartesian loading direction.
+      :return: Reciprocal longitudinal compliance.
+      :raises ValueError: If direction is invalid, stiffness is singular, or compliance is non-positive.
+
+
+
+   .. py:method:: shear_modulus(direction, transverse)
+
+      Return shear modulus for an orthogonal direction pair in GPa.
+
+      :param direction: Nonzero Cartesian shear-plane normal.
+      :param transverse: Nonzero Cartesian shear direction perpendicular to ``direction``.
+      :return: Directional shear modulus.
+      :raises ValueError: If directions are invalid, compliance is singular, or its denominator is non-positive.
+
+
+
+   .. py:method:: poisson_ratio(direction, transverse)
+
+      Return directional Poisson ratio for an orthogonal direction pair.
+
+      :param direction: Nonzero Cartesian uniaxial loading direction.
+      :param transverse: Nonzero Cartesian transverse direction perpendicular to ``direction``.
+      :return: Negative transverse-to-longitudinal strain ratio.
+      :raises ValueError: If directions are invalid, stiffness is singular, or longitudinal compliance is non-positive.
+
+
+
+.. py:class:: ElasticFit
+
+   Retain an elastic fit, offsets, residuals, and design diagnostics.
+
+   Residuals are observed minus fitted values. Stress residuals are in
+   GPa; energy residuals are in eV. ``energy_offset`` is ``None``
+   for a stress fit.
+
+   :param tensor: Fitted stiffness tensor.
+   :param stress_offset: Fitted tensile-positive stress offset in Voigt order.
+   :param energy_offset: Fitted constant energy in eV, when applicable.
+   :param residuals: Input-order residual tuple or tuples.
+   :param rmse: Root mean square of residual components in the fit's units.
+   :param condition_number: Condition number of the column-scaled design matrix.
+   :param strain_range: Minimum and maximum engineering strain for each component.
+
+
+   .. py:attribute:: tensor
+      :type:  ElasticTensor
+
+
+   .. py:attribute:: stress_offset
+      :type:  tuple[float, float, float, float, float, float]
+
+
+   .. py:attribute:: energy_offset
+      :type:  float | None
+
+
+   .. py:attribute:: residuals
+      :type:  tuple[float, ...] | tuple[tuple[float, ...], ...]
+
+
+   .. py:attribute:: rmse
+      :type:  float
+
+
+   .. py:attribute:: condition_number
+      :type:  float
+
+
+   .. py:attribute:: strain_range
+      :type:  tuple[tuple[float, float], ...]
+
+
+.. py:function:: fit_stress_strain(strains, stresses, *, fit_offset = True)
+
+   Fit stiffness and optional stress offsets by joint least squares.
+
+   Strains and tensile-positive stresses use ``xx, yy, zz, yz, xz, xy``
+   components, with engineering shear strain ``2*epsilon_ij`` and tensor
+   shear stress. The fitted tensor is the stress-strain coefficient tensor;
+   at finite pressure that is Wallace's B, not the thermodynamic stiffness C,
+   so test its stability with ``ElasticTensor.is_stable``, not
+   ``ElasticTensor.is_stable_under_pressure``. At least enough independent
+   observations for full design rank are required. The reported condition number describes only the
+   column-scaled linear design, not physical parameter confidence.
+
+   :param strains: Finite ``(samples, 6)`` engineering strain components.
+   :param stresses: Matching finite tensile-positive stresses in GPa.
+   :param fit_offset: Fit six constant stress offsets when true.
+   :return: Immutable fitted tensor and input-order stress residuals.
+   :raises ValueError: If shapes are invalid or the scaled design is rank deficient.
+
+
+.. py:function:: fit_energy_strain(strains, energies, volume, *, fit_offset = True)
+
+   Fit stiffness from a quadratic total-energy-versus-strain model.
+
+   The model is ``E = E0 + V*(stress_offset @ strain +
+   0.5*strain @ C @ strain)``. With ``fit_offset=False``, both ``E0`` and
+   stress offset are fixed to zero; use that mode only when the inputs have
+   this explicit zero-reference convention. At finite pressure the quadratic
+   fit yields the thermodynamic stiffness C only for Lagrangian strains;
+   small linear strains give neither C nor B. The design condition number
+   describes the column-scaled linear solve, not physical parameter
+   confidence.
+
+   :param strains: Finite ``(samples, 6)`` engineering strain components.
+   :param energies: Matching total energies in eV.
+   :param volume: Positive reference volume in angstrom³.
+   :param fit_offset: Fit one constant energy and six linear stress terms when true.
+   :return: Fitted tensor and stress offset in GPa, with input-order energy residuals in eV.
+   :raises ValueError: If inputs are invalid or the scaled design is rank deficient.
+
+

@@ -1,0 +1,1020 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../../../../">
+  <head><meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../../genindex.html"><link rel="search" title="Search" href="../../../../search.html">
+
+    <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
+        <title>httk.analyse.matsci.electronic - httk-analyse dev:develop documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=d111a655" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=7bdb33bb" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/selector.css?v=626bada3" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f2f2f2;
+  --color-code-foreground: #1e1e1e;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle site navigation sidebar">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc" aria-label="Toggle table of contents sidebar">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+<div class="announcement">
+  <aside class="announcement-content">
+     Development documentation (dev:develop) — built from the GitHub develop branch; content may differ from any release. 
+  </aside>
+</div>
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <span class="icon"><svg><use href="#svg-menu"></use></svg></span>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../../../index.html"><div class="brand">httk-analyse dev:develop documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+        <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../../index.html">
+  
+  <span class="sidebar-brand-text">httk-analyse dev:develop documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../../../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../generic-hulls.html">Generic lower convex hulls</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../phase-diagrams.html">Materials phase diagrams</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../equations-of-state.html">Static equation-of-state fitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../energetics.html">Static energy bookkeeping</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../time-series.html">Simulation time series</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../mlip-validation.html">Validate MLIP predictions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../elasticity.html">Elasticity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../md-structure.html">Molecular-dynamics structure analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../dynamics.html">Dynamics and diffusion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../thermal-response.html">Equilibrium response and transport</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../phonons.html">Harmonic phonon thermodynamics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../electronic.html">Electronic and magnetic quantities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../vasp-analysis.html">VASP electronic analysis adapters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../defects.html">Defects, surfaces, and kinetics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../analysis-artifacts.html">Summaries and figures</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../records.html">Recording results</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../analysis-recipes.html">Analysis recipes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../crysviz.html">CrysViz structure viewer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../reference/index.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../notebooks/examples.html">Convex-hull and phase-diagram examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../notebooks/materials-toolbox.html">Materials toolbox example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../notebooks/materials-response.html">Materials response toolbox</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../reference/autoapi/index.html">API Reference</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+            <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <h1>Source code for httk.analyse.matsci.electronic</h1><div class="highlight"><pre>
+<span></span><span class="sd">"""Electronic, magnetic and static dielectric analysis for sampled data."""</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Sequence</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">itertools</span><span class="w"> </span><span class="kn">import</span> <span class="n">pairwise</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">..</span><span class="w"> </span><span class="kn">import</span> <span class="n">definitions</span> <span class="k">as</span> <span class="n">defs</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..definitions</span><span class="w"> </span><span class="kn">import</span> <span class="n">BoundValue</span><span class="p">,</span> <span class="n">FieldBinding</span><span class="p">,</span> <span class="n">_plain</span><span class="p">,</span> <span class="n">_reject_selection</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">"BandEdges"</span><span class="p">,</span>
+    <span class="s2">"DielectricSummary"</span><span class="p">,</span>
+    <span class="s2">"EffectiveMassFit"</span><span class="p">,</span>
+    <span class="s2">"MagneticMoments"</span><span class="p">,</span>
+    <span class="s2">"align_energies"</span><span class="p">,</span>
+    <span class="s2">"band_edges"</span><span class="p">,</span>
+    <span class="s2">"electron_count"</span><span class="p">,</span>
+    <span class="s2">"fit_effective_mass"</span><span class="p">,</span>
+    <span class="s2">"integrate_dos"</span><span class="p">,</span>
+    <span class="s2">"magnetic_moments"</span><span class="p">,</span>
+    <span class="s2">"solve_chemical_potential"</span><span class="p">,</span>
+    <span class="s2">"summarize_dielectric"</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="n">_DIELECTRIC_KINDS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">"static"</span><span class="p">:</span> <span class="n">defs</span><span class="o">.</span><span class="n">STATIC_RELATIVE_PERMITTIVITY</span><span class="p">,</span>
+    <span class="s2">"high_frequency"</span><span class="p">:</span> <span class="n">defs</span><span class="o">.</span><span class="n">HIGH_FREQUENCY_RELATIVE_PERMITTIVITY</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="n">_KB_EV_K</span> <span class="o">=</span> <span class="mf">8.617333262145e-5</span>
+<span class="c1"># CODATA 2022 constants give hbar**2 / m_e = 7.619964 eV angstrom**2.</span>
+<span class="n">_HBAR2_OVER_ME_EV_A2</span> <span class="o">=</span> <span class="mf">7.619964231073853</span>
+<span class="n">_GAUSS_X</span><span class="p">,</span> <span class="n">_GAUSS_W</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">polynomial</span><span class="o">.</span><span class="n">legendre</span><span class="o">.</span><span class="n">leggauss</span><span class="p">(</span><span class="mi">16</span><span class="p">)</span>
+
+
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">slots</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="viewcode-block" id="BandEdges">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/index.html#httk.analyse.matsci.electronic.BandEdges">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">BandEdges</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Band extrema on the supplied sampled k points, with energies in eV.</span>
+
+<span class="sd">    :param metallic: Whether any state is partially occupied by the supplied criterion.</span>
+<span class="sd">    :param indirect_gap: Sampled conduction minimum minus valence maximum in eV.</span>
+<span class="sd">    :param direct_gap: Smallest sampled same-k conduction-valence separation in eV.</span>
+<span class="sd">    :param vbm_energy: Valence-band maximum in the aligned reference, in eV.</span>
+<span class="sd">    :param cbm_energy: Conduction-band minimum in the aligned reference, in eV.</span>
+<span class="sd">    :param vbm_band: Input band index of the valence maximum.</span>
+<span class="sd">    :param vbm_kpoint: Input k-point index of the valence maximum.</span>
+<span class="sd">    :param cbm_band: Input band index of the conduction minimum.</span>
+<span class="sd">    :param cbm_kpoint: Input k-point index of the conduction minimum.</span>
+<span class="sd">    :param energy_reference: Subtracted reference energy in eV.</span>
+<span class="sd">    """</span>
+
+<div class="viewcode-block" id="BandEdges.metallic">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/electronic/index.html#httk.analyse.matsci.electronic.BandEdges.metallic">[docs]</a>
+    <span class="n">metallic</span><span class="p">:</span> <span class="nb">bool</span></div>
+
+<div class="viewcode-block" id="BandEdges.indirect_gap">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/electronic/index.html#httk.analyse.matsci.electronic.BandEdges.indirect_gap">[docs]</a>
+    <span class="n">indirect_gap</span><span class="p">:</span> <span class="nb">float</span></div>
+
+<div class="viewcode-block" id="BandEdges.direct_gap">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/electronic/index.html#httk.analyse.matsci.electronic.BandEdges.direct_gap">[docs]</a>
+    <span class="n">direct_gap</span><span class="p">:</span> <span class="nb">float</span></div>
+
+<div class="viewcode-block" id="BandEdges.vbm_energy">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/electronic/index.html#httk.analyse.matsci.electronic.BandEdges.vbm_energy">[docs]</a>
+    <span class="n">vbm_energy</span><span class="p">:</span> <span class="nb">float</span></div>
+
+<div class="viewcode-block" id="BandEdges.cbm_energy">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/electronic/index.html#httk.analyse.matsci.electronic.BandEdges.cbm_energy">[docs]</a>
+    <span class="n">cbm_energy</span><span class="p">:</span> <span class="nb">float</span></div>
+
+<div class="viewcode-block" id="BandEdges.vbm_band">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/electronic/index.html#httk.analyse.matsci.electronic.BandEdges.vbm_band">[docs]</a>
+    <span class="n">vbm_band</span><span class="p">:</span> <span class="nb">int</span></div>
+
+<div class="viewcode-block" id="BandEdges.vbm_kpoint">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/electronic/index.html#httk.analyse.matsci.electronic.BandEdges.vbm_kpoint">[docs]</a>
+    <span class="n">vbm_kpoint</span><span class="p">:</span> <span class="nb">int</span></div>
+
+<div class="viewcode-block" id="BandEdges.cbm_band">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/electronic/index.html#httk.analyse.matsci.electronic.BandEdges.cbm_band">[docs]</a>
+    <span class="n">cbm_band</span><span class="p">:</span> <span class="nb">int</span></div>
+
+<div class="viewcode-block" id="BandEdges.cbm_kpoint">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/electronic/index.html#httk.analyse.matsci.electronic.BandEdges.cbm_kpoint">[docs]</a>
+    <span class="n">cbm_kpoint</span><span class="p">:</span> <span class="nb">int</span></div>
+
+<div class="viewcode-block" id="BandEdges.energy_reference">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/electronic/index.html#httk.analyse.matsci.electronic.BandEdges.energy_reference">[docs]</a>
+    <span class="n">energy_reference</span><span class="p">:</span> <span class="nb">float</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_bound_values</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">selection</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">BoundValue</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""Bind the gaps, reported as 0.0 (the definitions' metallic value) when ``metallic``."""</span>
+        <span class="n">_reject_selection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">selection</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="n">BoundValue</span><span class="p">(</span><span class="s2">"indirect_gap"</span><span class="p">,</span> <span class="n">FieldBinding</span><span class="p">(</span><span class="n">defs</span><span class="o">.</span><span class="n">BAND_GAP</span><span class="p">),</span> <span class="mf">0.0</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">metallic</span> <span class="k">else</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">indirect_gap</span><span class="p">)),</span>
+            <span class="n">BoundValue</span><span class="p">(</span>
+                <span class="s2">"direct_gap"</span><span class="p">,</span> <span class="n">FieldBinding</span><span class="p">(</span><span class="n">defs</span><span class="o">.</span><span class="n">DIRECT_BAND_GAP</span><span class="p">),</span> <span class="mf">0.0</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">metallic</span> <span class="k">else</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">direct_gap</span><span class="p">)</span>
+            <span class="p">),</span>
+        <span class="p">)</span></div>
+
+
+
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">slots</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="viewcode-block" id="EffectiveMassFit">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/index.html#httk.analyse.matsci.electronic.EffectiveMassFit">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">EffectiveMassFit</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Full signed effective-mass tensor from a local quadratic band fit.</span>
+
+<span class="sd">    :param center: Cartesian fit center in inverse angstroms, with 2π included.</span>
+<span class="sd">    :param energy_at_center: Fitted band energy at the center in eV.</span>
+<span class="sd">    :param gradient: Local energy gradient in eV angstroms.</span>
+<span class="sd">    :param hessian: Energy Hessian in eV angstroms squared.</span>
+<span class="sd">    :param mass_tensor: Effective mass tensor in electron-mass units.</span>
+<span class="sd">    :param eigenvalues: Signed principal masses in electron-mass units.</span>
+<span class="sd">    :param principal_axes: Corresponding Cartesian unit eigenvectors by column.</span>
+<span class="sd">    :param rank: Numerical rank of the quadratic design.</span>
+<span class="sd">    :param condition_number: Singular-value condition number of the scaled design.</span>
+<span class="sd">    :param residual_rms: Root mean square energy residual in eV.</span>
+<span class="sd">    :param residuals: Input-order observed-minus-fitted energies in eV.</span>
+<span class="sd">    """</span>
+
+<div class="viewcode-block" id="EffectiveMassFit.center">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/electronic/index.html#httk.analyse.matsci.electronic.EffectiveMassFit.center">[docs]</a>
+    <span class="n">center</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="EffectiveMassFit.energy_at_center">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/electronic/index.html#httk.analyse.matsci.electronic.EffectiveMassFit.energy_at_center">[docs]</a>
+    <span class="n">energy_at_center</span><span class="p">:</span> <span class="nb">float</span></div>
+
+<div class="viewcode-block" id="EffectiveMassFit.gradient">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/electronic/index.html#httk.analyse.matsci.electronic.EffectiveMassFit.gradient">[docs]</a>
+    <span class="n">gradient</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="EffectiveMassFit.hessian">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/electronic/index.html#httk.analyse.matsci.electronic.EffectiveMassFit.hessian">[docs]</a>
+    <span class="n">hessian</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="o">...</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="EffectiveMassFit.mass_tensor">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/electronic/index.html#httk.analyse.matsci.electronic.EffectiveMassFit.mass_tensor">[docs]</a>
+    <span class="n">mass_tensor</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="o">...</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="EffectiveMassFit.eigenvalues">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/electronic/index.html#httk.analyse.matsci.electronic.EffectiveMassFit.eigenvalues">[docs]</a>
+    <span class="n">eigenvalues</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="EffectiveMassFit.principal_axes">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/electronic/index.html#httk.analyse.matsci.electronic.EffectiveMassFit.principal_axes">[docs]</a>
+    <span class="n">principal_axes</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="o">...</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="EffectiveMassFit.rank">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/electronic/index.html#httk.analyse.matsci.electronic.EffectiveMassFit.rank">[docs]</a>
+    <span class="n">rank</span><span class="p">:</span> <span class="nb">int</span></div>
+
+<div class="viewcode-block" id="EffectiveMassFit.condition_number">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/electronic/index.html#httk.analyse.matsci.electronic.EffectiveMassFit.condition_number">[docs]</a>
+    <span class="n">condition_number</span><span class="p">:</span> <span class="nb">float</span></div>
+
+<div class="viewcode-block" id="EffectiveMassFit.residual_rms">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/electronic/index.html#httk.analyse.matsci.electronic.EffectiveMassFit.residual_rms">[docs]</a>
+    <span class="n">residual_rms</span><span class="p">:</span> <span class="nb">float</span></div>
+
+<div class="viewcode-block" id="EffectiveMassFit.residuals">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/electronic/index.html#httk.analyse.matsci.electronic.EffectiveMassFit.residuals">[docs]</a>
+    <span class="n">residuals</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Copy all array-like fields into immutable tuples."""</span>
+        <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"center"</span><span class="p">,</span> <span class="s2">"gradient"</span><span class="p">,</span> <span class="s2">"eigenvalues"</span><span class="p">,</span> <span class="s2">"residuals"</span><span class="p">):</span>
+            <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)))</span>
+        <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"hessian"</span><span class="p">,</span> <span class="s2">"mass_tensor"</span><span class="p">,</span> <span class="s2">"principal_axes"</span><span class="p">):</span>
+            <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">row</span><span class="p">)</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)))</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_bound_values</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">selection</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">BoundValue</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""Bind the center and signed mass tensor as one ``relative_effective_mass`` dictionary."""</span>
+        <span class="n">_reject_selection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">selection</span><span class="p">)</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"center"</span><span class="p">:</span> <span class="n">_plain</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">center</span><span class="p">),</span> <span class="s2">"tensor"</span><span class="p">:</span> <span class="n">_plain</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mass_tensor</span><span class="p">)}</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">BoundValue</span><span class="p">(</span><span class="s2">"mass_tensor"</span><span class="p">,</span> <span class="n">FieldBinding</span><span class="p">(</span><span class="n">defs</span><span class="o">.</span><span class="n">RELATIVE_EFFECTIVE_MASS</span><span class="p">),</span> <span class="n">value</span><span class="p">),)</span></div>
+
+
+
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">slots</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="viewcode-block" id="MagneticMoments">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/index.html#httk.analyse.matsci.electronic.MagneticMoments">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">MagneticMoments</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Total vector moment and optional pair spin correlations.</span>
+
+<span class="sd">    :param total: Sum of input vector moments in Bohr magnetons.</span>
+<span class="sd">    :param pairs: Input-order atom-index pairs.</span>
+<span class="sd">    :param correlations: Pair dot products in squared Bohr magnetons, or dimensionless if normalized.</span>
+<span class="sd">    :param normalized: Whether each nonzero moment was normalized before its pair dot product.</span>
+<span class="sd">    """</span>
+
+<div class="viewcode-block" id="MagneticMoments.total">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/electronic/index.html#httk.analyse.matsci.electronic.MagneticMoments.total">[docs]</a>
+    <span class="n">total</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="MagneticMoments.pairs">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/electronic/index.html#httk.analyse.matsci.electronic.MagneticMoments.pairs">[docs]</a>
+    <span class="n">pairs</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="o">...</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="MagneticMoments.correlations">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/electronic/index.html#httk.analyse.matsci.electronic.MagneticMoments.correlations">[docs]</a>
+    <span class="n">correlations</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="MagneticMoments.normalized">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/electronic/index.html#httk.analyse.matsci.electronic.MagneticMoments.normalized">[docs]</a>
+    <span class="n">normalized</span><span class="p">:</span> <span class="nb">bool</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Copy sequence fields into immutable tuples."""</span>
+        <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">"total"</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">total</span><span class="p">))</span>
+        <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">"pairs"</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">pair</span><span class="p">)</span> <span class="k">for</span> <span class="n">pair</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">pairs</span><span class="p">))</span>
+        <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">"correlations"</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">correlations</span><span class="p">))</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_bound_values</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">selection</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">BoundValue</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""Bind the total moment; the pair correlations are not bound."""</span>
+        <span class="n">_reject_selection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">selection</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">BoundValue</span><span class="p">(</span><span class="s2">"total"</span><span class="p">,</span> <span class="n">FieldBinding</span><span class="p">(</span><span class="n">defs</span><span class="o">.</span><span class="n">TOTAL_MAGNETIC_MOMENT</span><span class="p">),</span> <span class="n">_plain</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">total</span><span class="p">)),)</span></div>
+
+
+
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">slots</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="viewcode-block" id="DielectricSummary">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/index.html#httk.analyse.matsci.electronic.DielectricSummary">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">DielectricSummary</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Principal values and axes of a real static dielectric tensor.</span>
+
+<span class="sd">    :param eigenvalues: Principal relative dielectric constants, ascending.</span>
+<span class="sd">    :param principal_axes: Corresponding Cartesian unit eigenvectors by column.</span>
+<span class="sd">    :param mean: Isotropic mean of the principal relative dielectric constants.</span>
+<span class="sd">    """</span>
+
+<div class="viewcode-block" id="DielectricSummary.eigenvalues">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/electronic/index.html#httk.analyse.matsci.electronic.DielectricSummary.eigenvalues">[docs]</a>
+    <span class="n">eigenvalues</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="DielectricSummary.principal_axes">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/electronic/index.html#httk.analyse.matsci.electronic.DielectricSummary.principal_axes">[docs]</a>
+    <span class="n">principal_axes</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="o">...</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="DielectricSummary.mean">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/electronic/index.html#httk.analyse.matsci.electronic.DielectricSummary.mean">[docs]</a>
+    <span class="n">mean</span><span class="p">:</span> <span class="nb">float</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Copy array-like fields into immutable tuples."""</span>
+        <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">"eigenvalues"</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">eigenvalues</span><span class="p">))</span>
+        <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">"principal_axes"</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">row</span><span class="p">)</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">principal_axes</span><span class="p">))</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_bound_values</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">kind</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">selection</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">BoundValue</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""Bind the isotropic mean as the ``static`` or ``high_frequency`` (``kind=``) relative permittivity."""</span>
+        <span class="n">_reject_selection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">selection</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">kind</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">_DIELECTRIC_KINDS</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"kind must be one of </span><span class="si">{</span><span class="s1">', '</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">repr</span><span class="p">,</span><span class="w"> </span><span class="n">_DIELECTRIC_KINDS</span><span class="p">))</span><span class="si">}</span><span class="s2">, got </span><span class="si">{</span><span class="n">kind</span><span class="si">!r}</span><span class="s2">"</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">BoundValue</span><span class="p">(</span><span class="s2">"mean"</span><span class="p">,</span> <span class="n">FieldBinding</span><span class="p">(</span><span class="n">_DIELECTRIC_KINDS</span><span class="p">[</span><span class="n">kind</span><span class="p">]),</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mean</span><span class="p">)),)</span></div>
+
+
+
+<div class="viewcode-block" id="integrate_dos">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/index.html#httk.analyse.matsci.electronic.integrate_dos">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">integrate_dos</span><span class="p">(</span>
+    <span class="n">energies</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span>
+    <span class="n">density</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span>
+    <span class="n">lower</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">upper</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">spin_degeneracy</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Integrate a piecewise-linear DOS between energy bounds.</span>
+
+<span class="sd">    DOS values are states/eV for one spin channel unless the caller supplies a</span>
+<span class="sd">    different convention through ``spin_degeneracy``. Bounds outside the grid</span>
+<span class="sd">    are clipped to its endpoints and in-grid bounds are linearly interpolated.</span>
+
+<span class="sd">    :param energies: Strictly increasing energy grid in eV.</span>
+<span class="sd">    :param density: Nonnegative DOS values in states/eV on the declared spin basis.</span>
+<span class="sd">    :param lower: Lower integration bound in eV.</span>
+<span class="sd">    :param upper: Upper integration bound in eV.</span>
+<span class="sd">    :param spin_degeneracy: Explicit multiplicative channel count, commonly 1 or 2.</span>
+<span class="sd">    :return: Integrated state count after applying ``spin_degeneracy``.</span>
+<span class="sd">    :raises ValueError: If arrays, bounds, or spin degeneracy are invalid.</span>
+<span class="sd">    """</span>
+    <span class="n">grid</span><span class="p">,</span> <span class="n">dos</span> <span class="o">=</span> <span class="n">_dos_arrays</span><span class="p">(</span><span class="n">energies</span><span class="p">,</span> <span class="n">density</span><span class="p">)</span>
+    <span class="n">lo</span><span class="p">,</span> <span class="n">hi</span> <span class="o">=</span> <span class="n">_finite</span><span class="p">(</span><span class="n">lower</span><span class="p">,</span> <span class="s2">"lower"</span><span class="p">),</span> <span class="n">_finite</span><span class="p">(</span><span class="n">upper</span><span class="p">,</span> <span class="s2">"upper"</span><span class="p">)</span>
+    <span class="n">degeneracy</span> <span class="o">=</span> <span class="n">_positive</span><span class="p">(</span><span class="n">spin_degeneracy</span><span class="p">,</span> <span class="s2">"spin_degeneracy"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">hi</span> <span class="o">&lt;</span> <span class="n">lo</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"upper must be greater than or equal to lower"</span><span class="p">)</span>
+    <span class="n">lo</span><span class="p">,</span> <span class="n">hi</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">lo</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="n">grid</span><span class="p">[</span><span class="mi">0</span><span class="p">])),</span> <span class="nb">min</span><span class="p">(</span><span class="n">hi</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="n">grid</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
+    <span class="k">if</span> <span class="n">hi</span> <span class="o">&lt;=</span> <span class="n">lo</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mf">0.0</span>
+    <span class="n">inside</span> <span class="o">=</span> <span class="n">grid</span><span class="p">[(</span><span class="n">grid</span> <span class="o">&gt;</span> <span class="n">lo</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">grid</span> <span class="o">&lt;</span> <span class="n">hi</span><span class="p">)]</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(([</span><span class="n">lo</span><span class="p">],</span> <span class="n">inside</span><span class="p">,</span> <span class="p">[</span><span class="n">hi</span><span class="p">]))</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">grid</span><span class="p">,</span> <span class="n">dos</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">trapezoid</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span> <span class="o">*</span> <span class="n">degeneracy</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="electron_count">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/index.html#httk.analyse.matsci.electronic.electron_count">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">electron_count</span><span class="p">(</span>
+    <span class="n">energies</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span>
+    <span class="n">density</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span>
+    <span class="n">chemical_potential</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">temperature</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">spin_degeneracy</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Integrate occupied DOS using Fermi-Dirac occupations.</span>
+
+<span class="sd">    At zero temperature the occupation is one below the chemical potential,</span>
+<span class="sd">    zero above it, and one half exactly at the chemical potential. At finite</span>
+<span class="sd">    temperature, the piecewise-linear DOS times occupation is integrated</span>
+<span class="sd">    with thermally resolved Gaussian panels. The DOS spin basis and multiplier must be</span>
+<span class="sd">    chosen explicitly by the caller.</span>
+
+<span class="sd">    :param energies: Strictly increasing grid in eV.</span>
+<span class="sd">    :param density: Nonnegative DOS in states/eV on the declared spin basis.</span>
+<span class="sd">    :param chemical_potential: Chemical potential in eV.</span>
+<span class="sd">    :param temperature: Temperature in K, including zero.</span>
+<span class="sd">    :param spin_degeneracy: Explicit multiplier for spin channels represented.</span>
+<span class="sd">    :return: Integrated occupied electron count.</span>
+<span class="sd">    :raises ValueError: If inputs are invalid or the result is non-finite.</span>
+<span class="sd">    """</span>
+    <span class="n">grid</span><span class="p">,</span> <span class="n">dos</span> <span class="o">=</span> <span class="n">_dos_arrays</span><span class="p">(</span><span class="n">energies</span><span class="p">,</span> <span class="n">density</span><span class="p">)</span>
+    <span class="n">mu</span> <span class="o">=</span> <span class="n">_finite</span><span class="p">(</span><span class="n">chemical_potential</span><span class="p">,</span> <span class="s2">"chemical_potential"</span><span class="p">)</span>
+    <span class="n">temp</span> <span class="o">=</span> <span class="n">_nonnegative</span><span class="p">(</span><span class="n">temperature</span><span class="p">,</span> <span class="s2">"temperature"</span><span class="p">)</span>
+    <span class="n">degeneracy</span> <span class="o">=</span> <span class="n">_positive</span><span class="p">(</span><span class="n">spin_degeneracy</span><span class="p">,</span> <span class="s2">"spin_degeneracy"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">temp</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">mu</span> <span class="o">&lt;=</span> <span class="n">grid</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+            <span class="k">return</span> <span class="mf">0.0</span>
+        <span class="k">return</span> <span class="n">integrate_dos</span><span class="p">(</span><span class="n">grid</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span> <span class="n">dos</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span> <span class="nb">float</span><span class="p">(</span><span class="n">grid</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">mu</span><span class="p">,</span> <span class="n">spin_degeneracy</span><span class="o">=</span><span class="n">degeneracy</span><span class="p">)</span>
+    <span class="c1"># Integrate the linear DOS times Fermi occupation on short Gaussian panels.</span>
+    <span class="n">thermal_width</span> <span class="o">=</span> <span class="n">_KB_EV_K</span> <span class="o">*</span> <span class="n">temp</span>
+    <span class="n">total</span> <span class="o">=</span> <span class="n">_integrate_linear_dos</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">dos</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="n">grid</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="nb">float</span><span class="p">(</span><span class="n">grid</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
+    <span class="c1"># The omitted high-energy Fermi tail is bounded by total * exp(-cutoff).</span>
+    <span class="n">cutoff</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mf">40.0</span><span class="p">,</span> <span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">total</span><span class="p">)</span> <span class="o">+</span> <span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">degeneracy</span><span class="p">)</span> <span class="o">-</span> <span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mf">1e-14</span><span class="p">))</span> <span class="k">if</span> <span class="n">total</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mf">40.0</span>
+    <span class="n">lower</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">grid</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]),</span> <span class="nb">max</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">grid</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">mu</span> <span class="o">-</span> <span class="n">cutoff</span> <span class="o">*</span> <span class="n">thermal_width</span><span class="p">))</span>
+    <span class="n">upper</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">grid</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="nb">min</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">grid</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]),</span> <span class="n">mu</span> <span class="o">+</span> <span class="n">cutoff</span> <span class="o">*</span> <span class="n">thermal_width</span><span class="p">))</span>
+    <span class="n">count</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="k">if</span> <span class="n">lower</span> <span class="o">&gt;</span> <span class="n">grid</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+        <span class="n">count</span> <span class="o">=</span> <span class="n">_integrate_linear_dos</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">dos</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="n">grid</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">lower</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">upper</span> <span class="o">&lt;=</span> <span class="n">lower</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">count</span> <span class="o">*</span> <span class="n">degeneracy</span>
+    <span class="n">panel_count</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">((</span><span class="n">upper</span> <span class="o">-</span> <span class="n">lower</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">thermal_width</span><span class="p">)))</span>
+    <span class="n">boundaries</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span>
+            <span class="p">(</span>
+                <span class="n">grid</span><span class="p">[(</span><span class="n">grid</span> <span class="o">&gt;</span> <span class="n">lower</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">grid</span> <span class="o">&lt;</span> <span class="n">upper</span><span class="p">)],</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">lower</span><span class="p">,</span> <span class="n">upper</span><span class="p">,</span> <span class="n">panel_count</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
+    <span class="k">for</span> <span class="n">start</span><span class="p">,</span> <span class="n">stop</span> <span class="ow">in</span> <span class="n">pairwise</span><span class="p">(</span><span class="n">boundaries</span><span class="p">):</span>
+        <span class="n">midpoint</span><span class="p">,</span> <span class="n">half_width</span> <span class="o">=</span> <span class="p">(</span><span class="n">start</span> <span class="o">+</span> <span class="n">stop</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="p">(</span><span class="n">stop</span> <span class="o">-</span> <span class="n">start</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">midpoint</span> <span class="o">+</span> <span class="n">half_width</span> <span class="o">*</span> <span class="n">_GAUSS_X</span>
+        <span class="n">count</span> <span class="o">+=</span> <span class="n">half_width</span> <span class="o">*</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">_GAUSS_W</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">grid</span><span class="p">,</span> <span class="n">dos</span><span class="p">)</span> <span class="o">*</span> <span class="n">_fermi</span><span class="p">((</span><span class="n">x</span> <span class="o">-</span> <span class="n">mu</span><span class="p">)</span> <span class="o">/</span> <span class="n">thermal_width</span><span class="p">)))</span>
+    <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">count</span> <span class="o">*</span> <span class="n">degeneracy</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="solve_chemical_potential">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/index.html#httk.analyse.matsci.electronic.solve_chemical_potential">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">solve_chemical_potential</span><span class="p">(</span>
+    <span class="n">energies</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span>
+    <span class="n">density</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span>
+    <span class="n">target_electrons</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">temperature</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">spin_degeneracy</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">tolerance</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-10</span><span class="p">,</span>
+    <span class="n">max_iterations</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">200</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Find a chemical potential whose DOS integral matches a target count.</span>
+
+<span class="sd">    A bracket is expanded outside the grid for finite-temperature tails. At</span>
+<span class="sd">    zero temperature, a count on a gap plateau returns a chemical potential within that plateau. The DOS integral is never renormalized to force the requested</span>
+<span class="sd">    count.</span>
+
+<span class="sd">    :param energies: Strictly increasing DOS grid in eV.</span>
+<span class="sd">    :param density: Nonnegative DOS in states/eV on the declared spin basis.</span>
+<span class="sd">    :param target_electrons: Desired electron count.</span>
+<span class="sd">    :param temperature: Temperature in K, including zero.</span>
+<span class="sd">    :param spin_degeneracy: Explicit multiplier for spin channels represented.</span>
+<span class="sd">    :param tolerance: Absolute electron-count convergence tolerance.</span>
+<span class="sd">    :param max_iterations: Maximum bisection iterations.</span>
+<span class="sd">    :return: Chemical potential in eV.</span>
+<span class="sd">    :raises ValueError: If target is unreachable, inputs are invalid, or convergence fails.</span>
+<span class="sd">    """</span>
+    <span class="n">grid</span><span class="p">,</span> <span class="n">dos</span> <span class="o">=</span> <span class="n">_dos_arrays</span><span class="p">(</span><span class="n">energies</span><span class="p">,</span> <span class="n">density</span><span class="p">)</span>
+    <span class="n">target</span> <span class="o">=</span> <span class="n">_nonnegative</span><span class="p">(</span><span class="n">target_electrons</span><span class="p">,</span> <span class="s2">"target_electrons"</span><span class="p">)</span>
+    <span class="n">temp</span> <span class="o">=</span> <span class="n">_nonnegative</span><span class="p">(</span><span class="n">temperature</span><span class="p">,</span> <span class="s2">"temperature"</span><span class="p">)</span>
+    <span class="n">degeneracy</span> <span class="o">=</span> <span class="n">_positive</span><span class="p">(</span><span class="n">spin_degeneracy</span><span class="p">,</span> <span class="s2">"spin_degeneracy"</span><span class="p">)</span>
+    <span class="n">tol</span> <span class="o">=</span> <span class="n">_positive</span><span class="p">(</span><span class="n">tolerance</span><span class="p">,</span> <span class="s2">"tolerance"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">max_iterations</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="ow">or</span> <span class="n">max_iterations</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"max_iterations must be a positive integer"</span><span class="p">)</span>
+    <span class="n">total</span> <span class="o">=</span> <span class="n">integrate_dos</span><span class="p">(</span><span class="n">grid</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span> <span class="n">dos</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span> <span class="nb">float</span><span class="p">(</span><span class="n">grid</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="nb">float</span><span class="p">(</span><span class="n">grid</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]),</span> <span class="n">spin_degeneracy</span><span class="o">=</span><span class="n">degeneracy</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">target</span> <span class="o">&gt;</span> <span class="n">total</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"target electron count exceeds the integrated DOS"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">target</span> <span class="o">&lt;=</span> <span class="n">tol</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">grid</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="nb">max</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mi">40</span> <span class="o">*</span> <span class="n">_KB_EV_K</span> <span class="o">*</span> <span class="n">temp</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">total</span> <span class="o">-</span> <span class="n">target</span> <span class="o">&lt;=</span> <span class="n">tol</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">grid</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="nb">max</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mi">40</span> <span class="o">*</span> <span class="n">_KB_EV_K</span> <span class="o">*</span> <span class="n">temp</span><span class="p">))</span>
+    <span class="n">width</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">grid</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">grid</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mi">40</span> <span class="o">*</span> <span class="n">_KB_EV_K</span> <span class="o">*</span> <span class="n">temp</span><span class="p">)</span>
+    <span class="n">lo</span><span class="p">,</span> <span class="n">hi</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">grid</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">width</span><span class="p">),</span> <span class="nb">float</span><span class="p">(</span><span class="n">grid</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">width</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">max_iterations</span><span class="p">):</span>
+        <span class="n">mid</span> <span class="o">=</span> <span class="n">lo</span> <span class="o">+</span> <span class="p">(</span><span class="n">hi</span> <span class="o">-</span> <span class="n">lo</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+        <span class="n">count</span> <span class="o">=</span> <span class="n">electron_count</span><span class="p">(</span><span class="n">grid</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span> <span class="n">dos</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span> <span class="n">mid</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="n">temp</span><span class="p">,</span> <span class="n">spin_degeneracy</span><span class="o">=</span><span class="n">degeneracy</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">count</span> <span class="o">-</span> <span class="n">target</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">tol</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">mid</span>
+        <span class="k">if</span> <span class="n">count</span> <span class="o">&lt;</span> <span class="n">target</span><span class="p">:</span>
+            <span class="n">lo</span> <span class="o">=</span> <span class="n">mid</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">hi</span> <span class="o">=</span> <span class="n">mid</span>
+    <span class="k">if</span> <span class="n">temp</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">hi</span> <span class="o">-</span> <span class="n">lo</span> <span class="o">&lt;=</span> <span class="n">tolerance</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">lo</span> <span class="o">+</span> <span class="p">(</span><span class="n">hi</span> <span class="o">-</span> <span class="n">lo</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"chemical-potential bisection did not converge to the requested count"</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="band_edges">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/index.html#httk.analyse.matsci.electronic.band_edges">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">band_edges</span><span class="p">(</span>
+    <span class="n">energies</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="nb">float</span><span class="p">]],</span>
+    <span class="n">occupations</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="nb">float</span><span class="p">]],</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">maximum_occupation</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">occupation_tolerance</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-6</span><span class="p">,</span>
+    <span class="n">energy_reference</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BandEdges</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Classify sampled band edges using explicit occupations.</span>
+
+<span class="sd">    Arrays have shape (bands, k points). Energies are in eV and occupations</span>
+<span class="sd">    use the same per-state convention as ``maximum_occupation``. Band-path</span>
+<span class="sd">    sampling is retained as supplied and is not a Brillouin-zone integration.</span>
+
+<span class="sd">    Occupations outside [0, ``maximum_occupation``] by more than ``occupation_tolerance`` are</span>
+<span class="sd">    rejected. Methfessel-Paxton smearing (VASP ISMEAR &gt;= 1) can yield slightly negative or</span>
+<span class="sd">    super-maximal occupations, so callers must clean them or choose ``occupation_tolerance``</span>
+<span class="sd">    accordingly. The analysis is per spin channel: the spin-polarised material gap is</span>
+<span class="sd">    min(CBM over both spins) - max(VBM over both spins).</span>
+
+<span class="sd">    :param energies: Finite band energies in eV.</span>
+<span class="sd">    :param occupations: Finite occupations matching ``energies``.</span>
+<span class="sd">    :param maximum_occupation: Explicit maximum occupancy of a state.</span>
+<span class="sd">    :param occupation_tolerance: Absolute tolerance at empty/full endpoints.</span>
+<span class="sd">    :param energy_reference: Explicit energy to subtract from every band energy.</span>
+<span class="sd">    :return: Sampled valence/conduction extrema and sampled gaps.</span>
+<span class="sd">    :raises ValueError: If the arrays or occupation conventions are invalid.</span>
+<span class="sd">    """</span>
+    <span class="n">e</span><span class="p">,</span> <span class="n">occ</span> <span class="o">=</span> <span class="n">_matrix</span><span class="p">(</span><span class="n">energies</span><span class="p">,</span> <span class="s2">"energies"</span><span class="p">),</span> <span class="n">_matrix</span><span class="p">(</span><span class="n">occupations</span><span class="p">,</span> <span class="s2">"occupations"</span><span class="p">)</span>
+    <span class="n">maximum</span> <span class="o">=</span> <span class="n">_positive</span><span class="p">(</span><span class="n">maximum_occupation</span><span class="p">,</span> <span class="s2">"maximum_occupation"</span><span class="p">)</span>
+    <span class="n">tol</span> <span class="o">=</span> <span class="n">_nonnegative</span><span class="p">(</span><span class="n">occupation_tolerance</span><span class="p">,</span> <span class="s2">"occupation_tolerance"</span><span class="p">)</span>
+    <span class="n">reference</span> <span class="o">=</span> <span class="n">_finite</span><span class="p">(</span><span class="n">energy_reference</span><span class="p">,</span> <span class="s2">"energy_reference"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">e</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="n">occ</span><span class="o">.</span><span class="n">shape</span> <span class="ow">or</span> <span class="nb">min</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"energies and occupations must have the same nonempty shape"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">tol</span> <span class="o">&gt;=</span> <span class="n">maximum</span> <span class="o">/</span> <span class="mi">2</span> <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">occ</span> <span class="o">&lt;</span> <span class="o">-</span><span class="n">tol</span><span class="p">)</span> <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">occ</span> <span class="o">&gt;</span> <span class="n">maximum</span> <span class="o">+</span> <span class="n">tol</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"occupations must lie within the declared occupancy range"</span><span class="p">)</span>
+    <span class="n">partial</span> <span class="o">=</span> <span class="p">(</span><span class="n">occ</span> <span class="o">&gt;</span> <span class="n">tol</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">occ</span> <span class="o">&lt;</span> <span class="n">maximum</span> <span class="o">-</span> <span class="n">tol</span><span class="p">)</span>
+    <span class="n">occupied</span><span class="p">,</span> <span class="n">empty</span> <span class="o">=</span> <span class="n">occ</span> <span class="o">&gt;</span> <span class="n">tol</span><span class="p">,</span> <span class="n">occ</span> <span class="o">&lt;=</span> <span class="n">tol</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">occupied</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">empty</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"both occupied and empty states are required to define band edges"</span><span class="p">)</span>
+    <span class="n">aligned</span> <span class="o">=</span> <span class="n">e</span> <span class="o">-</span> <span class="n">reference</span>
+    <span class="n">vbm_flat</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">occupied</span><span class="p">,</span> <span class="n">aligned</span><span class="p">,</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">)))</span>
+    <span class="n">cbm_flat</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">empty</span><span class="p">,</span> <span class="n">aligned</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">)))</span>
+    <span class="n">vband</span><span class="p">,</span> <span class="n">vk</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unravel_index</span><span class="p">(</span><span class="n">vbm_flat</span><span class="p">,</span> <span class="n">e</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+    <span class="n">cband</span><span class="p">,</span> <span class="n">ck</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unravel_index</span><span class="p">(</span><span class="n">cbm_flat</span><span class="p">,</span> <span class="n">e</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+    <span class="n">direct_values</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">aligned</span><span class="p">[</span><span class="n">empty</span><span class="p">[:,</span> <span class="n">k</span><span class="p">],</span> <span class="n">k</span><span class="p">])</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">aligned</span><span class="p">[</span><span class="n">occupied</span><span class="p">[:,</span> <span class="n">k</span><span class="p">],</span> <span class="n">k</span><span class="p">]))</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">empty</span><span class="p">[:,</span> <span class="n">k</span><span class="p">])</span> <span class="ow">and</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">occupied</span><span class="p">[:,</span> <span class="n">k</span><span class="p">])</span>
+    <span class="p">]</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">direct_values</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"at least one k point must contain both occupied and empty states for a same-k direct gap"</span><span class="p">)</span>
+    <span class="n">direct</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">direct_values</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">BandEdges</span><span class="p">(</span>
+        <span class="nb">bool</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">partial</span><span class="p">)),</span>
+        <span class="nb">float</span><span class="p">(</span><span class="n">aligned</span><span class="p">[</span><span class="n">cband</span><span class="p">,</span> <span class="n">ck</span><span class="p">]</span> <span class="o">-</span> <span class="n">aligned</span><span class="p">[</span><span class="n">vband</span><span class="p">,</span> <span class="n">vk</span><span class="p">]),</span>
+        <span class="n">direct</span><span class="p">,</span>
+        <span class="nb">float</span><span class="p">(</span><span class="n">aligned</span><span class="p">[</span><span class="n">vband</span><span class="p">,</span> <span class="n">vk</span><span class="p">]),</span>
+        <span class="nb">float</span><span class="p">(</span><span class="n">aligned</span><span class="p">[</span><span class="n">cband</span><span class="p">,</span> <span class="n">ck</span><span class="p">]),</span>
+        <span class="nb">int</span><span class="p">(</span><span class="n">vband</span><span class="p">),</span>
+        <span class="nb">int</span><span class="p">(</span><span class="n">vk</span><span class="p">),</span>
+        <span class="nb">int</span><span class="p">(</span><span class="n">cband</span><span class="p">),</span>
+        <span class="nb">int</span><span class="p">(</span><span class="n">ck</span><span class="p">),</span>
+        <span class="n">reference</span><span class="p">,</span>
+    <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="fit_effective_mass">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/index.html#httk.analyse.matsci.electronic.fit_effective_mass">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">fit_effective_mass</span><span class="p">(</span>
+    <span class="n">kpoints</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="nb">float</span><span class="p">]],</span>
+    <span class="n">energies</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span>
+    <span class="n">center</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">EffectiveMassFit</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Fit a full local quadratic band and return its signed mass tensor.</span>
+
+<span class="sd">    Cartesian k coordinates use inverse angstroms with the 2π included (physical k,</span>
+<span class="sd">    ``|k| = 2π/λ``), energies use eV, and ``center`` uses the same Cartesian reciprocal-space</span>
+<span class="sd">    basis. Reciprocal-lattice fractions or 1/λ coordinates give masses off by (2π)² ≈ 39.5.</span>
+<span class="sd">    The local model</span>
+<span class="sd">    is E=E0+g·dk+0.5*dk.T@H@dk. The conversion is m*/m_e =</span>
+<span class="sd">    (hbar²/m_e)*H⁻¹, with hbar²/m_e in eV angstrom².</span>
+
+<span class="sd">    :param kpoints: Cartesian sample vectors with shape (n, 3), in inverse angstroms including 2π.</span>
+<span class="sd">    :param energies: Matching energies in eV.</span>
+<span class="sd">    :param center: Expansion point in inverse angstroms, including 2π.</span>
+<span class="sd">    :return: Fitted Hessian, signed mass tensor, axes, and residual diagnostics.</span>
+<span class="sd">    :raises ValueError: If data are malformed, rank deficient, or the Hessian is singular.</span>
+<span class="sd">    """</span>
+    <span class="n">k</span> <span class="o">=</span> <span class="n">_matrix</span><span class="p">(</span><span class="n">kpoints</span><span class="p">,</span> <span class="s2">"kpoints"</span><span class="p">)</span>
+    <span class="n">energy</span> <span class="o">=</span> <span class="n">_vector</span><span class="p">(</span><span class="n">energies</span><span class="p">,</span> <span class="s2">"energies"</span><span class="p">)</span>
+    <span class="n">origin</span> <span class="o">=</span> <span class="n">_vector</span><span class="p">(</span><span class="n">center</span><span class="p">,</span> <span class="s2">"center"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">k</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">energy</span><span class="p">),</span> <span class="mi">3</span><span class="p">)</span> <span class="ow">or</span> <span class="n">origin</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="p">(</span><span class="mi">3</span><span class="p">,)</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">energy</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"at least ten matching Cartesian k points and energies are required"</span><span class="p">)</span>
+    <span class="n">delta</span> <span class="o">=</span> <span class="n">k</span> <span class="o">-</span> <span class="n">origin</span>
+    <span class="n">scale</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">delta</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)))</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">math</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">scale</span><span class="p">)</span> <span class="ow">or</span> <span class="n">scale</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"k points must span a nonzero neighborhood of center"</span><span class="p">)</span>
+    <span class="n">q</span> <span class="o">=</span> <span class="n">delta</span> <span class="o">/</span> <span class="n">scale</span>
+    <span class="n">design</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">(</span>
+        <span class="p">(</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">q</span><span class="p">)),</span>
+            <span class="n">q</span><span class="p">,</span>
+            <span class="n">q</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
+            <span class="n">q</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
+            <span class="n">q</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
+            <span class="n">q</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">q</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span>
+            <span class="n">q</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">q</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">],</span>
+            <span class="n">q</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">q</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">],</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
+    <span class="n">coeff</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">singular</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">lstsq</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="n">energy</span><span class="p">,</span> <span class="n">rcond</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">rank</span> <span class="o">!=</span> <span class="mi">10</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">coeff</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span> <span class="ow">or</span> <span class="n">singular</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"quadratic k-space design is rank deficient (rank </span><span class="si">{</span><span class="n">rank</span><span class="si">}</span><span class="s2">/10)"</span><span class="p">)</span>
+    <span class="n">condition</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">singular</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="n">singular</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">hessian</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">coeff</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="n">coeff</span><span class="p">[</span><span class="mi">7</span><span class="p">],</span> <span class="n">coeff</span><span class="p">[</span><span class="mi">8</span><span class="p">]],</span> <span class="p">[</span><span class="n">coeff</span><span class="p">[</span><span class="mi">7</span><span class="p">],</span> <span class="n">coeff</span><span class="p">[</span><span class="mi">5</span><span class="p">],</span> <span class="n">coeff</span><span class="p">[</span><span class="mi">9</span><span class="p">]],</span> <span class="p">[</span><span class="n">coeff</span><span class="p">[</span><span class="mi">8</span><span class="p">],</span> <span class="n">coeff</span><span class="p">[</span><span class="mi">9</span><span class="p">],</span> <span class="n">coeff</span><span class="p">[</span><span class="mi">6</span><span class="p">]]])</span>
+        <span class="o">/</span> <span class="n">scale</span><span class="o">**</span><span class="mi">2</span>
+    <span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">mass</span> <span class="o">=</span> <span class="n">_HBAR2_OVER_ME_EV_A2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">hessian</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">LinAlgError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"fitted energy Hessian is singular"</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">exc</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">mass</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"effective mass tensor is non-finite"</span><span class="p">)</span>
+    <span class="n">predicted</span> <span class="o">=</span> <span class="n">design</span> <span class="o">@</span> <span class="n">coeff</span>
+    <span class="n">residuals</span> <span class="o">=</span> <span class="n">energy</span> <span class="o">-</span> <span class="n">predicted</span>
+    <span class="n">values</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eigh</span><span class="p">(</span><span class="n">mass</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">EffectiveMassFit</span><span class="p">(</span>
+        <span class="n">_tuple3</span><span class="p">(</span><span class="n">origin</span><span class="p">),</span>
+        <span class="nb">float</span><span class="p">(</span><span class="n">coeff</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
+        <span class="n">_tuple3</span><span class="p">(</span><span class="n">coeff</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">4</span><span class="p">]</span> <span class="o">/</span> <span class="n">scale</span><span class="p">),</span>
+        <span class="nb">tuple</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="n">hessian</span><span class="p">)),</span>
+        <span class="nb">tuple</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="n">mass</span><span class="p">)),</span>
+        <span class="n">_tuple3</span><span class="p">(</span><span class="n">values</span><span class="p">),</span>
+        <span class="nb">tuple</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="n">axes</span><span class="p">)),</span>
+        <span class="nb">int</span><span class="p">(</span><span class="n">rank</span><span class="p">),</span>
+        <span class="n">condition</span><span class="p">,</span>
+        <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">residuals</span><span class="o">**</span><span class="mi">2</span><span class="p">))),</span>
+        <span class="nb">tuple</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="n">residuals</span><span class="p">)),</span>
+    <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="align_energies">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/index.html#httk.analyse.matsci.electronic.align_energies">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">align_energies</span><span class="p">(</span><span class="n">energies</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span> <span class="n">reference_energy</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">"""Subtract an explicitly supplied energy reference.</span>
+
+<span class="sd">    :param energies: Finite energies in eV.</span>
+<span class="sd">    :param reference_energy: Reference energy in eV.</span>
+<span class="sd">    :return: Aligned energies in eV, in input order.</span>
+<span class="sd">    :raises ValueError: If any input is non-finite.</span>
+<span class="sd">    """</span>
+    <span class="n">values</span> <span class="o">=</span> <span class="n">_vector</span><span class="p">(</span><span class="n">energies</span><span class="p">,</span> <span class="s2">"energies"</span><span class="p">)</span>
+    <span class="n">reference</span> <span class="o">=</span> <span class="n">_finite</span><span class="p">(</span><span class="n">reference_energy</span><span class="p">,</span> <span class="s2">"reference_energy"</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">values</span> <span class="o">-</span> <span class="n">reference</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="magnetic_moments">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/index.html#httk.analyse.matsci.electronic.magnetic_moments">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">magnetic_moments</span><span class="p">(</span>
+    <span class="n">moments</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="nb">float</span><span class="p">]],</span>
+    <span class="n">pairs</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="p">(),</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">normalize_pairs</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MagneticMoments</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Sum vector moments and calculate requested pair spin correlations.</span>
+
+<span class="sd">    Input vectors are in Bohr magnetons. Pair order and indices are preserved;</span>
+<span class="sd">    normalization is an explicit option and zero vectors cannot be normalized.</span>
+
+<span class="sd">    :param moments: Per-site vector moments in Bohr magnetons, shape (n, 3).</span>
+<span class="sd">    :param pairs: Atom-index pairs for which to calculate dot products.</span>
+<span class="sd">    :param normalize_pairs: Normalize the two moments before each correlation.</span>
+<span class="sd">    :return: Total vector moment and pair correlations.</span>
+<span class="sd">    :raises ValueError: If moments or pair indices are malformed.</span>
+<span class="sd">    """</span>
+    <span class="n">vectors</span> <span class="o">=</span> <span class="n">_matrix</span><span class="p">(</span><span class="n">moments</span><span class="p">,</span> <span class="s2">"moments"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">vectors</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">!=</span> <span class="p">(</span><span class="mi">3</span><span class="p">,)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">vectors</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"moments must have shape (n, 3) with n positive"</span><span class="p">)</span>
+    <span class="n">checked</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">correlations</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">pair</span> <span class="ow">in</span> <span class="n">pairs</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">pair</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span> <span class="ow">or</span> <span class="nb">any</span><span class="p">(</span><span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="ow">or</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">vectors</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">pair</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"each pair must contain two valid moment indices"</span><span class="p">)</span>
+        <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="n">pair</span>
+        <span class="n">left</span><span class="p">,</span> <span class="n">right</span> <span class="o">=</span> <span class="n">vectors</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">vectors</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">normalize_pairs</span><span class="p">:</span>
+            <span class="n">norms</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">((</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">norms</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"zero moments cannot be normalized"</span><span class="p">)</span>
+            <span class="n">left</span><span class="p">,</span> <span class="n">right</span> <span class="o">=</span> <span class="n">left</span> <span class="o">/</span> <span class="n">norms</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">right</span> <span class="o">/</span> <span class="n">norms</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">checked</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">))</span>
+        <span class="n">correlations</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">)))</span>
+    <span class="k">return</span> <span class="n">MagneticMoments</span><span class="p">(</span><span class="n">_tuple3</span><span class="p">(</span><span class="n">vectors</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)),</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">checked</span><span class="p">),</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">correlations</span><span class="p">),</span> <span class="n">normalize_pairs</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="summarize_dielectric">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/index.html#httk.analyse.matsci.electronic.summarize_dielectric">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">summarize_dielectric</span><span class="p">(</span><span class="n">tensor</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="nb">float</span><span class="p">]],</span> <span class="o">*</span><span class="p">,</span> <span class="n">tolerance</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-10</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DielectricSummary</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Summarize a real symmetric static relative dielectric tensor.</span>
+
+<span class="sd">    :param tensor: Finite 3 by 3 dimensionless relative dielectric tensor.</span>
+<span class="sd">    :param tolerance: Absolute symmetry tolerance.</span>
+<span class="sd">    :return: Ascending principal values, eigenvectors by column, and isotropic mean.</span>
+<span class="sd">    :raises ValueError: If the tensor is malformed, non-real, or not symmetric.</span>
+<span class="sd">    """</span>
+    <span class="n">matrix</span> <span class="o">=</span> <span class="n">_matrix</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="s2">"tensor"</span><span class="p">)</span>
+    <span class="n">tol</span> <span class="o">=</span> <span class="n">_nonnegative</span><span class="p">(</span><span class="n">tolerance</span><span class="p">,</span> <span class="s2">"tolerance"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">matrix</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">matrix</span><span class="p">,</span> <span class="n">matrix</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="n">tol</span><span class="p">,</span> <span class="n">rtol</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"dielectric tensor must be a real symmetric 3 by 3 matrix"</span><span class="p">)</span>
+    <span class="n">eigenvalues</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eigh</span><span class="p">((</span><span class="n">matrix</span> <span class="o">+</span> <span class="n">matrix</span><span class="o">.</span><span class="n">T</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">DielectricSummary</span><span class="p">(</span><span class="n">_tuple3</span><span class="p">(</span><span class="n">eigenvalues</span><span class="p">),</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="n">axes</span><span class="p">)),</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">eigenvalues</span><span class="p">)))</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_dos_arrays</span><span class="p">(</span><span class="n">energies</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span> <span class="n">density</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">float</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
+    <span class="n">grid</span><span class="p">,</span> <span class="n">dos</span> <span class="o">=</span> <span class="n">_vector</span><span class="p">(</span><span class="n">energies</span><span class="p">,</span> <span class="s2">"energies"</span><span class="p">),</span> <span class="n">_vector</span><span class="p">(</span><span class="n">density</span><span class="p">,</span> <span class="s2">"density"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">grid</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span> <span class="ow">or</span> <span class="n">dos</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="n">grid</span><span class="o">.</span><span class="n">shape</span> <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">grid</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">dos</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"DOS needs matching increasing energy grid and nonnegative density"</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">grid</span><span class="p">,</span> <span class="n">dos</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_integrate_linear_dos</span><span class="p">(</span><span class="n">grid</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">dos</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">lower</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">upper</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Integrate a piecewise-linear DOS over an already validated interval."""</span>
+    <span class="n">inside</span> <span class="o">=</span> <span class="n">grid</span><span class="p">[(</span><span class="n">grid</span> <span class="o">&gt;</span> <span class="n">lower</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">grid</span> <span class="o">&lt;</span> <span class="n">upper</span><span class="p">)]</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(([</span><span class="n">lower</span><span class="p">],</span> <span class="n">inside</span><span class="p">,</span> <span class="p">[</span><span class="n">upper</span><span class="p">]))</span>
+    <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">trapezoid</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">grid</span><span class="p">,</span> <span class="n">dos</span><span class="p">),</span> <span class="n">x</span><span class="p">))</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_fermi</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">positive</span> <span class="o">=</span> <span class="n">x</span> <span class="o">&gt;=</span> <span class="mi">0</span>
+    <span class="n">decay</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">x</span><span class="p">[</span><span class="n">positive</span><span class="p">])</span>
+    <span class="n">result</span><span class="p">[</span><span class="n">positive</span><span class="p">]</span> <span class="o">=</span> <span class="n">decay</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">decay</span><span class="p">)</span>
+    <span class="n">growth</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="o">~</span><span class="n">positive</span><span class="p">])</span>
+    <span class="n">result</span><span class="p">[</span><span class="o">~</span><span class="n">positive</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">growth</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">result</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_matrix</span><span class="p">(</span><span class="n">values</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="nb">float</span><span class="p">]],</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+    <span class="k">except</span> <span class="p">(</span><span class="ne">TypeError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">)</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> must be a finite numeric array"</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">exc</span>
+    <span class="k">if</span> <span class="n">result</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">2</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">result</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> must be a finite 2D array"</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">result</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_vector</span><span class="p">(</span><span class="n">values</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+    <span class="k">except</span> <span class="p">(</span><span class="ne">TypeError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">)</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> must be a finite numeric vector"</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">exc</span>
+    <span class="k">if</span> <span class="n">result</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">1</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">result</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> must be a nonempty finite 1D array"</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">result</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_tuple3</span><span class="p">(</span><span class="n">values</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+    <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="nb">float</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="nb">float</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_finite</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+    <span class="k">except</span> <span class="p">(</span><span class="ne">TypeError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">)</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> must be finite"</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">exc</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">math</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">result</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> must be finite"</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">result</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_positive</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">_finite</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">result</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> must be positive"</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">result</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_nonnegative</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">_finite</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">result</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> must be nonnegative"</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">result</span>
+</pre></div>
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          
+          
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2026, The httk-analyse AUTHORS
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer no-toc">
+      
+      
+      
+    </aside>
+  </div>
+</div><script src="../../../../_static/documentation_options.js?v=952df46a"></script>
+    <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../../../_static/scripts/furo.js?v=46bd48cc"></script>
+    <script src="../../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../../_static/copybutton.js?v=fd10adb8"></script>
+    <script src="../../../../_static/selector.js?v=d8e9b3ce"></script>
+    <script>window.HTTK_DOCS_VERSIONING = {"channel":"dev","version":"dev:develop","versionPathDepth":2};</script>
+    </body>
+</html>

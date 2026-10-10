@@ -1,0 +1,929 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../../../../../../">
+  <head><meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../../../../../../genindex.html"><link rel="search" title="Search" href="../../../../../../search.html"><link rel="next" title="httk.analyse.matsci.energetics" href="../energetics/index.html"><link rel="prev" title="httk.analyse.matsci.elasticity" href="../elasticity/index.html">
+
+    <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
+        <title>httk.analyse.matsci.electronic - httk-analyse dev:develop documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../../../_static/pygments.css?v=d111a655" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/styles/furo.css?v=7bdb33bb" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/selector.css?v=626bada3" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f2f2f2;
+  --color-code-foreground: #1e1e1e;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle site navigation sidebar">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc" aria-label="Toggle table of contents sidebar">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+<div class="announcement">
+  <aside class="announcement-content">
+     Development documentation (dev:develop) — built from the GitHub develop branch; content may differ from any release. 
+  </aside>
+</div>
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <span class="icon"><svg><use href="#svg-menu"></use></svg></span>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../../../../../index.html"><div class="brand">httk-analyse dev:develop documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../../../../index.html">
+  
+  <span class="sidebar-brand-text">httk-analyse dev:develop documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../../../../../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../generic-hulls.html">Generic lower convex hulls</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../phase-diagrams.html">Materials phase diagrams</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../equations-of-state.html">Static equation-of-state fitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../energetics.html">Static energy bookkeeping</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../time-series.html">Simulation time series</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../mlip-validation.html">Validate MLIP predictions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../elasticity.html">Elasticity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../md-structure.html">Molecular-dynamics structure analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../dynamics.html">Dynamics and diffusion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../thermal-response.html">Equilibrium response and transport</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../phonons.html">Harmonic phonon thermodynamics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../electronic.html">Electronic and magnetic quantities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../vasp-analysis.html">VASP electronic analysis adapters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../defects.html">Defects, surfaces, and kinetics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../analysis-artifacts.html">Summaries and figures</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../records.html">Recording results</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../analysis-recipes.html">Analysis recipes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../crysviz.html">CrysViz structure viewer</a></li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="../../../../../index.html">Reference</a><input aria-label="Toggle navigation of Reference" checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
+<li class="toctree-l2 current has-children"><a class="reference internal" href="../../index.html">httk.analyse</a><input aria-label="Toggle navigation of httk.analyse" checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../../crysviz/index.html">httk.analyse.crysviz</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../definitions/index.html">httk.analyse.definitions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../generic/index.html">httk.analyse.generic</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../integrations/index.html">httk.analyse.integrations</a></li>
+<li class="toctree-l3 current has-children"><a class="reference internal" href="../index.html">httk.analyse.matsci</a><input aria-label="Toggle navigation of httk.analyse.matsci" checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../defects/index.html">httk.analyse.matsci.defects</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../dynamics/index.html">httk.analyse.matsci.dynamics</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../elasticity/index.html">httk.analyse.matsci.elasticity</a></li>
+<li class="toctree-l4 current current-page"><a class="current reference internal" href="#">httk.analyse.matsci.electronic</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../energetics/index.html">httk.analyse.matsci.energetics</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../eos/index.html">httk.analyse.matsci.eos</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../eos_models/index.html">httk.analyse.matsci.eos_models</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../local_order/index.html">httk.analyse.matsci.local_order</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../mlip/index.html">httk.analyse.matsci.mlip</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../phase_diagrams/index.html">httk.analyse.matsci.phase_diagrams</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../phonons/index.html">httk.analyse.matsci.phonons</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../structure/index.html">httk.analyse.matsci.structure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../thermodynamics/index.html">httk.analyse.matsci.thermodynamics</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../transport/index.html">httk.analyse.matsci.transport</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../validation/index.html">httk.analyse.matsci.validation</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../plotting/index.html">httk.analyse.plotting</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../property_records/index.html">httk.analyse.property_records</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../records/index.html">httk.analyse.records</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../summary/index.html">httk.analyse.summary</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../notebooks/examples.html">Convex-hull and phase-diagram examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../notebooks/materials-toolbox.html">Materials toolbox example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../notebooks/materials-response.html">Materials response toolbox</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../index.html">API Reference</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="../../../../../../_sources/reference/autoapi/httk/analyse/matsci/electronic/index.rst.txt" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section id="module-httk.analyse.matsci.electronic">
+<span id="httk-analyse-matsci-electronic"></span><h1>httk.analyse.matsci.electronic<a class="headerlink" href="#module-httk.analyse.matsci.electronic" title="Link to this heading">¶</a></h1>
+<p>Electronic, magnetic and static dielectric analysis for sampled data.</p>
+<section id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Link to this heading">¶</a></h2>
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#httk.analyse.matsci.electronic.BandEdges" title="httk.analyse.matsci.electronic.BandEdges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BandEdges</span></code></a></p></td>
+<td><p>Band extrema on the supplied sampled k points, with energies in eV.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#httk.analyse.matsci.electronic.EffectiveMassFit" title="httk.analyse.matsci.electronic.EffectiveMassFit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">EffectiveMassFit</span></code></a></p></td>
+<td><p>Full signed effective-mass tensor from a local quadratic band fit.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#httk.analyse.matsci.electronic.MagneticMoments" title="httk.analyse.matsci.electronic.MagneticMoments"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MagneticMoments</span></code></a></p></td>
+<td><p>Total vector moment and optional pair spin correlations.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#httk.analyse.matsci.electronic.DielectricSummary" title="httk.analyse.matsci.electronic.DielectricSummary"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DielectricSummary</span></code></a></p></td>
+<td><p>Principal values and axes of a real static dielectric tensor.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Link to this heading">¶</a></h2>
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#httk.analyse.matsci.electronic.integrate_dos" title="httk.analyse.matsci.electronic.integrate_dos"><code class="xref py py-obj docutils literal notranslate"><span class="pre">integrate_dos</span></code></a>(energies, density, lower, upper, *, ...)</p></td>
+<td><p>Integrate a piecewise-linear DOS between energy bounds.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#httk.analyse.matsci.electronic.electron_count" title="httk.analyse.matsci.electronic.electron_count"><code class="xref py py-obj docutils literal notranslate"><span class="pre">electron_count</span></code></a>(energies, density, chemical_potential, ...)</p></td>
+<td><p>Integrate occupied DOS using Fermi-Dirac occupations.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#httk.analyse.matsci.electronic.solve_chemical_potential" title="httk.analyse.matsci.electronic.solve_chemical_potential"><code class="xref py py-obj docutils literal notranslate"><span class="pre">solve_chemical_potential</span></code></a>(energies, density, ...[, ...])</p></td>
+<td><p>Find a chemical potential whose DOS integral matches a target count.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#httk.analyse.matsci.electronic.band_edges" title="httk.analyse.matsci.electronic.band_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">band_edges</span></code></a>(energies, occupations, *, maximum_occupation)</p></td>
+<td><p>Classify sampled band edges using explicit occupations.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#httk.analyse.matsci.electronic.fit_effective_mass" title="httk.analyse.matsci.electronic.fit_effective_mass"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit_effective_mass</span></code></a>(kpoints, energies, center)</p></td>
+<td><p>Fit a full local quadratic band and return its signed mass tensor.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#httk.analyse.matsci.electronic.align_energies" title="httk.analyse.matsci.electronic.align_energies"><code class="xref py py-obj docutils literal notranslate"><span class="pre">align_energies</span></code></a>(energies, reference_energy)</p></td>
+<td><p>Subtract an explicitly supplied energy reference.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#httk.analyse.matsci.electronic.magnetic_moments" title="httk.analyse.matsci.electronic.magnetic_moments"><code class="xref py py-obj docutils literal notranslate"><span class="pre">magnetic_moments</span></code></a>(moments[, pairs, normalize_pairs])</p></td>
+<td><p>Sum vector moments and calculate requested pair spin correlations.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#httk.analyse.matsci.electronic.summarize_dielectric" title="httk.analyse.matsci.electronic.summarize_dielectric"><code class="xref py py-obj docutils literal notranslate"><span class="pre">summarize_dielectric</span></code></a>(tensor, *[, tolerance])</p></td>
+<td><p>Summarize a real symmetric static relative dielectric tensor.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="httk.analyse.matsci.electronic.BandEdges">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">httk.analyse.matsci.electronic.</span></span><span class="sig-name descname"><span class="pre">BandEdges</span></span><a class="reference internal" href="../../../../../../_modules/httk/analyse/matsci/electronic.html#BandEdges"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.matsci.electronic.BandEdges" title="Link to this definition">¶</a></dt>
+<dd><p>Band extrema on the supplied sampled k points, with energies in eV.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>metallic</strong> – Whether any state is partially occupied by the supplied criterion.</p></li>
+<li><p><strong>indirect_gap</strong> – Sampled conduction minimum minus valence maximum in eV.</p></li>
+<li><p><strong>direct_gap</strong> – Smallest sampled same-k conduction-valence separation in eV.</p></li>
+<li><p><strong>vbm_energy</strong> – Valence-band maximum in the aligned reference, in eV.</p></li>
+<li><p><strong>cbm_energy</strong> – Conduction-band minimum in the aligned reference, in eV.</p></li>
+<li><p><strong>vbm_band</strong> – Input band index of the valence maximum.</p></li>
+<li><p><strong>vbm_kpoint</strong> – Input k-point index of the valence maximum.</p></li>
+<li><p><strong>cbm_band</strong> – Input band index of the conduction minimum.</p></li>
+<li><p><strong>cbm_kpoint</strong> – Input k-point index of the conduction minimum.</p></li>
+<li><p><strong>energy_reference</strong> – Subtracted reference energy in eV.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="httk.analyse.matsci.electronic.BandEdges.metallic">
+<span class="sig-name descname"><span class="pre">metallic</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><a class="reference internal" href="../../../../../../_modules/httk/analyse/matsci/electronic.html#BandEdges.metallic"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.matsci.electronic.BandEdges.metallic" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="httk.analyse.matsci.electronic.BandEdges.indirect_gap">
+<span class="sig-name descname"><span class="pre">indirect_gap</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span><a class="reference internal" href="../../../../../../_modules/httk/analyse/matsci/electronic.html#BandEdges.indirect_gap"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.matsci.electronic.BandEdges.indirect_gap" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="httk.analyse.matsci.electronic.BandEdges.direct_gap">
+<span class="sig-name descname"><span class="pre">direct_gap</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span><a class="reference internal" href="../../../../../../_modules/httk/analyse/matsci/electronic.html#BandEdges.direct_gap"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.matsci.electronic.BandEdges.direct_gap" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="httk.analyse.matsci.electronic.BandEdges.vbm_energy">
+<span class="sig-name descname"><span class="pre">vbm_energy</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span><a class="reference internal" href="../../../../../../_modules/httk/analyse/matsci/electronic.html#BandEdges.vbm_energy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.matsci.electronic.BandEdges.vbm_energy" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="httk.analyse.matsci.electronic.BandEdges.cbm_energy">
+<span class="sig-name descname"><span class="pre">cbm_energy</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span><a class="reference internal" href="../../../../../../_modules/httk/analyse/matsci/electronic.html#BandEdges.cbm_energy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.matsci.electronic.BandEdges.cbm_energy" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="httk.analyse.matsci.electronic.BandEdges.vbm_band">
+<span class="sig-name descname"><span class="pre">vbm_band</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><a class="reference internal" href="../../../../../../_modules/httk/analyse/matsci/electronic.html#BandEdges.vbm_band"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.matsci.electronic.BandEdges.vbm_band" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="httk.analyse.matsci.electronic.BandEdges.vbm_kpoint">
+<span class="sig-name descname"><span class="pre">vbm_kpoint</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><a class="reference internal" href="../../../../../../_modules/httk/analyse/matsci/electronic.html#BandEdges.vbm_kpoint"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.matsci.electronic.BandEdges.vbm_kpoint" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="httk.analyse.matsci.electronic.BandEdges.cbm_band">
+<span class="sig-name descname"><span class="pre">cbm_band</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><a class="reference internal" href="../../../../../../_modules/httk/analyse/matsci/electronic.html#BandEdges.cbm_band"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.matsci.electronic.BandEdges.cbm_band" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="httk.analyse.matsci.electronic.BandEdges.cbm_kpoint">
+<span class="sig-name descname"><span class="pre">cbm_kpoint</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><a class="reference internal" href="../../../../../../_modules/httk/analyse/matsci/electronic.html#BandEdges.cbm_kpoint"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.matsci.electronic.BandEdges.cbm_kpoint" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="httk.analyse.matsci.electronic.BandEdges.energy_reference">
+<span class="sig-name descname"><span class="pre">energy_reference</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span><a class="reference internal" href="../../../../../../_modules/httk/analyse/matsci/electronic.html#BandEdges.energy_reference"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.matsci.electronic.BandEdges.energy_reference" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="httk.analyse.matsci.electronic.EffectiveMassFit">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">httk.analyse.matsci.electronic.</span></span><span class="sig-name descname"><span class="pre">EffectiveMassFit</span></span><a class="reference internal" href="../../../../../../_modules/httk/analyse/matsci/electronic.html#EffectiveMassFit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.matsci.electronic.EffectiveMassFit" title="Link to this definition">¶</a></dt>
+<dd><p>Full signed effective-mass tensor from a local quadratic band fit.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>center</strong> – Cartesian fit center in inverse angstroms, with 2π included.</p></li>
+<li><p><strong>energy_at_center</strong> – Fitted band energy at the center in eV.</p></li>
+<li><p><strong>gradient</strong> – Local energy gradient in eV angstroms.</p></li>
+<li><p><strong>hessian</strong> – Energy Hessian in eV angstroms squared.</p></li>
+<li><p><strong>mass_tensor</strong> – Effective mass tensor in electron-mass units.</p></li>
+<li><p><strong>eigenvalues</strong> – Signed principal masses in electron-mass units.</p></li>
+<li><p><strong>principal_axes</strong> – Corresponding Cartesian unit eigenvectors by column.</p></li>
+<li><p><strong>rank</strong> – Numerical rank of the quadratic design.</p></li>
+<li><p><strong>condition_number</strong> – Singular-value condition number of the scaled design.</p></li>
+<li><p><strong>residual_rms</strong> – Root mean square energy residual in eV.</p></li>
+<li><p><strong>residuals</strong> – Input-order observed-minus-fitted energies in eV.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="httk.analyse.matsci.electronic.EffectiveMassFit.center">
+<span class="sig-name descname"><span class="pre">center</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span></span><a class="reference internal" href="../../../../../../_modules/httk/analyse/matsci/electronic.html#EffectiveMassFit.center"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.matsci.electronic.EffectiveMassFit.center" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="httk.analyse.matsci.electronic.EffectiveMassFit.energy_at_center">
+<span class="sig-name descname"><span class="pre">energy_at_center</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span><a class="reference internal" href="../../../../../../_modules/httk/analyse/matsci/electronic.html#EffectiveMassFit.energy_at_center"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.matsci.electronic.EffectiveMassFit.energy_at_center" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="httk.analyse.matsci.electronic.EffectiveMassFit.gradient">
+<span class="sig-name descname"><span class="pre">gradient</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span></span><a class="reference internal" href="../../../../../../_modules/httk/analyse/matsci/electronic.html#EffectiveMassFit.gradient"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.matsci.electronic.EffectiveMassFit.gradient" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="httk.analyse.matsci.electronic.EffectiveMassFit.hessian">
+<span class="sig-name descname"><span class="pre">hessian</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span><a class="reference internal" href="../../../../../../_modules/httk/analyse/matsci/electronic.html#EffectiveMassFit.hessian"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.matsci.electronic.EffectiveMassFit.hessian" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="httk.analyse.matsci.electronic.EffectiveMassFit.mass_tensor">
+<span class="sig-name descname"><span class="pre">mass_tensor</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span><a class="reference internal" href="../../../../../../_modules/httk/analyse/matsci/electronic.html#EffectiveMassFit.mass_tensor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.matsci.electronic.EffectiveMassFit.mass_tensor" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="httk.analyse.matsci.electronic.EffectiveMassFit.eigenvalues">
+<span class="sig-name descname"><span class="pre">eigenvalues</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span></span><a class="reference internal" href="../../../../../../_modules/httk/analyse/matsci/electronic.html#EffectiveMassFit.eigenvalues"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.matsci.electronic.EffectiveMassFit.eigenvalues" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="httk.analyse.matsci.electronic.EffectiveMassFit.principal_axes">
+<span class="sig-name descname"><span class="pre">principal_axes</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span><a class="reference internal" href="../../../../../../_modules/httk/analyse/matsci/electronic.html#EffectiveMassFit.principal_axes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.matsci.electronic.EffectiveMassFit.principal_axes" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="httk.analyse.matsci.electronic.EffectiveMassFit.rank">
+<span class="sig-name descname"><span class="pre">rank</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><a class="reference internal" href="../../../../../../_modules/httk/analyse/matsci/electronic.html#EffectiveMassFit.rank"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.matsci.electronic.EffectiveMassFit.rank" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="httk.analyse.matsci.electronic.EffectiveMassFit.condition_number">
+<span class="sig-name descname"><span class="pre">condition_number</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span><a class="reference internal" href="../../../../../../_modules/httk/analyse/matsci/electronic.html#EffectiveMassFit.condition_number"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.matsci.electronic.EffectiveMassFit.condition_number" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="httk.analyse.matsci.electronic.EffectiveMassFit.residual_rms">
+<span class="sig-name descname"><span class="pre">residual_rms</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span><a class="reference internal" href="../../../../../../_modules/httk/analyse/matsci/electronic.html#EffectiveMassFit.residual_rms"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.matsci.electronic.EffectiveMassFit.residual_rms" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="httk.analyse.matsci.electronic.EffectiveMassFit.residuals">
+<span class="sig-name descname"><span class="pre">residuals</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span><a class="reference internal" href="../../../../../../_modules/httk/analyse/matsci/electronic.html#EffectiveMassFit.residuals"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.matsci.electronic.EffectiveMassFit.residuals" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="httk.analyse.matsci.electronic.MagneticMoments">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">httk.analyse.matsci.electronic.</span></span><span class="sig-name descname"><span class="pre">MagneticMoments</span></span><a class="reference internal" href="../../../../../../_modules/httk/analyse/matsci/electronic.html#MagneticMoments"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.matsci.electronic.MagneticMoments" title="Link to this definition">¶</a></dt>
+<dd><p>Total vector moment and optional pair spin correlations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>total</strong> – Sum of input vector moments in Bohr magnetons.</p></li>
+<li><p><strong>pairs</strong> – Input-order atom-index pairs.</p></li>
+<li><p><strong>correlations</strong> – Pair dot products in squared Bohr magnetons, or dimensionless if normalized.</p></li>
+<li><p><strong>normalized</strong> – Whether each nonzero moment was normalized before its pair dot product.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="httk.analyse.matsci.electronic.MagneticMoments.total">
+<span class="sig-name descname"><span class="pre">total</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span></span><a class="reference internal" href="../../../../../../_modules/httk/analyse/matsci/electronic.html#MagneticMoments.total"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.matsci.electronic.MagneticMoments.total" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="httk.analyse.matsci.electronic.MagneticMoments.pairs">
+<span class="sig-name descname"><span class="pre">pairs</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span><a class="reference internal" href="../../../../../../_modules/httk/analyse/matsci/electronic.html#MagneticMoments.pairs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.matsci.electronic.MagneticMoments.pairs" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="httk.analyse.matsci.electronic.MagneticMoments.correlations">
+<span class="sig-name descname"><span class="pre">correlations</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span><a class="reference internal" href="../../../../../../_modules/httk/analyse/matsci/electronic.html#MagneticMoments.correlations"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.matsci.electronic.MagneticMoments.correlations" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="httk.analyse.matsci.electronic.MagneticMoments.normalized">
+<span class="sig-name descname"><span class="pre">normalized</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><a class="reference internal" href="../../../../../../_modules/httk/analyse/matsci/electronic.html#MagneticMoments.normalized"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.matsci.electronic.MagneticMoments.normalized" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="httk.analyse.matsci.electronic.DielectricSummary">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">httk.analyse.matsci.electronic.</span></span><span class="sig-name descname"><span class="pre">DielectricSummary</span></span><a class="reference internal" href="../../../../../../_modules/httk/analyse/matsci/electronic.html#DielectricSummary"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.matsci.electronic.DielectricSummary" title="Link to this definition">¶</a></dt>
+<dd><p>Principal values and axes of a real static dielectric tensor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>eigenvalues</strong> – Principal relative dielectric constants, ascending.</p></li>
+<li><p><strong>principal_axes</strong> – Corresponding Cartesian unit eigenvectors by column.</p></li>
+<li><p><strong>mean</strong> – Isotropic mean of the principal relative dielectric constants.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="httk.analyse.matsci.electronic.DielectricSummary.eigenvalues">
+<span class="sig-name descname"><span class="pre">eigenvalues</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span></span><a class="reference internal" href="../../../../../../_modules/httk/analyse/matsci/electronic.html#DielectricSummary.eigenvalues"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.matsci.electronic.DielectricSummary.eigenvalues" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="httk.analyse.matsci.electronic.DielectricSummary.principal_axes">
+<span class="sig-name descname"><span class="pre">principal_axes</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span><a class="reference internal" href="../../../../../../_modules/httk/analyse/matsci/electronic.html#DielectricSummary.principal_axes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.matsci.electronic.DielectricSummary.principal_axes" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="httk.analyse.matsci.electronic.DielectricSummary.mean">
+<span class="sig-name descname"><span class="pre">mean</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span><a class="reference internal" href="../../../../../../_modules/httk/analyse/matsci/electronic.html#DielectricSummary.mean"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.matsci.electronic.DielectricSummary.mean" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="httk.analyse.matsci.electronic.integrate_dos">
+<span class="sig-prename descclassname"><span class="pre">httk.analyse.matsci.electronic.</span></span><span class="sig-name descname"><span class="pre">integrate_dos</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">energies</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">density</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lower</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upper</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">spin_degeneracy</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../../_modules/httk/analyse/matsci/electronic.html#integrate_dos"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.matsci.electronic.integrate_dos" title="Link to this definition">¶</a></dt>
+<dd><p>Integrate a piecewise-linear DOS between energy bounds.</p>
+<p>DOS values are states/eV for one spin channel unless the caller supplies a
+different convention through <code class="docutils literal notranslate"><span class="pre">spin_degeneracy</span></code>. Bounds outside the grid
+are clipped to its endpoints and in-grid bounds are linearly interpolated.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>energies</strong> (<a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Sequence" title="(in Python v3.14)"><em>collections.abc.Sequence</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em>]</em>) – Strictly increasing energy grid in eV.</p></li>
+<li><p><strong>density</strong> (<a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Sequence" title="(in Python v3.14)"><em>collections.abc.Sequence</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em>]</em>) – Nonnegative DOS values in states/eV on the declared spin basis.</p></li>
+<li><p><strong>lower</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Lower integration bound in eV.</p></li>
+<li><p><strong>upper</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Upper integration bound in eV.</p></li>
+<li><p><strong>spin_degeneracy</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Explicit multiplicative channel count, commonly 1 or 2.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Integrated state count after applying <code class="docutils literal notranslate"><span class="pre">spin_degeneracy</span></code>.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.14)"><strong>ValueError</strong></a> – If arrays, bounds, or spin degeneracy are invalid.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)">float</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="httk.analyse.matsci.electronic.electron_count">
+<span class="sig-prename descclassname"><span class="pre">httk.analyse.matsci.electronic.</span></span><span class="sig-name descname"><span class="pre">electron_count</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">energies</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">density</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chemical_potential</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">temperature</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spin_degeneracy</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../../_modules/httk/analyse/matsci/electronic.html#electron_count"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.matsci.electronic.electron_count" title="Link to this definition">¶</a></dt>
+<dd><p>Integrate occupied DOS using Fermi-Dirac occupations.</p>
+<p>At zero temperature the occupation is one below the chemical potential,
+zero above it, and one half exactly at the chemical potential. At finite
+temperature, the piecewise-linear DOS times occupation is integrated
+with thermally resolved Gaussian panels. The DOS spin basis and multiplier must be
+chosen explicitly by the caller.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>energies</strong> (<a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Sequence" title="(in Python v3.14)"><em>collections.abc.Sequence</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em>]</em>) – Strictly increasing grid in eV.</p></li>
+<li><p><strong>density</strong> (<a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Sequence" title="(in Python v3.14)"><em>collections.abc.Sequence</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em>]</em>) – Nonnegative DOS in states/eV on the declared spin basis.</p></li>
+<li><p><strong>chemical_potential</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Chemical potential in eV.</p></li>
+<li><p><strong>temperature</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Temperature in K, including zero.</p></li>
+<li><p><strong>spin_degeneracy</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Explicit multiplier for spin channels represented.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Integrated occupied electron count.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.14)"><strong>ValueError</strong></a> – If inputs are invalid or the result is non-finite.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)">float</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="httk.analyse.matsci.electronic.solve_chemical_potential">
+<span class="sig-prename descclassname"><span class="pre">httk.analyse.matsci.electronic.</span></span><span class="sig-name descname"><span class="pre">solve_chemical_potential</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">energies</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">density</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_electrons</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">temperature</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spin_degeneracy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tolerance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_iterations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">200</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../../_modules/httk/analyse/matsci/electronic.html#solve_chemical_potential"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.matsci.electronic.solve_chemical_potential" title="Link to this definition">¶</a></dt>
+<dd><p>Find a chemical potential whose DOS integral matches a target count.</p>
+<p>A bracket is expanded outside the grid for finite-temperature tails. At
+zero temperature, a count on a gap plateau returns a chemical potential within that plateau. The DOS integral is never renormalized to force the requested
+count.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>energies</strong> (<a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Sequence" title="(in Python v3.14)"><em>collections.abc.Sequence</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em>]</em>) – Strictly increasing DOS grid in eV.</p></li>
+<li><p><strong>density</strong> (<a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Sequence" title="(in Python v3.14)"><em>collections.abc.Sequence</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em>]</em>) – Nonnegative DOS in states/eV on the declared spin basis.</p></li>
+<li><p><strong>target_electrons</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Desired electron count.</p></li>
+<li><p><strong>temperature</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Temperature in K, including zero.</p></li>
+<li><p><strong>spin_degeneracy</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Explicit multiplier for spin channels represented.</p></li>
+<li><p><strong>tolerance</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Absolute electron-count convergence tolerance.</p></li>
+<li><p><strong>max_iterations</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a>) – Maximum bisection iterations.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Chemical potential in eV.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.14)"><strong>ValueError</strong></a> – If target is unreachable, inputs are invalid, or convergence fails.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)">float</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="httk.analyse.matsci.electronic.band_edges">
+<span class="sig-prename descclassname"><span class="pre">httk.analyse.matsci.electronic.</span></span><span class="sig-name descname"><span class="pre">band_edges</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">energies</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">occupations</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">maximum_occupation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">occupation_tolerance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-06</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">energy_reference</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../../_modules/httk/analyse/matsci/electronic.html#band_edges"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.matsci.electronic.band_edges" title="Link to this definition">¶</a></dt>
+<dd><p>Classify sampled band edges using explicit occupations.</p>
+<p>Arrays have shape (bands, k points). Energies are in eV and occupations
+use the same per-state convention as <code class="docutils literal notranslate"><span class="pre">maximum_occupation</span></code>. Band-path
+sampling is retained as supplied and is not a Brillouin-zone integration.</p>
+<p>Occupations outside [0, <code class="docutils literal notranslate"><span class="pre">maximum_occupation</span></code>] by more than <code class="docutils literal notranslate"><span class="pre">occupation_tolerance</span></code> are
+rejected. Methfessel-Paxton smearing (VASP ISMEAR &gt;= 1) can yield slightly negative or
+super-maximal occupations, so callers must clean them or choose <code class="docutils literal notranslate"><span class="pre">occupation_tolerance</span></code>
+accordingly. The analysis is per spin channel: the spin-polarised material gap is
+min(CBM over both spins) - max(VBM over both spins).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>energies</strong> (<a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Sequence" title="(in Python v3.14)"><em>collections.abc.Sequence</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Sequence" title="(in Python v3.14)"><em>collections.abc.Sequence</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em>]</em><em>]</em>) – Finite band energies in eV.</p></li>
+<li><p><strong>occupations</strong> (<a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Sequence" title="(in Python v3.14)"><em>collections.abc.Sequence</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Sequence" title="(in Python v3.14)"><em>collections.abc.Sequence</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em>]</em><em>]</em>) – Finite occupations matching <code class="docutils literal notranslate"><span class="pre">energies</span></code>.</p></li>
+<li><p><strong>maximum_occupation</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Explicit maximum occupancy of a state.</p></li>
+<li><p><strong>occupation_tolerance</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Absolute tolerance at empty/full endpoints.</p></li>
+<li><p><strong>energy_reference</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Explicit energy to subtract from every band energy.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Sampled valence/conduction extrema and sampled gaps.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.14)"><strong>ValueError</strong></a> – If the arrays or occupation conventions are invalid.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#httk.analyse.matsci.electronic.BandEdges" title="httk.analyse.matsci.electronic.BandEdges">BandEdges</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="httk.analyse.matsci.electronic.fit_effective_mass">
+<span class="sig-prename descclassname"><span class="pre">httk.analyse.matsci.electronic.</span></span><span class="sig-name descname"><span class="pre">fit_effective_mass</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">kpoints</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">energies</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">center</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../../_modules/httk/analyse/matsci/electronic.html#fit_effective_mass"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.matsci.electronic.fit_effective_mass" title="Link to this definition">¶</a></dt>
+<dd><p>Fit a full local quadratic band and return its signed mass tensor.</p>
+<p>Cartesian k coordinates use inverse angstroms with the 2π included (physical k,
+<code class="docutils literal notranslate"><span class="pre">|k|</span> <span class="pre">=</span> <span class="pre">2π/λ</span></code>), energies use eV, and <code class="docutils literal notranslate"><span class="pre">center</span></code> uses the same Cartesian reciprocal-space
+basis. Reciprocal-lattice fractions or 1/λ coordinates give masses off by (2π)² ≈ 39.5.
+The local model
+is E=E0+g·dk+0.5*dk.T&#64;H&#64;dk. The conversion is m*/m_e =
+(hbar²/m_e)*H⁻¹, with hbar²/m_e in eV angstrom².</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>kpoints</strong> (<a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Sequence" title="(in Python v3.14)"><em>collections.abc.Sequence</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Sequence" title="(in Python v3.14)"><em>collections.abc.Sequence</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em>]</em><em>]</em>) – Cartesian sample vectors with shape (n, 3), in inverse angstroms including 2π.</p></li>
+<li><p><strong>energies</strong> (<a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Sequence" title="(in Python v3.14)"><em>collections.abc.Sequence</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em>]</em>) – Matching energies in eV.</p></li>
+<li><p><strong>center</strong> (<a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Sequence" title="(in Python v3.14)"><em>collections.abc.Sequence</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em>]</em>) – Expansion point in inverse angstroms, including 2π.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Fitted Hessian, signed mass tensor, axes, and residual diagnostics.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.14)"><strong>ValueError</strong></a> – If data are malformed, rank deficient, or the Hessian is singular.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#httk.analyse.matsci.electronic.EffectiveMassFit" title="httk.analyse.matsci.electronic.EffectiveMassFit">EffectiveMassFit</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="httk.analyse.matsci.electronic.align_energies">
+<span class="sig-prename descclassname"><span class="pre">httk.analyse.matsci.electronic.</span></span><span class="sig-name descname"><span class="pre">align_energies</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">energies</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference_energy</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../../_modules/httk/analyse/matsci/electronic.html#align_energies"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.matsci.electronic.align_energies" title="Link to this definition">¶</a></dt>
+<dd><p>Subtract an explicitly supplied energy reference.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>energies</strong> (<a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Sequence" title="(in Python v3.14)"><em>collections.abc.Sequence</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em>]</em>) – Finite energies in eV.</p></li>
+<li><p><strong>reference_energy</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Reference energy in eV.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Aligned energies in eV, in input order.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.14)"><strong>ValueError</strong></a> – If any input is non-finite.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)">tuple</a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)">float</a>, …]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="httk.analyse.matsci.electronic.magnetic_moments">
+<span class="sig-prename descclassname"><span class="pre">httk.analyse.matsci.electronic.</span></span><span class="sig-name descname"><span class="pre">magnetic_moments</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">moments</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pairs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">()</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">normalize_pairs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../../_modules/httk/analyse/matsci/electronic.html#magnetic_moments"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.matsci.electronic.magnetic_moments" title="Link to this definition">¶</a></dt>
+<dd><p>Sum vector moments and calculate requested pair spin correlations.</p>
+<p>Input vectors are in Bohr magnetons. Pair order and indices are preserved;
+normalization is an explicit option and zero vectors cannot be normalized.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>moments</strong> (<a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Sequence" title="(in Python v3.14)"><em>collections.abc.Sequence</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Sequence" title="(in Python v3.14)"><em>collections.abc.Sequence</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em>]</em><em>]</em>) – Per-site vector moments in Bohr magnetons, shape (n, 3).</p></li>
+<li><p><strong>pairs</strong> (<a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Sequence" title="(in Python v3.14)"><em>collections.abc.Sequence</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><em>tuple</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em>]</em><em>]</em>) – Atom-index pairs for which to calculate dot products.</p></li>
+<li><p><strong>normalize_pairs</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a>) – Normalize the two moments before each correlation.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Total vector moment and pair correlations.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.14)"><strong>ValueError</strong></a> – If moments or pair indices are malformed.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#httk.analyse.matsci.electronic.MagneticMoments" title="httk.analyse.matsci.electronic.MagneticMoments">MagneticMoments</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="httk.analyse.matsci.electronic.summarize_dielectric">
+<span class="sig-prename descclassname"><span class="pre">httk.analyse.matsci.electronic.</span></span><span class="sig-name descname"><span class="pre">summarize_dielectric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tensor</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">tolerance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-10</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../../_modules/httk/analyse/matsci/electronic.html#summarize_dielectric"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.matsci.electronic.summarize_dielectric" title="Link to this definition">¶</a></dt>
+<dd><p>Summarize a real symmetric static relative dielectric tensor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tensor</strong> (<a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Sequence" title="(in Python v3.14)"><em>collections.abc.Sequence</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Sequence" title="(in Python v3.14)"><em>collections.abc.Sequence</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em>]</em><em>]</em>) – Finite 3 by 3 dimensionless relative dielectric tensor.</p></li>
+<li><p><strong>tolerance</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Absolute symmetry tolerance.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Ascending principal values, eigenvectors by column, and isotropic mean.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.14)"><strong>ValueError</strong></a> – If the tensor is malformed, non-real, or not symmetric.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#httk.analyse.matsci.electronic.DielectricSummary" title="httk.analyse.matsci.electronic.DielectricSummary">DielectricSummary</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="../energetics/index.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">httk.analyse.matsci.energetics</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="../elasticity/index.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">httk.analyse.matsci.elasticity</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2026, The httk-analyse AUTHORS
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">httk.analyse.matsci.electronic</a><ul>
+<li><a class="reference internal" href="#classes">Classes</a></li>
+<li><a class="reference internal" href="#functions">Functions</a></li>
+<li><a class="reference internal" href="#module-contents">Module Contents</a><ul>
+<li><a class="reference internal" href="#httk.analyse.matsci.electronic.BandEdges"><code class="docutils literal notranslate"><span class="pre">BandEdges</span></code></a><ul>
+<li><a class="reference internal" href="#httk.analyse.matsci.electronic.BandEdges.metallic"><code class="docutils literal notranslate"><span class="pre">BandEdges.metallic</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.matsci.electronic.BandEdges.indirect_gap"><code class="docutils literal notranslate"><span class="pre">BandEdges.indirect_gap</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.matsci.electronic.BandEdges.direct_gap"><code class="docutils literal notranslate"><span class="pre">BandEdges.direct_gap</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.matsci.electronic.BandEdges.vbm_energy"><code class="docutils literal notranslate"><span class="pre">BandEdges.vbm_energy</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.matsci.electronic.BandEdges.cbm_energy"><code class="docutils literal notranslate"><span class="pre">BandEdges.cbm_energy</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.matsci.electronic.BandEdges.vbm_band"><code class="docutils literal notranslate"><span class="pre">BandEdges.vbm_band</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.matsci.electronic.BandEdges.vbm_kpoint"><code class="docutils literal notranslate"><span class="pre">BandEdges.vbm_kpoint</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.matsci.electronic.BandEdges.cbm_band"><code class="docutils literal notranslate"><span class="pre">BandEdges.cbm_band</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.matsci.electronic.BandEdges.cbm_kpoint"><code class="docutils literal notranslate"><span class="pre">BandEdges.cbm_kpoint</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.matsci.electronic.BandEdges.energy_reference"><code class="docutils literal notranslate"><span class="pre">BandEdges.energy_reference</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#httk.analyse.matsci.electronic.EffectiveMassFit"><code class="docutils literal notranslate"><span class="pre">EffectiveMassFit</span></code></a><ul>
+<li><a class="reference internal" href="#httk.analyse.matsci.electronic.EffectiveMassFit.center"><code class="docutils literal notranslate"><span class="pre">EffectiveMassFit.center</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.matsci.electronic.EffectiveMassFit.energy_at_center"><code class="docutils literal notranslate"><span class="pre">EffectiveMassFit.energy_at_center</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.matsci.electronic.EffectiveMassFit.gradient"><code class="docutils literal notranslate"><span class="pre">EffectiveMassFit.gradient</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.matsci.electronic.EffectiveMassFit.hessian"><code class="docutils literal notranslate"><span class="pre">EffectiveMassFit.hessian</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.matsci.electronic.EffectiveMassFit.mass_tensor"><code class="docutils literal notranslate"><span class="pre">EffectiveMassFit.mass_tensor</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.matsci.electronic.EffectiveMassFit.eigenvalues"><code class="docutils literal notranslate"><span class="pre">EffectiveMassFit.eigenvalues</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.matsci.electronic.EffectiveMassFit.principal_axes"><code class="docutils literal notranslate"><span class="pre">EffectiveMassFit.principal_axes</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.matsci.electronic.EffectiveMassFit.rank"><code class="docutils literal notranslate"><span class="pre">EffectiveMassFit.rank</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.matsci.electronic.EffectiveMassFit.condition_number"><code class="docutils literal notranslate"><span class="pre">EffectiveMassFit.condition_number</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.matsci.electronic.EffectiveMassFit.residual_rms"><code class="docutils literal notranslate"><span class="pre">EffectiveMassFit.residual_rms</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.matsci.electronic.EffectiveMassFit.residuals"><code class="docutils literal notranslate"><span class="pre">EffectiveMassFit.residuals</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#httk.analyse.matsci.electronic.MagneticMoments"><code class="docutils literal notranslate"><span class="pre">MagneticMoments</span></code></a><ul>
+<li><a class="reference internal" href="#httk.analyse.matsci.electronic.MagneticMoments.total"><code class="docutils literal notranslate"><span class="pre">MagneticMoments.total</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.matsci.electronic.MagneticMoments.pairs"><code class="docutils literal notranslate"><span class="pre">MagneticMoments.pairs</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.matsci.electronic.MagneticMoments.correlations"><code class="docutils literal notranslate"><span class="pre">MagneticMoments.correlations</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.matsci.electronic.MagneticMoments.normalized"><code class="docutils literal notranslate"><span class="pre">MagneticMoments.normalized</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#httk.analyse.matsci.electronic.DielectricSummary"><code class="docutils literal notranslate"><span class="pre">DielectricSummary</span></code></a><ul>
+<li><a class="reference internal" href="#httk.analyse.matsci.electronic.DielectricSummary.eigenvalues"><code class="docutils literal notranslate"><span class="pre">DielectricSummary.eigenvalues</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.matsci.electronic.DielectricSummary.principal_axes"><code class="docutils literal notranslate"><span class="pre">DielectricSummary.principal_axes</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.matsci.electronic.DielectricSummary.mean"><code class="docutils literal notranslate"><span class="pre">DielectricSummary.mean</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#httk.analyse.matsci.electronic.integrate_dos"><code class="docutils literal notranslate"><span class="pre">integrate_dos()</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.matsci.electronic.electron_count"><code class="docutils literal notranslate"><span class="pre">electron_count()</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.matsci.electronic.solve_chemical_potential"><code class="docutils literal notranslate"><span class="pre">solve_chemical_potential()</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.matsci.electronic.band_edges"><code class="docutils literal notranslate"><span class="pre">band_edges()</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.matsci.electronic.fit_effective_mass"><code class="docutils literal notranslate"><span class="pre">fit_effective_mass()</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.matsci.electronic.align_energies"><code class="docutils literal notranslate"><span class="pre">align_energies()</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.matsci.electronic.magnetic_moments"><code class="docutils literal notranslate"><span class="pre">magnetic_moments()</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.matsci.electronic.summarize_dielectric"><code class="docutils literal notranslate"><span class="pre">summarize_dielectric()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../../../../../../_static/documentation_options.js?v=952df46a"></script>
+    <script src="../../../../../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../../../../../_static/scripts/furo.js?v=46bd48cc"></script>
+    <script src="../../../../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../../../../_static/copybutton.js?v=fd10adb8"></script>
+    <script src="../../../../../../_static/selector.js?v=d8e9b3ce"></script>
+    <script>window.HTTK_DOCS_VERSIONING = {"channel":"dev","version":"dev:develop","versionPathDepth":2};</script>
+    </body>
+</html>

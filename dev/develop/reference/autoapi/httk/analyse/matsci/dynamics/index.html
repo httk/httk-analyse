@@ -1,0 +1,972 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../../../../../../">
+  <head><meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../../../../../../genindex.html"><link rel="search" title="Search" href="../../../../../../search.html"><link rel="next" title="httk.analyse.matsci.elasticity" href="../elasticity/index.html"><link rel="prev" title="httk.analyse.matsci.defects" href="../defects/index.html">
+
+    <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
+        <title>httk.analyse.matsci.dynamics - httk-analyse dev:develop documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../../../_static/pygments.css?v=d111a655" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/styles/furo.css?v=7bdb33bb" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/selector.css?v=626bada3" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f2f2f2;
+  --color-code-foreground: #1e1e1e;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle site navigation sidebar">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc" aria-label="Toggle table of contents sidebar">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+<div class="announcement">
+  <aside class="announcement-content">
+     Development documentation (dev:develop) — built from the GitHub develop branch; content may differ from any release. 
+  </aside>
+</div>
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <span class="icon"><svg><use href="#svg-menu"></use></svg></span>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../../../../../index.html"><div class="brand">httk-analyse dev:develop documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../../../../index.html">
+  
+  <span class="sidebar-brand-text">httk-analyse dev:develop documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../../../../../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../generic-hulls.html">Generic lower convex hulls</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../phase-diagrams.html">Materials phase diagrams</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../equations-of-state.html">Static equation-of-state fitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../energetics.html">Static energy bookkeeping</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../time-series.html">Simulation time series</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../mlip-validation.html">Validate MLIP predictions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../elasticity.html">Elasticity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../md-structure.html">Molecular-dynamics structure analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../dynamics.html">Dynamics and diffusion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../thermal-response.html">Equilibrium response and transport</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../phonons.html">Harmonic phonon thermodynamics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../electronic.html">Electronic and magnetic quantities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../vasp-analysis.html">VASP electronic analysis adapters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../defects.html">Defects, surfaces, and kinetics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../analysis-artifacts.html">Summaries and figures</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../records.html">Recording results</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../analysis-recipes.html">Analysis recipes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../crysviz.html">CrysViz structure viewer</a></li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="../../../../../index.html">Reference</a><input aria-label="Toggle navigation of Reference" checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
+<li class="toctree-l2 current has-children"><a class="reference internal" href="../../index.html">httk.analyse</a><input aria-label="Toggle navigation of httk.analyse" checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../../crysviz/index.html">httk.analyse.crysviz</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../definitions/index.html">httk.analyse.definitions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../generic/index.html">httk.analyse.generic</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../integrations/index.html">httk.analyse.integrations</a></li>
+<li class="toctree-l3 current has-children"><a class="reference internal" href="../index.html">httk.analyse.matsci</a><input aria-label="Toggle navigation of httk.analyse.matsci" checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../defects/index.html">httk.analyse.matsci.defects</a></li>
+<li class="toctree-l4 current current-page"><a class="current reference internal" href="#">httk.analyse.matsci.dynamics</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../elasticity/index.html">httk.analyse.matsci.elasticity</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../electronic/index.html">httk.analyse.matsci.electronic</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../energetics/index.html">httk.analyse.matsci.energetics</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../eos/index.html">httk.analyse.matsci.eos</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../eos_models/index.html">httk.analyse.matsci.eos_models</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../local_order/index.html">httk.analyse.matsci.local_order</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../mlip/index.html">httk.analyse.matsci.mlip</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../phase_diagrams/index.html">httk.analyse.matsci.phase_diagrams</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../phonons/index.html">httk.analyse.matsci.phonons</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../structure/index.html">httk.analyse.matsci.structure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../thermodynamics/index.html">httk.analyse.matsci.thermodynamics</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../transport/index.html">httk.analyse.matsci.transport</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../validation/index.html">httk.analyse.matsci.validation</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../plotting/index.html">httk.analyse.plotting</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../property_records/index.html">httk.analyse.property_records</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../records/index.html">httk.analyse.records</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../summary/index.html">httk.analyse.summary</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../notebooks/examples.html">Convex-hull and phase-diagram examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../notebooks/materials-toolbox.html">Materials toolbox example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../notebooks/materials-response.html">Materials response toolbox</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../index.html">API Reference</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="../../../../../../_sources/reference/autoapi/httk/analyse/matsci/dynamics/index.rst.txt" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section id="module-httk.analyse.matsci.dynamics">
+<span id="httk-analyse-matsci-dynamics"></span><h1>httk.analyse.matsci.dynamics<a class="headerlink" href="#module-httk.analyse.matsci.dynamics" title="Link to this heading">¶</a></h1>
+<p>Multiple-origin fixed-frame dynamics with explicit sampling conventions.</p>
+<section id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Link to this heading">¶</a></h2>
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#httk.analyse.matsci.dynamics.TensorSeries" title="httk.analyse.matsci.dynamics.TensorSeries"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TensorSeries</span></code></a></p></td>
+<td><p>Immutable lag times, tensor values and time-origin counts.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#httk.analyse.matsci.dynamics.DiffusionFit" title="httk.analyse.matsci.dynamics.DiffusionFit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DiffusionFit</span></code></a></p></td>
+<td><p>A user-window linear MSD fit, without an inferred diffusive regime.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#httk.analyse.matsci.dynamics.RadialDynamics" title="httk.analyse.matsci.dynamics.RadialDynamics"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RadialDynamics</span></code></a></p></td>
+<td><p>Self probability or distinct number density in spherical shells.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#httk.analyse.matsci.dynamics.ScatteringSeries" title="httk.analyse.matsci.dynamics.ScatteringSeries"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ScatteringSeries</span></code></a></p></td>
+<td><p>Complex intermediate scattering on explicitly supplied wavevectors.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#httk.analyse.matsci.dynamics.VelocitySpectrum" title="httk.analyse.matsci.dynamics.VelocitySpectrum"><code class="xref py py-obj docutils literal notranslate"><span class="pre">VelocitySpectrum</span></code></a></p></td>
+<td><p>One-sided velocity power spectral density averaged over atoms and axes.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Link to this heading">¶</a></h2>
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#httk.analyse.matsci.dynamics.mean_squared_displacement" title="httk.analyse.matsci.dynamics.mean_squared_displacement"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mean_squared_displacement</span></code></a>(unwrapped_positions, timestep, *)</p></td>
+<td><p>Average displacement outer products over every time origin and atom.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#httk.analyse.matsci.dynamics.velocity_autocorrelation" title="httk.analyse.matsci.dynamics.velocity_autocorrelation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">velocity_autocorrelation</span></code></a>(velocities, timestep, *[, ...])</p></td>
+<td><p>Compute dimensionful velocity correlation tensors over all origins.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#httk.analyse.matsci.dynamics.diffusion_from_msd" title="httk.analyse.matsci.dynamics.diffusion_from_msd"><code class="xref py py-obj docutils literal notranslate"><span class="pre">diffusion_from_msd</span></code></a>(msd, *, window)</p></td>
+<td><p>Fit MSD_ij=2*D_ij*t+intercept on an explicit inclusive lag window.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#httk.analyse.matsci.dynamics.integrate_vacf" title="httk.analyse.matsci.dynamics.integrate_vacf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">integrate_vacf</span></code></a>(vacf)</p></td>
+<td><p>Trapezoid-integrate a velocity correlation into a running diffusion tensor.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#httk.analyse.matsci.dynamics.van_hove_self" title="httk.analyse.matsci.dynamics.van_hove_self"><code class="xref py py-obj docutils literal notranslate"><span class="pre">van_hove_self</span></code></a>(unwrapped_positions, timestep, *, lag, bins)</p></td>
+<td><p>Histogram self displacements without renormalizing a truncated radial range.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#httk.analyse.matsci.dynamics.van_hove_distinct" title="httk.analyse.matsci.dynamics.van_hove_distinct"><code class="xref py py-obj docutils literal notranslate"><span class="pre">van_hove_distinct</span></code></a>(positions, timestep, *, lag, bins, cell)</p></td>
+<td><p>Compute the bulk distinct van Hove density with persistent atom identity.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#httk.analyse.matsci.dynamics.intermediate_scattering" title="httk.analyse.matsci.dynamics.intermediate_scattering"><code class="xref py py-obj docutils literal notranslate"><span class="pre">intermediate_scattering</span></code></a>(positions, timestep, ...[, ...])</p></td>
+<td><p>Compute self or coherent scattering with exp(+i q·displacement).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#httk.analyse.matsci.dynamics.velocity_spectrum" title="httk.analyse.matsci.dynamics.velocity_spectrum"><code class="xref py py-obj docutils literal notranslate"><span class="pre">velocity_spectrum</span></code></a>(velocities, timestep, *[, window, ...])</p></td>
+<td><p>Compute a one-sided periodogram whose discrete integral obeys Parseval.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="httk.analyse.matsci.dynamics.TensorSeries">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">httk.analyse.matsci.dynamics.</span></span><span class="sig-name descname"><span class="pre">TensorSeries</span></span><a class="reference internal" href="../../../../../../_modules/httk/analyse/matsci/dynamics.html#TensorSeries"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.matsci.dynamics.TensorSeries" title="Link to this definition">¶</a></dt>
+<dd><p>Immutable lag times, tensor values and time-origin counts.</p>
+<p>Tensor units follow <code class="docutils literal notranslate"><span class="pre">kind</span></code>: angstrom² for <code class="docutils literal notranslate"><span class="pre">msd</span></code>, (angstrom/ps)² for
+<code class="docutils literal notranslate"><span class="pre">vacf</span></code> and angstrom²/ps for <code class="docutils literal notranslate"><span class="pre">vacf_integral</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>times</strong> – Lag times in ps.</p></li>
+<li><p><strong>tensors</strong> – One 3x3 Cartesian tensor per lag.</p></li>
+<li><p><strong>counts</strong> – Number of time origins contributing at each lag.</p></li>
+<li><p><strong>kind</strong> – Estimator: <code class="docutils literal notranslate"><span class="pre">msd</span></code>, <code class="docutils literal notranslate"><span class="pre">vacf</span></code> or <code class="docutils literal notranslate"><span class="pre">vacf_integral</span></code>.</p></li>
+<li><p><strong>remove_com</strong> – Whether center-of-mass motion was removed (MSD), else <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
+<li><p><strong>remove_mean</strong> – Whether per-atom temporal means were removed (VACF and its integral), else <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.14)"><strong>ValueError</strong></a> – If <code class="docutils literal notranslate"><span class="pre">kind</span></code> is unknown.</p>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="httk.analyse.matsci.dynamics.TensorSeries.times">
+<span class="sig-name descname"><span class="pre">times</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span><a class="reference internal" href="../../../../../../_modules/httk/analyse/matsci/dynamics.html#TensorSeries.times"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.matsci.dynamics.TensorSeries.times" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="httk.analyse.matsci.dynamics.TensorSeries.tensors">
+<span class="sig-name descname"><span class="pre">tensors</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span><a class="reference internal" href="../../../../../../_modules/httk/analyse/matsci/dynamics.html#TensorSeries.tensors"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.matsci.dynamics.TensorSeries.tensors" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="httk.analyse.matsci.dynamics.TensorSeries.counts">
+<span class="sig-name descname"><span class="pre">counts</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span><a class="reference internal" href="../../../../../../_modules/httk/analyse/matsci/dynamics.html#TensorSeries.counts"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.matsci.dynamics.TensorSeries.counts" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="httk.analyse.matsci.dynamics.TensorSeries.kind">
+<span class="sig-name descname"><span class="pre">kind</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'msd'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'vacf'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'vacf_integral'</span></span><span class="p"><span class="pre">]</span></span></span><a class="reference internal" href="../../../../../../_modules/httk/analyse/matsci/dynamics.html#TensorSeries.kind"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.matsci.dynamics.TensorSeries.kind" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="httk.analyse.matsci.dynamics.TensorSeries.remove_com">
+<span class="sig-name descname"><span class="pre">remove_com</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></span><a class="reference internal" href="../../../../../../_modules/httk/analyse/matsci/dynamics.html#TensorSeries.remove_com"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.matsci.dynamics.TensorSeries.remove_com" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="httk.analyse.matsci.dynamics.TensorSeries.remove_mean">
+<span class="sig-name descname"><span class="pre">remove_mean</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></span><a class="reference internal" href="../../../../../../_modules/httk/analyse/matsci/dynamics.html#TensorSeries.remove_mean"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.matsci.dynamics.TensorSeries.remove_mean" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="httk.analyse.matsci.dynamics.TensorSeries.trace">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">trace</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span><a class="reference internal" href="../../../../../../_modules/httk/analyse/matsci/dynamics.html#TensorSeries.trace"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.matsci.dynamics.TensorSeries.trace" title="Link to this definition">¶</a></dt>
+<dd><p>Return tensor traces in lag order.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="httk.analyse.matsci.dynamics.DiffusionFit">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">httk.analyse.matsci.dynamics.</span></span><span class="sig-name descname"><span class="pre">DiffusionFit</span></span><a class="reference internal" href="../../../../../../_modules/httk/analyse/matsci/dynamics.html#DiffusionFit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.matsci.dynamics.DiffusionFit" title="Link to this definition">¶</a></dt>
+<dd><p>A user-window linear MSD fit, without an inferred diffusive regime.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tensor</strong> – Diffusion tensor in m²/s (the unit of the <code class="docutils literal notranslate"><span class="pre">diffusion_tensor</span></code> definition).</p></li>
+<li><p><strong>intercept</strong> – MSD intercept tensor in angstrom² (a fit diagnostic of the MSD series).</p></li>
+<li><p><strong>rmse</strong> – RMS residual per tensor component in angstrom² (MSD units).</p></li>
+<li><p><strong>window</strong> – Inclusive start/stop lag indices.</p></li>
+<li><p><strong>condition_number</strong> – Condition of the centered/scaled time design.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="httk.analyse.matsci.dynamics.DiffusionFit.tensor">
+<span class="sig-name descname"><span class="pre">tensor</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span><a class="reference internal" href="../../../../../../_modules/httk/analyse/matsci/dynamics.html#DiffusionFit.tensor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.matsci.dynamics.DiffusionFit.tensor" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="httk.analyse.matsci.dynamics.DiffusionFit.intercept">
+<span class="sig-name descname"><span class="pre">intercept</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span><a class="reference internal" href="../../../../../../_modules/httk/analyse/matsci/dynamics.html#DiffusionFit.intercept"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.matsci.dynamics.DiffusionFit.intercept" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="httk.analyse.matsci.dynamics.DiffusionFit.rmse">
+<span class="sig-name descname"><span class="pre">rmse</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span><a class="reference internal" href="../../../../../../_modules/httk/analyse/matsci/dynamics.html#DiffusionFit.rmse"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.matsci.dynamics.DiffusionFit.rmse" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="httk.analyse.matsci.dynamics.DiffusionFit.window">
+<span class="sig-name descname"><span class="pre">window</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span><a class="reference internal" href="../../../../../../_modules/httk/analyse/matsci/dynamics.html#DiffusionFit.window"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.matsci.dynamics.DiffusionFit.window" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="httk.analyse.matsci.dynamics.DiffusionFit.condition_number">
+<span class="sig-name descname"><span class="pre">condition_number</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span><a class="reference internal" href="../../../../../../_modules/httk/analyse/matsci/dynamics.html#DiffusionFit.condition_number"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.matsci.dynamics.DiffusionFit.condition_number" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="httk.analyse.matsci.dynamics.DiffusionFit.isotropic">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">isotropic</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span><a class="reference internal" href="../../../../../../_modules/httk/analyse/matsci/dynamics.html#DiffusionFit.isotropic"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.matsci.dynamics.DiffusionFit.isotropic" title="Link to this definition">¶</a></dt>
+<dd><p>Return one third of the diffusion tensor trace in m²/s.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="httk.analyse.matsci.dynamics.RadialDynamics">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">httk.analyse.matsci.dynamics.</span></span><span class="sig-name descname"><span class="pre">RadialDynamics</span></span><a class="reference internal" href="../../../../../../_modules/httk/analyse/matsci/dynamics.html#RadialDynamics"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.matsci.dynamics.RadialDynamics" title="Link to this definition">¶</a></dt>
+<dd><p>Self probability or distinct number density in spherical shells.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>lag</strong> – Selected integer lag.</p></li>
+<li><p><strong>time</strong> – Lag time in ps.</p></li>
+<li><p><strong>edges</strong> – Radial shell edges in angstrom.</p></li>
+<li><p><strong>density</strong> – Self probability or distinct neighbor density per angstrom³, without range renormalization.</p></li>
+<li><p><strong>counts</strong> – Number of displacement samples in each shell.</p></li>
+<li><p><strong>samples</strong> – Number of central-atom/time-origin samples, including those outside the bins.</p></li>
+<li><p><strong>kind</strong> – Self or distinct radial correlation.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="httk.analyse.matsci.dynamics.RadialDynamics.lag">
+<span class="sig-name descname"><span class="pre">lag</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><a class="reference internal" href="../../../../../../_modules/httk/analyse/matsci/dynamics.html#RadialDynamics.lag"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.matsci.dynamics.RadialDynamics.lag" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="httk.analyse.matsci.dynamics.RadialDynamics.time">
+<span class="sig-name descname"><span class="pre">time</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span><a class="reference internal" href="../../../../../../_modules/httk/analyse/matsci/dynamics.html#RadialDynamics.time"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.matsci.dynamics.RadialDynamics.time" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="httk.analyse.matsci.dynamics.RadialDynamics.edges">
+<span class="sig-name descname"><span class="pre">edges</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span><a class="reference internal" href="../../../../../../_modules/httk/analyse/matsci/dynamics.html#RadialDynamics.edges"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.matsci.dynamics.RadialDynamics.edges" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="httk.analyse.matsci.dynamics.RadialDynamics.density">
+<span class="sig-name descname"><span class="pre">density</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span><a class="reference internal" href="../../../../../../_modules/httk/analyse/matsci/dynamics.html#RadialDynamics.density"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.matsci.dynamics.RadialDynamics.density" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="httk.analyse.matsci.dynamics.RadialDynamics.counts">
+<span class="sig-name descname"><span class="pre">counts</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span><a class="reference internal" href="../../../../../../_modules/httk/analyse/matsci/dynamics.html#RadialDynamics.counts"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.matsci.dynamics.RadialDynamics.counts" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="httk.analyse.matsci.dynamics.RadialDynamics.samples">
+<span class="sig-name descname"><span class="pre">samples</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><a class="reference internal" href="../../../../../../_modules/httk/analyse/matsci/dynamics.html#RadialDynamics.samples"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.matsci.dynamics.RadialDynamics.samples" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="httk.analyse.matsci.dynamics.RadialDynamics.kind">
+<span class="sig-name descname"><span class="pre">kind</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'self'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'distinct'</span></span><span class="p"><span class="pre">]</span></span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'self'</span></span><a class="reference internal" href="../../../../../../_modules/httk/analyse/matsci/dynamics.html#RadialDynamics.kind"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.matsci.dynamics.RadialDynamics.kind" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="httk.analyse.matsci.dynamics.ScatteringSeries">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">httk.analyse.matsci.dynamics.</span></span><span class="sig-name descname"><span class="pre">ScatteringSeries</span></span><a class="reference internal" href="../../../../../../_modules/httk/analyse/matsci/dynamics.html#ScatteringSeries"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.matsci.dynamics.ScatteringSeries" title="Link to this definition">¶</a></dt>
+<dd><p>Complex intermediate scattering on explicitly supplied wavevectors.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>times</strong> – Lag times in ps.</p></li>
+<li><p><strong>wavevectors</strong> – Cartesian wavevectors in inverse angstrom.</p></li>
+<li><p><strong>values</strong> – Complex correlations indexed by lag then wavevector.</p></li>
+<li><p><strong>counts</strong> – Time-origin counts per lag.</p></li>
+<li><p><strong>kind</strong> – Self or coherent density correlation.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="httk.analyse.matsci.dynamics.ScatteringSeries.times">
+<span class="sig-name descname"><span class="pre">times</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span><a class="reference internal" href="../../../../../../_modules/httk/analyse/matsci/dynamics.html#ScatteringSeries.times"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.matsci.dynamics.ScatteringSeries.times" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="httk.analyse.matsci.dynamics.ScatteringSeries.wavevectors">
+<span class="sig-name descname"><span class="pre">wavevectors</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span><a class="reference internal" href="../../../../../../_modules/httk/analyse/matsci/dynamics.html#ScatteringSeries.wavevectors"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.matsci.dynamics.ScatteringSeries.wavevectors" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="httk.analyse.matsci.dynamics.ScatteringSeries.values">
+<span class="sig-name descname"><span class="pre">values</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#complex" title="(in Python v3.14)"><span class="pre">complex</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span><a class="reference internal" href="../../../../../../_modules/httk/analyse/matsci/dynamics.html#ScatteringSeries.values"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.matsci.dynamics.ScatteringSeries.values" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="httk.analyse.matsci.dynamics.ScatteringSeries.counts">
+<span class="sig-name descname"><span class="pre">counts</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span><a class="reference internal" href="../../../../../../_modules/httk/analyse/matsci/dynamics.html#ScatteringSeries.counts"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.matsci.dynamics.ScatteringSeries.counts" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="httk.analyse.matsci.dynamics.ScatteringSeries.kind">
+<span class="sig-name descname"><span class="pre">kind</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'self'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'coherent'</span></span><span class="p"><span class="pre">]</span></span></span><a class="reference internal" href="../../../../../../_modules/httk/analyse/matsci/dynamics.html#ScatteringSeries.kind"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.matsci.dynamics.ScatteringSeries.kind" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="httk.analyse.matsci.dynamics.VelocitySpectrum">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">httk.analyse.matsci.dynamics.</span></span><span class="sig-name descname"><span class="pre">VelocitySpectrum</span></span><a class="reference internal" href="../../../../../../_modules/httk/analyse/matsci/dynamics.html#VelocitySpectrum"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.matsci.dynamics.VelocitySpectrum" title="Link to this definition">¶</a></dt>
+<dd><p>One-sided velocity power spectral density averaged over atoms and axes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>frequencies</strong> – Frequencies in THz (inverse ps).</p></li>
+<li><p><strong>power</strong> – Power per THz, in (angstrom/ps)²/THz.</p></li>
+<li><p><strong>window</strong> – Applied window.</p></li>
+<li><p><strong>remove_mean</strong> – Whether each atom/component time mean was removed.</p></li>
+<li><p><strong>frequency_spacing</strong> – Uniform frequency increment in THz.</p></li>
+<li><p><strong>mean_square</strong> – Window-weighted mean-square velocity matching the discrete spectral integral.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="httk.analyse.matsci.dynamics.VelocitySpectrum.frequencies">
+<span class="sig-name descname"><span class="pre">frequencies</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span><a class="reference internal" href="../../../../../../_modules/httk/analyse/matsci/dynamics.html#VelocitySpectrum.frequencies"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.matsci.dynamics.VelocitySpectrum.frequencies" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="httk.analyse.matsci.dynamics.VelocitySpectrum.power">
+<span class="sig-name descname"><span class="pre">power</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span><a class="reference internal" href="../../../../../../_modules/httk/analyse/matsci/dynamics.html#VelocitySpectrum.power"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.matsci.dynamics.VelocitySpectrum.power" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="httk.analyse.matsci.dynamics.VelocitySpectrum.window">
+<span class="sig-name descname"><span class="pre">window</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'none'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'hann'</span></span><span class="p"><span class="pre">]</span></span></span><a class="reference internal" href="../../../../../../_modules/httk/analyse/matsci/dynamics.html#VelocitySpectrum.window"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.matsci.dynamics.VelocitySpectrum.window" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="httk.analyse.matsci.dynamics.VelocitySpectrum.remove_mean">
+<span class="sig-name descname"><span class="pre">remove_mean</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><a class="reference internal" href="../../../../../../_modules/httk/analyse/matsci/dynamics.html#VelocitySpectrum.remove_mean"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.matsci.dynamics.VelocitySpectrum.remove_mean" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="httk.analyse.matsci.dynamics.VelocitySpectrum.frequency_spacing">
+<span class="sig-name descname"><span class="pre">frequency_spacing</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span><a class="reference internal" href="../../../../../../_modules/httk/analyse/matsci/dynamics.html#VelocitySpectrum.frequency_spacing"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.matsci.dynamics.VelocitySpectrum.frequency_spacing" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="httk.analyse.matsci.dynamics.VelocitySpectrum.mean_square">
+<span class="sig-name descname"><span class="pre">mean_square</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span><a class="reference internal" href="../../../../../../_modules/httk/analyse/matsci/dynamics.html#VelocitySpectrum.mean_square"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.matsci.dynamics.VelocitySpectrum.mean_square" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="httk.analyse.matsci.dynamics.mean_squared_displacement">
+<span class="sig-prename descclassname"><span class="pre">httk.analyse.matsci.dynamics.</span></span><span class="sig-name descname"><span class="pre">mean_squared_displacement</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">unwrapped_positions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timestep</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_lag</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remove_com</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">masses</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../../_modules/httk/analyse/matsci/dynamics.html#mean_squared_displacement"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.matsci.dynamics.mean_squared_displacement" title="Link to this definition">¶</a></dt>
+<dd><p>Average displacement outer products over every time origin and atom.</p>
+<p>Positions must use persistent atom order and one fixed laboratory/material
+frame. Wrapped coordinates and changing-cell frame transformations must be
+resolved upstream. Masses are required for optional center-of-mass removal.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>unwrapped_positions</strong> (<em>Any</em>) – Finite Cartesian array (frames, atoms, 3), in angstrom.</p></li>
+<li><p><strong>timestep</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Uniform positive time between frames in ps.</p></li>
+<li><p><strong>max_lag</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em> | </em><em>None</em>) – Largest lag, inclusive; default frames minus one.</p></li>
+<li><p><strong>remove_com</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a>) – Subtract each frame’s mass-weighted center before displacements.</p></li>
+<li><p><strong>masses</strong> (<a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Sequence" title="(in Python v3.14)"><em>collections.abc.Sequence</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em>] </em><em>| </em><em>None</em>) – Positive atom masses, required only when removing COM motion.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Symmetric MSD tensors in angstrom² on lag times in ps, with time-origin counts.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.14)"><strong>ValueError</strong></a> – If data, lag, masses or derived quantities are invalid.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#httk.analyse.matsci.dynamics.TensorSeries" title="httk.analyse.matsci.dynamics.TensorSeries">TensorSeries</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="httk.analyse.matsci.dynamics.velocity_autocorrelation">
+<span class="sig-prename descclassname"><span class="pre">httk.analyse.matsci.dynamics.</span></span><span class="sig-name descname"><span class="pre">velocity_autocorrelation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">velocities</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timestep</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_lag</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remove_mean</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../../_modules/httk/analyse/matsci/dynamics.html#velocity_autocorrelation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.matsci.dynamics.velocity_autocorrelation" title="Link to this definition">¶</a></dt>
+<dd><p>Compute dimensionful velocity correlation tensors over all origins.</p>
+<p>C_ij(k)=mean[v_i(t)*v_j(t+k)] over origins and atoms. The lagged tensor need
+not be symmetric. This pair-count estimator is not a power spectral density.</p>
+<p>Removing each atom’s own time mean also removes Δr/T, the diffusive signal. It biases the
+integral estimate of D low by about t_plateau/T and drives the full-length integral to zero,
+so use <code class="docutils literal notranslate"><span class="pre">remove_mean=True</span></code> only for non-diffusive (solid) systems.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>velocities</strong> (<em>Any</em>) – Array (frames, atoms, 3) in angstrom/ps.</p></li>
+<li><p><strong>timestep</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Uniform frame spacing in ps.</p></li>
+<li><p><strong>max_lag</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em> | </em><em>None</em>) – Largest inclusive lag.</p></li>
+<li><p><strong>remove_mean</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a>) – Subtract each atom/component time mean before correlation; only for non-diffusive systems.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Correlation tensors in (angstrom/ps)² on lag times in ps.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.14)"><strong>ValueError</strong></a> – If data, lag or results are invalid.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#httk.analyse.matsci.dynamics.TensorSeries" title="httk.analyse.matsci.dynamics.TensorSeries">TensorSeries</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="httk.analyse.matsci.dynamics.diffusion_from_msd">
+<span class="sig-prename descclassname"><span class="pre">httk.analyse.matsci.dynamics.</span></span><span class="sig-name descname"><span class="pre">diffusion_from_msd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">msd</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">window</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../../_modules/httk/analyse/matsci/dynamics.html#diffusion_from_msd"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.matsci.dynamics.diffusion_from_msd" title="Link to this definition">¶</a></dt>
+<dd><p>Fit MSD_ij=2*D_ij*t+intercept on an explicit inclusive lag window.</p>
+<p>A linear fit alone cannot establish diffusive behavior. Inspect window
+sensitivity and residuals; negative noisy fitted eigenvalues are retained.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>msd</strong> (<a class="reference internal" href="#httk.analyse.matsci.dynamics.TensorSeries" title="httk.analyse.matsci.dynamics.TensorSeries"><em>TensorSeries</em></a>) – MSD tensor series in angstrom² and ps.</p></li>
+<li><p><strong>window</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><em>tuple</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em>]</em>) – Inclusive (start, stop) lag indices with at least three points.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Diffusion tensor, intercepts and component residual RMS.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.14)"><strong>ValueError</strong></a> – If the window, times or tensor data are invalid.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#httk.analyse.matsci.dynamics.DiffusionFit" title="httk.analyse.matsci.dynamics.DiffusionFit">DiffusionFit</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="httk.analyse.matsci.dynamics.integrate_vacf">
+<span class="sig-prename descclassname"><span class="pre">httk.analyse.matsci.dynamics.</span></span><span class="sig-name descname"><span class="pre">integrate_vacf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vacf</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../../_modules/httk/analyse/matsci/dynamics.html#integrate_vacf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.matsci.dynamics.integrate_vacf" title="Link to this definition">¶</a></dt>
+<dd><p>Trapezoid-integrate a velocity correlation into a running diffusion tensor.</p>
+<p>The result is a running series kept in angstrom²/ps; the diffusion coefficient
+as a property (m²/s) is reported by <a class="reference internal" href="#httk.analyse.matsci.dynamics.diffusion_from_msd" title="httk.analyse.matsci.dynamics.diffusion_from_msd"><code class="xref py py-func docutils literal notranslate"><span class="pre">diffusion_from_msd()</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>vacf</strong> (<a class="reference internal" href="#httk.analyse.matsci.dynamics.TensorSeries" title="httk.analyse.matsci.dynamics.TensorSeries"><em>TensorSeries</em></a>) – Dimensionful VACF in (angstrom/ps)² on increasing ps lags.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Running integral in angstrom²/ps, starting at zero.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.14)"><strong>ValueError</strong></a> – If lag times or tensor values are invalid.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#httk.analyse.matsci.dynamics.TensorSeries" title="httk.analyse.matsci.dynamics.TensorSeries">TensorSeries</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="httk.analyse.matsci.dynamics.van_hove_self">
+<span class="sig-prename descclassname"><span class="pre">httk.analyse.matsci.dynamics.</span></span><span class="sig-name descname"><span class="pre">van_hove_self</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">unwrapped_positions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timestep</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">lag</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bins</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../../_modules/httk/analyse/matsci/dynamics.html#van_hove_self"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.matsci.dynamics.van_hove_self" title="Link to this definition">¶</a></dt>
+<dd><p>Histogram self displacements without renormalizing a truncated radial range.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>unwrapped_positions</strong> (<em>Any</em>) – Persistent-atom Cartesian positions (frames, atoms, 3) in angstrom.</p></li>
+<li><p><strong>timestep</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Uniform frame spacing in ps.</p></li>
+<li><p><strong>lag</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a>) – Nonnegative integer lag.</p></li>
+<li><p><strong>bins</strong> (<a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Sequence" title="(in Python v3.14)"><em>collections.abc.Sequence</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em>]</em>) – Strictly increasing nonnegative spherical-shell edges in angstrom.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Probability per shell volume and raw sample counts.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.14)"><strong>ValueError</strong></a> – If inputs or shell edges are invalid.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#httk.analyse.matsci.dynamics.RadialDynamics" title="httk.analyse.matsci.dynamics.RadialDynamics">RadialDynamics</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="httk.analyse.matsci.dynamics.van_hove_distinct">
+<span class="sig-prename descclassname"><span class="pre">httk.analyse.matsci.dynamics.</span></span><span class="sig-name descname"><span class="pre">van_hove_distinct</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">positions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timestep</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">lag</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bins</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cell</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../../_modules/httk/analyse/matsci/dynamics.html#van_hove_distinct"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.matsci.dynamics.van_hove_distinct" title="Link to this definition">¶</a></dt>
+<dd><p>Compute the bulk distinct van Hove density with persistent atom identity.</p>
+<p>Counts displacements from atom i at each origin to atom j at the lag, with
+i != j. Minimum images use one fixed periodic 3D cell. The integral over a
+complete spatial domain is N-1; a finite spherical range is not renormalized.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>positions</strong> (<em>Any</em>) – Cartesian array (frames, atoms, 3) in angstrom, with persistent atom order.</p></li>
+<li><p><strong>timestep</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Uniform frame spacing in ps.</p></li>
+<li><p><strong>lag</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a>) – Nonnegative integer lag.</p></li>
+<li><p><strong>bins</strong> (<a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Sequence" title="(in Python v3.14)"><em>collections.abc.Sequence</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em>]</em>) – Increasing nonnegative radial edges, within the unique-image radius.</p></li>
+<li><p><strong>cell</strong> (<em>Any</em>) – Fixed fully periodic 3x3 row-vector cell in angstrom.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Distinct neighbor density per angstrom³, directed counts and center-origin count.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.14)"><strong>ValueError</strong></a> – If data, cell or radial range is invalid.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#httk.analyse.matsci.dynamics.RadialDynamics" title="httk.analyse.matsci.dynamics.RadialDynamics">RadialDynamics</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="httk.analyse.matsci.dynamics.intermediate_scattering">
+<span class="sig-prename descclassname"><span class="pre">httk.analyse.matsci.dynamics.</span></span><span class="sig-name descname"><span class="pre">intermediate_scattering</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">positions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timestep</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wavevectors</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">kind</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_lag</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../../_modules/httk/analyse/matsci/dynamics.html#intermediate_scattering"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.matsci.dynamics.intermediate_scattering" title="Link to this definition">¶</a></dt>
+<dd><p>Compute self or coherent scattering with exp(+i q·displacement).</p>
+<p>Self scattering averages over atoms and origins. Coherent scattering is
+mean[conj(rho(q,t))*rho(q,t+lag)]/N, retaining the density peak at q=0.
+For arbitrary q use unwrapped positions; periodic wrapped coordinates are
+phase equivalent only for wavevectors commensurate with the fixed cell.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>positions</strong> (<em>Any</em>) – Cartesian array (frames, atoms, 3) in angstrom.</p></li>
+<li><p><strong>timestep</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Uniform frame spacing in ps.</p></li>
+<li><p><strong>wavevectors</strong> (<em>Any</em>) – Finite Cartesian (wavevectors, 3) array in inverse angstrom.</p></li>
+<li><p><strong>kind</strong> (<em>Literal</em><em>[</em><em>'self'</em><em>, </em><em>'coherent'</em><em>]</em>) – Explicit self or coherent definition.</p></li>
+<li><p><strong>max_lag</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em> | </em><em>None</em>) – Largest inclusive lag.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Complex correlations in lag and wavevector order.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.14)"><strong>ValueError</strong></a> – If shapes, kind or numeric values are invalid.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#httk.analyse.matsci.dynamics.ScatteringSeries" title="httk.analyse.matsci.dynamics.ScatteringSeries">ScatteringSeries</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="httk.analyse.matsci.dynamics.velocity_spectrum">
+<span class="sig-prename descclassname"><span class="pre">httk.analyse.matsci.dynamics.</span></span><span class="sig-name descname"><span class="pre">velocity_spectrum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">velocities</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timestep</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">window</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'hann'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remove_mean</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../../_modules/httk/analyse/matsci/dynamics.html#velocity_spectrum"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#httk.analyse.matsci.dynamics.velocity_spectrum" title="Link to this definition">¶</a></dt>
+<dd><p>Compute a one-sided periodogram whose discrete integral obeys Parseval.</p>
+<p>This is a velocity power spectrum, not a normalized phonon density of states.
+It averages equally over atoms and Cartesian components. Multiplying power
+by frequency spacing and summing gives the window-weighted mean square.</p>
+<p>The default keeps each atom’s time-averaged velocity. For a diffusing atom that mean is
+Δr/T, the diffusive signal: removing it zeroes the rectangular-window ω=0 bin, which is
+proportional to the diffusion coefficient. Per-atom mean removal is appropriate only for
+non-diffusive (solid) systems.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>velocities</strong> (<em>Any</em>) – Array (frames, atoms, 3) in angstrom/ps.</p></li>
+<li><p><strong>timestep</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Uniform positive frame spacing in ps.</p></li>
+<li><p><strong>window</strong> (<em>Literal</em><em>[</em><em>'none'</em><em>, </em><em>'hann'</em><em>]</em>) – Rectangular (none) or Hann window.</p></li>
+<li><p><strong>remove_mean</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a>) – Remove each atom/component time mean before windowing; only for non-diffusive systems.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>THz frequencies and dimensionful velocity power density.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.14)"><strong>ValueError</strong></a> – If input, window or spectral values are invalid.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#httk.analyse.matsci.dynamics.VelocitySpectrum" title="httk.analyse.matsci.dynamics.VelocitySpectrum">VelocitySpectrum</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="../elasticity/index.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">httk.analyse.matsci.elasticity</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="../defects/index.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">httk.analyse.matsci.defects</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2026, The httk-analyse AUTHORS
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">httk.analyse.matsci.dynamics</a><ul>
+<li><a class="reference internal" href="#classes">Classes</a></li>
+<li><a class="reference internal" href="#functions">Functions</a></li>
+<li><a class="reference internal" href="#module-contents">Module Contents</a><ul>
+<li><a class="reference internal" href="#httk.analyse.matsci.dynamics.TensorSeries"><code class="docutils literal notranslate"><span class="pre">TensorSeries</span></code></a><ul>
+<li><a class="reference internal" href="#httk.analyse.matsci.dynamics.TensorSeries.times"><code class="docutils literal notranslate"><span class="pre">TensorSeries.times</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.matsci.dynamics.TensorSeries.tensors"><code class="docutils literal notranslate"><span class="pre">TensorSeries.tensors</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.matsci.dynamics.TensorSeries.counts"><code class="docutils literal notranslate"><span class="pre">TensorSeries.counts</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.matsci.dynamics.TensorSeries.kind"><code class="docutils literal notranslate"><span class="pre">TensorSeries.kind</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.matsci.dynamics.TensorSeries.remove_com"><code class="docutils literal notranslate"><span class="pre">TensorSeries.remove_com</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.matsci.dynamics.TensorSeries.remove_mean"><code class="docutils literal notranslate"><span class="pre">TensorSeries.remove_mean</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.matsci.dynamics.TensorSeries.trace"><code class="docutils literal notranslate"><span class="pre">TensorSeries.trace</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#httk.analyse.matsci.dynamics.DiffusionFit"><code class="docutils literal notranslate"><span class="pre">DiffusionFit</span></code></a><ul>
+<li><a class="reference internal" href="#httk.analyse.matsci.dynamics.DiffusionFit.tensor"><code class="docutils literal notranslate"><span class="pre">DiffusionFit.tensor</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.matsci.dynamics.DiffusionFit.intercept"><code class="docutils literal notranslate"><span class="pre">DiffusionFit.intercept</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.matsci.dynamics.DiffusionFit.rmse"><code class="docutils literal notranslate"><span class="pre">DiffusionFit.rmse</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.matsci.dynamics.DiffusionFit.window"><code class="docutils literal notranslate"><span class="pre">DiffusionFit.window</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.matsci.dynamics.DiffusionFit.condition_number"><code class="docutils literal notranslate"><span class="pre">DiffusionFit.condition_number</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.matsci.dynamics.DiffusionFit.isotropic"><code class="docutils literal notranslate"><span class="pre">DiffusionFit.isotropic</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#httk.analyse.matsci.dynamics.RadialDynamics"><code class="docutils literal notranslate"><span class="pre">RadialDynamics</span></code></a><ul>
+<li><a class="reference internal" href="#httk.analyse.matsci.dynamics.RadialDynamics.lag"><code class="docutils literal notranslate"><span class="pre">RadialDynamics.lag</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.matsci.dynamics.RadialDynamics.time"><code class="docutils literal notranslate"><span class="pre">RadialDynamics.time</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.matsci.dynamics.RadialDynamics.edges"><code class="docutils literal notranslate"><span class="pre">RadialDynamics.edges</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.matsci.dynamics.RadialDynamics.density"><code class="docutils literal notranslate"><span class="pre">RadialDynamics.density</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.matsci.dynamics.RadialDynamics.counts"><code class="docutils literal notranslate"><span class="pre">RadialDynamics.counts</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.matsci.dynamics.RadialDynamics.samples"><code class="docutils literal notranslate"><span class="pre">RadialDynamics.samples</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.matsci.dynamics.RadialDynamics.kind"><code class="docutils literal notranslate"><span class="pre">RadialDynamics.kind</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#httk.analyse.matsci.dynamics.ScatteringSeries"><code class="docutils literal notranslate"><span class="pre">ScatteringSeries</span></code></a><ul>
+<li><a class="reference internal" href="#httk.analyse.matsci.dynamics.ScatteringSeries.times"><code class="docutils literal notranslate"><span class="pre">ScatteringSeries.times</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.matsci.dynamics.ScatteringSeries.wavevectors"><code class="docutils literal notranslate"><span class="pre">ScatteringSeries.wavevectors</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.matsci.dynamics.ScatteringSeries.values"><code class="docutils literal notranslate"><span class="pre">ScatteringSeries.values</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.matsci.dynamics.ScatteringSeries.counts"><code class="docutils literal notranslate"><span class="pre">ScatteringSeries.counts</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.matsci.dynamics.ScatteringSeries.kind"><code class="docutils literal notranslate"><span class="pre">ScatteringSeries.kind</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#httk.analyse.matsci.dynamics.VelocitySpectrum"><code class="docutils literal notranslate"><span class="pre">VelocitySpectrum</span></code></a><ul>
+<li><a class="reference internal" href="#httk.analyse.matsci.dynamics.VelocitySpectrum.frequencies"><code class="docutils literal notranslate"><span class="pre">VelocitySpectrum.frequencies</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.matsci.dynamics.VelocitySpectrum.power"><code class="docutils literal notranslate"><span class="pre">VelocitySpectrum.power</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.matsci.dynamics.VelocitySpectrum.window"><code class="docutils literal notranslate"><span class="pre">VelocitySpectrum.window</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.matsci.dynamics.VelocitySpectrum.remove_mean"><code class="docutils literal notranslate"><span class="pre">VelocitySpectrum.remove_mean</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.matsci.dynamics.VelocitySpectrum.frequency_spacing"><code class="docutils literal notranslate"><span class="pre">VelocitySpectrum.frequency_spacing</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.matsci.dynamics.VelocitySpectrum.mean_square"><code class="docutils literal notranslate"><span class="pre">VelocitySpectrum.mean_square</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#httk.analyse.matsci.dynamics.mean_squared_displacement"><code class="docutils literal notranslate"><span class="pre">mean_squared_displacement()</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.matsci.dynamics.velocity_autocorrelation"><code class="docutils literal notranslate"><span class="pre">velocity_autocorrelation()</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.matsci.dynamics.diffusion_from_msd"><code class="docutils literal notranslate"><span class="pre">diffusion_from_msd()</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.matsci.dynamics.integrate_vacf"><code class="docutils literal notranslate"><span class="pre">integrate_vacf()</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.matsci.dynamics.van_hove_self"><code class="docutils literal notranslate"><span class="pre">van_hove_self()</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.matsci.dynamics.van_hove_distinct"><code class="docutils literal notranslate"><span class="pre">van_hove_distinct()</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.matsci.dynamics.intermediate_scattering"><code class="docutils literal notranslate"><span class="pre">intermediate_scattering()</span></code></a></li>
+<li><a class="reference internal" href="#httk.analyse.matsci.dynamics.velocity_spectrum"><code class="docutils literal notranslate"><span class="pre">velocity_spectrum()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../../../../../../_static/documentation_options.js?v=952df46a"></script>
+    <script src="../../../../../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../../../../../_static/scripts/furo.js?v=46bd48cc"></script>
+    <script src="../../../../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../../../../_static/copybutton.js?v=fd10adb8"></script>
+    <script src="../../../../../../_static/selector.js?v=d8e9b3ce"></script>
+    <script>window.HTTK_DOCS_VERSIONING = {"channel":"dev","version":"dev:develop","versionPathDepth":2};</script>
+    </body>
+</html>

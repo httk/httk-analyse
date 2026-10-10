@@ -1,0 +1,22 @@
+httk.analyse.integrations
+=========================
+
+.. py:module:: httk.analyse.integrations
+
+.. autoapi-nested-parse::
+
+   Optional simulation-output adapters for analysis inputs.
+
+
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 1
+
+   /reference/autoapi/httk/analyse/integrations/phonopy/index
+   /reference/autoapi/httk/analyse/integrations/trajectory/index
+   /reference/autoapi/httk/analyse/integrations/vasp/index
+
+

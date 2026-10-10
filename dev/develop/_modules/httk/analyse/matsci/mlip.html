@@ -1,0 +1,1024 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../../../../">
+  <head><meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../../genindex.html"><link rel="search" title="Search" href="../../../../search.html">
+
+    <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
+        <title>httk.analyse.matsci.mlip - httk-analyse dev:develop documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=d111a655" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=7bdb33bb" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/selector.css?v=626bada3" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f2f2f2;
+  --color-code-foreground: #1e1e1e;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle site navigation sidebar">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc" aria-label="Toggle table of contents sidebar">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+<div class="announcement">
+  <aside class="announcement-content">
+     Development documentation (dev:develop) — built from the GitHub develop branch; content may differ from any release. 
+  </aside>
+</div>
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <span class="icon"><svg><use href="#svg-menu"></use></svg></span>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../../../index.html"><div class="brand">httk-analyse dev:develop documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+        <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../../index.html">
+  
+  <span class="sidebar-brand-text">httk-analyse dev:develop documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../../../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../generic-hulls.html">Generic lower convex hulls</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../phase-diagrams.html">Materials phase diagrams</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../equations-of-state.html">Static equation-of-state fitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../energetics.html">Static energy bookkeeping</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../time-series.html">Simulation time series</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../mlip-validation.html">Validate MLIP predictions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../elasticity.html">Elasticity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../md-structure.html">Molecular-dynamics structure analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../dynamics.html">Dynamics and diffusion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../thermal-response.html">Equilibrium response and transport</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../phonons.html">Harmonic phonon thermodynamics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../electronic.html">Electronic and magnetic quantities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../vasp-analysis.html">VASP electronic analysis adapters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../defects.html">Defects, surfaces, and kinetics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../analysis-artifacts.html">Summaries and figures</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../records.html">Recording results</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../analysis-recipes.html">Analysis recipes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../crysviz.html">CrysViz structure viewer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../reference/index.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../notebooks/examples.html">Convex-hull and phase-diagram examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../notebooks/materials-toolbox.html">Materials toolbox example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../notebooks/materials-response.html">Materials response toolbox</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../reference/autoapi/index.html">API Reference</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+            <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <h1>Source code for httk.analyse.matsci.mlip</h1><div class="highlight"><pre>
+<span></span><span class="sd">"""Residual metrics for machine-learning interatomic potentials."""</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Sequence</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Literal</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">httk.core.definition_ids</span><span class="w"> </span><span class="kn">import</span> <span class="n">ATOMIC_FORCE</span><span class="p">,</span> <span class="n">STRESS_TENSOR</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">..</span><span class="w"> </span><span class="kn">import</span> <span class="n">definitions</span> <span class="k">as</span> <span class="n">defs</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..definitions</span><span class="w"> </span><span class="kn">import</span> <span class="n">BoundValue</span><span class="p">,</span> <span class="n">FieldBinding</span><span class="p">,</span> <span class="n">_reject_selection</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">"EnergyErrors"</span><span class="p">,</span>
+    <span class="s2">"ErrorStatistics"</span><span class="p">,</span>
+    <span class="s2">"ForceErrors"</span><span class="p">,</span>
+    <span class="s2">"StressErrors"</span><span class="p">,</span>
+    <span class="s2">"energy_errors"</span><span class="p">,</span>
+    <span class="s2">"force_errors"</span><span class="p">,</span>
+    <span class="s2">"stress_errors"</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="n">_STATISTIC_DERIVATIONS</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="p">(</span><span class="s2">"rmse"</span><span class="p">,</span> <span class="n">defs</span><span class="o">.</span><span class="n">RMSE</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"mae"</span><span class="p">,</span> <span class="n">defs</span><span class="o">.</span><span class="n">MAE</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"bias"</span><span class="p">,</span> <span class="n">defs</span><span class="o">.</span><span class="n">BIAS</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"maximum_absolute_error"</span><span class="p">,</span> <span class="n">defs</span><span class="o">.</span><span class="n">MAXIMUM_ABSOLUTE_ERROR</span><span class="p">),</span>
+<span class="p">)</span>
+<span class="n">_STATISTIC_MEMBERS</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"bias"</span><span class="p">,</span> <span class="s2">"mae"</span><span class="p">,</span> <span class="s2">"rmse"</span><span class="p">,</span> <span class="s2">"maximum_absolute_error"</span><span class="p">,</span> <span class="s2">"percentile95_absolute_error"</span><span class="p">)</span>
+<span class="n">_STRESS_COMPONENTS</span> <span class="o">=</span> <span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_energy_summary</span><span class="p">(</span>
+    <span class="n">field</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">weighting</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">offset</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">statistics</span><span class="p">:</span> <span class="s2">"ErrorStatistics"</span><span class="p">,</span>
+    <span class="n">residuals</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BoundValue</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Build one ``energy_prediction_errors`` dictionary value with exact member types."""</span>
+    <span class="n">value</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">"weighting"</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">weighting</span><span class="p">),</span>
+        <span class="s2">"offset_per_atom"</span><span class="p">:</span> <span class="kc">None</span> <span class="k">if</span> <span class="n">offset</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="nb">float</span><span class="p">(</span><span class="n">offset</span><span class="p">),</span>
+        <span class="s2">"count"</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">statistics</span><span class="o">.</span><span class="n">count</span><span class="p">),</span>
+    <span class="p">}</span>
+    <span class="n">value</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">name</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">statistics</span><span class="p">,</span> <span class="n">name</span><span class="p">))</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">_STATISTIC_MEMBERS</span><span class="p">})</span>
+    <span class="n">value</span><span class="p">[</span><span class="s2">"residuals"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">r</span><span class="p">)</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">residuals</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">BoundValue</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="n">FieldBinding</span><span class="p">(</span><span class="n">defs</span><span class="o">.</span><span class="n">ENERGY_PREDICTION_ERRORS</span><span class="p">),</span> <span class="n">value</span><span class="p">)</span>
+
+
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">slots</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="viewcode-block" id="ErrorStatistics">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/mlip/index.html#httk.analyse.matsci.ErrorStatistics">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">ErrorStatistics</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Summarize a set of prediction-minus-reference residuals.</span>
+
+<span class="sd">    :param count: Number of residual samples before weighting.</span>
+<span class="sd">    :param bias: Weighted mean signed residual.</span>
+<span class="sd">    :param mae: Weighted mean absolute residual.</span>
+<span class="sd">    :param rmse: Weighted root mean square residual.</span>
+<span class="sd">    :param maximum_absolute_error: Largest absolute residual.</span>
+<span class="sd">    :param percentile95_absolute_error: Unweighted 95th percentile absolute residual using NumPy's linear interpolation.</span>
+<span class="sd">    """</span>
+
+<div class="viewcode-block" id="ErrorStatistics.count">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/mlip/index.html#httk.analyse.matsci.ErrorStatistics.count">[docs]</a>
+    <span class="n">count</span><span class="p">:</span> <span class="nb">int</span></div>
+
+<div class="viewcode-block" id="ErrorStatistics.bias">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/mlip/index.html#httk.analyse.matsci.ErrorStatistics.bias">[docs]</a>
+    <span class="n">bias</span><span class="p">:</span> <span class="nb">float</span></div>
+
+<div class="viewcode-block" id="ErrorStatistics.mae">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/mlip/index.html#httk.analyse.matsci.ErrorStatistics.mae">[docs]</a>
+    <span class="n">mae</span><span class="p">:</span> <span class="nb">float</span></div>
+
+<div class="viewcode-block" id="ErrorStatistics.rmse">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/mlip/index.html#httk.analyse.matsci.ErrorStatistics.rmse">[docs]</a>
+    <span class="n">rmse</span><span class="p">:</span> <span class="nb">float</span></div>
+
+<div class="viewcode-block" id="ErrorStatistics.maximum_absolute_error">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/mlip/index.html#httk.analyse.matsci.ErrorStatistics.maximum_absolute_error">[docs]</a>
+    <span class="n">maximum_absolute_error</span><span class="p">:</span> <span class="nb">float</span></div>
+
+<div class="viewcode-block" id="ErrorStatistics.percentile95_absolute_error">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/mlip/index.html#httk.analyse.matsci.ErrorStatistics.percentile95_absolute_error">[docs]</a>
+    <span class="n">percentile95_absolute_error</span><span class="p">:</span> <span class="nb">float</span></div>
+</div>
+
+
+
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">slots</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="viewcode-block" id="EnergyErrors">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/mlip/index.html#httk.analyse.matsci.EnergyErrors">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">EnergyErrors</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Hold raw and optional offset-corrected per-atom energy errors.</span>
+
+<span class="sd">    :param residuals: Raw predicted-minus-reference residuals in eV/atom, in configuration order.</span>
+<span class="sd">    :param statistics: Raw energy error statistics.</span>
+<span class="sd">    :param offset_per_atom: Explicit offset subtracted from predicted energies, or ``None`` when no correction was requested.</span>
+<span class="sd">    :param corrected_residuals: Corrected residuals in eV/atom, or ``None`` when no correction was requested.</span>
+<span class="sd">    :param corrected_statistics: Corrected energy error statistics, or ``None`` when no correction was requested.</span>
+<span class="sd">    :param weighting: Weighting used for mean and RMS statistics.</span>
+<span class="sd">    """</span>
+
+<div class="viewcode-block" id="EnergyErrors.residuals">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/mlip/index.html#httk.analyse.matsci.EnergyErrors.residuals">[docs]</a>
+    <span class="n">residuals</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="EnergyErrors.statistics">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/mlip/index.html#httk.analyse.matsci.EnergyErrors.statistics">[docs]</a>
+    <span class="n">statistics</span><span class="p">:</span> <span class="n">ErrorStatistics</span></div>
+
+<div class="viewcode-block" id="EnergyErrors.offset_per_atom">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/mlip/index.html#httk.analyse.matsci.EnergyErrors.offset_per_atom">[docs]</a>
+    <span class="n">offset_per_atom</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="EnergyErrors.corrected_residuals">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/mlip/index.html#httk.analyse.matsci.EnergyErrors.corrected_residuals">[docs]</a>
+    <span class="n">corrected_residuals</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="EnergyErrors.corrected_statistics">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/mlip/index.html#httk.analyse.matsci.EnergyErrors.corrected_statistics">[docs]</a>
+    <span class="n">corrected_statistics</span><span class="p">:</span> <span class="n">ErrorStatistics</span> <span class="o">|</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="EnergyErrors.weighting">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/mlip/index.html#httk.analyse.matsci.EnergyErrors.weighting">[docs]</a>
+    <span class="n">weighting</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">"configuration"</span><span class="p">,</span> <span class="s2">"atom"</span><span class="p">]</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Copy residual sequences into immutable tuples."""</span>
+        <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">"residuals"</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">residuals</span><span class="p">))</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">corrected_residuals</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">"corrected_residuals"</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">corrected_residuals</span><span class="p">))</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_bound_values</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">selection</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">BoundValue</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""Bind the raw statistics as ``total_energy_per_atom`` derivations (configuration weighting only), plus summaries.</span>
+
+<span class="sd">        A statistic's population is part of its meaning and derivation terms do not carry weighting, so</span>
+<span class="sd">        other weightings are bound only through the ``energy_prediction_errors`` dictionary value (always</span>
+<span class="sd">        bound; raw comparison). When an offset was applied the corrected comparison is also bound, as</span>
+<span class="sd">        ``corrected_energy_prediction_errors``.</span>
+<span class="sd">        """</span>
+        <span class="n">_reject_selection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">selection</span><span class="p">)</span>
+        <span class="n">out</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">BoundValue</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">weighting</span> <span class="o">==</span> <span class="s2">"configuration"</span><span class="p">:</span>
+            <span class="n">binding</span> <span class="o">=</span> <span class="n">defs</span><span class="o">.</span><span class="n">TOTAL_ENERGY_PER_ATOM</span>
+            <span class="n">out</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span>
+                <span class="n">BoundValue</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">"statistics.</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="n">FieldBinding</span><span class="p">(</span><span class="n">binding</span><span class="p">,</span> <span class="n">derivation</span><span class="p">),</span> <span class="nb">float</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">statistics</span><span class="p">,</span> <span class="n">name</span><span class="p">))</span>
+                <span class="p">)</span>
+                <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">derivation</span> <span class="ow">in</span> <span class="n">_STATISTIC_DERIVATIONS</span>
+            <span class="p">)</span>
+        <span class="n">out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_energy_summary</span><span class="p">(</span><span class="s2">"energy_prediction_errors"</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">weighting</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">statistics</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">residuals</span><span class="p">))</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">corrected_statistics</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">corrected_residuals</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="n">_energy_summary</span><span class="p">(</span>
+                    <span class="s2">"corrected_energy_prediction_errors"</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">weighting</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">offset_per_atom</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">corrected_statistics</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">corrected_residuals</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">out</span><span class="p">)</span></div>
+
+
+
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">slots</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="viewcode-block" id="ForceErrors">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/mlip/index.html#httk.analyse.matsci.ForceErrors">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">ForceErrors</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Hold force residuals and aggregate, configuration, and species metrics.</span>
+
+<span class="sd">    :param residuals: Per-atom ``(x, y, z)`` residual tuples in configuration and atom order, in eV/angstrom.</span>
+<span class="sd">    :param weighting: Weighting policy used by aggregate and grouped summaries.</span>
+<span class="sd">    :param component_statistics: Aggregate residual statistics in x, y, z order.</span>
+<span class="sd">    :param mean_vector_error: Weighted mean Euclidean norm of atom force residuals.</span>
+<span class="sd">    :param rms_vector_error: Weighted root mean square Euclidean norm of atom force residuals.</span>
+<span class="sd">    :param per_configuration_component_statistics: Component statistics for each configuration.</span>
+<span class="sd">    :param per_configuration_mean_vector_error: Mean vector error for each configuration.</span>
+<span class="sd">    :param per_configuration_rms_vector_error: RMS vector error for each configuration.</span>
+<span class="sd">    :param per_species_component_statistics: Species labels and their conditional component statistics, sorted by label.</span>
+<span class="sd">    :param species: Species labels in configuration and atom order, matching residuals.</span>
+<span class="sd">    """</span>
+
+<div class="viewcode-block" id="ForceErrors.residuals">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/mlip/index.html#httk.analyse.matsci.ForceErrors.residuals">[docs]</a>
+    <span class="n">residuals</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span> <span class="o">...</span><span class="p">],</span> <span class="o">...</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="ForceErrors.weighting">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/mlip/index.html#httk.analyse.matsci.ForceErrors.weighting">[docs]</a>
+    <span class="n">weighting</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">"atom"</span><span class="p">,</span> <span class="s2">"configuration"</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="ForceErrors.component_statistics">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/mlip/index.html#httk.analyse.matsci.ForceErrors.component_statistics">[docs]</a>
+    <span class="n">component_statistics</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">ErrorStatistics</span><span class="p">,</span> <span class="n">ErrorStatistics</span><span class="p">,</span> <span class="n">ErrorStatistics</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="ForceErrors.mean_vector_error">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/mlip/index.html#httk.analyse.matsci.ForceErrors.mean_vector_error">[docs]</a>
+    <span class="n">mean_vector_error</span><span class="p">:</span> <span class="nb">float</span></div>
+
+<div class="viewcode-block" id="ForceErrors.rms_vector_error">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/mlip/index.html#httk.analyse.matsci.ForceErrors.rms_vector_error">[docs]</a>
+    <span class="n">rms_vector_error</span><span class="p">:</span> <span class="nb">float</span></div>
+
+<div class="viewcode-block" id="ForceErrors.per_configuration_component_statistics">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/mlip/index.html#httk.analyse.matsci.ForceErrors.per_configuration_component_statistics">[docs]</a>
+    <span class="n">per_configuration_component_statistics</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="n">ErrorStatistics</span><span class="p">,</span> <span class="n">ErrorStatistics</span><span class="p">,</span> <span class="n">ErrorStatistics</span><span class="p">],</span> <span class="o">...</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="ForceErrors.per_configuration_mean_vector_error">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/mlip/index.html#httk.analyse.matsci.ForceErrors.per_configuration_mean_vector_error">[docs]</a>
+    <span class="n">per_configuration_mean_vector_error</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="ForceErrors.per_configuration_rms_vector_error">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/mlip/index.html#httk.analyse.matsci.ForceErrors.per_configuration_rms_vector_error">[docs]</a>
+    <span class="n">per_configuration_rms_vector_error</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="ForceErrors.per_species_component_statistics">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/mlip/index.html#httk.analyse.matsci.ForceErrors.per_species_component_statistics">[docs]</a>
+    <span class="n">per_species_component_statistics</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">ErrorStatistics</span><span class="p">,</span> <span class="n">ErrorStatistics</span><span class="p">,</span> <span class="n">ErrorStatistics</span><span class="p">]],</span> <span class="o">...</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="ForceErrors.species">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/mlip/index.html#httk.analyse.matsci.ForceErrors.species">[docs]</a>
+    <span class="n">species</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="o">...</span><span class="p">]</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Copy all nested result sequences into immutable tuples."""</span>
+        <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="s2">"residuals"</span><span class="p">,</span>
+            <span class="nb">tuple</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">row</span><span class="p">)</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">config</span><span class="p">)</span> <span class="k">for</span> <span class="n">config</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">residuals</span><span class="p">),</span>
+        <span class="p">)</span>
+        <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">"component_statistics"</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">component_statistics</span><span class="p">))</span>
+        <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">"species"</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">row</span><span class="p">)</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">species</span><span class="p">))</span>
+        <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="s2">"per_configuration_component_statistics"</span><span class="p">,</span>
+            <span class="nb">tuple</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">stats</span><span class="p">)</span> <span class="k">for</span> <span class="n">stats</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">per_configuration_component_statistics</span><span class="p">),</span>
+        <span class="p">)</span>
+        <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">"per_configuration_mean_vector_error"</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">per_configuration_mean_vector_error</span><span class="p">))</span>
+        <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">"per_configuration_rms_vector_error"</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">per_configuration_rms_vector_error</span><span class="p">))</span>
+        <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="s2">"per_species_component_statistics"</span><span class="p">,</span>
+            <span class="nb">tuple</span><span class="p">((</span><span class="n">label</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">stats</span><span class="p">))</span> <span class="k">for</span> <span class="n">label</span><span class="p">,</span> <span class="n">stats</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">per_species_component_statistics</span><span class="p">),</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_bound_values</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">selection</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">BoundValue</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""Bind ``force_prediction_errors`` always, plus ``atomic_force`` derivations for atom weighting.</span>
+
+<span class="sd">        The derivation values are the (x, y, z) vectors of the aggregate component statistics; other</span>
+<span class="sd">        weightings yield only the dictionary value, which carries ``weighting`` as a member.</span>
+<span class="sd">        """</span>
+        <span class="n">_reject_selection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">selection</span><span class="p">)</span>
+        <span class="n">out</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">BoundValue</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">weighting</span> <span class="o">==</span> <span class="s2">"atom"</span><span class="p">:</span>
+            <span class="n">out</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span>
+                <span class="n">BoundValue</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">"component_statistics.</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
+                    <span class="n">FieldBinding</span><span class="p">(</span><span class="n">ATOMIC_FORCE</span><span class="p">,</span> <span class="n">derivation</span><span class="p">),</span>
+                    <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">stats</span><span class="p">,</span> <span class="n">name</span><span class="p">))</span> <span class="k">for</span> <span class="n">stats</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">component_statistics</span><span class="p">],</span>
+                <span class="p">)</span>
+                <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">derivation</span> <span class="ow">in</span> <span class="n">_STATISTIC_DERIVATIONS</span>
+            <span class="p">)</span>
+        <span class="n">species</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">per_species_component_statistics</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">item</span><span class="p">:</span> <span class="n">item</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">value</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">"weighting"</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">weighting</span><span class="p">),</span>
+            <span class="s2">"count"</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">component_statistics</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">count</span><span class="p">),</span>
+        <span class="p">}</span>
+        <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">_STATISTIC_MEMBERS</span><span class="p">:</span>
+            <span class="n">value</span><span class="p">[</span><span class="sa">f</span><span class="s2">"component_</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">stats</span><span class="p">,</span> <span class="n">name</span><span class="p">))</span> <span class="k">for</span> <span class="n">stats</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">component_statistics</span><span class="p">]</span>
+        <span class="n">value</span><span class="p">[</span><span class="s2">"mean_vector_error"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mean_vector_error</span><span class="p">)</span>
+        <span class="n">value</span><span class="p">[</span><span class="s2">"rms_vector_error"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rms_vector_error</span><span class="p">)</span>
+        <span class="n">value</span><span class="p">[</span><span class="s2">"per_configuration_mean_vector_errors"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">per_configuration_mean_vector_error</span><span class="p">]</span>
+        <span class="n">value</span><span class="p">[</span><span class="s2">"per_configuration_rms_vector_errors"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">per_configuration_rms_vector_error</span><span class="p">]</span>
+        <span class="n">value</span><span class="p">[</span><span class="s2">"per_configuration_component_rmse"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">stats</span><span class="o">.</span><span class="n">rmse</span><span class="p">)</span> <span class="k">for</span> <span class="n">stats</span> <span class="ow">in</span> <span class="n">config</span><span class="p">]</span> <span class="k">for</span> <span class="n">config</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">per_configuration_component_statistics</span>
+        <span class="p">]</span>
+        <span class="n">value</span><span class="p">[</span><span class="s2">"species_labels"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">label</span><span class="p">)</span> <span class="k">for</span> <span class="n">label</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">species</span><span class="p">]</span>
+        <span class="n">value</span><span class="p">[</span><span class="s2">"per_species_count"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">stats</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">count</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">stats</span> <span class="ow">in</span> <span class="n">species</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">_STATISTIC_MEMBERS</span><span class="p">:</span>
+            <span class="n">value</span><span class="p">[</span><span class="sa">f</span><span class="s2">"per_species_component_</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">stat</span><span class="p">,</span> <span class="n">name</span><span class="p">))</span> <span class="k">for</span> <span class="n">stat</span> <span class="ow">in</span> <span class="n">stats</span><span class="p">]</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">stats</span> <span class="ow">in</span> <span class="n">species</span>
+            <span class="p">]</span>
+        <span class="n">out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">BoundValue</span><span class="p">(</span><span class="s2">"force_prediction_errors"</span><span class="p">,</span> <span class="n">FieldBinding</span><span class="p">(</span><span class="n">defs</span><span class="o">.</span><span class="n">FORCE_PREDICTION_ERRORS</span><span class="p">),</span> <span class="n">value</span><span class="p">))</span>
+        <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">out</span><span class="p">)</span></div>
+
+
+
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">slots</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="viewcode-block" id="StressErrors">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/mlip/index.html#httk.analyse.matsci.StressErrors">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">StressErrors</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Hold stress residuals and aggregate and per-configuration metrics.</span>
+
+<span class="sd">    :param residuals: Six component residual tuples per configuration in ``xx, yy, zz, yz, xz, xy`` order, in GPa.</span>
+<span class="sd">    :param component_statistics: Aggregate component statistics in ``xx, yy, zz, yz, xz, xy`` order.</span>
+<span class="sd">    :param per_configuration_component_statistics: Component statistics for each configuration.</span>
+<span class="sd">    """</span>
+
+<div class="viewcode-block" id="StressErrors.residuals">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/mlip/index.html#httk.analyse.matsci.StressErrors.residuals">[docs]</a>
+    <span class="n">residuals</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span> <span class="o">...</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="StressErrors.component_statistics">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/mlip/index.html#httk.analyse.matsci.StressErrors.component_statistics">[docs]</a>
+    <span class="n">component_statistics</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span>
+        <span class="n">ErrorStatistics</span><span class="p">,</span> <span class="n">ErrorStatistics</span><span class="p">,</span> <span class="n">ErrorStatistics</span><span class="p">,</span> <span class="n">ErrorStatistics</span><span class="p">,</span> <span class="n">ErrorStatistics</span><span class="p">,</span> <span class="n">ErrorStatistics</span>
+    <span class="p">]</span></div>
+
+<div class="viewcode-block" id="StressErrors.per_configuration_component_statistics">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/mlip/index.html#httk.analyse.matsci.StressErrors.per_configuration_component_statistics">[docs]</a>
+    <span class="n">per_configuration_component_statistics</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span>
+        <span class="nb">tuple</span><span class="p">[</span><span class="n">ErrorStatistics</span><span class="p">,</span> <span class="n">ErrorStatistics</span><span class="p">,</span> <span class="n">ErrorStatistics</span><span class="p">,</span> <span class="n">ErrorStatistics</span><span class="p">,</span> <span class="n">ErrorStatistics</span><span class="p">,</span> <span class="n">ErrorStatistics</span><span class="p">],</span> <span class="o">...</span>
+    <span class="p">]</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Copy component sequences into immutable tuples."""</span>
+        <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">"residuals"</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">row</span><span class="p">)</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">residuals</span><span class="p">))</span>
+        <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">"component_statistics"</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">component_statistics</span><span class="p">))</span>
+        <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="s2">"per_configuration_component_statistics"</span><span class="p">,</span>
+            <span class="nb">tuple</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">stats</span><span class="p">)</span> <span class="k">for</span> <span class="n">stats</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">per_configuration_component_statistics</span><span class="p">),</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_bound_values</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">selection</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">BoundValue</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""Bind the Voigt-ordered ``stress_tensor`` derivations and the ``stress_prediction_errors`` dictionary value."""</span>
+        <span class="n">_reject_selection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">selection</span><span class="p">)</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">BoundValue</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">"component_statistics.</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
+                <span class="n">FieldBinding</span><span class="p">(</span><span class="n">STRESS_TENSOR</span><span class="p">,</span> <span class="n">derivation</span><span class="p">),</span>
+                <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">stats</span><span class="p">,</span> <span class="n">name</span><span class="p">))</span> <span class="k">for</span> <span class="n">stats</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">component_statistics</span><span class="p">],</span>
+            <span class="p">)</span>
+            <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">derivation</span> <span class="ow">in</span> <span class="n">_STATISTIC_DERIVATIONS</span>
+        <span class="p">]</span>
+        <span class="n">value</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"count"</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">component_statistics</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">count</span><span class="p">)}</span>
+        <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">_STATISTIC_MEMBERS</span><span class="p">:</span>
+            <span class="n">value</span><span class="p">[</span><span class="sa">f</span><span class="s2">"component_</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">stats</span><span class="p">,</span> <span class="n">name</span><span class="p">))</span> <span class="k">for</span> <span class="n">stats</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">component_statistics</span><span class="p">]</span>
+        <span class="n">value</span><span class="p">[</span><span class="s2">"residuals"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[[</span><span class="nb">float</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">row</span><span class="p">]</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">residuals</span><span class="p">]</span>
+        <span class="n">out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">BoundValue</span><span class="p">(</span><span class="s2">"stress_prediction_errors"</span><span class="p">,</span> <span class="n">FieldBinding</span><span class="p">(</span><span class="n">defs</span><span class="o">.</span><span class="n">STRESS_PREDICTION_ERRORS</span><span class="p">),</span> <span class="n">value</span><span class="p">))</span>
+        <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">out</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="energy_errors">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/mlip/index.html#httk.analyse.matsci.energy_errors">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">energy_errors</span><span class="p">(</span>
+    <span class="n">reference</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span>
+    <span class="n">predicted</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">atom_counts</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span>
+    <span class="n">offset_per_atom</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">weighting</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">"configuration"</span><span class="p">,</span> <span class="s2">"atom"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"configuration"</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">EnergyErrors</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Compare total energies and report per-atom prediction residuals.</span>
+
+<span class="sd">    Raw residuals are always reported. An explicit offset is subtracted from</span>
+<span class="sd">    each predicted energy per atom; no energy shift is inferred from the data.</span>
+<span class="sd">    Mean and RMS statistics weight each configuration equally by default.</span>
+<span class="sd">    Choose ``weighting="atom"`` to weight each atom equally instead. The</span>
+<span class="sd">    reported 95th percentile is unweighted under either policy.</span>
+
+<span class="sd">    :param reference: Reference total energies in eV.</span>
+<span class="sd">    :param predicted: Predicted total energies in eV.</span>
+<span class="sd">    :param atom_counts: Positive integer atom count for each configuration.</span>
+<span class="sd">    :param offset_per_atom: Optional explicit energy offset in eV/atom to subtract from each prediction.</span>
+<span class="sd">    :param weighting: Weight configurations equally or weight each atom equally in means and RMS.</span>
+<span class="sd">    :return: Immutable raw and optionally corrected per-atom residual summaries.</span>
+<span class="sd">    :raises ValueError: If inputs have incompatible shapes, invalid counts, non-finite values, or unrepresentable residuals.</span>
+<span class="sd">    """</span>
+    <span class="n">refs</span> <span class="o">=</span> <span class="n">_real_array</span><span class="p">(</span><span class="n">reference</span><span class="p">,</span> <span class="s2">"reference"</span><span class="p">,</span> <span class="n">ndim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">preds</span> <span class="o">=</span> <span class="n">_real_array</span><span class="p">(</span><span class="n">predicted</span><span class="p">,</span> <span class="s2">"predicted"</span><span class="p">,</span> <span class="n">ndim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">counts</span> <span class="o">=</span> <span class="n">_atom_counts</span><span class="p">(</span><span class="n">atom_counts</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">refs</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">refs</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="n">preds</span><span class="o">.</span><span class="n">shape</span> <span class="ow">or</span> <span class="n">refs</span><span class="o">.</span><span class="n">size</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">counts</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"reference, predicted, and atom_counts must have the same non-zero length"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">weighting</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"configuration"</span><span class="p">,</span> <span class="s2">"atom"</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"weighting must be 'configuration' or 'atom'"</span><span class="p">)</span>
+    <span class="k">with</span> <span class="n">np</span><span class="o">.</span><span class="n">errstate</span><span class="p">(</span><span class="n">over</span><span class="o">=</span><span class="s2">"ignore"</span><span class="p">,</span> <span class="n">invalid</span><span class="o">=</span><span class="s2">"ignore"</span><span class="p">,</span> <span class="n">divide</span><span class="o">=</span><span class="s2">"ignore"</span><span class="p">):</span>
+        <span class="n">differences</span> <span class="o">=</span> <span class="n">preds</span> <span class="o">-</span> <span class="n">refs</span>
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">differences</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+            <span class="n">residuals</span> <span class="o">=</span> <span class="n">differences</span> <span class="o">/</span> <span class="n">counts</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">residuals</span> <span class="o">=</span> <span class="n">preds</span> <span class="o">/</span> <span class="n">counts</span> <span class="o">-</span> <span class="n">refs</span> <span class="o">/</span> <span class="n">counts</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">residuals</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"per-atom energy residuals are not finite"</span><span class="p">)</span>
+    <span class="n">weights</span> <span class="o">=</span> <span class="n">counts</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span> <span class="k">if</span> <span class="n">weighting</span> <span class="o">==</span> <span class="s2">"atom"</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">counts</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+    <span class="n">raw</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">residuals</span><span class="p">)</span>
+    <span class="n">corrected</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">corrected_statistics</span><span class="p">:</span> <span class="n">ErrorStatistics</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">offset</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">offset_per_atom</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">offset</span> <span class="o">=</span> <span class="n">_real_scalar</span><span class="p">(</span><span class="n">offset_per_atom</span><span class="p">,</span> <span class="s2">"offset_per_atom"</span><span class="p">)</span>
+        <span class="k">with</span> <span class="n">np</span><span class="o">.</span><span class="n">errstate</span><span class="p">(</span><span class="n">over</span><span class="o">=</span><span class="s2">"ignore"</span><span class="p">,</span> <span class="n">invalid</span><span class="o">=</span><span class="s2">"ignore"</span><span class="p">):</span>
+            <span class="n">values</span> <span class="o">=</span> <span class="n">residuals</span> <span class="o">-</span> <span class="n">offset</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">values</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"corrected per-atom energy residuals are not finite"</span><span class="p">)</span>
+        <span class="n">corrected</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">values</span><span class="p">)</span>
+        <span class="n">corrected_statistics</span> <span class="o">=</span> <span class="n">_statistics</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="n">weights</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">EnergyErrors</span><span class="p">(</span><span class="n">raw</span><span class="p">,</span> <span class="n">_statistics</span><span class="p">(</span><span class="n">residuals</span><span class="p">,</span> <span class="n">weights</span><span class="p">),</span> <span class="n">offset</span><span class="p">,</span> <span class="n">corrected</span><span class="p">,</span> <span class="n">corrected_statistics</span><span class="p">,</span> <span class="n">weighting</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="force_errors">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/mlip/index.html#httk.analyse.matsci.force_errors">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">force_errors</span><span class="p">(</span>
+    <span class="n">reference</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="nb">float</span><span class="p">]]],</span>
+    <span class="n">predicted</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="nb">float</span><span class="p">]]],</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">species</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span>
+    <span class="n">weighting</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">"atom"</span><span class="p">,</span> <span class="s2">"configuration"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"atom"</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ForceErrors</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Compare paired ragged force arrays in eV/angstrom.</span>
+
+<span class="sd">    Atom order and species labels must identify the same physical atoms in each</span>
+<span class="sd">    reference/prediction pair. This array API cannot detect atom permutations or</span>
+<span class="sd">    dataset leakage. ``atom`` weights every atom equally; ``configuration``</span>
+<span class="sd">    gives each configuration equal total weight. Species summaries condition</span>
+<span class="sd">    and renormalize those same weights on atoms of that species. The 95th</span>
+<span class="sd">    percentile remains unweighted in every summary. The pooled per-component</span>
+<span class="sd">    RMSE common in the literature equals ``rms_vector_error / sqrt(3)`` of the</span>
+<span class="sd">    result with ``weighting="atom"``; ``rms_vector_error`` is the Euclidean</span>
+<span class="sd">    vector RMSE and is not directly comparable to it.</span>
+
+<span class="sd">    :param reference: One finite ``(atoms, 3)`` force array per configuration.</span>
+<span class="sd">    :param predicted: Matching predicted force arrays in eV/angstrom.</span>
+<span class="sd">    :param species: One chemical-symbol label per atom in matching atom order.</span>
+<span class="sd">    :param weighting: Weight every atom equally or every configuration equally.</span>
+<span class="sd">    :return: Immutable component, vector, configuration, and species metrics.</span>
+<span class="sd">    :raises ValueError: If shapes, species labels, weighting, or finite numeric values are invalid.</span>
+<span class="sd">    """</span>
+    <span class="n">refs</span> <span class="o">=</span> <span class="n">_force_configurations</span><span class="p">(</span><span class="n">reference</span><span class="p">,</span> <span class="s2">"reference"</span><span class="p">)</span>
+    <span class="n">preds</span> <span class="o">=</span> <span class="n">_force_configurations</span><span class="p">(</span><span class="n">predicted</span><span class="p">,</span> <span class="s2">"predicted"</span><span class="p">)</span>
+    <span class="n">labels</span> <span class="o">=</span> <span class="n">_species_labels</span><span class="p">(</span><span class="n">species</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">refs</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">refs</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">preds</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">refs</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">labels</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"reference, predicted, and species must contain the same non-zero number of configurations"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">weighting</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"atom"</span><span class="p">,</span> <span class="s2">"configuration"</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"weighting must be 'atom' or 'configuration'"</span><span class="p">)</span>
+    <span class="n">deltas</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="p">(</span><span class="n">ref</span><span class="p">,</span> <span class="n">pred</span><span class="p">,</span> <span class="n">config_species</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">refs</span><span class="p">,</span> <span class="n">preds</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">True</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="n">ref</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="n">pred</span><span class="o">.</span><span class="n">shape</span> <span class="ow">or</span> <span class="n">ref</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">config_species</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"force arrays and species must match in configuration </span><span class="si">{</span><span class="n">index</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+        <span class="k">with</span> <span class="n">np</span><span class="o">.</span><span class="n">errstate</span><span class="p">(</span><span class="n">over</span><span class="o">=</span><span class="s2">"ignore"</span><span class="p">,</span> <span class="n">invalid</span><span class="o">=</span><span class="s2">"ignore"</span><span class="p">):</span>
+            <span class="n">delta</span> <span class="o">=</span> <span class="n">pred</span> <span class="o">-</span> <span class="n">ref</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">delta</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"force residuals are not finite in configuration </span><span class="si">{</span><span class="n">index</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+        <span class="n">deltas</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">delta</span><span class="p">)</span>
+
+    <span class="n">residuals</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">tuple</span><span class="p">((</span><span class="nb">float</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="nb">float</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="nb">float</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">config</span><span class="p">)</span> <span class="k">for</span> <span class="n">config</span> <span class="ow">in</span> <span class="n">deltas</span><span class="p">)</span>
+    <span class="n">flat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">deltas</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">weights</span> <span class="o">=</span> <span class="n">_force_weights</span><span class="p">(</span><span class="n">deltas</span><span class="p">,</span> <span class="n">weighting</span><span class="p">)</span>
+    <span class="n">component_stats</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">_statistics</span><span class="p">(</span><span class="n">flat</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">weights</span><span class="p">),</span>
+        <span class="n">_statistics</span><span class="p">(</span><span class="n">flat</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">weights</span><span class="p">),</span>
+        <span class="n">_statistics</span><span class="p">(</span><span class="n">flat</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">weights</span><span class="p">),</span>
+    <span class="p">)</span>
+    <span class="n">norms</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hypot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">hypot</span><span class="p">(</span><span class="n">flat</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">flat</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]),</span> <span class="n">flat</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">])</span>
+    <span class="n">_finite_result</span><span class="p">(</span><span class="n">norms</span><span class="p">,</span> <span class="s2">"force vector errors"</span><span class="p">)</span>
+    <span class="n">mean_vector</span> <span class="o">=</span> <span class="n">_weighted_mean</span><span class="p">(</span><span class="n">norms</span><span class="p">,</span> <span class="n">weights</span><span class="p">)</span>
+    <span class="n">rms_vector</span> <span class="o">=</span> <span class="n">_weighted_rms</span><span class="p">(</span><span class="n">norms</span><span class="p">,</span> <span class="n">weights</span><span class="p">)</span>
+    <span class="n">per_config_stats</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="n">ErrorStatistics</span><span class="p">,</span> <span class="n">ErrorStatistics</span><span class="p">,</span> <span class="n">ErrorStatistics</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">per_config_mean</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">per_config_rms</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">species_values</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">species_weights</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">delta</span><span class="p">,</span> <span class="n">config_species</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">deltas</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="n">local_weights</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">delta</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">weighting</span> <span class="o">==</span> <span class="s2">"atom"</span>
+            <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">delta</span><span class="p">),</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">delta</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">per_config_stats</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="p">(</span>
+                <span class="n">_statistics</span><span class="p">(</span><span class="n">delta</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">delta</span><span class="p">))),</span>
+                <span class="n">_statistics</span><span class="p">(</span><span class="n">delta</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">delta</span><span class="p">))),</span>
+                <span class="n">_statistics</span><span class="p">(</span><span class="n">delta</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">delta</span><span class="p">))),</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">local_norms</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hypot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">hypot</span><span class="p">(</span><span class="n">delta</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">delta</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]),</span> <span class="n">delta</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">])</span>
+        <span class="n">_finite_result</span><span class="p">(</span><span class="n">local_norms</span><span class="p">,</span> <span class="s2">"force vector errors"</span><span class="p">)</span>
+        <span class="n">local_mean_weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">delta</span><span class="p">),</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">delta</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+        <span class="n">per_config_mean</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_weighted_mean</span><span class="p">(</span><span class="n">local_norms</span><span class="p">,</span> <span class="n">local_mean_weights</span><span class="p">))</span>
+        <span class="n">per_config_rms</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_weighted_rms</span><span class="p">(</span><span class="n">local_norms</span><span class="p">,</span> <span class="n">local_mean_weights</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">(</span><span class="n">config_species</span><span class="p">):</span>
+            <span class="n">mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fromiter</span><span class="p">((</span><span class="n">value</span> <span class="o">==</span> <span class="n">label</span> <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">config_species</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">,</span> <span class="n">count</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">config_species</span><span class="p">))</span>
+            <span class="n">species_values</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="p">[])</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">delta</span><span class="p">[</span><span class="n">mask</span><span class="p">])</span>
+            <span class="n">species_weights</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="p">[])</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">local_weights</span><span class="p">[</span><span class="n">mask</span><span class="p">])</span>
+    <span class="n">per_species</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span>
+        <span class="p">(</span>
+            <span class="n">label</span><span class="p">,</span>
+            <span class="p">(</span>
+                <span class="n">_statistics</span><span class="p">(</span>
+                    <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">values</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">values</span> <span class="ow">in</span> <span class="n">species_values</span><span class="p">[</span><span class="n">label</span><span class="p">]]),</span>
+                    <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">species_weights</span><span class="p">[</span><span class="n">label</span><span class="p">]),</span>
+                <span class="p">),</span>
+                <span class="n">_statistics</span><span class="p">(</span>
+                    <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">values</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">values</span> <span class="ow">in</span> <span class="n">species_values</span><span class="p">[</span><span class="n">label</span><span class="p">]]),</span>
+                    <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">species_weights</span><span class="p">[</span><span class="n">label</span><span class="p">]),</span>
+                <span class="p">),</span>
+                <span class="n">_statistics</span><span class="p">(</span>
+                    <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">values</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span> <span class="k">for</span> <span class="n">values</span> <span class="ow">in</span> <span class="n">species_values</span><span class="p">[</span><span class="n">label</span><span class="p">]]),</span>
+                    <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">species_weights</span><span class="p">[</span><span class="n">label</span><span class="p">]),</span>
+                <span class="p">),</span>
+            <span class="p">),</span>
+        <span class="p">)</span>
+        <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">species_values</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">ForceErrors</span><span class="p">(</span>
+        <span class="n">residuals</span><span class="p">,</span>
+        <span class="n">weighting</span><span class="p">,</span>
+        <span class="n">component_stats</span><span class="p">,</span>
+        <span class="n">mean_vector</span><span class="p">,</span>
+        <span class="n">rms_vector</span><span class="p">,</span>
+        <span class="nb">tuple</span><span class="p">(</span><span class="n">per_config_stats</span><span class="p">),</span>
+        <span class="nb">tuple</span><span class="p">(</span><span class="n">per_config_mean</span><span class="p">),</span>
+        <span class="nb">tuple</span><span class="p">(</span><span class="n">per_config_rms</span><span class="p">),</span>
+        <span class="n">per_species</span><span class="p">,</span>
+        <span class="n">labels</span><span class="p">,</span>
+    <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="stress_errors">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/mlip/index.html#httk.analyse.matsci.stress_errors">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">stress_errors</span><span class="p">(</span>
+    <span class="n">reference</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="nb">float</span><span class="p">]]],</span> <span class="n">predicted</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="nb">float</span><span class="p">]]]</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">StressErrors</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Compare symmetric tensile-positive stress tensors in GPa.</span>
+
+<span class="sd">    Tensor pairs are compared without symmetrizing. Components use the order</span>
+<span class="sd">    ``xx, yy, zz, yz, xz, xy`` and take the upper-triangle value for each shear</span>
+<span class="sd">    component. The symmetry check permits absolute or relative differences up</span>
+<span class="sd">    to ``1e-12``; convert virials and source sign conventions before calling.</span>
+<span class="sd">    Typical float32 model outputs and virial (``-sum(r (x) F)``) stresses</span>
+<span class="sd">    carry asymmetry of order ``1e-8`` GPa and are rejected: inspect</span>
+<span class="sd">    the asymmetry and symmetrize explicitly (``(S + S.T)/2``) first.</span>
+<span class="sd">    Aggregate component metrics weight each configuration equally. The 95th</span>
+<span class="sd">    percentile is unweighted in every summary.</span>
+
+<span class="sd">    :param reference: Finite stress tensors with shape ``(configurations, 3, 3)``.</span>
+<span class="sd">    :param predicted: Matching predicted stress tensors in GPa.</span>
+<span class="sd">    :return: Immutable six-component residuals and statistics.</span>
+<span class="sd">    :raises ValueError: If shapes, symmetry, or finite numeric values are invalid.</span>
+<span class="sd">    """</span>
+    <span class="n">refs</span> <span class="o">=</span> <span class="n">_real_array</span><span class="p">(</span><span class="n">reference</span><span class="p">,</span> <span class="s2">"reference"</span><span class="p">,</span> <span class="n">ndim</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+    <span class="n">preds</span> <span class="o">=</span> <span class="n">_real_array</span><span class="p">(</span><span class="n">predicted</span><span class="p">,</span> <span class="s2">"predicted"</span><span class="p">,</span> <span class="n">ndim</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">refs</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="n">preds</span><span class="o">.</span><span class="n">shape</span> <span class="ow">or</span> <span class="n">refs</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">refs</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">!=</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"reference and predicted must have matching shape (configurations, 3, 3)"</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">values</span> <span class="ow">in</span> <span class="p">((</span><span class="s2">"reference"</span><span class="p">,</span> <span class="n">refs</span><span class="p">),</span> <span class="p">(</span><span class="s2">"predicted"</span><span class="p">,</span> <span class="n">preds</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">swapaxes</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">rtol</span><span class="o">=</span><span class="mf">1e-12</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="mf">1e-12</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> stress tensors must be symmetric"</span><span class="p">)</span>
+    <span class="k">with</span> <span class="n">np</span><span class="o">.</span><span class="n">errstate</span><span class="p">(</span><span class="n">over</span><span class="o">=</span><span class="s2">"ignore"</span><span class="p">,</span> <span class="n">invalid</span><span class="o">=</span><span class="s2">"ignore"</span><span class="p">):</span>
+        <span class="n">delta</span> <span class="o">=</span> <span class="n">preds</span> <span class="o">-</span> <span class="n">refs</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">delta</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"stress residuals are not finite"</span><span class="p">)</span>
+    <span class="n">components</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">delta</span><span class="p">[:,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">_STRESS_COMPONENTS</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">residuals</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span>
+        <span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="nb">float</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="nb">float</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">2</span><span class="p">]),</span> <span class="nb">float</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">3</span><span class="p">]),</span> <span class="nb">float</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">4</span><span class="p">]),</span> <span class="nb">float</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">5</span><span class="p">]))</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">components</span>
+    <span class="p">)</span>
+    <span class="n">overall</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">_statistics</span><span class="p">(</span><span class="n">components</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">components</span><span class="p">))),</span>
+        <span class="n">_statistics</span><span class="p">(</span><span class="n">components</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">components</span><span class="p">))),</span>
+        <span class="n">_statistics</span><span class="p">(</span><span class="n">components</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">components</span><span class="p">))),</span>
+        <span class="n">_statistics</span><span class="p">(</span><span class="n">components</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">components</span><span class="p">))),</span>
+        <span class="n">_statistics</span><span class="p">(</span><span class="n">components</span><span class="p">[:,</span> <span class="mi">4</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">components</span><span class="p">))),</span>
+        <span class="n">_statistics</span><span class="p">(</span><span class="n">components</span><span class="p">[:,</span> <span class="mi">5</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">components</span><span class="p">))),</span>
+    <span class="p">)</span>
+    <span class="n">per_config</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span>
+        <span class="p">(</span>
+            <span class="n">_statistics</span><span class="p">(</span><span class="n">components</span><span class="p">[</span><span class="n">index</span> <span class="p">:</span> <span class="n">index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">1</span><span class="p">)),</span>
+            <span class="n">_statistics</span><span class="p">(</span><span class="n">components</span><span class="p">[</span><span class="n">index</span> <span class="p">:</span> <span class="n">index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">1</span><span class="p">)),</span>
+            <span class="n">_statistics</span><span class="p">(</span><span class="n">components</span><span class="p">[</span><span class="n">index</span> <span class="p">:</span> <span class="n">index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">1</span><span class="p">)),</span>
+            <span class="n">_statistics</span><span class="p">(</span><span class="n">components</span><span class="p">[</span><span class="n">index</span> <span class="p">:</span> <span class="n">index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">1</span><span class="p">)),</span>
+            <span class="n">_statistics</span><span class="p">(</span><span class="n">components</span><span class="p">[</span><span class="n">index</span> <span class="p">:</span> <span class="n">index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">1</span><span class="p">)),</span>
+            <span class="n">_statistics</span><span class="p">(</span><span class="n">components</span><span class="p">[</span><span class="n">index</span> <span class="p">:</span> <span class="n">index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">1</span><span class="p">)),</span>
+        <span class="p">)</span>
+        <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">components</span><span class="p">))</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">StressErrors</span><span class="p">(</span><span class="n">residuals</span><span class="p">,</span> <span class="n">overall</span><span class="p">,</span> <span class="n">per_config</span><span class="p">)</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_real_array</span><span class="p">(</span><span class="n">values</span><span class="p">:</span> <span class="nb">object</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">ndim</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Copy a finite real input to a float64 array of the requested rank."""</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">raw</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">iscomplexobj</span><span class="p">(</span><span class="n">raw</span><span class="p">)</span>
+            <span class="ow">or</span> <span class="n">raw</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">kind</span> <span class="ow">in</span> <span class="s2">"SU"</span>
+            <span class="ow">or</span> <span class="p">(</span>
+                <span class="n">raw</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">kind</span> <span class="o">==</span> <span class="s2">"O"</span>
+                <span class="ow">and</span> <span class="nb">any</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">,</span> <span class="nb">complex</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">complexfloating</span><span class="p">))</span> <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">raw</span><span class="o">.</span><span class="n">flat</span><span class="p">)</span>
+            <span class="p">)</span>
+        <span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> must contain real numeric values"</span><span class="p">)</span>
+        <span class="n">array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+    <span class="k">except</span> <span class="p">(</span><span class="ne">TypeError</span><span class="p">,</span> <span class="ne">OverflowError</span><span class="p">)</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> must contain finite real float64 values"</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">exc</span>
+    <span class="k">if</span> <span class="n">array</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="n">ndim</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">array</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> must be a finite </span><span class="si">{</span><span class="n">ndim</span><span class="si">}</span><span class="s2">-dimensional real array"</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">array</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_real_scalar</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Return one finite real scalar as a float."""</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">,</span> <span class="nb">complex</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">complexfloating</span><span class="p">)):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> must be a finite real scalar"</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+    <span class="k">except</span> <span class="p">(</span><span class="ne">TypeError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">,</span> <span class="ne">OverflowError</span><span class="p">)</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> must be a finite real scalar"</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">exc</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">math</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">result</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> must be a finite real scalar"</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">result</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_atom_counts</span><span class="p">(</span><span class="n">values</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Copy and validate positive integer atom counts."""</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">raw</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">TypeError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"atom_counts must be a sequence of positive integers"</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">exc</span>
+    <span class="k">if</span> <span class="nb">any</span><span class="p">(</span>
+        <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="p">(</span><span class="nb">bool</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">bool_</span><span class="p">))</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">integer</span><span class="p">))</span> <span class="ow">or</span> <span class="n">value</span> <span class="o">&lt;=</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">raw</span>
+    <span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"atom_counts must contain positive integers"</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">counts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">raw</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+    <span class="k">except</span> <span class="p">(</span><span class="ne">OverflowError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">)</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"atom_counts must be representable as positive float64 weights"</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">exc</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">counts</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"atom_counts must be representable as positive float64 weights"</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">counts</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_force_configurations</span><span class="p">(</span><span class="n">values</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="nb">float</span><span class="p">]]],</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">"""Copy non-empty ragged force configurations with three components."""</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">rows</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">TypeError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> must contain force configurations"</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">exc</span>
+    <span class="n">configurations</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">_real_array</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">[</span><span class="si">{</span><span class="n">index</span><span class="si">}</span><span class="s2">]"</span><span class="p">,</span> <span class="n">ndim</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span> <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">rows</span><span class="p">))</span>
+    <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">config</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">3</span> <span class="k">for</span> <span class="n">config</span> <span class="ow">in</span> <span class="n">configurations</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> configurations must have shape (atoms, 3) with at least one atom"</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">configurations</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_species_labels</span><span class="p">(</span><span class="n">values</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="o">...</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">"""Copy non-empty chemical-symbol labels into nested tuples."""</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">))</span> <span class="ow">or</span> <span class="nb">any</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">))</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">values</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"species must contain one sequence of labels per configuration"</span><span class="p">)</span>
+        <span class="n">rows</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">row</span><span class="p">)</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">values</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">TypeError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"species must contain one sequence of labels per configuration"</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">exc</span>
+    <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="ow">not</span> <span class="n">row</span> <span class="ow">or</span> <span class="nb">any</span><span class="p">(</span><span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">label</span> <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">row</span><span class="p">)</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">rows</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"species labels must be non-empty strings"</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">rows</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_force_weights</span><span class="p">(</span><span class="n">configurations</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">],</span> <span class="n">weighting</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Return flattened force-atom weights normalized to one."""</span>
+    <span class="k">if</span> <span class="n">weighting</span> <span class="o">==</span> <span class="s2">"atom"</span><span class="p">:</span>
+        <span class="n">weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">config</span><span class="p">)</span> <span class="k">for</span> <span class="n">config</span> <span class="ow">in</span> <span class="n">configurations</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">config</span><span class="p">),</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">config</span><span class="p">))</span> <span class="k">for</span> <span class="n">config</span> <span class="ow">in</span> <span class="n">configurations</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">weights</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_statistics</span><span class="p">(</span><span class="n">values</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">weights</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ErrorStatistics</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Compute weighted mean and RMS plus unweighted absolute-error quantiles."""</span>
+    <span class="n">values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+    <span class="n">weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">weights</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+    <span class="k">if</span> <span class="p">(</span>
+        <span class="n">values</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">1</span>
+        <span class="ow">or</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+        <span class="ow">or</span> <span class="n">values</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="n">weights</span><span class="o">.</span><span class="n">shape</span>
+        <span class="ow">or</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">values</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+        <span class="ow">or</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+        <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">weights</span> <span class="o">&lt;</span> <span class="mf">0.0</span><span class="p">)</span>
+        <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mf">0.0</span>
+    <span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"residual statistics require matching finite one-dimensional values and weights"</span><span class="p">)</span>
+    <span class="n">scaled_weights</span> <span class="o">=</span> <span class="n">weights</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span>
+    <span class="n">normalized_weights</span> <span class="o">=</span> <span class="n">scaled_weights</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">scaled_weights</span><span class="p">)</span>
+    <span class="n">bias</span> <span class="o">=</span> <span class="n">_weighted_mean</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="n">normalized_weights</span><span class="p">)</span>
+    <span class="n">absolute</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+    <span class="n">mae</span> <span class="o">=</span> <span class="n">_weighted_mean</span><span class="p">(</span><span class="n">absolute</span><span class="p">,</span> <span class="n">normalized_weights</span><span class="p">)</span>
+    <span class="n">rmse</span> <span class="o">=</span> <span class="n">_weighted_rms</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="n">normalized_weights</span><span class="p">)</span>
+    <span class="n">percentile</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="n">absolute</span><span class="p">,</span> <span class="mf">0.95</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">"linear"</span><span class="p">))</span>
+    <span class="n">maximum</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">absolute</span><span class="p">))</span>
+    <span class="n">_finite_result</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">((</span><span class="n">bias</span><span class="p">,</span> <span class="n">mae</span><span class="p">,</span> <span class="n">rmse</span><span class="p">,</span> <span class="n">percentile</span><span class="p">,</span> <span class="n">maximum</span><span class="p">)),</span> <span class="s2">"error statistics"</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">ErrorStatistics</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="p">),</span> <span class="n">bias</span><span class="p">,</span> <span class="n">mae</span><span class="p">,</span> <span class="n">rmse</span><span class="p">,</span> <span class="n">maximum</span><span class="p">,</span> <span class="n">percentile</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_weighted_mean</span><span class="p">(</span><span class="n">values</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">weights</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Compute a weighted mean after scaling to avoid needless overflow."""</span>
+    <span class="n">scale</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">values</span><span class="p">)))</span>
+    <span class="k">if</span> <span class="n">scale</span> <span class="o">==</span> <span class="mf">0.0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mf">0.0</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">values</span> <span class="o">/</span> <span class="n">scale</span><span class="p">)</span> <span class="o">*</span> <span class="n">weights</span><span class="p">)</span> <span class="o">*</span> <span class="n">scale</span><span class="p">)</span>
+    <span class="n">_finite_result</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">((</span><span class="n">result</span><span class="p">,)),</span> <span class="s2">"weighted mean"</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">result</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_weighted_rms</span><span class="p">(</span><span class="n">values</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">weights</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Compute a weighted RMS after scaling to avoid square overflow."""</span>
+    <span class="n">scale</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">values</span><span class="p">)))</span>
+    <span class="k">if</span> <span class="n">scale</span> <span class="o">==</span> <span class="mf">0.0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mf">0.0</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">values</span> <span class="o">/</span> <span class="n">scale</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">weights</span><span class="p">)))</span> <span class="o">*</span> <span class="n">scale</span><span class="p">)</span>
+    <span class="n">_finite_result</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">((</span><span class="n">result</span><span class="p">,)),</span> <span class="s2">"weighted RMS"</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">result</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_finite_result</span><span class="p">(</span><span class="n">values</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Reject a non-finite derived result."""</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">values</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> are not finite representable float64 values"</span><span class="p">)</span>
+</pre></div>
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          
+          
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2026, The httk-analyse AUTHORS
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer no-toc">
+      
+      
+      
+    </aside>
+  </div>
+</div><script src="../../../../_static/documentation_options.js?v=952df46a"></script>
+    <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../../../_static/scripts/furo.js?v=46bd48cc"></script>
+    <script src="../../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../../_static/copybutton.js?v=fd10adb8"></script>
+    <script src="../../../../_static/selector.js?v=d8e9b3ce"></script>
+    <script>window.HTTK_DOCS_VERSIONING = {"channel":"dev","version":"dev:develop","versionPathDepth":2};</script>
+    </body>
+</html>

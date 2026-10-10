@@ -1,0 +1,64 @@
+httk.analyse.integrations.trajectory
+====================================
+
+.. py:module:: httk.analyse.integrations.trajectory
+
+.. autoapi-nested-parse::
+
+   Explicit approximate analyses of existing exact trajectory interfaces.
+
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   httk.analyse.integrations.trajectory.rdf_from_trajectory
+   httk.analyse.integrations.trajectory.msd_from_trajectory
+   httk.analyse.integrations.trajectory.vacf_from_trajectory
+
+
+Module Contents
+---------------
+
+.. py:function:: rdf_from_trajectory(trajectory, bins, *, pair = None)
+
+   Stream a bulk RDF with each frame's own cell and fixed species labels.
+
+   :param trajectory: Exact trajectory whose structural lengths are angstrom.
+   :param bins: Radial bin edges in angstrom.
+   :param pair: Optional ordered species-name pair for partial RDF.
+   :return: Radial distribution using an explicit float approximation of structures.
+   :raises ValueError: If geometry, periodicity or labels violate bulk RDF requirements.
+
+
+.. py:function:: msd_from_trajectory(trajectory, *, max_lag = None, remove_com = False, masses = None)
+
+   Materialize known unwrapped angstrom positions and compute a fixed-cell MSD.
+
+   Requires ``time`` (ps), ``atom_ids`` and ``unwrapped_positions`` canonical
+   observables. Never unwrap sparse wrapped positions or infer a timestep.
+   Memory is O(frames*atoms); select source segments before calling.
+
+   :param trajectory: Trajectory with canonical synchronized observables.
+   :param max_lag: Largest inclusive lag.
+   :param remove_com: Remove mass-weighted center-of-mass motion.
+   :param masses: Positive masses required for COM removal.
+   :return: Multiple-origin MSD tensors in angstrom².
+   :raises ValueError: If atom order, cell or time spacing changes.
+   :raises KeyError: If required observables are absent.
+
+
+.. py:function:: vacf_from_trajectory(trajectory, *, max_lag = None, remove_mean = False)
+
+   Materialize canonical velocities and compute a fixed-cell VACF.
+
+   :param trajectory: Trajectory with ps time, atom_ids and angstrom/ps velocities.
+   :param max_lag: Largest inclusive lag.
+   :param remove_mean: Remove each atom/component time mean.
+   :return: Velocity correlations in (angstrom/ps)².
+   :raises ValueError: If atom order, cell or time spacing changes.
+   :raises KeyError: If required observables are absent.
+
+

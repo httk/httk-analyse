@@ -1,0 +1,659 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="./">
+  <head><meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="genindex.html"><link rel="search" title="Search" href="search.html"><link rel="next" title="Analysis recipes" href="analysis-recipes.html"><link rel="prev" title="Summaries and figures" href="analysis-artifacts.html">
+
+    <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
+        <title>Recording results - httk-analyse dev:develop documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d111a655" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=7bdb33bb" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="_static/selector.css?v=626bada3" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=8dab3a3b" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f2f2f2;
+  --color-code-foreground: #1e1e1e;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle site navigation sidebar">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc" aria-label="Toggle table of contents sidebar">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+<div class="announcement">
+  <aside class="announcement-content">
+     Development documentation (dev:develop) — built from the GitHub develop branch; content may differ from any release. 
+  </aside>
+</div>
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <span class="icon"><svg><use href="#svg-menu"></use></svg></span>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="index.html"><div class="brand">httk-analyse dev:develop documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
+  
+  <span class="sidebar-brand-text">httk-analyse dev:develop documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="generic-hulls.html">Generic lower convex hulls</a></li>
+<li class="toctree-l1"><a class="reference internal" href="phase-diagrams.html">Materials phase diagrams</a></li>
+<li class="toctree-l1"><a class="reference internal" href="equations-of-state.html">Static equation-of-state fitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="energetics.html">Static energy bookkeeping</a></li>
+<li class="toctree-l1"><a class="reference internal" href="time-series.html">Simulation time series</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mlip-validation.html">Validate MLIP predictions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="elasticity.html">Elasticity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="md-structure.html">Molecular-dynamics structure analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dynamics.html">Dynamics and diffusion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="thermal-response.html">Equilibrium response and transport</a></li>
+<li class="toctree-l1"><a class="reference internal" href="phonons.html">Harmonic phonon thermodynamics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="electronic.html">Electronic and magnetic quantities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vasp-analysis.html">VASP electronic analysis adapters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="defects.html">Defects, surfaces, and kinetics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="analysis-artifacts.html">Summaries and figures</a></li>
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Recording results</a></li>
+<li class="toctree-l1"><a class="reference internal" href="analysis-recipes.html">Analysis recipes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="crysviz.html">CrysViz structure viewer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reference/index.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/examples.html">Convex-hull and phase-diagram examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/materials-toolbox.html">Materials toolbox example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/materials-response.html">Materials response toolbox</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reference/autoapi/index.html">API Reference</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="_sources/records.md.txt" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section class="tex2jax_ignore mathjax_ignore" id="recording-results">
+<h1>Recording results<a class="headerlink" href="#recording-results" title="Link to this heading">¶</a></h1>
+<p>Every public value of an analysis result is in the unit of its property
+definition, and values never carry unit strings. The definitions (IRIs in
+<code class="docutils literal notranslate"><span class="pre">httk.analyse.definitions</span></code>, core quantities such as temperature in
+<code class="docutils literal notranslate"><span class="pre">httk.core.definition_ids</span></code>) fix the name, unit, shape and meaning. Statistics of
+a property, such as a mean or a standard error, keep the base definition and add
+a derivation term (<code class="docutils literal notranslate"><span class="pre">MEAN</span></code>, <code class="docutils literal notranslate"><span class="pre">STANDARD_ERROR</span></code>, <code class="docutils literal notranslate"><span class="pre">RMSE</span></code>, …) instead of defining a
+new property.</p>
+<section id="records">
+<h2>Records<a class="headerlink" href="#records" title="Link to this heading">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">httk.analyse.records.records(result,</span> <span class="pre">*,</span> <span class="pre">product_of=(),</span> <span class="pre">**selection)</span></code> returns one
+checked record per bound value of a result. A property value becomes the typed
+record kind generated from its definition: <code class="docutils literal notranslate"><span class="pre">httk.analyse.property_records</span></code> has
+one per analyse definition (<code class="docutils literal notranslate"><span class="pre">BulkModulusRecord</span></code>, <code class="docutils literal notranslate"><span class="pre">EnergyPredictionErrorsRecord</span></code>,
+…), <code class="docutils literal notranslate"><span class="pre">httk.core.property_records</span></code> the core ones (<code class="docutils literal notranslate"><span class="pre">TemperatureRecord</span></code>,
+<code class="docutils literal notranslate"><span class="pre">VolumeRecord</span></code>, …), and total energy uses <code class="docutils literal notranslate"><span class="pre">httk.core.TotalEnergyRecord</span></code>. A
+typed record’s <code class="docutils literal notranslate"><span class="pre">definition_id</span></code> is the definition IRI and its <code class="docutils literal notranslate"><span class="pre">value</span></code> the value
+shaped as the definition says. A statistic of a fixed base property becomes its
+generated statistic kind (<code class="docutils literal notranslate"><span class="pre">TotalEnergyRmseRecord</span></code>,
+<code class="docutils literal notranslate"><span class="pre">TotalEnergyPerAtomMaeRecord</span></code>, …), whose <code class="docutils literal notranslate"><span class="pre">definition_id</span></code> is the base IRI and
+whose <code class="docutils literal notranslate"><span class="pre">derivation</span></code> is the derivation-term IRI. A statistic of a caller-chosen base
+(<code class="docutils literal notranslate"><span class="pre">PropertyParity</span></code>) becomes an <code class="docutils literal notranslate"><span class="pre">httk.core.DerivedDataRecord</span></code> with the same
+<code class="docutils literal notranslate"><span class="pre">definition_id</span></code> and <code class="docutils literal notranslate"><span class="pre">derivation</span></code>. A null value becomes a generic
+<code class="docutils literal notranslate"><span class="pre">httk.core.DataRecord</span></code>, the catch-all that keeps a value as JSON:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">httk.core.definition_ids</span><span class="w"> </span><span class="kn">import</span> <span class="n">TOTAL_ENERGY</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">httk.core.units</span><span class="w"> </span><span class="kn">import</span> <span class="n">default_registry</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">httk.analyse</span><span class="w"> </span><span class="kn">import</span> <span class="n">definitions</span> <span class="k">as</span> <span class="n">defs</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">httk.analyse.matsci</span><span class="w"> </span><span class="kn">import</span> <span class="n">fit_birch_murnaghan</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">httk.analyse.records</span><span class="w"> </span><span class="kn">import</span> <span class="n">bound_values</span><span class="p">,</span> <span class="n">records</span>
+
+<span class="n">volumes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">8.5</span><span class="p">,</span> <span class="mf">11.5</span><span class="p">,</span> <span class="mi">9</span><span class="p">)</span>
+<span class="n">strain</span> <span class="o">=</span> <span class="p">(</span><span class="mf">10.0</span> <span class="o">/</span> <span class="n">volumes</span><span class="p">)</span> <span class="o">**</span> <span class="p">(</span><span class="mi">2</span> <span class="o">/</span> <span class="mi">3</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+<span class="n">energies</span> <span class="o">=</span> <span class="o">-</span><span class="mf">5.0</span> <span class="o">+</span> <span class="mi">9</span> <span class="o">*</span> <span class="mf">10.0</span> <span class="o">*</span> <span class="mf">0.2</span> <span class="o">/</span> <span class="mi">16</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">strain</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">strain</span><span class="o">**</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">fit</span> <span class="o">=</span> <span class="n">fit_birch_murnaghan</span><span class="p">(</span><span class="n">volumes</span><span class="p">,</span> <span class="n">energies</span><span class="p">)</span>
+<span class="n">made</span> <span class="o">=</span> <span class="n">records</span><span class="p">(</span><span class="n">fit</span><span class="p">)</span>
+<span class="k">assert</span> <span class="p">[</span><span class="nb">type</span><span class="p">(</span><span class="n">record</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span> <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">made</span><span class="p">]</span> <span class="o">==</span> <span class="p">[</span>
+    <span class="s2">"EquilibriumVolumeRecord"</span><span class="p">,</span> <span class="s2">"EquilibriumEnergyRecord"</span><span class="p">,</span> <span class="s2">"BulkModulusRecord"</span><span class="p">,</span> <span class="s2">"BulkModulusPressureDerivativeRecord"</span><span class="p">,</span>
+    <span class="s2">"TotalEnergyRmseRecord"</span><span class="p">,</span>
+<span class="p">]</span>
+<span class="k">assert</span> <span class="n">made</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">definition_id</span> <span class="o">==</span> <span class="n">defs</span><span class="o">.</span><span class="n">BULK_MODULUS</span> <span class="ow">and</span> <span class="n">made</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">value</span> <span class="o">==</span> <span class="n">fit</span><span class="o">.</span><span class="n">bulk_modulus</span>
+<span class="k">assert</span> <span class="p">(</span><span class="n">made</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">definition_id</span><span class="p">,</span> <span class="n">made</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">derivation</span><span class="p">,</span> <span class="n">made</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="p">)</span> <span class="o">==</span> <span class="p">(</span><span class="n">TOTAL_ENERGY</span><span class="p">,</span> <span class="n">defs</span><span class="o">.</span><span class="n">RMSE</span><span class="p">,</span> <span class="n">fit</span><span class="o">.</span><span class="n">rmse</span><span class="p">)</span>
+<span class="c1"># Input energies use eV and angstrom^3; the fitted bulk modulus is in GPa.</span>
+<span class="k">assert</span> <span class="nb">abs</span><span class="p">(</span><span class="n">fit</span><span class="o">.</span><span class="n">bulk_modulus</span> <span class="o">-</span> <span class="n">default_registry</span><span class="p">()</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="mf">0.2</span><span class="p">,</span> <span class="s2">"angstrom^-3*eV"</span><span class="p">,</span> <span class="s2">"GPa"</span><span class="p">))</span> <span class="o">&lt;</span> <span class="mf">1e-6</span>
+</pre></div>
+</div>
+<p>A store serves each typed value as the OPTIMADE property <code class="docutils literal notranslate"><span class="pre">_httk_&lt;name&gt;</span></code> and
+filters on it: scalars compare (<code class="docutils literal notranslate"><span class="pre">_httk_bulk_modulus</span> <span class="pre">&gt;</span> <span class="pre">100</span></code>; float equality is
+exact), dictionary members filter by nested name
+(<code class="docutils literal notranslate"><span class="pre">_httk_energy_prediction_errors.weighting</span> <span class="pre">=</span> <span class="pre">&quot;configuration&quot;</span> <span class="pre">AND</span> <span class="pre">_httk_energy_prediction_errors.rmse</span> <span class="pre">&lt;</span> <span class="pre">0.005</span></code>),
+one-dimensional list members take <code class="docutils literal notranslate"><span class="pre">HAS</span></code>, <code class="docutils literal notranslate"><span class="pre">HAS</span> <span class="pre">ALL</span></code>, <code class="docutils literal notranslate"><span class="pre">HAS</span> <span class="pre">ANY</span></code> and <code class="docutils literal notranslate"><span class="pre">HAS</span> <span class="pre">ONLY</span></code>, and
+<code class="docutils literal notranslate"><span class="pre">LENGTH</span></code> is the outer length of a list. A statistic kind is served as
+<code class="docutils literal notranslate"><span class="pre">_httk_&lt;base&gt;_&lt;derivation&gt;</span></code> (<code class="docutils literal notranslate"><span class="pre">_httk_total_energy_per_atom_rmse</span> <span class="pre">&lt;</span> <span class="pre">0.005</span></code>) under an
+ad-hoc definition synthesized from the base, which is not a published
+definition. Generic <code class="docutils literal notranslate"><span class="pre">DataRecord</span></code> and <code class="docutils literal notranslate"><span class="pre">DerivedDataRecord</span></code> values are not served.
+A store declares the kinds it holds in the records family; declaring all
+generated kinds is fine, and reopening an existing store with a longer
+declaration and <code class="docutils literal notranslate"><span class="pre">upgrade=True</span></code> adds kinds (an additive change). With
+<em>httk-store</em> installed:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">httk.core</span><span class="w"> </span><span class="kn">import</span> <span class="n">DataRecord</span><span class="p">,</span> <span class="n">DataRecordEntry</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">httk.store</span><span class="w"> </span><span class="kn">import</span> <span class="n">EntryIdScheme</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">httk.store.backend.sql</span><span class="w"> </span><span class="kn">import</span> <span class="n">Backend</span><span class="p">,</span> <span class="n">SqlStore</span>
+
+<span class="n">kinds</span> <span class="o">=</span> <span class="p">(</span><span class="n">DataRecord</span><span class="p">,</span> <span class="o">*</span><span class="nb">dict</span><span class="o">.</span><span class="n">fromkeys</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">record</span><span class="p">)</span> <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">made</span><span class="p">))</span>
+<span class="k">with</span> <span class="n">Backend</span><span class="o">.</span><span class="n">sqlite</span><span class="p">()</span> <span class="k">as</span> <span class="n">database</span><span class="p">:</span>
+    <span class="n">store</span> <span class="o">=</span> <span class="n">SqlStore</span><span class="p">(</span><span class="n">database</span><span class="p">,</span> <span class="n">entry_records</span><span class="o">=</span><span class="p">{</span><span class="n">DataRecordEntry</span><span class="p">:</span> <span class="n">kinds</span><span class="p">},</span> <span class="n">entry_ids</span><span class="o">=</span><span class="n">EntryIdScheme</span><span class="p">(</span><span class="s2">"example"</span><span class="p">,</span> <span class="s2">"1"</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">made</span><span class="p">:</span>
+        <span class="n">store</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">record</span><span class="p">)</span>
+    <span class="n">searchers</span> <span class="o">=</span> <span class="n">store</span><span class="o">.</span><span class="n">stored_property_plan</span><span class="p">(</span><span class="n">DataRecordEntry</span><span class="p">)</span><span class="o">.</span><span class="n">filter_searchers</span><span class="p">(</span><span class="s2">"_httk_bulk_modulus &gt; 20"</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="p">[</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">value</span> <span class="k">for</span> <span class="n">searcher</span> <span class="ow">in</span> <span class="n">searchers</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">searcher</span><span class="o">.</span><span class="n">results</span><span class="p">()]</span> <span class="o">==</span> <span class="p">[</span><span class="n">fit</span><span class="o">.</span><span class="n">bulk_modulus</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Correlated (zip) filters pair one-dimensional list members of one dictionary
+value that share a dimension, position by position:
+<code class="docutils literal notranslate"><span class="pre">_httk_convex_hull_phase_diagram.phase_ids:_httk_convex_hull_phase_diagram.stable</span> <span class="pre">HAS</span> <span class="pre">&quot;AB&quot;:TRUE</span></code>
+matches phase diagrams in which phase <code class="docutils literal notranslate"><span class="pre">AB</span></code> is stable. Each slot may take its own
+comparison operator (<code class="docutils literal notranslate"><span class="pre">&quot;AB&quot;:&gt;0.1</span></code>). <code class="docutils literal notranslate"><span class="pre">HAS</span> <span class="pre">ALL</span></code> requires
+every tuple at some position, <code class="docutils literal notranslate"><span class="pre">HAS</span> <span class="pre">ANY</span></code> some tuple, and <code class="docutils literal notranslate"><span class="pre">HAS</span> <span class="pre">ONLY</span></code> that every
+position matches some tuple; an absent optional member (<code class="docutils literal notranslate"><span class="pre">phase_ids</span></code>) makes the
+filter unknown, and members of different dimensions are not implemented.</p>
+<p><code class="docutils literal notranslate"><span class="pre">bound_values(result,</span> <span class="pre">**selection)</span></code> lists every binding as
+<code class="docutils literal notranslate"><span class="pre">BoundValue(field,</span> <span class="pre">binding,</span> <span class="pre">value)</span></code>, where <code class="docutils literal notranslate"><span class="pre">binding</span></code> is a
+<code class="docutils literal notranslate"><span class="pre">FieldBinding(definition,</span> <span class="pre">derivation=None)</span></code>. <code class="docutils literal notranslate"><span class="pre">field</span></code> is a binding
+name, not necessarily an attribute path: <code class="docutils literal notranslate"><span class="pre">isotropic</span></code> of a diffusion fit,
+<code class="docutils literal notranslate"><span class="pre">integrals[4]</span></code> or <code class="docutils literal notranslate"><span class="pre">isotropic[4]</span></code> of a transport result at the selected lag,
+<code class="docutils literal notranslate"><span class="pre">standard_errors.&lt;name&gt;</span></code> of an equilibrium response, and the definition name of
+a series are computed or selected values. The EOS <code class="docutils literal notranslate"><span class="pre">rmse</span></code> is bound to the core
+total energy with the <code class="docutils literal notranslate"><span class="pre">RMSE</span></code> derivation. Passing an object that has no bindings
+raises <code class="docutils literal notranslate"><span class="pre">TypeError</span></code>.</p>
+<p>Bound result types: <code class="docutils literal notranslate"><span class="pre">BirchMurnaghanFit</span></code>, <code class="docutils literal notranslate"><span class="pre">EOSFit</span></code>, <code class="docutils literal notranslate"><span class="pre">ElasticTensor</span></code> (stiffness,
+compliance, Voigt/Reuss/Hill moduli, universal anisotropy), <code class="docutils literal notranslate"><span class="pre">FormationEnergy</span></code>,
+<code class="docutils literal notranslate"><span class="pre">BandEdges</span></code> (gaps are 0.0 for a metal), <code class="docutils literal notranslate"><span class="pre">EquilibriumResponse</span></code>,
+<code class="docutils literal notranslate"><span class="pre">HarmonicThermodynamics</span></code>, <code class="docutils literal notranslate"><span class="pre">QuasiHarmonicResult</span></code>, <code class="docutils literal notranslate"><span class="pre">DiffusionFit</span></code>,
+<code class="docutils literal notranslate"><span class="pre">TensorSeries</span></code>, <code class="docutils literal notranslate"><span class="pre">RadialDistribution</span></code>, <code class="docutils literal notranslate"><span class="pre">TransportResult</span></code>, <code class="docutils literal notranslate"><span class="pre">ReplicaTransport</span></code>,
+<code class="docutils literal notranslate"><span class="pre">PropertyParity</span></code> (statistics of its <code class="docutils literal notranslate"><span class="pre">definition</span></code>, as <code class="docutils literal notranslate"><span class="pre">DerivedDataRecord</span></code>),
+<code class="docutils literal notranslate"><span class="pre">ElasticFit</span></code> (delegates to
+its <code class="docutils literal notranslate"><span class="pre">tensor</span></code>, so an unstable or singular tensor raises as <code class="docutils literal notranslate"><span class="pre">ElasticTensor</span></code> does),
+<code class="docutils literal notranslate"><span class="pre">GruneisenFit</span></code>, <code class="docutils literal notranslate"><span class="pre">ChemicalPotentialRegion</span></code>, <code class="docutils literal notranslate"><span class="pre">PhaseDiagram</span></code> and
+<code class="docutils literal notranslate"><span class="pre">httk.analyse.integrations.vasp.VaspDOS</span></code> (spin-summed or one collinear spin channel).</p>
+<p>Scalar, dictionary and statistic bindings of the electronic, defect, kinetics
+and MLIP results:</p>
+<div class="table-wrapper colwidths-auto docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Result</p></th>
+<th class="head"><p>Field</p></th>
+<th class="head"><p>Definition</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">EffectiveMassFit</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">mass_tensor</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">relative_effective_mass</span></code> (<code class="docutils literal notranslate"><span class="pre">center</span></code>, <code class="docutils literal notranslate"><span class="pre">tensor</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">DielectricSummary</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">mean</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">static_relative_permittivity</span></code> or <code class="docutils literal notranslate"><span class="pre">high_frequency_relative_permittivity</span></code>; the selection <code class="docutils literal notranslate"><span class="pre">kind=&quot;static&quot;</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;high_frequency&quot;</span></code> is required</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">MagneticMoments</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">total</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">total_magnetic_moment</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">DefectFormationEnergy</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">energy</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">charged_defect_formation_energy</span></code> (one dictionary with the inputs the formula used)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ChargeTransition</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">fermi_level</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">charge_transition_level</span></code> (<code class="docutils literal notranslate"><span class="pre">charges</span></code>, <code class="docutils literal notranslate"><span class="pre">fermi_level</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">SurfaceEnergy</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">surface_energy</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">surface_energy</span></code> (J/m²)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">NEBProfile</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">forward_barrier</span></code>, <code class="docutils literal notranslate"><span class="pre">reverse_barrier</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">migration_barrier_forward</span></code>, <code class="docutils literal notranslate"><span class="pre">migration_barrier_reverse</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">ArrheniusFit</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">activation_energy</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">activation_energy</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">EnergyDrift</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">nve_energy_drift</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">nve_energy_drift</span></code> (one dictionary)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">EnergyErrors</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">statistics.&lt;stat&gt;</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">total_energy_per_atom</span></code> with <code class="docutils literal notranslate"><span class="pre">RMSE</span></code>, <code class="docutils literal notranslate"><span class="pre">MAE</span></code>, <code class="docutils literal notranslate"><span class="pre">BIAS</span></code>, <code class="docutils literal notranslate"><span class="pre">MAXIMUM_ABSOLUTE_ERROR</span></code> (configuration weighting only)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">EnergyErrors</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">energy_prediction_errors</span></code>, and <code class="docutils literal notranslate"><span class="pre">corrected_energy_prediction_errors</span></code> when an offset was applied</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">energy_prediction_errors</span></code> (always; the two values are distinct records)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">ForceErrors</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">component_statistics.&lt;stat&gt;</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">atomic_force</span></code> with the same four derivations (atom weighting only)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ForceErrors</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">force_prediction_errors</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">force_prediction_errors</span></code> (always)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">StressErrors</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">component_statistics.&lt;stat&gt;</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">stress_tensor</span></code> (Voigt list of six) with the same four derivations</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">StressErrors</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">stress_prediction_errors</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">stress_prediction_errors</span></code> (always)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>The prediction-error dictionaries carry weighting, offset and species conditions
+as members; the derivation records are the natural-population equivalents of
+their members and are kept for querying. Not bound: the Arrhenius prefactor (its
+unit is caller-chosen).</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">httk.analyse.matsci.mlip</span><span class="w"> </span><span class="kn">import</span> <span class="n">energy_errors</span>
+
+<span class="n">made</span> <span class="o">=</span> <span class="n">records</span><span class="p">(</span><span class="n">energy_errors</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">],</span> <span class="n">atom_counts</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]))</span>
+<span class="k">assert</span> <span class="p">[</span><span class="nb">getattr</span><span class="p">(</span><span class="n">record</span><span class="p">,</span> <span class="s2">"derivation"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">made</span><span class="p">]</span> <span class="o">==</span> <span class="p">[</span><span class="n">defs</span><span class="o">.</span><span class="n">RMSE</span><span class="p">,</span> <span class="n">defs</span><span class="o">.</span><span class="n">MAE</span><span class="p">,</span> <span class="n">defs</span><span class="o">.</span><span class="n">BIAS</span><span class="p">,</span> <span class="n">defs</span><span class="o">.</span><span class="n">MAXIMUM_ABSOLUTE_ERROR</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span>
+</pre></div>
+</div>
+</section>
+<section id="series">
+<h2>Series<a class="headerlink" href="#series" title="Link to this heading">¶</a></h2>
+<p>A function-valued result is one value of a dictionary-typed definition whose
+members are plain lists sharing a dimension, in the definition’s units. Its
+binding name is the definition name:</p>
+<div class="table-wrapper colwidths-auto docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Result</p></th>
+<th class="head"><p>Definition</p></th>
+<th class="head"><p>Members</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">HarmonicThermodynamics</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">vibrational_thermodynamics</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">temperatures</span></code>, <code class="docutils literal notranslate"><span class="pre">helmholtz_free_energies</span></code>, <code class="docutils literal notranslate"><span class="pre">internal_energies</span></code>, <code class="docutils literal notranslate"><span class="pre">entropies</span></code>, <code class="docutils literal notranslate"><span class="pre">heat_capacities</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">QuasiHarmonicResult</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">quasiharmonic_thermodynamics</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">temperatures</span></code>, <code class="docutils literal notranslate"><span class="pre">equilibrium_volumes</span></code>, <code class="docutils literal notranslate"><span class="pre">total_helmholtz_free_energies</span></code> (static energy included), <code class="docutils literal notranslate"><span class="pre">bulk_moduli</span></code>, <code class="docutils literal notranslate"><span class="pre">volumetric_thermal_expansions</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">TensorSeries</span></code> (<code class="docutils literal notranslate"><span class="pre">msd</span></code>)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">mean_squared_displacement</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">lag_times</span></code>, <code class="docutils literal notranslate"><span class="pre">msd</span></code>, <code class="docutils literal notranslate"><span class="pre">origin_counts</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">TensorSeries</span></code> (<code class="docutils literal notranslate"><span class="pre">vacf</span></code>)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">velocity_autocorrelation</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">lag_times</span></code>, <code class="docutils literal notranslate"><span class="pre">vacf</span></code>, <code class="docutils literal notranslate"><span class="pre">origin_counts</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">TensorSeries</span></code> (<code class="docutils literal notranslate"><span class="pre">vacf_integral</span></code>)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">diffusion_running_integral</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">lag_times</span></code>, <code class="docutils literal notranslate"><span class="pre">diffusion_tensors</span></code> (converted to m²/s)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">RadialDynamics</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">self_van_hove_function</span></code> or <code class="docutils literal notranslate"><span class="pre">distinct_van_hove_function</span></code> by <code class="docutils literal notranslate"><span class="pre">kind</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">lag_time</span></code>, <code class="docutils literal notranslate"><span class="pre">bin_edges</span></code>, <code class="docutils literal notranslate"><span class="pre">density</span></code>, <code class="docutils literal notranslate"><span class="pre">counts</span></code>, <code class="docutils literal notranslate"><span class="pre">samples</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ScatteringSeries</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">self_intermediate_scattering_function</span></code> or <code class="docutils literal notranslate"><span class="pre">intermediate_scattering_function</span></code> by <code class="docutils literal notranslate"><span class="pre">kind</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">lag_times</span></code>, <code class="docutils literal notranslate"><span class="pre">wavevectors</span></code>, <code class="docutils literal notranslate"><span class="pre">real</span></code>, <code class="docutils literal notranslate"><span class="pre">imaginary</span></code> (complex values split), <code class="docutils literal notranslate"><span class="pre">origin_counts</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">VelocitySpectrum</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">velocity_power_spectrum</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">frequencies</span></code>, <code class="docutils literal notranslate"><span class="pre">power</span></code>, <code class="docutils literal notranslate"><span class="pre">window</span></code>, <code class="docutils literal notranslate"><span class="pre">mean_removed</span></code>, <code class="docutils literal notranslate"><span class="pre">mean_square</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">BondOrder</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">steinhardt_bond_order</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">degree</span></code>, <code class="docutils literal notranslate"><span class="pre">cutoff</span></code>, <code class="docutils literal notranslate"><span class="pre">global_order</span></code>, <code class="docutils literal notranslate"><span class="pre">local_orders</span></code>, <code class="docutils literal notranslate"><span class="pre">coordination_numbers</span></code> (<code class="docutils literal notranslate"><span class="pre">null</span></code> for isolated atoms)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">RadialDistribution</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">radial_distribution_function</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">bin_edges</span></code>, <code class="docutils literal notranslate"><span class="pre">g</span></code>, and <code class="docutils literal notranslate"><span class="pre">pair</span></code> for a partial RDF</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">TransportResult</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">thermal_conductivity_running_integral</span></code> or <code class="docutils literal notranslate"><span class="pre">shear_viscosity_running_integral</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">lag_times</span></code>, <code class="docutils literal notranslate"><span class="pre">thermal_conductivity_tensors</span></code> (3×3 per lag) or <code class="docutils literal notranslate"><span class="pre">shear_viscosities</span></code> (xy, xz, yz per lag)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">VaspDOS</span></code> (spin-summed)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">electronic_density_of_states</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">energies</span></code>, <code class="docutils literal notranslate"><span class="pre">density</span></code>, <code class="docutils literal notranslate"><span class="pre">integrated_density</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">VaspDOS</span></code> (up or down channel)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">spin_channel_electronic_density_of_states</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">spin</span></code>, <code class="docutils literal notranslate"><span class="pre">energies</span></code>, <code class="docutils literal notranslate"><span class="pre">density</span></code>, <code class="docutils literal notranslate"><span class="pre">integrated_density</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">GruneisenFit</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">mode_gruneisen_parameters</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">reference_volume</span></code>, <code class="docutils literal notranslate"><span class="pre">values</span></code> (per mode), <code class="docutils literal notranslate"><span class="pre">degree</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ChemicalPotentialRegion</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">chemical_potential_region</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">elements</span></code>, <code class="docutils literal notranslate"><span class="pre">host_coefficients</span></code>, <code class="docutils literal notranslate"><span class="pre">host_energy</span></code>, <code class="docutils literal notranslate"><span class="pre">competing_coefficients</span></code>, <code class="docutils literal notranslate"><span class="pre">competing_energies</span></code> (competing lists may be empty)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">PhaseDiagram</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">convex_hull_phase_diagram</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">elements</span></code>, <code class="docutils literal notranslate"><span class="pre">phase_ids</span></code>, <code class="docutils literal notranslate"><span class="pre">compositions</span></code>, <code class="docutils literal notranslate"><span class="pre">energies_per_atom</span></code>, <code class="docutils literal notranslate"><span class="pre">energies_above_hull_per_atom</span></code>, <code class="docutils literal notranslate"><span class="pre">stable</span></code> and <code class="docutils literal notranslate"><span class="pre">tolerance</span></code>, for the phases with known energy</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>The harmonic zero-point energy and the DOS Fermi energy are separate scalar
+records for every DOS channel. A <code class="docutils literal notranslate"><span class="pre">RadialDistribution</span></code> needs exactly one more bin
+edge than <code class="docutils literal notranslate"><span class="pre">g</span></code> value, otherwise <code class="docutils literal notranslate"><span class="pre">ValueError</span></code> is raised; a non-collinear <code class="docutils literal notranslate"><span class="pre">VaspDOS</span></code>
+is not bound.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">httk.analyse.matsci</span><span class="w"> </span><span class="kn">import</span> <span class="n">harmonic_thermodynamics</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="n">harmonic_thermodynamics</span><span class="p">([</span><span class="mf">2.0</span><span class="p">,</span> <span class="mf">4.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">300.0</span><span class="p">])</span>
+<span class="n">series</span> <span class="o">=</span> <span class="p">{</span><span class="n">record</span><span class="o">.</span><span class="n">definition_id</span><span class="p">:</span> <span class="n">record</span> <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">records</span><span class="p">(</span><span class="n">result</span><span class="p">)}[</span><span class="n">defs</span><span class="o">.</span><span class="n">VIBRATIONAL_THERMODYNAMICS</span><span class="p">]</span>
+<span class="k">assert</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">series</span><span class="o">.</span><span class="n">value</span><span class="p">)</span> <span class="o">==</span> <span class="p">[</span>
+    <span class="s2">"entropies"</span><span class="p">,</span> <span class="s2">"heat_capacities"</span><span class="p">,</span> <span class="s2">"helmholtz_free_energies"</span><span class="p">,</span> <span class="s2">"internal_energies"</span><span class="p">,</span> <span class="s2">"temperatures"</span><span class="p">,</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</section>
+<section id="explicit-plateau-selection">
+<h2>Explicit plateau selection<a class="headerlink" href="#explicit-plateau-selection" title="Link to this heading">¶</a></h2>
+<p>Running Green–Kubo integrals have no inferred plateau. A <code class="docutils literal notranslate"><span class="pre">TransportResult</span></code>
+always records its running-integral series, temperature and volume; with
+<code class="docutils literal notranslate"><span class="pre">lag_index=</span></code>, the caller’s choice of lag, it also records the plateau
+coefficients:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">httk.core.definition_ids</span><span class="w"> </span><span class="kn">import</span> <span class="n">TEMPERATURE</span><span class="p">,</span> <span class="n">VOLUME</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">httk.analyse.matsci</span><span class="w"> </span><span class="kn">import</span> <span class="n">thermal_conductivity</span>
+
+<span class="n">current</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">40</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">thermal_conductivity</span><span class="p">(</span><span class="n">current</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="n">volume</span><span class="o">=</span><span class="mi">125</span><span class="p">,</span> <span class="n">max_lag</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
+<span class="k">assert</span> <span class="p">[</span><span class="nb">type</span><span class="p">(</span><span class="n">record</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span> <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">records</span><span class="p">(</span><span class="n">result</span><span class="p">)]</span> <span class="o">==</span> <span class="p">[</span>
+    <span class="s2">"ThermalConductivityRunningIntegralRecord"</span><span class="p">,</span> <span class="s2">"TemperatureRecord"</span><span class="p">,</span> <span class="s2">"VolumeRecord"</span><span class="p">,</span>
+<span class="p">]</span>
+<span class="n">recorded</span> <span class="o">=</span> <span class="p">{</span><span class="n">record</span><span class="o">.</span><span class="n">definition_id</span> <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">records</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">lag_index</span><span class="o">=</span><span class="mi">4</span><span class="p">)}</span>
+<span class="k">assert</span> <span class="n">recorded</span> <span class="o">==</span> <span class="p">{</span>
+    <span class="n">defs</span><span class="o">.</span><span class="n">THERMAL_CONDUCTIVITY_RUNNING_INTEGRAL</span><span class="p">,</span> <span class="n">defs</span><span class="o">.</span><span class="n">THERMAL_CONDUCTIVITY_TENSOR</span><span class="p">,</span> <span class="n">defs</span><span class="o">.</span><span class="n">THERMAL_CONDUCTIVITY</span><span class="p">,</span>
+    <span class="n">TEMPERATURE</span><span class="p">,</span> <span class="n">VOLUME</span><span class="p">,</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>A <code class="docutils literal notranslate"><span class="pre">ReplicaTransport</span></code> requires <code class="docutils literal notranslate"><span class="pre">lag_index=</span></code> and records the replica mean and
+standard error at that lag as statistic kinds (<code class="docutils literal notranslate"><span class="pre">MEAN</span></code>, <code class="docutils literal notranslate"><span class="pre">STANDARD_ERROR</span></code>).
+Omitting it raises <code class="docutils literal notranslate"><span class="pre">TypeError</span></code>, and an index outside the lag grid raises
+<code class="docutils literal notranslate"><span class="pre">ValueError</span></code>.</p>
+</section>
+<section id="summaries">
+<h2>Summaries<a class="headerlink" href="#summaries" title="Link to this heading">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">analysis_summary(result,</span> <span class="pre">...)</span></code> stores the same bindings, keyed by binding name
+and each with its value, in its <code class="docutils literal notranslate"><span class="pre">fields</span></code> object, so the summary and the records
+agree. See <a class="reference internal" href="analysis-artifacts.html"><span class="doc">Summaries and figures</span></a>, and <a class="reference internal" href="analysis-recipes.html"><span class="doc">Analysis recipes</span></a> for storing
+both in SQLite.</p>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="analysis-recipes.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Analysis recipes</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="analysis-artifacts.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Summaries and figures</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2026, The httk-analyse AUTHORS
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Recording results</a><ul>
+<li><a class="reference internal" href="#records">Records</a></li>
+<li><a class="reference internal" href="#series">Series</a></li>
+<li><a class="reference internal" href="#explicit-plateau-selection">Explicit plateau selection</a></li>
+<li><a class="reference internal" href="#summaries">Summaries</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="_static/documentation_options.js?v=952df46a"></script>
+    <script src="_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="_static/scripts/furo.js?v=46bd48cc"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=fd10adb8"></script>
+    <script src="_static/selector.js?v=d8e9b3ce"></script>
+    <script>window.HTTK_DOCS_VERSIONING = {"channel":"dev","version":"dev:develop","versionPathDepth":2};</script>
+    </body>
+</html>

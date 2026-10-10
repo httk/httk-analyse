@@ -1,0 +1,38 @@
+httk.analyse.integrations.phonopy
+=================================
+
+.. py:module:: httk.analyse.integrations.phonopy
+
+.. autoapi-nested-parse::
+
+   Adapters from Phonopy objects to harmonic phonon thermodynamics.
+
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   httk.analyse.integrations.phonopy.harmonic_from_phonopy
+
+
+Module Contents
+---------------
+
+.. py:function:: harmonic_from_phonopy(phonon, temperatures, *, zero_modes = 'raise', imaginary = 'raise', cutoff_frequency = 0.0)
+
+   Calculate harmonic properties from a Phonopy mesh result.
+
+   Uses the public ``mesh`` result. Q-point multiplicities are normalized to one;
+   every branch is retained. Phonopy frequencies are interpreted as THz.
+
+   :param phonon: A Phonopy object after mesh sampling has run.
+   :param temperatures: Nonnegative temperatures in K.
+   :param zero_modes: Explicit zero-mode policy.
+   :param imaginary: Explicit negative-frequency policy.
+   :param cutoff_frequency: Nonnegative THz zero-mode cutoff, as Phonopy's ``cutoff_frequency``.
+   :return: Harmonic properties normalized per primitive-cell mode set.
+   :raises ValueError: If the mesh is missing or malformed.
+
+

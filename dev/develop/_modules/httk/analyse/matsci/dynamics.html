@@ -1,0 +1,1027 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../../../../">
+  <head><meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../../genindex.html"><link rel="search" title="Search" href="../../../../search.html">
+
+    <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
+        <title>httk.analyse.matsci.dynamics - httk-analyse dev:develop documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=d111a655" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=7bdb33bb" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/selector.css?v=626bada3" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f2f2f2;
+  --color-code-foreground: #1e1e1e;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle site navigation sidebar">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc" aria-label="Toggle table of contents sidebar">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+<div class="announcement">
+  <aside class="announcement-content">
+     Development documentation (dev:develop) — built from the GitHub develop branch; content may differ from any release. 
+  </aside>
+</div>
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <span class="icon"><svg><use href="#svg-menu"></use></svg></span>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../../../index.html"><div class="brand">httk-analyse dev:develop documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+        <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../../index.html">
+  
+  <span class="sidebar-brand-text">httk-analyse dev:develop documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../../../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../generic-hulls.html">Generic lower convex hulls</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../phase-diagrams.html">Materials phase diagrams</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../equations-of-state.html">Static equation-of-state fitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../energetics.html">Static energy bookkeeping</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../time-series.html">Simulation time series</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../mlip-validation.html">Validate MLIP predictions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../elasticity.html">Elasticity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../md-structure.html">Molecular-dynamics structure analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../dynamics.html">Dynamics and diffusion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../thermal-response.html">Equilibrium response and transport</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../phonons.html">Harmonic phonon thermodynamics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../electronic.html">Electronic and magnetic quantities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../vasp-analysis.html">VASP electronic analysis adapters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../defects.html">Defects, surfaces, and kinetics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../analysis-artifacts.html">Summaries and figures</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../records.html">Recording results</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../analysis-recipes.html">Analysis recipes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../crysviz.html">CrysViz structure viewer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../reference/index.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../notebooks/examples.html">Convex-hull and phase-diagram examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../notebooks/materials-toolbox.html">Materials toolbox example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../notebooks/materials-response.html">Materials response toolbox</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../reference/autoapi/index.html">API Reference</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+            <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <h1>Source code for httk.analyse.matsci.dynamics</h1><div class="highlight"><pre>
+<span></span><span class="sd">"""Multiple-origin fixed-frame dynamics with explicit sampling conventions."""</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Sequence</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Literal</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">..</span><span class="w"> </span><span class="kn">import</span> <span class="n">definitions</span> <span class="k">as</span> <span class="n">defs</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.._constants</span><span class="w"> </span><span class="kn">import</span> <span class="n">M2_PER_S_PER_A2_PER_PS</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..definitions</span><span class="w"> </span><span class="kn">import</span> <span class="n">BoundValue</span><span class="p">,</span> <span class="n">FieldBinding</span><span class="p">,</span> <span class="n">_bind_fields</span><span class="p">,</span> <span class="n">_plain</span><span class="p">,</span> <span class="n">_reject_selection</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..definitions</span><span class="w"> </span><span class="kn">import</span> <span class="n">_series</span> <span class="k">as</span> <span class="n">_bind_series</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">"DiffusionFit"</span><span class="p">,</span>
+    <span class="s2">"RadialDynamics"</span><span class="p">,</span>
+    <span class="s2">"ScatteringSeries"</span><span class="p">,</span>
+    <span class="s2">"TensorSeries"</span><span class="p">,</span>
+    <span class="s2">"VelocitySpectrum"</span><span class="p">,</span>
+    <span class="s2">"diffusion_from_msd"</span><span class="p">,</span>
+    <span class="s2">"integrate_vacf"</span><span class="p">,</span>
+    <span class="s2">"intermediate_scattering"</span><span class="p">,</span>
+    <span class="s2">"mean_squared_displacement"</span><span class="p">,</span>
+    <span class="s2">"van_hove_distinct"</span><span class="p">,</span>
+    <span class="s2">"van_hove_self"</span><span class="p">,</span>
+    <span class="s2">"velocity_autocorrelation"</span><span class="p">,</span>
+    <span class="s2">"velocity_spectrum"</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="n">_VAN_HOVE</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"self"</span><span class="p">:</span> <span class="n">defs</span><span class="o">.</span><span class="n">SELF_VAN_HOVE_FUNCTION</span><span class="p">,</span> <span class="s2">"distinct"</span><span class="p">:</span> <span class="n">defs</span><span class="o">.</span><span class="n">DISTINCT_VAN_HOVE_FUNCTION</span><span class="p">}</span>
+<span class="n">_SCATTERING</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">"self"</span><span class="p">:</span> <span class="n">defs</span><span class="o">.</span><span class="n">SELF_INTERMEDIATE_SCATTERING_FUNCTION</span><span class="p">,</span>
+    <span class="s2">"coherent"</span><span class="p">:</span> <span class="n">defs</span><span class="o">.</span><span class="n">INTERMEDIATE_SCATTERING_FUNCTION</span><span class="p">,</span>
+<span class="p">}</span>
+
+
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">slots</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="viewcode-block" id="TensorSeries">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/index.html#httk.analyse.matsci.dynamics.TensorSeries">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">TensorSeries</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Immutable lag times, tensor values and time-origin counts.</span>
+
+<span class="sd">    Tensor units follow ``kind``: angstrom² for ``msd``, (angstrom/ps)² for</span>
+<span class="sd">    ``vacf`` and angstrom²/ps for ``vacf_integral``.</span>
+
+<span class="sd">    :param times: Lag times in ps.</span>
+<span class="sd">    :param tensors: One 3x3 Cartesian tensor per lag.</span>
+<span class="sd">    :param counts: Number of time origins contributing at each lag.</span>
+<span class="sd">    :param kind: Estimator: ``msd``, ``vacf`` or ``vacf_integral``.</span>
+<span class="sd">    :param remove_com: Whether center-of-mass motion was removed (MSD), else ``None``.</span>
+<span class="sd">    :param remove_mean: Whether per-atom temporal means were removed (VACF and its integral), else ``None``.</span>
+<span class="sd">    :raises ValueError: If ``kind`` is unknown.</span>
+<span class="sd">    """</span>
+
+<div class="viewcode-block" id="TensorSeries.times">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/dynamics/index.html#httk.analyse.matsci.dynamics.TensorSeries.times">[docs]</a>
+    <span class="n">times</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="TensorSeries.tensors">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/dynamics/index.html#httk.analyse.matsci.dynamics.TensorSeries.tensors">[docs]</a>
+    <span class="n">tensors</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="o">...</span><span class="p">],</span> <span class="o">...</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="TensorSeries.counts">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/dynamics/index.html#httk.analyse.matsci.dynamics.TensorSeries.counts">[docs]</a>
+    <span class="n">counts</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="TensorSeries.kind">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/dynamics/index.html#httk.analyse.matsci.dynamics.TensorSeries.kind">[docs]</a>
+    <span class="n">kind</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">"msd"</span><span class="p">,</span> <span class="s2">"vacf"</span><span class="p">,</span> <span class="s2">"vacf_integral"</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="TensorSeries.remove_com">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/dynamics/index.html#httk.analyse.matsci.dynamics.TensorSeries.remove_com">[docs]</a>
+    <span class="n">remove_com</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="TensorSeries.remove_mean">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/dynamics/index.html#httk.analyse.matsci.dynamics.TensorSeries.remove_mean">[docs]</a>
+    <span class="n">remove_mean</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Copy nested numeric sequences to immutable tuples."""</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">kind</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"msd"</span><span class="p">,</span> <span class="s2">"vacf"</span><span class="p">,</span> <span class="s2">"vacf_integral"</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"kind must be 'msd', 'vacf' or 'vacf_integral'"</span><span class="p">)</span>
+        <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">"times"</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">times</span><span class="p">))</span>
+        <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">"tensors"</span><span class="p">,</span> <span class="n">_tensors</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tensors</span><span class="p">))</span>
+        <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">"counts"</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">counts</span><span class="p">))</span>
+
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="TensorSeries.trace">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/dynamics/index.html#httk.analyse.matsci.dynamics.TensorSeries.trace">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">trace</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""Return tensor traces in lag order."""</span>
+        <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tensors</span><span class="p">)</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_bound_values</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">selection</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">BoundValue</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""Bind the series of ``kind``; the VACF integral is converted to m²/s and carries no origin counts."""</span>
+        <span class="n">_reject_selection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">selection</span><span class="p">)</span>
+        <span class="n">times</span><span class="p">,</span> <span class="n">tensors</span><span class="p">,</span> <span class="n">counts</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">times</span><span class="p">),</span> <span class="n">_plain</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tensors</span><span class="p">),</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">counts</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">kind</span> <span class="o">==</span> <span class="s2">"msd"</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">(</span><span class="n">_bind_series</span><span class="p">(</span><span class="n">defs</span><span class="o">.</span><span class="n">MEAN_SQUARED_DISPLACEMENT</span><span class="p">,</span> <span class="n">lag_times</span><span class="o">=</span><span class="n">times</span><span class="p">,</span> <span class="n">msd</span><span class="o">=</span><span class="n">tensors</span><span class="p">,</span> <span class="n">origin_counts</span><span class="o">=</span><span class="n">counts</span><span class="p">),)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">kind</span> <span class="o">==</span> <span class="s2">"vacf"</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">(</span><span class="n">_bind_series</span><span class="p">(</span><span class="n">defs</span><span class="o">.</span><span class="n">VELOCITY_AUTOCORRELATION</span><span class="p">,</span> <span class="n">lag_times</span><span class="o">=</span><span class="n">times</span><span class="p">,</span> <span class="n">vacf</span><span class="o">=</span><span class="n">tensors</span><span class="p">,</span> <span class="n">origin_counts</span><span class="o">=</span><span class="n">counts</span><span class="p">),)</span>
+        <span class="n">diffusion</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tensors</span><span class="p">)</span> <span class="o">*</span> <span class="n">M2_PER_S_PER_A2_PER_PS</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">_bind_series</span><span class="p">(</span><span class="n">defs</span><span class="o">.</span><span class="n">DIFFUSION_RUNNING_INTEGRAL</span><span class="p">,</span> <span class="n">lag_times</span><span class="o">=</span><span class="n">times</span><span class="p">,</span> <span class="n">diffusion_tensors</span><span class="o">=</span><span class="n">diffusion</span><span class="p">),)</span></div>
+
+
+
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">slots</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="viewcode-block" id="DiffusionFit">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/index.html#httk.analyse.matsci.dynamics.DiffusionFit">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">DiffusionFit</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""A user-window linear MSD fit, without an inferred diffusive regime.</span>
+
+<span class="sd">    :param tensor: Diffusion tensor in m²/s (the unit of the ``diffusion_tensor`` definition).</span>
+<span class="sd">    :param intercept: MSD intercept tensor in angstrom² (a fit diagnostic of the MSD series).</span>
+<span class="sd">    :param rmse: RMS residual per tensor component in angstrom² (MSD units).</span>
+<span class="sd">    :param window: Inclusive start/stop lag indices.</span>
+<span class="sd">    :param condition_number: Condition of the centered/scaled time design.</span>
+<span class="sd">    """</span>
+
+<div class="viewcode-block" id="DiffusionFit.tensor">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/dynamics/index.html#httk.analyse.matsci.dynamics.DiffusionFit.tensor">[docs]</a>
+    <span class="n">tensor</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="o">...</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="DiffusionFit.intercept">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/dynamics/index.html#httk.analyse.matsci.dynamics.DiffusionFit.intercept">[docs]</a>
+    <span class="n">intercept</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="o">...</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="DiffusionFit.rmse">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/dynamics/index.html#httk.analyse.matsci.dynamics.DiffusionFit.rmse">[docs]</a>
+    <span class="n">rmse</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="o">...</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="DiffusionFit.window">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/dynamics/index.html#httk.analyse.matsci.dynamics.DiffusionFit.window">[docs]</a>
+    <span class="n">window</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="DiffusionFit.condition_number">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/dynamics/index.html#httk.analyse.matsci.dynamics.DiffusionFit.condition_number">[docs]</a>
+    <span class="n">condition_number</span><span class="p">:</span> <span class="nb">float</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Copy fitted matrices and the selected window."""</span>
+        <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"tensor"</span><span class="p">,</span> <span class="s2">"intercept"</span><span class="p">,</span> <span class="s2">"rmse"</span><span class="p">):</span>
+            <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">_tensors</span><span class="p">([</span><span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)])[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">"window"</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">window</span><span class="p">))</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_bound_values</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">selection</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">BoundValue</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""Bind the diffusion tensor and its isotropic coefficient."""</span>
+        <span class="k">return</span> <span class="n">_bind_fields</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">selection</span><span class="p">,</span>
+            <span class="p">{</span><span class="s2">"tensor"</span><span class="p">:</span> <span class="n">FieldBinding</span><span class="p">(</span><span class="n">defs</span><span class="o">.</span><span class="n">DIFFUSION_TENSOR</span><span class="p">),</span> <span class="s2">"isotropic"</span><span class="p">:</span> <span class="n">FieldBinding</span><span class="p">(</span><span class="n">defs</span><span class="o">.</span><span class="n">DIFFUSION_COEFFICIENT</span><span class="p">)},</span>
+        <span class="p">)</span>
+
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="DiffusionFit.isotropic">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/dynamics/index.html#httk.analyse.matsci.dynamics.DiffusionFit.isotropic">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">isotropic</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Return one third of the diffusion tensor trace in m²/s."""</span>
+        <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tensor</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span> <span class="o">/</span> <span class="mi">3</span></div>
+</div>
+
+
+
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">slots</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="viewcode-block" id="RadialDynamics">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/index.html#httk.analyse.matsci.dynamics.RadialDynamics">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">RadialDynamics</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Self probability or distinct number density in spherical shells.</span>
+
+<span class="sd">    :param lag: Selected integer lag.</span>
+<span class="sd">    :param time: Lag time in ps.</span>
+<span class="sd">    :param edges: Radial shell edges in angstrom.</span>
+<span class="sd">    :param density: Self probability or distinct neighbor density per angstrom³, without range renormalization.</span>
+<span class="sd">    :param counts: Number of displacement samples in each shell.</span>
+<span class="sd">    :param samples: Number of central-atom/time-origin samples, including those outside the bins.</span>
+<span class="sd">    :param kind: Self or distinct radial correlation.</span>
+<span class="sd">    """</span>
+
+<div class="viewcode-block" id="RadialDynamics.lag">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/dynamics/index.html#httk.analyse.matsci.dynamics.RadialDynamics.lag">[docs]</a>
+    <span class="n">lag</span><span class="p">:</span> <span class="nb">int</span></div>
+
+<div class="viewcode-block" id="RadialDynamics.time">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/dynamics/index.html#httk.analyse.matsci.dynamics.RadialDynamics.time">[docs]</a>
+    <span class="n">time</span><span class="p">:</span> <span class="nb">float</span></div>
+
+<div class="viewcode-block" id="RadialDynamics.edges">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/dynamics/index.html#httk.analyse.matsci.dynamics.RadialDynamics.edges">[docs]</a>
+    <span class="n">edges</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="RadialDynamics.density">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/dynamics/index.html#httk.analyse.matsci.dynamics.RadialDynamics.density">[docs]</a>
+    <span class="n">density</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="RadialDynamics.counts">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/dynamics/index.html#httk.analyse.matsci.dynamics.RadialDynamics.counts">[docs]</a>
+    <span class="n">counts</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="RadialDynamics.samples">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/dynamics/index.html#httk.analyse.matsci.dynamics.RadialDynamics.samples">[docs]</a>
+    <span class="n">samples</span><span class="p">:</span> <span class="nb">int</span></div>
+
+<div class="viewcode-block" id="RadialDynamics.kind">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/dynamics/index.html#httk.analyse.matsci.dynamics.RadialDynamics.kind">[docs]</a>
+    <span class="n">kind</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">"self"</span><span class="p">,</span> <span class="s2">"distinct"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"self"</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Validate ``kind`` and copy numeric shell fields into tuples."""</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">kind</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">_VAN_HOVE</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"kind must be 'self' or 'distinct'"</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"edges"</span><span class="p">,</span> <span class="s2">"density"</span><span class="p">):</span>
+            <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">_array</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">),</span> <span class="n">name</span><span class="p">)))</span>
+        <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">"counts"</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">counts</span><span class="p">))</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_bound_values</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">selection</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">BoundValue</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""Bind the self or distinct van Hove function; raise ValueError unless edges outnumber density by one."""</span>
+        <span class="n">_reject_selection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">selection</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">edges</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">density</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"van Hove function needs exactly one more bin edge than density values"</span><span class="p">)</span>
+        <span class="n">definition</span> <span class="o">=</span> <span class="n">_VAN_HOVE</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">kind</span><span class="p">]</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="n">_bind_series</span><span class="p">(</span>
+                <span class="n">definition</span><span class="p">,</span>
+                <span class="n">lag_time</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">time</span><span class="p">,</span>
+                <span class="n">bin_edges</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">edges</span><span class="p">),</span>
+                <span class="n">density</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">density</span><span class="p">),</span>
+                <span class="n">counts</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">counts</span><span class="p">),</span>
+                <span class="n">samples</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">samples</span><span class="p">),</span>
+            <span class="p">),</span>
+        <span class="p">)</span></div>
+
+
+
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">slots</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="viewcode-block" id="ScatteringSeries">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/index.html#httk.analyse.matsci.dynamics.ScatteringSeries">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">ScatteringSeries</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Complex intermediate scattering on explicitly supplied wavevectors.</span>
+
+<span class="sd">    :param times: Lag times in ps.</span>
+<span class="sd">    :param wavevectors: Cartesian wavevectors in inverse angstrom.</span>
+<span class="sd">    :param values: Complex correlations indexed by lag then wavevector.</span>
+<span class="sd">    :param counts: Time-origin counts per lag.</span>
+<span class="sd">    :param kind: Self or coherent density correlation.</span>
+<span class="sd">    """</span>
+
+<div class="viewcode-block" id="ScatteringSeries.times">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/dynamics/index.html#httk.analyse.matsci.dynamics.ScatteringSeries.times">[docs]</a>
+    <span class="n">times</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="ScatteringSeries.wavevectors">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/dynamics/index.html#httk.analyse.matsci.dynamics.ScatteringSeries.wavevectors">[docs]</a>
+    <span class="n">wavevectors</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="o">...</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="ScatteringSeries.values">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/dynamics/index.html#httk.analyse.matsci.dynamics.ScatteringSeries.values">[docs]</a>
+    <span class="n">values</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">complex</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="o">...</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="ScatteringSeries.counts">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/dynamics/index.html#httk.analyse.matsci.dynamics.ScatteringSeries.counts">[docs]</a>
+    <span class="n">counts</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="ScatteringSeries.kind">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/dynamics/index.html#httk.analyse.matsci.dynamics.ScatteringSeries.kind">[docs]</a>
+    <span class="n">kind</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">"self"</span><span class="p">,</span> <span class="s2">"coherent"</span><span class="p">]</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Validate ``kind`` and copy complex correlations and wavevectors into tuples."""</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">kind</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">_SCATTERING</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"kind must be 'self' or 'coherent'"</span><span class="p">)</span>
+        <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">"times"</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">times</span><span class="p">))</span>
+        <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">"wavevectors"</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">row</span><span class="p">)</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">wavevectors</span><span class="p">))</span>
+        <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">"values"</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="nb">complex</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">row</span><span class="p">)</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">))</span>
+        <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">"counts"</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">counts</span><span class="p">))</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_bound_values</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">selection</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">BoundValue</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""Bind the self or coherent scattering function with complex values split into real and imaginary parts."""</span>
+        <span class="n">_reject_selection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">selection</span><span class="p">)</span>
+        <span class="n">definition</span> <span class="o">=</span> <span class="n">_SCATTERING</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">kind</span><span class="p">]</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="n">_bind_series</span><span class="p">(</span>
+                <span class="n">definition</span><span class="p">,</span>
+                <span class="n">lag_times</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">times</span><span class="p">),</span>
+                <span class="n">wavevectors</span><span class="o">=</span><span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="n">q</span><span class="p">)</span> <span class="k">for</span> <span class="n">q</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">wavevectors</span><span class="p">],</span>
+                <span class="n">real</span><span class="o">=</span><span class="p">[[</span><span class="n">v</span><span class="o">.</span><span class="n">real</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">row</span><span class="p">]</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">],</span>
+                <span class="n">imaginary</span><span class="o">=</span><span class="p">[[</span><span class="n">v</span><span class="o">.</span><span class="n">imag</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">row</span><span class="p">]</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">],</span>
+                <span class="n">origin_counts</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">counts</span><span class="p">),</span>
+            <span class="p">),</span>
+        <span class="p">)</span></div>
+
+
+
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">slots</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="viewcode-block" id="VelocitySpectrum">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/index.html#httk.analyse.matsci.dynamics.VelocitySpectrum">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">VelocitySpectrum</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""One-sided velocity power spectral density averaged over atoms and axes.</span>
+
+<span class="sd">    :param frequencies: Frequencies in THz (inverse ps).</span>
+<span class="sd">    :param power: Power per THz, in (angstrom/ps)²/THz.</span>
+<span class="sd">    :param window: Applied window.</span>
+<span class="sd">    :param remove_mean: Whether each atom/component time mean was removed.</span>
+<span class="sd">    :param frequency_spacing: Uniform frequency increment in THz.</span>
+<span class="sd">    :param mean_square: Window-weighted mean-square velocity matching the discrete spectral integral.</span>
+<span class="sd">    """</span>
+
+<div class="viewcode-block" id="VelocitySpectrum.frequencies">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/dynamics/index.html#httk.analyse.matsci.dynamics.VelocitySpectrum.frequencies">[docs]</a>
+    <span class="n">frequencies</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="VelocitySpectrum.power">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/dynamics/index.html#httk.analyse.matsci.dynamics.VelocitySpectrum.power">[docs]</a>
+    <span class="n">power</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="VelocitySpectrum.window">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/dynamics/index.html#httk.analyse.matsci.dynamics.VelocitySpectrum.window">[docs]</a>
+    <span class="n">window</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">"none"</span><span class="p">,</span> <span class="s2">"hann"</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="VelocitySpectrum.remove_mean">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/dynamics/index.html#httk.analyse.matsci.dynamics.VelocitySpectrum.remove_mean">[docs]</a>
+    <span class="n">remove_mean</span><span class="p">:</span> <span class="nb">bool</span></div>
+
+<div class="viewcode-block" id="VelocitySpectrum.frequency_spacing">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/dynamics/index.html#httk.analyse.matsci.dynamics.VelocitySpectrum.frequency_spacing">[docs]</a>
+    <span class="n">frequency_spacing</span><span class="p">:</span> <span class="nb">float</span></div>
+
+<div class="viewcode-block" id="VelocitySpectrum.mean_square">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/dynamics/index.html#httk.analyse.matsci.dynamics.VelocitySpectrum.mean_square">[docs]</a>
+    <span class="n">mean_square</span><span class="p">:</span> <span class="nb">float</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Validate ``window`` and copy spectral arrays into finite scalar tuples."""</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">window</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"none"</span><span class="p">,</span> <span class="s2">"hann"</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"window must be 'none' or 'hann'"</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"frequencies"</span><span class="p">,</span> <span class="s2">"power"</span><span class="p">):</span>
+            <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">_array</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">),</span> <span class="n">name</span><span class="p">)))</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_bound_values</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">selection</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">BoundValue</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""Bind the velocity power spectrum."""</span>
+        <span class="n">_reject_selection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">selection</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="n">_bind_series</span><span class="p">(</span>
+                <span class="n">defs</span><span class="o">.</span><span class="n">VELOCITY_POWER_SPECTRUM</span><span class="p">,</span>
+                <span class="n">frequencies</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">frequencies</span><span class="p">),</span>
+                <span class="n">power</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">power</span><span class="p">),</span>
+                <span class="n">window</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">window</span><span class="p">,</span>
+                <span class="n">mean_removed</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">remove_mean</span><span class="p">,</span>
+                <span class="n">mean_square</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mean_square</span><span class="p">,</span>
+            <span class="p">),</span>
+        <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="mean_squared_displacement">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/index.html#httk.analyse.matsci.dynamics.mean_squared_displacement">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">mean_squared_displacement</span><span class="p">(</span>
+    <span class="n">unwrapped_positions</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+    <span class="n">timestep</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">max_lag</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">remove_com</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">masses</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TensorSeries</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Average displacement outer products over every time origin and atom.</span>
+
+<span class="sd">    Positions must use persistent atom order and one fixed laboratory/material</span>
+<span class="sd">    frame. Wrapped coordinates and changing-cell frame transformations must be</span>
+<span class="sd">    resolved upstream. Masses are required for optional center-of-mass removal.</span>
+
+<span class="sd">    :param unwrapped_positions: Finite Cartesian array (frames, atoms, 3), in angstrom.</span>
+<span class="sd">    :param timestep: Uniform positive time between frames in ps.</span>
+<span class="sd">    :param max_lag: Largest lag, inclusive; default frames minus one.</span>
+<span class="sd">    :param remove_com: Subtract each frame's mass-weighted center before displacements.</span>
+<span class="sd">    :param masses: Positive atom masses, required only when removing COM motion.</span>
+<span class="sd">    :return: Symmetric MSD tensors in angstrom² on lag times in ps, with time-origin counts.</span>
+<span class="sd">    :raises ValueError: If data, lag, masses or derived quantities are invalid.</span>
+<span class="sd">    """</span>
+    <span class="n">positions</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="n">lag</span> <span class="o">=</span> <span class="n">_trajectory</span><span class="p">(</span><span class="n">unwrapped_positions</span><span class="p">,</span> <span class="n">timestep</span><span class="p">,</span> <span class="n">max_lag</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">remove_com</span><span class="p">:</span>
+        <span class="n">weight</span> <span class="o">=</span> <span class="n">_array</span><span class="p">(</span><span class="n">masses</span><span class="p">,</span> <span class="s2">"masses"</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">weight</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="p">(</span><span class="n">positions</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],)</span> <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">weight</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"COM removal requires one positive mass per atom"</span><span class="p">)</span>
+        <span class="n">weight</span> <span class="o">=</span> <span class="n">weight</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">weight</span><span class="p">)</span>
+        <span class="n">weight</span> <span class="o">/=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">weight</span><span class="p">)</span>
+        <span class="n">positions</span> <span class="o">-=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"n,tni-&gt;ti"</span><span class="p">,</span> <span class="n">weight</span><span class="p">,</span> <span class="n">positions</span><span class="p">)[:,</span> <span class="kc">None</span><span class="p">,</span> <span class="p">:]</span>
+    <span class="k">elif</span> <span class="n">masses</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"masses require remove_com=True"</span><span class="p">)</span>
+    <span class="n">values</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">lag</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="n">delta</span> <span class="o">=</span> <span class="n">positions</span><span class="p">[</span><span class="n">k</span><span class="p">:]</span> <span class="o">-</span> <span class="n">positions</span><span class="p">[:</span> <span class="nb">len</span><span class="p">(</span><span class="n">positions</span><span class="p">)</span> <span class="o">-</span> <span class="n">k</span><span class="p">]</span>
+        <span class="n">values</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"tni,tnj-&gt;ij"</span><span class="p">,</span> <span class="n">delta</span><span class="p">,</span> <span class="n">delta</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">delta</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">delta</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+    <span class="k">return</span> <span class="n">_series</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">positions</span><span class="p">),</span> <span class="n">lag</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="s2">"msd"</span><span class="p">,</span> <span class="n">remove_com</span><span class="o">=</span><span class="nb">bool</span><span class="p">(</span><span class="n">remove_com</span><span class="p">))</span></div>
+
+
+
+<div class="viewcode-block" id="velocity_autocorrelation">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/index.html#httk.analyse.matsci.dynamics.velocity_autocorrelation">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">velocity_autocorrelation</span><span class="p">(</span>
+    <span class="n">velocities</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+    <span class="n">timestep</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">max_lag</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">remove_mean</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TensorSeries</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Compute dimensionful velocity correlation tensors over all origins.</span>
+
+<span class="sd">    C_ij(k)=mean[v_i(t)*v_j(t+k)] over origins and atoms. The lagged tensor need</span>
+<span class="sd">    not be symmetric. This pair-count estimator is not a power spectral density.</span>
+
+<span class="sd">    Removing each atom's own time mean also removes Δr/T, the diffusive signal. It biases the</span>
+<span class="sd">    integral estimate of D low by about t_plateau/T and drives the full-length integral to zero,</span>
+<span class="sd">    so use ``remove_mean=True`` only for non-diffusive (solid) systems.</span>
+
+<span class="sd">    :param velocities: Array (frames, atoms, 3) in angstrom/ps.</span>
+<span class="sd">    :param timestep: Uniform frame spacing in ps.</span>
+<span class="sd">    :param max_lag: Largest inclusive lag.</span>
+<span class="sd">    :param remove_mean: Subtract each atom/component time mean before correlation; only for non-diffusive systems.</span>
+<span class="sd">    :return: Correlation tensors in (angstrom/ps)² on lag times in ps.</span>
+<span class="sd">    :raises ValueError: If data, lag or results are invalid.</span>
+<span class="sd">    """</span>
+    <span class="n">velocity</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="n">lag</span> <span class="o">=</span> <span class="n">_trajectory</span><span class="p">(</span><span class="n">velocities</span><span class="p">,</span> <span class="n">timestep</span><span class="p">,</span> <span class="n">max_lag</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">remove_mean</span><span class="p">:</span>
+        <span class="n">velocity</span> <span class="o">-=</span> <span class="n">velocity</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">tensors</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"tni,tnj-&gt;ij"</span><span class="p">,</span> <span class="n">velocity</span><span class="p">[:</span> <span class="nb">len</span><span class="p">(</span><span class="n">velocity</span><span class="p">)</span> <span class="o">-</span> <span class="n">k</span><span class="p">],</span> <span class="n">velocity</span><span class="p">[</span><span class="n">k</span><span class="p">:])</span>
+        <span class="o">/</span> <span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">velocity</span><span class="p">)</span> <span class="o">-</span> <span class="n">k</span><span class="p">)</span> <span class="o">*</span> <span class="n">velocity</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">lag</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="p">]</span>
+    <span class="k">return</span> <span class="n">_series</span><span class="p">(</span><span class="n">tensors</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">velocity</span><span class="p">),</span> <span class="n">lag</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="s2">"vacf"</span><span class="p">,</span> <span class="n">remove_mean</span><span class="o">=</span><span class="nb">bool</span><span class="p">(</span><span class="n">remove_mean</span><span class="p">))</span></div>
+
+
+
+<div class="viewcode-block" id="diffusion_from_msd">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/index.html#httk.analyse.matsci.dynamics.diffusion_from_msd">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">diffusion_from_msd</span><span class="p">(</span><span class="n">msd</span><span class="p">:</span> <span class="n">TensorSeries</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">window</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">DiffusionFit</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Fit MSD_ij=2*D_ij*t+intercept on an explicit inclusive lag window.</span>
+
+<span class="sd">    A linear fit alone cannot establish diffusive behavior. Inspect window</span>
+<span class="sd">    sensitivity and residuals; negative noisy fitted eigenvalues are retained.</span>
+
+<span class="sd">    :param msd: MSD tensor series in angstrom² and ps.</span>
+<span class="sd">    :param window: Inclusive (start, stop) lag indices with at least three points.</span>
+<span class="sd">    :return: Diffusion tensor, intercepts and component residual RMS.</span>
+<span class="sd">    :raises ValueError: If the window, times or tensor data are invalid.</span>
+<span class="sd">    """</span>
+    <span class="n">times</span> <span class="o">=</span> <span class="n">_array</span><span class="p">(</span><span class="n">msd</span><span class="o">.</span><span class="n">times</span><span class="p">,</span> <span class="s2">"times"</span><span class="p">)</span>
+    <span class="n">tensors</span> <span class="o">=</span> <span class="n">_array</span><span class="p">(</span><span class="n">msd</span><span class="o">.</span><span class="n">tensors</span><span class="p">,</span> <span class="s2">"MSD"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">window</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span> <span class="ow">or</span> <span class="nb">any</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">window</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"window must be two integer lag indices"</span><span class="p">)</span>
+    <span class="n">start</span><span class="p">,</span> <span class="n">stop</span> <span class="o">=</span> <span class="n">window</span>
+    <span class="k">if</span> <span class="n">start</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">stop</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">times</span><span class="p">)</span> <span class="ow">or</span> <span class="n">stop</span> <span class="o">-</span> <span class="n">start</span> <span class="o">&lt;</span> <span class="mi">2</span> <span class="ow">or</span> <span class="n">tensors</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">times</span><span class="p">),</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"fit requires an in-range window containing at least three lags"</span><span class="p">)</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="n">times</span><span class="p">[</span><span class="n">start</span> <span class="p">:</span> <span class="n">stop</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"lag times must increase strictly"</span><span class="p">)</span>
+    <span class="n">center</span><span class="p">,</span> <span class="n">scale</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">mean</span><span class="p">()),</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ptp</span><span class="p">(</span><span class="n">t</span><span class="p">))</span>
+    <span class="n">design</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">)),</span> <span class="p">(</span><span class="n">t</span> <span class="o">-</span> <span class="n">center</span><span class="p">)</span> <span class="o">/</span> <span class="n">scale</span><span class="p">))</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">tensors</span><span class="p">[</span><span class="n">start</span> <span class="p">:</span> <span class="n">stop</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">),</span> <span class="mi">9</span><span class="p">)</span>
+    <span class="n">coeff</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">singular</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">lstsq</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">rcond</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">rank</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"diffusion time design is rank deficient"</span><span class="p">)</span>
+    <span class="n">slope</span> <span class="o">=</span> <span class="n">coeff</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="n">scale</span>
+    <span class="n">intercept</span> <span class="o">=</span> <span class="n">coeff</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">slope</span> <span class="o">*</span> <span class="n">center</span>
+    <span class="n">rms</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">((</span><span class="n">y</span> <span class="o">-</span> <span class="n">design</span> <span class="o">@</span> <span class="n">coeff</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
+    <span class="n">rows</span> <span class="o">=</span> <span class="n">_tensors</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">((</span><span class="n">slope</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">M2_PER_S_PER_A2_PER_PS</span><span class="p">,</span> <span class="n">intercept</span><span class="p">,</span> <span class="n">rms</span><span class="p">))</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">DiffusionFit</span><span class="p">(</span><span class="n">rows</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">rows</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">rows</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">stop</span><span class="p">),</span> <span class="nb">float</span><span class="p">(</span><span class="n">singular</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="n">singular</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span></div>
+
+
+
+<div class="viewcode-block" id="integrate_vacf">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/index.html#httk.analyse.matsci.dynamics.integrate_vacf">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">integrate_vacf</span><span class="p">(</span><span class="n">vacf</span><span class="p">:</span> <span class="n">TensorSeries</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TensorSeries</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Trapezoid-integrate a velocity correlation into a running diffusion tensor.</span>
+
+<span class="sd">    The result is a running series kept in angstrom²/ps; the diffusion coefficient</span>
+<span class="sd">    as a property (m²/s) is reported by :func:`diffusion_from_msd`.</span>
+
+<span class="sd">    :param vacf: Dimensionful VACF in (angstrom/ps)² on increasing ps lags.</span>
+<span class="sd">    :return: Running integral in angstrom²/ps, starting at zero.</span>
+<span class="sd">    :raises ValueError: If lag times or tensor values are invalid.</span>
+<span class="sd">    """</span>
+    <span class="n">times</span> <span class="o">=</span> <span class="n">_array</span><span class="p">(</span><span class="n">vacf</span><span class="o">.</span><span class="n">times</span><span class="p">,</span> <span class="s2">"times"</span><span class="p">)</span>
+    <span class="n">values</span> <span class="o">=</span> <span class="n">_array</span><span class="p">(</span><span class="n">vacf</span><span class="o">.</span><span class="n">tensors</span><span class="p">,</span> <span class="s2">"VACF"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">times</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">1</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">times</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span> <span class="ow">or</span> <span class="n">times</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">times</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"VACF times must start at zero and increase"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">values</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">times</span><span class="p">),</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"VACF tensors and times must match"</span><span class="p">)</span>
+    <span class="n">integrated</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+    <span class="n">integrated</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">+</span> <span class="n">values</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">times</span><span class="p">)[:,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">TensorSeries</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">times</span><span class="p">),</span> <span class="n">_tensors</span><span class="p">(</span><span class="n">integrated</span><span class="p">),</span> <span class="n">vacf</span><span class="o">.</span><span class="n">counts</span><span class="p">,</span> <span class="s2">"vacf_integral"</span><span class="p">,</span> <span class="n">remove_mean</span><span class="o">=</span><span class="n">vacf</span><span class="o">.</span><span class="n">remove_mean</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="van_hove_self">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/index.html#httk.analyse.matsci.dynamics.van_hove_self">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">van_hove_self</span><span class="p">(</span><span class="n">unwrapped_positions</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">timestep</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">lag</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">bins</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">float</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">RadialDynamics</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Histogram self displacements without renormalizing a truncated radial range.</span>
+
+<span class="sd">    :param unwrapped_positions: Persistent-atom Cartesian positions (frames, atoms, 3) in angstrom.</span>
+<span class="sd">    :param timestep: Uniform frame spacing in ps.</span>
+<span class="sd">    :param lag: Nonnegative integer lag.</span>
+<span class="sd">    :param bins: Strictly increasing nonnegative spherical-shell edges in angstrom.</span>
+<span class="sd">    :return: Probability per shell volume and raw sample counts.</span>
+<span class="sd">    :raises ValueError: If inputs or shell edges are invalid.</span>
+<span class="sd">    """</span>
+    <span class="n">positions</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">_trajectory</span><span class="p">(</span><span class="n">unwrapped_positions</span><span class="p">,</span> <span class="n">timestep</span><span class="p">,</span> <span class="n">lag</span><span class="p">)</span>
+    <span class="n">edges</span> <span class="o">=</span> <span class="n">_array</span><span class="p">(</span><span class="n">bins</span><span class="p">,</span> <span class="s2">"bins"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">edges</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">1</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">edges</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span> <span class="ow">or</span> <span class="n">edges</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">edges</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"bins must be increasing nonnegative radial edges"</span><span class="p">)</span>
+    <span class="n">displacement</span> <span class="o">=</span> <span class="n">positions</span><span class="p">[</span><span class="n">lag</span><span class="p">:]</span> <span class="o">-</span> <span class="n">positions</span><span class="p">[:</span> <span class="nb">len</span><span class="p">(</span><span class="n">positions</span><span class="p">)</span> <span class="o">-</span> <span class="n">lag</span><span class="p">]</span>
+    <span class="n">radii</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">displacement</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+    <span class="n">counts</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="n">radii</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="n">edges</span><span class="p">)</span>
+    <span class="n">density</span> <span class="o">=</span> <span class="n">counts</span> <span class="o">/</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">radii</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">4</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">3</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">edges</span><span class="o">**</span><span class="mi">3</span><span class="p">))</span>
+    <span class="n">_finite</span><span class="p">(</span><span class="n">density</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">RadialDynamics</span><span class="p">(</span>
+        <span class="n">lag</span><span class="p">,</span> <span class="n">lag</span> <span class="o">*</span> <span class="n">dt</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">edges</span><span class="p">),</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">density</span><span class="p">),</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">counts</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">radii</span><span class="p">)</span>
+    <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="van_hove_distinct">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/index.html#httk.analyse.matsci.dynamics.van_hove_distinct">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">van_hove_distinct</span><span class="p">(</span>
+    <span class="n">positions</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+    <span class="n">timestep</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">lag</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">bins</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span>
+    <span class="n">cell</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">RadialDynamics</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Compute the bulk distinct van Hove density with persistent atom identity.</span>
+
+<span class="sd">    Counts displacements from atom i at each origin to atom j at the lag, with</span>
+<span class="sd">    i != j. Minimum images use one fixed periodic 3D cell. The integral over a</span>
+<span class="sd">    complete spatial domain is N-1; a finite spherical range is not renormalized.</span>
+
+<span class="sd">    :param positions: Cartesian array (frames, atoms, 3) in angstrom, with persistent atom order.</span>
+<span class="sd">    :param timestep: Uniform frame spacing in ps.</span>
+<span class="sd">    :param lag: Nonnegative integer lag.</span>
+<span class="sd">    :param bins: Increasing nonnegative radial edges, within the unique-image radius.</span>
+<span class="sd">    :param cell: Fixed fully periodic 3x3 row-vector cell in angstrom.</span>
+<span class="sd">    :return: Distinct neighbor density per angstrom³, directed counts and center-origin count.</span>
+<span class="sd">    :raises ValueError: If data, cell or radial range is invalid.</span>
+<span class="sd">    """</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">.structure</span><span class="w"> </span><span class="kn">import</span> <span class="n">_cell</span><span class="p">,</span> <span class="n">_check_unique_cutoff</span><span class="p">,</span> <span class="n">_minimum_image_rows</span>
+
+    <span class="n">data</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">_trajectory</span><span class="p">(</span><span class="n">positions</span><span class="p">,</span> <span class="n">timestep</span><span class="p">,</span> <span class="n">lag</span><span class="p">)</span>
+    <span class="n">edges</span> <span class="o">=</span> <span class="n">_array</span><span class="p">(</span><span class="n">bins</span><span class="p">,</span> <span class="s2">"bins"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">edges</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">1</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">edges</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span> <span class="ow">or</span> <span class="n">edges</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">edges</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"bins must be increasing nonnegative radial edges"</span><span class="p">)</span>
+    <span class="n">basis</span><span class="p">,</span> <span class="n">inverse</span> <span class="o">=</span> <span class="n">_cell</span><span class="p">(</span><span class="n">cell</span><span class="p">)</span>
+    <span class="n">_check_unique_cutoff</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">edges</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]),</span> <span class="n">basis</span><span class="p">,</span> <span class="n">inverse</span><span class="p">,</span> <span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">))</span>
+    <span class="n">histogram</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">edges</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
+    <span class="n">atom_count</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">origin</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">-</span> <span class="n">lag</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">atom</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">atom_count</span><span class="p">):</span>
+            <span class="n">displacements</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">origin</span> <span class="o">+</span> <span class="n">lag</span><span class="p">]</span> <span class="o">-</span> <span class="n">data</span><span class="p">[</span><span class="n">origin</span><span class="p">,</span> <span class="n">atom</span><span class="p">]</span>
+            <span class="n">vectors</span> <span class="o">=</span> <span class="n">_minimum_image_rows</span><span class="p">(</span><span class="n">displacements</span><span class="p">,</span> <span class="n">basis</span><span class="p">,</span> <span class="n">inverse</span><span class="p">,</span> <span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">))</span>
+            <span class="n">distances</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">vectors</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">histogram</span> <span class="o">+=</span> <span class="n">np</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="n">distances</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">atom_count</span><span class="p">)</span> <span class="o">!=</span> <span class="n">atom</span><span class="p">],</span> <span class="n">bins</span><span class="o">=</span><span class="n">edges</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">samples</span> <span class="o">=</span> <span class="n">atom_count</span> <span class="o">*</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">-</span> <span class="n">lag</span><span class="p">)</span>
+    <span class="n">density</span> <span class="o">=</span> <span class="n">histogram</span> <span class="o">/</span> <span class="p">(</span><span class="n">samples</span> <span class="o">*</span> <span class="p">(</span><span class="mi">4</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">3</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">edges</span><span class="o">**</span><span class="mi">3</span><span class="p">))</span>
+    <span class="n">_finite</span><span class="p">(</span><span class="n">density</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">RadialDynamics</span><span class="p">(</span>
+        <span class="n">lag</span><span class="p">,</span>
+        <span class="n">lag</span> <span class="o">*</span> <span class="n">dt</span><span class="p">,</span>
+        <span class="nb">tuple</span><span class="p">(</span><span class="n">edges</span><span class="p">),</span>
+        <span class="nb">tuple</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">density</span><span class="p">),</span>
+        <span class="nb">tuple</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">histogram</span><span class="p">),</span>
+        <span class="n">samples</span><span class="p">,</span>
+        <span class="s2">"distinct"</span><span class="p">,</span>
+    <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="intermediate_scattering">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/index.html#httk.analyse.matsci.dynamics.intermediate_scattering">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">intermediate_scattering</span><span class="p">(</span>
+    <span class="n">positions</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+    <span class="n">timestep</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">wavevectors</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">kind</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">"self"</span><span class="p">,</span> <span class="s2">"coherent"</span><span class="p">],</span>
+    <span class="n">max_lag</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ScatteringSeries</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Compute self or coherent scattering with exp(+i q·displacement).</span>
+
+<span class="sd">    Self scattering averages over atoms and origins. Coherent scattering is</span>
+<span class="sd">    mean[conj(rho(q,t))*rho(q,t+lag)]/N, retaining the density peak at q=0.</span>
+<span class="sd">    For arbitrary q use unwrapped positions; periodic wrapped coordinates are</span>
+<span class="sd">    phase equivalent only for wavevectors commensurate with the fixed cell.</span>
+
+<span class="sd">    :param positions: Cartesian array (frames, atoms, 3) in angstrom.</span>
+<span class="sd">    :param timestep: Uniform frame spacing in ps.</span>
+<span class="sd">    :param wavevectors: Finite Cartesian (wavevectors, 3) array in inverse angstrom.</span>
+<span class="sd">    :param kind: Explicit self or coherent definition.</span>
+<span class="sd">    :param max_lag: Largest inclusive lag.</span>
+<span class="sd">    :return: Complex correlations in lag and wavevector order.</span>
+<span class="sd">    :raises ValueError: If shapes, kind or numeric values are invalid.</span>
+<span class="sd">    """</span>
+    <span class="n">data</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="n">lag</span> <span class="o">=</span> <span class="n">_trajectory</span><span class="p">(</span><span class="n">positions</span><span class="p">,</span> <span class="n">timestep</span><span class="p">,</span> <span class="n">max_lag</span><span class="p">)</span>
+    <span class="n">q</span> <span class="o">=</span> <span class="n">_array</span><span class="p">(</span><span class="n">wavevectors</span><span class="p">,</span> <span class="s2">"wavevectors"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">q</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">2</span> <span class="ow">or</span> <span class="n">q</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">3</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">q</span><span class="p">)</span> <span class="ow">or</span> <span class="n">kind</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"self"</span><span class="p">,</span> <span class="s2">"coherent"</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"wavevectors require shape (Q,3), and kind must be self or coherent"</span><span class="p">)</span>
+    <span class="n">phases</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"tni,qi-&gt;tnq"</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">q</span><span class="p">))</span>
+    <span class="n">rho</span> <span class="o">=</span> <span class="n">phases</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">values</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">lag</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">kind</span> <span class="o">==</span> <span class="s2">"self"</span><span class="p">:</span>
+            <span class="n">corr</span> <span class="o">=</span> <span class="p">(</span><span class="n">phases</span><span class="p">[:</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">-</span> <span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">conj</span><span class="p">()</span> <span class="o">*</span> <span class="n">phases</span><span class="p">[</span><span class="n">k</span><span class="p">:])</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">corr</span> <span class="o">=</span> <span class="p">(</span><span class="n">rho</span><span class="p">[:</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">-</span> <span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">conj</span><span class="p">()</span> <span class="o">*</span> <span class="n">rho</span><span class="p">[</span><span class="n">k</span><span class="p">:])</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">/</span> <span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">corr</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"scattering correlation is not finite"</span><span class="p">)</span>
+        <span class="n">values</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="nb">complex</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">corr</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">ScatteringSeries</span><span class="p">(</span>
+        <span class="nb">tuple</span><span class="p">(</span><span class="n">k</span> <span class="o">*</span> <span class="n">dt</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">lag</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)),</span>
+        <span class="nb">tuple</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">row</span><span class="p">)</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">q</span><span class="p">),</span>
+        <span class="nb">tuple</span><span class="p">(</span><span class="n">values</span><span class="p">),</span>
+        <span class="nb">tuple</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">-</span> <span class="n">k</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">lag</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)),</span>
+        <span class="n">kind</span><span class="p">,</span>
+    <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="velocity_spectrum">
+<a class="viewcode-back" href="../../../../reference/autoapi/httk/analyse/matsci/index.html#httk.analyse.matsci.dynamics.velocity_spectrum">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">velocity_spectrum</span><span class="p">(</span>
+    <span class="n">velocities</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+    <span class="n">timestep</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">window</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">"none"</span><span class="p">,</span> <span class="s2">"hann"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"hann"</span><span class="p">,</span>
+    <span class="n">remove_mean</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">VelocitySpectrum</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Compute a one-sided periodogram whose discrete integral obeys Parseval.</span>
+
+<span class="sd">    This is a velocity power spectrum, not a normalized phonon density of states.</span>
+<span class="sd">    It averages equally over atoms and Cartesian components. Multiplying power</span>
+<span class="sd">    by frequency spacing and summing gives the window-weighted mean square.</span>
+
+<span class="sd">    The default keeps each atom's time-averaged velocity. For a diffusing atom that mean is</span>
+<span class="sd">    Δr/T, the diffusive signal: removing it zeroes the rectangular-window ω=0 bin, which is</span>
+<span class="sd">    proportional to the diffusion coefficient. Per-atom mean removal is appropriate only for</span>
+<span class="sd">    non-diffusive (solid) systems.</span>
+
+<span class="sd">    :param velocities: Array (frames, atoms, 3) in angstrom/ps.</span>
+<span class="sd">    :param timestep: Uniform positive frame spacing in ps.</span>
+<span class="sd">    :param window: Rectangular (none) or Hann window.</span>
+<span class="sd">    :param remove_mean: Remove each atom/component time mean before windowing; only for non-diffusive systems.</span>
+<span class="sd">    :return: THz frequencies and dimensionful velocity power density.</span>
+<span class="sd">    :raises ValueError: If input, window or spectral values are invalid.</span>
+<span class="sd">    """</span>
+    <span class="n">data</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">_trajectory</span><span class="p">(</span><span class="n">velocities</span><span class="p">,</span> <span class="n">timestep</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">window</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"none"</span><span class="p">,</span> <span class="s2">"hann"</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">window</span> <span class="o">==</span> <span class="s2">"hann"</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"window must be none or hann; Hann requires at least three frames"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">remove_mean</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">-=</span> <span class="n">data</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">weight</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">))</span> <span class="k">if</span> <span class="n">window</span> <span class="o">==</span> <span class="s2">"none"</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">hanning</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+    <span class="n">transformed</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">rfft</span><span class="p">(</span><span class="n">data</span> <span class="o">*</span> <span class="n">weight</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">power</span> <span class="o">=</span> <span class="n">dt</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">weight</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">transformed</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">power</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">*=</span> <span class="mi">2</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">power</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">*=</span> <span class="mi">2</span>
+    <span class="n">_finite</span><span class="p">(</span><span class="n">power</span><span class="p">)</span>
+    <span class="n">frequencies</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">rfftfreq</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">),</span> <span class="n">d</span><span class="o">=</span><span class="n">dt</span><span class="p">)</span>
+    <span class="n">mean_square</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">data</span> <span class="o">*</span> <span class="n">weight</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">])</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">weight</span><span class="o">**</span><span class="mi">2</span><span class="p">)))</span>
+    <span class="k">return</span> <span class="n">VelocitySpectrum</span><span class="p">(</span>
+        <span class="nb">tuple</span><span class="p">(</span><span class="n">frequencies</span><span class="p">),</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">power</span><span class="p">),</span> <span class="n">window</span><span class="p">,</span> <span class="n">remove_mean</span><span class="p">,</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">*</span> <span class="n">dt</span><span class="p">),</span> <span class="n">mean_square</span>
+    <span class="p">)</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_array</span><span class="p">(</span><span class="n">values</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">raw</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">iscomplexobj</span><span class="p">(</span><span class="n">raw</span><span class="p">)</span> <span class="ow">or</span> <span class="n">raw</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">kind</span> <span class="ow">in</span> <span class="s2">"SU"</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> must contain real numeric data"</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">except</span> <span class="p">(</span><span class="ne">TypeError</span><span class="p">,</span> <span class="ne">OverflowError</span><span class="p">)</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> must contain finite real numbers"</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">exc</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">result</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> must contain finite real numbers"</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">result</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_finite</span><span class="p">(</span><span class="n">values</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">values</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"derived dynamics values are not finite"</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_trajectory</span><span class="p">(</span><span class="n">values</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">timestep</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">max_lag</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">_array</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="s2">"trajectory"</span><span class="p">)</span>
+    <span class="n">dt</span> <span class="o">=</span> <span class="n">_array</span><span class="p">(</span><span class="n">timestep</span><span class="p">,</span> <span class="s2">"timestep"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">3</span> <span class="ow">or</span> <span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">3</span> <span class="ow">or</span> <span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">2</span> <span class="ow">or</span> <span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"trajectory requires shape (at least 2 frames, at least 1 atom,3)"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">dt</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">0</span> <span class="ow">or</span> <span class="nb">float</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"timestep must be a positive scalar"</span><span class="p">)</span>
+    <span class="n">lag</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">max_lag</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">max_lag</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">lag</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">lag</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="ow">or</span> <span class="n">lag</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">lag</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"max_lag must be an integer between zero and frames minus one"</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">data</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="n">dt</span><span class="p">),</span> <span class="n">lag</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_tensors</span><span class="p">(</span><span class="n">values</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="o">...</span><span class="p">],</span> <span class="o">...</span><span class="p">]:</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">_array</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="s2">"tensors"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">3</span> <span class="ow">or</span> <span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">!=</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"tensors must have shape (lags,3,3)"</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">row</span><span class="p">)</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">tensor</span><span class="p">)</span> <span class="k">for</span> <span class="n">tensor</span> <span class="ow">in</span> <span class="n">data</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_series</span><span class="p">(</span>
+    <span class="n">values</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">frames</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">lag</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">dt</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">kind</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">"msd"</span><span class="p">,</span> <span class="s2">"vacf"</span><span class="p">],</span> <span class="o">**</span><span class="n">options</span><span class="p">:</span> <span class="nb">bool</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TensorSeries</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">TensorSeries</span><span class="p">(</span>
+        <span class="nb">tuple</span><span class="p">(</span><span class="n">k</span> <span class="o">*</span> <span class="n">dt</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">lag</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)),</span>
+        <span class="n">_tensors</span><span class="p">(</span><span class="n">values</span><span class="p">),</span>
+        <span class="nb">tuple</span><span class="p">(</span><span class="n">frames</span> <span class="o">-</span> <span class="n">k</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">lag</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)),</span>
+        <span class="n">kind</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">options</span><span class="p">,</span>
+    <span class="p">)</span>
+</pre></div>
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          
+          
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2026, The httk-analyse AUTHORS
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer no-toc">
+      
+      
+      
+    </aside>
+  </div>
+</div><script src="../../../../_static/documentation_options.js?v=952df46a"></script>
+    <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../../../_static/scripts/furo.js?v=46bd48cc"></script>
+    <script src="../../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../../_static/copybutton.js?v=fd10adb8"></script>
+    <script src="../../../../_static/selector.js?v=d8e9b3ce"></script>
+    <script>window.HTTK_DOCS_VERSIONING = {"channel":"dev","version":"dev:develop","versionPathDepth":2};</script>
+    </body>
+</html>

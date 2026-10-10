@@ -1,0 +1,459 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="./">
+  <head><meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="genindex.html"><link rel="search" title="Search" href="search.html"><link rel="next" title="Electronic and magnetic quantities" href="electronic.html"><link rel="prev" title="Equilibrium response and transport" href="thermal-response.html">
+
+    <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
+        <title>Harmonic phonon thermodynamics - httk-analyse dev:develop documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d111a655" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=7bdb33bb" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="_static/selector.css?v=626bada3" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=8dab3a3b" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f2f2f2;
+  --color-code-foreground: #1e1e1e;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle site navigation sidebar">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc" aria-label="Toggle table of contents sidebar">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+<div class="announcement">
+  <aside class="announcement-content">
+     Development documentation (dev:develop) — built from the GitHub develop branch; content may differ from any release. 
+  </aside>
+</div>
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <span class="icon"><svg><use href="#svg-menu"></use></svg></span>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="index.html"><div class="brand">httk-analyse dev:develop documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
+  
+  <span class="sidebar-brand-text">httk-analyse dev:develop documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="generic-hulls.html">Generic lower convex hulls</a></li>
+<li class="toctree-l1"><a class="reference internal" href="phase-diagrams.html">Materials phase diagrams</a></li>
+<li class="toctree-l1"><a class="reference internal" href="equations-of-state.html">Static equation-of-state fitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="energetics.html">Static energy bookkeeping</a></li>
+<li class="toctree-l1"><a class="reference internal" href="time-series.html">Simulation time series</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mlip-validation.html">Validate MLIP predictions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="elasticity.html">Elasticity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="md-structure.html">Molecular-dynamics structure analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dynamics.html">Dynamics and diffusion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="thermal-response.html">Equilibrium response and transport</a></li>
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Harmonic phonon thermodynamics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="electronic.html">Electronic and magnetic quantities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vasp-analysis.html">VASP electronic analysis adapters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="defects.html">Defects, surfaces, and kinetics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="analysis-artifacts.html">Summaries and figures</a></li>
+<li class="toctree-l1"><a class="reference internal" href="records.html">Recording results</a></li>
+<li class="toctree-l1"><a class="reference internal" href="analysis-recipes.html">Analysis recipes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="crysviz.html">CrysViz structure viewer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reference/index.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/examples.html">Convex-hull and phase-diagram examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/materials-toolbox.html">Materials toolbox example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/materials-response.html">Materials response toolbox</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reference/autoapi/index.html">API Reference</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="_sources/phonons.md.txt" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section class="tex2jax_ignore mathjax_ignore" id="harmonic-phonon-thermodynamics">
+<h1>Harmonic phonon thermodynamics<a class="headerlink" href="#harmonic-phonon-thermodynamics" title="Link to this heading">¶</a></h1>
+<p><code class="docutils literal notranslate"><span class="pre">httk.analyse.matsci.phonons.harmonic_thermodynamics</span></code> evaluates the harmonic
+oscillator free energy, internal energy, entropy and constant-volume heat
+capacity from signed frequencies in THz. Energies use eV and entropies and heat
+capacities use eV/K. Results are extensive in the supplied mode weights; the
+routine does not infer a <code class="docutils literal notranslate"><span class="pre">3N</span></code> normalization or normalize weights.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">httk.analyse.matsci.phonons</span><span class="w"> </span><span class="kn">import</span> <span class="n">harmonic_thermodynamics</span>
+
+<span class="n">properties</span> <span class="o">=</span> <span class="n">harmonic_thermodynamics</span><span class="p">(</span>
+    <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">100.0</span><span class="p">,</span> <span class="mf">300.0</span><span class="p">],</span>
+    <span class="n">weights</span><span class="o">=</span><span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">properties</span><span class="o">.</span><span class="n">free_energy</span><span class="p">,</span> <span class="n">properties</span><span class="o">.</span><span class="n">heat_capacity</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>At zero kelvin, <code class="docutils literal notranslate"><span class="pre">free_energy</span></code> and <code class="docutils literal notranslate"><span class="pre">internal_energy</span></code> equal the zero-point energy;
+entropy and heat capacity are exactly zero. Frequencies at zero and below zero
+raise by default. <code class="docutils literal notranslate"><span class="pre">zero_modes=&quot;omit&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">imaginary=&quot;omit&quot;</span></code> explicitly remove
+those modes, with their summed weights reported in the result. Imaginary modes
+are never converted to absolute frequencies. Weights may be zero, but must be
+nonnegative with positive total. Input arrays are copied and left unchanged.</p>
+<section id="zero-modes-and-the-cutoff-frequency">
+<h2>Zero modes and the cutoff frequency<a class="headerlink" href="#zero-modes-and-the-cutoff-frequency" title="Link to this heading">¶</a></h2>
+<p>A mode counts as a zero mode only when its frequency is exactly <code class="docutils literal notranslate"><span class="pre">0.0</span></code>, but real
+Γ-point acoustic modes come out of a calculation as numerical noise of roughly
+±1e-6 to ±1e-3 THz. Negative noise raises by default, and positive noise is kept
+and adds a log-divergent <code class="docutils literal notranslate"><span class="pre">kT</span> <span class="pre">ln(x)</span></code> term. On a 4×4×4 mesh (Γ weight 1/64) with
+three acoustic modes at 1e-6 THz and 300 K, keeping them changes the free energy
+by about −19.0 meV per cell and the entropy by about +0.78 kB per cell relative
+to omitting them; at 1e-2 THz the free-energy error is still about −7.8 meV.</p>
+<p>Pass <code class="docutils literal notranslate"><span class="pre">cutoff_frequency</span></code> (THz, default <code class="docutils literal notranslate"><span class="pre">0.0</span></code>) to classify such modes as zero
+modes, as Phonopy’s <code class="docutils literal notranslate"><span class="pre">cutoff_frequency</span></code> option does. Modes with
+<code class="docutils literal notranslate"><span class="pre">|frequency|</span> <span class="pre">&lt;</span> <span class="pre">cutoff_frequency</span></code> are zero modes whatever their sign; remaining
+negative modes are imaginary, and the rest are retained. The default <code class="docutils literal notranslate"><span class="pre">0.0</span></code>
+reproduces the exact-zero behaviour. Zero-classified weight is reported in
+<code class="docutils literal notranslate"><span class="pre">excluded_zero_weight</span></code> under the <code class="docutils literal notranslate"><span class="pre">zero_modes</span></code> policy, so use
+<code class="docutils literal notranslate"><span class="pre">zero_modes=&quot;omit&quot;</span></code> with a cutoff. The cutoff is validated (finite, nonnegative)
+and recorded as <code class="docutils literal notranslate"><span class="pre">cutoff_frequency</span></code> on the result. It is accepted by
+<code class="docutils literal notranslate"><span class="pre">harmonic_thermodynamics</span></code>, <code class="docutils literal notranslate"><span class="pre">harmonic_thermodynamics_from_dos</span></code>, <code class="docutils literal notranslate"><span class="pre">quasiharmonic</span></code>
+and <code class="docutils literal notranslate"><span class="pre">harmonic_from_phonopy</span></code>. Choose it well below the lowest physical frequency,
+for example 1e-3 to 1e-2 THz, and use it whenever Γ acoustic modes are
+included.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">httk.analyse.matsci.phonons</span><span class="w"> </span><span class="kn">import</span> <span class="n">harmonic_thermodynamics</span>
+
+<span class="n">noisy</span> <span class="o">=</span> <span class="n">harmonic_thermodynamics</span><span class="p">(</span>
+    <span class="p">[</span><span class="mf">1e-6</span><span class="p">,</span> <span class="o">-</span><span class="mf">1e-6</span><span class="p">,</span> <span class="mf">1e-6</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">3.5</span><span class="p">],</span> <span class="p">[</span><span class="mf">300.0</span><span class="p">],</span>
+    <span class="n">weights</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span> <span class="o">/</span> <span class="mi">64</span><span class="p">]</span> <span class="o">*</span> <span class="mi">3</span> <span class="o">+</span> <span class="p">[</span><span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">],</span>
+    <span class="n">zero_modes</span><span class="o">=</span><span class="s2">"omit"</span><span class="p">,</span> <span class="n">cutoff_frequency</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">noisy</span><span class="o">.</span><span class="n">excluded_zero_weight</span><span class="p">,</span> <span class="n">noisy</span><span class="o">.</span><span class="n">cutoff_frequency</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">harmonic_thermodynamics_from_dos</span></code> accepts density in states/THz and uses
+trapezoid node weights, including half weights at grid endpoints. The reported
+retained weight is the integrated number of states. A zero-frequency endpoint
+has quadrature weight and therefore follows the same explicit zero-mode policy.</p>
+</section>
+<section id="volume-response">
+<h2>Volume response<a class="headerlink" href="#volume-response" title="Link to this heading">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">mode_gruneisen</span></code> fits log frequency against log volume for modes already
+matched by the caller. It uses a local quadratic with at least three volumes
+and a linear fit with two. Its derivative is
+<code class="docutils literal notranslate"><span class="pre">-d(log(frequency))/d(log(volume))</span></code>; no branch matching is inferred.</p>
+<p><code class="docutils literal notranslate"><span class="pre">quasiharmonic</span></code> combines static energies and harmonic free energies at every
+sampled volume, then fits the existing Birch–Murnaghan model independently at
+each temperature. Provide at least five distinct volumes that bracket a stable
+minimum, a common frequency column layout, and at least three strictly
+increasing temperatures. The frequencies and static energies must use the same
+cell or per-atom normalization. If a mode is omitted at one volume, the same
+matched modes must be omitted at every volume. <code class="docutils literal notranslate"><span class="pre">bulk_moduli</span></code> are in GPa. <code class="docutils literal notranslate"><span class="pre">volumetric_expansion</span></code> is
+<code class="docutils literal notranslate"><span class="pre">(1/V)</span> <span class="pre">dV/dT</span></code> from <code class="docutils literal notranslate"><span class="pre">numpy.gradient</span></code> on the nonuniform temperature grid, with
+the library’s second-order endpoint convention. A <code class="docutils literal notranslate"><span class="pre">cutoff_frequency</span></code> applies the
+same classification at every volume, so Γ noise that changes sign between volumes
+no longer makes the exclusions differ.</p>
+<p>Some caveats on the temperature response. <code class="docutils literal notranslate"><span class="pre">volumetric_expansion</span></code> at 0 K is not
+forced to zero: the second-order <code class="docutils literal notranslate"><span class="pre">numpy.gradient</span></code> endpoints can leave a small
+nonzero value (a test model gave alpha_V(0 K) of about −1.3e-6 per K). Coarse
+temperature grids also bias alpha_V, because the derivative is a finite
+difference of the equilibrium volume (100 K spacing gave −13% at 100 K in the
+same model). Use a dense grid, about 10 K spacing or finer, and treat endpoint
+values with care. <code class="docutils literal notranslate"><span class="pre">quasiharmonic</span></code> minimises <code class="docutils literal notranslate"><span class="pre">F(V,</span> <span class="pre">T)</span> <span class="pre">=</span> <span class="pre">E_static</span> <span class="pre">+</span> <span class="pre">F_harmonic</span></code>,
+which equals the Gibbs energy only at zero pressure; there is no pressure
+argument.</p>
+<p>As records (see <a class="reference internal" href="records.html"><span class="doc">Recording results</span></a>), a harmonic result binds its zero-point energy
+and one <code class="docutils literal notranslate"><span class="pre">vibrational_thermodynamics</span></code> series (temperatures, Helmholtz free,
+internal energies, entropies and heat capacities). A quasi-harmonic result binds
+one <code class="docutils literal notranslate"><span class="pre">quasiharmonic_thermodynamics</span></code> series whose
+<code class="docutils literal notranslate"><span class="pre">total_helmholtz_free_energies</span></code> are the minimized <code class="docutils literal notranslate"><span class="pre">free_energies</span></code>, static energy
+included, with <code class="docutils literal notranslate"><span class="pre">equilibrium_volumes</span></code>, <code class="docutils literal notranslate"><span class="pre">bulk_moduli</span></code> and
+<code class="docutils literal notranslate"><span class="pre">volumetric_thermal_expansions</span></code>. A <code class="docutils literal notranslate"><span class="pre">GruneisenFit</span></code> binds one
+<code class="docutils literal notranslate"><span class="pre">mode_gruneisen_parameters</span></code> value (<code class="docutils literal notranslate"><span class="pre">reference_volume</span></code>, <code class="docutils literal notranslate"><span class="pre">values</span></code>, and the integer
+polynomial <code class="docutils literal notranslate"><span class="pre">degree</span></code>).</p>
+</section>
+<section id="phonopy-mesh">
+<h2>Phonopy mesh<a class="headerlink" href="#phonopy-mesh" title="Link to this heading">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">httk.analyse.integrations.phonopy.harmonic_from_phonopy</span></code> consumes an already sampled public Phonopy mesh result.
+It normalizes q-point multiplicities to sum to one and preserves each branch,
+so the result is per primitive-cell mode set. It does not create displacements,
+force constants, or a mesh. Phonopy’s default frequency unit is THz; if the
+object was configured with another frequency conversion factor, convert its
+frequencies before calling the adapter.</p>
+<p>These are harmonic and quasi-harmonic approximations. The quasi-harmonic fit
+does not account for explicit anharmonicity or validate the volume dependence
+of the force constants. Mesh convergence, phase stability and mode matching
+remain scientific checks for the caller.</p>
+<p>The equations and mesh normalization follow the
+<a class="reference external" href="https://phonopy.github.io/phonopy/formulation.html">Phonopy formulation</a> and
+<a class="reference external" href="https://phonopy.github.io/phonopy/phonopy-module.html">public Python mesh/thermal API</a>.
+The oscillator constants here use exact SI h, kB and e. Phonopy versions using
+older constants can differ by a few parts per million, amplified at low
+occupation. Install <code class="docutils literal notranslate"><span class="pre">httk-analyse[phonopy]</span></code> when constructing Phonopy objects;
+the numerical kernels themselves require only NumPy.</p>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="electronic.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Electronic and magnetic quantities</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="thermal-response.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Equilibrium response and transport</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2026, The httk-analyse AUTHORS
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Harmonic phonon thermodynamics</a><ul>
+<li><a class="reference internal" href="#zero-modes-and-the-cutoff-frequency">Zero modes and the cutoff frequency</a></li>
+<li><a class="reference internal" href="#volume-response">Volume response</a></li>
+<li><a class="reference internal" href="#phonopy-mesh">Phonopy mesh</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="_static/documentation_options.js?v=952df46a"></script>
+    <script src="_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="_static/scripts/furo.js?v=46bd48cc"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=fd10adb8"></script>
+    <script src="_static/selector.js?v=d8e9b3ce"></script>
+    <script>window.HTTK_DOCS_VERSIONING = {"channel":"dev","version":"dev:develop","versionPathDepth":2};</script>
+    </body>
+</html>

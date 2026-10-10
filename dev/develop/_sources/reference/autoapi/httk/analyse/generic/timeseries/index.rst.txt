@@ -1,0 +1,103 @@
+httk.analyse.generic.timeseries
+===============================
+
+.. py:module:: httk.analyse.generic.timeseries
+
+.. autoapi-nested-parse::
+
+   Scalar sampling estimators for finite regularly sampled series.
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   httk.analyse.generic.timeseries.BlockAverage
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   httk.analyse.generic.timeseries.block_average
+   httk.analyse.generic.timeseries.autocorrelation
+
+
+Module Contents
+---------------
+
+.. py:class:: BlockAverage
+
+   Immutable summary of non-overlapping block means.
+
+   :param block_means: Means of the complete retained blocks.
+   :param mean: Mean of all retained samples.
+   :param standard_deviation: Sample standard deviation of the block means.
+   :param standard_error: Block-mean standard deviation divided by the square root
+       of the number of blocks.
+   :param block_size: Number of samples in each complete block.
+   :param used_samples: Number of samples included in the estimates.
+   :param dropped_samples: Number of trailing samples omitted by explicit policy.
+
+
+   .. py:attribute:: block_means
+      :type:  tuple[float, ...]
+
+
+   .. py:attribute:: mean
+      :type:  float
+
+
+   .. py:attribute:: standard_deviation
+      :type:  float
+
+
+   .. py:attribute:: standard_error
+      :type:  float
+
+
+   .. py:attribute:: block_size
+      :type:  int
+
+
+   .. py:attribute:: used_samples
+      :type:  int
+
+
+   .. py:attribute:: dropped_samples
+      :type:  int
+
+
+.. py:function:: block_average(values, *, block_size, remainder = 'raise')
+
+   Summarize retained samples using non-overlapping block means.
+
+   Blocks are independent only if the caller's sampling assumptions make them so.
+   Sweep block sizes and look for a stable uncertainty estimate; two blocks alone
+   do not establish reliable uncertainty. No equilibration samples are removed.
+
+   :param values: Finite real one-dimensional samples.
+   :param block_size: Positive number of samples per block.
+   :param remainder: Reject a partial final block, or explicitly drop it.
+   :return: Immutable block means and summary statistics.
+   :raises ValueError: If samples, block size, tail policy, or finite statistics are invalid.
+
+
+.. py:function:: autocorrelation(values, *, max_lag = None)
+
+   Compute the whole-series-centered, pair-count-normalized autocorrelation.
+
+   This estimator assumes finite, stationary data sampled at regular intervals.
+   At lag ``k`` it divides the covariance sum by ``N-k`` before normalization by
+   lag zero. Long-lag values can exceed ``[-1, 1]``; this sequence is not
+   guaranteed positive-semidefinite and is not a transport or spectral kernel.
+
+   :param values: Finite, non-constant real one-dimensional samples.
+   :param max_lag: Largest returned lag, or all lags through ``N - 1``.
+   :return: Autocorrelation values beginning with exactly ``1.0``.
+   :raises ValueError: If samples, lag, or the lag-zero normalization are invalid.
+
+

@@ -1,0 +1,140 @@
+httk.analyse.matsci.eos
+=======================
+
+.. py:module:: httk.analyse.matsci.eos
+
+.. autoapi-nested-parse::
+
+   Static materials equations of state.
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   httk.analyse.matsci.eos.BirchMurnaghanFit
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   httk.analyse.matsci.eos.fit_birch_murnaghan
+
+
+Module Contents
+---------------
+
+.. py:class:: BirchMurnaghanFit
+
+   A frozen third-order Birch–Murnaghan energy fit.
+
+   Energies and volumes retain the input order and use eV and angstrom³ on one
+   consistent extensive basis. The fit describes static energies for one
+   composition and phase branch under one relaxation protocol. Its condition
+   number describes only the scaled linear design, not parameter confidence.
+   Residuals are observed minus predicted energies and are not uncertainty
+   estimates.
+
+   :param equilibrium_volume: Fitted minimum volume in angstrom³.
+   :param equilibrium_energy: Fitted minimum energy in eV.
+   :param bulk_modulus: Fitted bulk modulus in GPa.
+   :param bulk_modulus_derivative: Dimensionless pressure derivative at equilibrium.
+   :param volumes: Input volumes in original order, in angstrom³.
+   :param energies: Input energies in original order, in eV.
+   :param residuals: Observed minus fitted energies in input order, in eV.
+   :param rmse: Root mean square of the energy residuals, in eV.
+   :param condition_number: Condition number of the scaled cubic design matrix.
+
+
+   .. py:attribute:: equilibrium_volume
+      :type:  float
+
+
+   .. py:attribute:: equilibrium_energy
+      :type:  float
+
+
+   .. py:attribute:: bulk_modulus
+      :type:  float
+
+
+   .. py:attribute:: bulk_modulus_derivative
+      :type:  float
+
+
+   .. py:attribute:: volumes
+      :type:  tuple[float, ...]
+
+
+   .. py:attribute:: energies
+      :type:  tuple[float, ...]
+
+
+   .. py:attribute:: residuals
+      :type:  tuple[float, ...]
+
+
+   .. py:attribute:: rmse
+      :type:  float
+
+
+   .. py:attribute:: condition_number
+      :type:  float
+
+
+   .. py:method:: energy(volume)
+
+      Evaluate the fitted energy at a positive volume.
+
+      Extrapolation is allowed; values outside the sampled volume interval are
+      model predictions without validated physical accuracy. Finite-temperature
+      MD mean energies do not define this static energy EOS.
+
+      :param volume: Query volume in angstrom³.
+      :return: Predicted energy in eV on the fit's extensive basis.
+      :raises ValueError: If ``volume`` is not a positive finite scalar or the prediction is non-finite.
+
+
+
+   .. py:method:: pressure(volume)
+
+      Evaluate pressure, positive in compression, at a positive volume.
+
+      Extrapolation is allowed as a model prediction, but its physical accuracy
+      outside the sampled interval is not validated.
+
+      :param volume: Query volume in angstrom³.
+      :return: Predicted pressure in GPa.
+      :raises ValueError: If ``volume`` is not a positive finite scalar or the prediction is non-finite.
+
+
+
+.. py:function:: fit_birch_murnaghan(volumes, energies)
+
+   Fit a third-order Birch–Murnaghan static energy curve by linear least squares.
+
+   The inputs must be finite one-dimensional sequences in angstrom³ and eV,
+   respectively, on the same extensive basis. Supply static energies for one
+   composition and phase branch with a consistent electronic-energy definition
+   and fixed-volume relaxation protocol. Fixed-shape scaling and cell-shape
+   relaxation can produce different responses. Finite-temperature MD total or
+   potential energies are not isothermal pressure EOS data; use free energies
+   or a separate pressure-versus-volume method for that case.
+
+   The fit is an ordinary least-squares cubic in ``x = (Vref/V)**(2/3)``. It
+   requires an interior stable minimum and imposes no fit-quality cutoff or
+   physical bound on the pressure derivative. The scaled design condition
+   number diagnoses only that linear solve. Inspect fit-window sensitivity,
+   especially for the pressure derivative, which may be poorly determined even
+   when the scaled design is well conditioned.
+
+   :param volumes: Distinct positive sample volumes in angstrom³.
+   :param energies: Matching static energies in eV on the same extensive basis.
+   :return: The immutable fitted EOS and input-order residuals.
+   :raises ValueError: If inputs are invalid, the cubic design is rank deficient, or there is no interior stable minimum.
+
+

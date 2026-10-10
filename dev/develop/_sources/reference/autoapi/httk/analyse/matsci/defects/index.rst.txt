@@ -1,0 +1,344 @@
+httk.analyse.matsci.defects
+===========================
+
+.. py:module:: httk.analyse.matsci.defects
+
+.. autoapi-nested-parse::
+
+   Explicit-reference defect, surface, path, and activated-rate summaries.
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   httk.analyse.matsci.defects.DefectFormationEnergy
+   httk.analyse.matsci.defects.ChargeTransition
+   httk.analyse.matsci.defects.SurfaceEnergy
+   httk.analyse.matsci.defects.NEBProfile
+   httk.analyse.matsci.defects.ArrheniusFit
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   httk.analyse.matsci.defects.defect_formation_energy
+   httk.analyse.matsci.defects.charge_transition_levels
+   httk.analyse.matsci.defects.surface_energy
+   httk.analyse.matsci.defects.adsorption_energy
+   httk.analyse.matsci.defects.segregation_energy
+   httk.analyse.matsci.defects.neb_profile
+   httk.analyse.matsci.defects.fit_arrhenius
+
+
+Module Contents
+---------------
+
+.. py:class:: DefectFormationEnergy
+
+   Defect formation energy and its signed eV term decomposition.
+
+   :param energy: Total formation energy in eV.
+   :param terms: Signed named terms whose sum is ``energy``.
+   :param atom_deltas: Exact signed integer atom changes; positive means added.
+   :param charge: Integer charge state; positive means electrons removed.
+   :param fermi_level: Fermi energy in eV relative to the valence-band reference, alignment not included.
+   :param vbm: Valence-band reference energy in eV used in the charge term.
+   :param alignment: Potential alignment in eV used in the charge term.
+   :param correction: Explicit correction in eV as supplied.
+   :param chemical_potentials: Element and eV-per-atom reservoir pairs, sorted by element, for the elements of ``atom_deltas``.
+
+
+   .. py:attribute:: energy
+      :type:  float
+
+
+   .. py:attribute:: terms
+      :type:  tuple[tuple[str, float], ...]
+
+
+   .. py:attribute:: atom_deltas
+      :type:  tuple[tuple[str, int], ...]
+
+
+   .. py:attribute:: charge
+      :type:  int
+
+
+   .. py:attribute:: fermi_level
+      :type:  float
+
+
+   .. py:attribute:: vbm
+      :type:  float
+
+
+   .. py:attribute:: alignment
+      :type:  float
+
+
+   .. py:attribute:: correction
+      :type:  float
+
+
+   .. py:attribute:: chemical_potentials
+      :type:  tuple[tuple[str, float], ...]
+
+
+.. py:class:: ChargeTransition
+
+   Stable charge-state changes in a finite Fermi-level interval.
+
+   :param fermi_level: Crossing energy in eV relative to the supplied band reference.
+   :param tied_charges: All charge states equal to the lower envelope at the crossing.
+   :param left_charges: Lower-envelope charge states immediately to the left.
+   :param right_charges: Lower-envelope charge states immediately to the right.
+
+
+   .. py:attribute:: fermi_level
+      :type:  float
+
+
+   .. py:attribute:: tied_charges
+      :type:  tuple[int, ...]
+
+
+   .. py:attribute:: left_charges
+      :type:  tuple[int, ...]
+
+
+   .. py:attribute:: right_charges
+      :type:  tuple[int, ...]
+
+
+.. py:class:: SurfaceEnergy
+
+   Surface excess energy using caller-supplied total exposed area.
+
+   :param energy: Total excess energy in eV.
+   :param surface_energy: Excess energy per total exposed area in J/m².
+   :param exposed_area: Total exposed area in angstrom².
+   :param terms: Signed named contributions in eV.
+
+
+   .. py:attribute:: energy
+      :type:  float
+
+
+   .. py:attribute:: surface_energy
+      :type:  float
+
+
+   .. py:attribute:: exposed_area
+      :type:  float
+
+
+   .. py:attribute:: terms
+      :type:  tuple[tuple[str, float], ...]
+
+
+.. py:class:: NEBProfile
+
+   Sampled NEB path barriers without interpolation between images.
+
+   :param reaction_coordinates: Strictly increasing caller coordinates.
+   :param energies: Image energies in eV in path order.
+   :param forward_barrier: Maximum image energy minus the first image, in eV.
+   :param reverse_barrier: Maximum image energy minus the last image, in eV.
+   :param reaction_energy: Last minus first image energy, in eV.
+   :param saddle_index: First image attaining the maximum.
+   :param tied_saddle_indices: All images within the explicit tie tolerance of the maximum.
+
+
+   .. py:attribute:: reaction_coordinates
+      :type:  tuple[float, ...]
+
+
+   .. py:attribute:: energies
+      :type:  tuple[float, ...]
+
+
+   .. py:attribute:: forward_barrier
+      :type:  float
+
+
+   .. py:attribute:: reverse_barrier
+      :type:  float
+
+
+   .. py:attribute:: reaction_energy
+      :type:  float
+
+
+   .. py:attribute:: saddle_index
+      :type:  int
+
+
+   .. py:attribute:: tied_saddle_indices
+      :type:  tuple[int, ...]
+
+
+.. py:class:: ArrheniusFit
+
+   Weighted linear fit of log rate against reciprocal temperature.
+
+   :param temperatures: Input temperatures in K.
+   :param rates: Input positive rates in the caller's unit.
+   :param log_residuals: Observed minus fitted natural-log rates.
+   :param activation_energy: Fitted activation energy in eV.
+   :param prefactor: Fitted positive rate prefactor in the input rate unit.
+   :param rate_unit: OPTIMADE unit expression of the rates and prefactor, such as ``s^-1``.
+   :param rank: Rank of the scaled weighted design matrix.
+   :param condition_number: Condition number of that scaled design matrix.
+   :param weighted_rmse: Weighted RMS log-rate residual.
+
+
+   .. py:attribute:: temperatures
+      :type:  tuple[float, ...]
+
+
+   .. py:attribute:: rates
+      :type:  tuple[float, ...]
+
+
+   .. py:attribute:: log_residuals
+      :type:  tuple[float, ...]
+
+
+   .. py:attribute:: activation_energy
+      :type:  float
+
+
+   .. py:attribute:: prefactor
+      :type:  float
+
+
+   .. py:attribute:: rate_unit
+      :type:  str
+
+
+   .. py:attribute:: rank
+      :type:  int
+
+
+   .. py:attribute:: condition_number
+      :type:  float
+
+
+   .. py:attribute:: weighted_rmse
+      :type:  float
+
+
+.. py:function:: defect_formation_energy(defect_energy, host_energy, atom_deltas, chemical_potentials, *, charge, fermi_level, vbm, alignment, correction)
+
+   Compute a charged defect energy from explicit eV references.
+
+   The expression is ``Edef-Ehost-sum(delta_n*mu)+q*(EF+VBM+alignment)+correction``.
+   Positive atom deltas add atoms; positive charge removes electrons.
+
+   ``alignment`` is the potential alignment ΔV = V_def(far from defect) - V_host(far)
+   (Van de Walle-Neugebauer), added as written. Freysoldt/Kumagai-type ``correction`` values
+   often already include the -q*ΔV alignment term; do not count it twice.
+
+   :param defect_energy: Defect supercell total energy in eV.
+   :param host_energy: Matching host supercell total energy in eV.
+   :param atom_deltas: Exact signed integer atom changes by element.
+   :param chemical_potentials: Required elemental reservoirs in eV per atom.
+   :param charge: Exact integer charge state.
+   :param fermi_level: Fermi energy in eV relative to the supplied reference.
+   :param vbm: Valence-band reference energy in eV.
+   :param alignment: Potential alignment ΔV = V_def(far) - V_host(far) in eV.
+   :param correction: Explicit finite-size or other correction in eV, excluding alignment already counted.
+   :return: Immutable total and signed term decomposition.
+   :raises ValueError: If atom deltas, references, or energies are invalid.
+
+
+.. py:function:: charge_transition_levels(intercepts, fermi_interval, *, tolerance = 1e-10)
+
+   Return only charge crossings on the lower envelope in a finite interval.
+
+   Each intercept is the formation energy at ``EF=0``; charge ``q`` gives
+   the line ``intercept + q*EF``. The intercepts MUST be formation energies at
+   ``E_F = 0`` measured from the valence-band maximum, that is
+   ``defect_formation_energy(..., fermi_level=0.0).energy`` for each charge;
+   the bound ``charge_transition_level`` defines its Fermi level relative to
+   the VBM and nothing here can check that. Coincident crossings report every tied
+   charge. Crossings at interval endpoints are excluded.
+
+   :param intercepts: Nonempty mapping from distinct integer charges to eV intercepts.
+   :param fermi_interval: Increasing finite ``(low, high)`` bounds in eV.
+   :param tolerance: Absolute eV tolerance for tie recognition.
+   :return: Stable transitions ordered by Fermi energy.
+   :raises ValueError: If charges, interval, intercepts, or tolerance are invalid.
+
+
+.. py:function:: surface_energy(slab_energy, bulk_energy_per_atom, bulk_reference_atom_count, excess_atom_deltas, chemical_potentials, *, total_exposed_area)
+
+   Compute surface excess energy with an explicit total exposed area.
+
+   :param slab_energy: Total slab energy in eV.
+   :param bulk_energy_per_atom: Bulk reference in eV per atom.
+   :param bulk_reference_atom_count: Exact positive atom count in the stoichiometric bulk reference before excess or missing atoms are applied; it may differ from the slab count.
+   :param excess_atom_deltas: Exact signed excess atom counts by element.
+   :param chemical_potentials: Required elemental reservoirs in eV per atom.
+   :param total_exposed_area: Sum of exposed face areas in angstrom².
+   :return: Total excess energy in eV, its area-normalized value in J/m², the area and signed terms in eV.
+   :raises ValueError: If references, atom counts, or area are invalid.
+
+
+.. py:function:: adsorption_energy(combined_energy, substrate_energy, adsorbate_counts, reference_energies)
+
+   Return adsorption energy; negative values indicate favorable binding.
+
+   :param combined_energy: Adsorbate-plus-substrate total energy in eV.
+   :param substrate_energy: Clean substrate total energy in eV.
+   :param adsorbate_counts: Positive integer counts of each reference species.
+   :param reference_energies: Required total reference energies in eV.
+   :return: Combined minus substrate minus adsorbate reference energy in eV.
+   :raises ValueError: If counts, references, or energies are invalid.
+
+
+.. py:function:: segregation_energy(bulk_environment_energy, target_environment_energy)
+
+   Return caller-ordered target-minus-bulk defect energy in eV.
+
+   :param bulk_environment_energy: Defect energy in the source environment, eV.
+   :param target_environment_energy: Matched defect energy in the target environment, eV.
+   :return: Target minus source energy; negative favors the target environment.
+   :raises ValueError: If either energy is not finite and real.
+
+
+.. py:function:: neb_profile(reaction_coordinates, energies, *, tie_tolerance = 1e-10)
+
+   Summarize sampled forward and reverse barriers in caller path order.
+
+   No unsampled saddle is interpolated. The first maximum is the saddle index;
+   every image within ``tie_tolerance`` of it is retained.
+
+   :param reaction_coordinates: Strictly increasing coordinates for NEB images.
+   :param energies: Matching image energies in eV.
+   :param tie_tolerance: Non-negative absolute energy tolerance in eV.
+   :return: Immutable sampled barriers and saddle indices.
+   :raises ValueError: If arrays are mismatched, too short, or invalid.
+
+
+.. py:function:: fit_arrhenius(temperatures, rates, *, rate_unit, weights = None)
+
+   Fit positive rates to ``ln(rate)=ln(A)-Ea/(k_B*T)``.
+
+   The fit uses weighted least squares when positive weights are supplied.
+   It retains every point; selecting an Arrhenius window remains the caller's
+   responsibility. The prefactor has the same unit as ``rates``.
+
+   :param temperatures: Positive temperatures in K.
+   :param rates: Positive rates in the unit ``rate_unit``.
+   :param rate_unit: OPTIMADE unit expression such as ``"s^-1"`` or ``"ps^-1"`` (not ``"1/s"``).
+   :param weights: Optional positive relative squared-residual weights.
+   :return: Immutable fit, log residuals, rank, and scaled condition diagnostic.
+   :raises ValueError: If data are insufficient, invalid, or rank deficient.
+
+
