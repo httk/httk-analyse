@@ -59,14 +59,14 @@ records-check:
 	$(PYTHON) tools/generate_records.py --check
 
 format:
-	$(PYTHON) -m ruff check src examples benchmarks tools --fix
-	$(PYTHON) -m ruff format src examples benchmarks tools
+	$(PYTHON) -m ruff check src examples benchmarks tests tools --fix
+	$(PYTHON) -m ruff format src examples benchmarks tests tools
 
 format-check: lint
-	$(PYTHON) -m ruff format --check src examples benchmarks tools
+	$(PYTHON) -m ruff format --check src examples benchmarks tests tools
 
 lint:
-	$(PYTHON) -m ruff check src examples benchmarks tools
+	$(PYTHON) -m ruff check src examples benchmarks tests tools
 	pydoclint --quiet src
 
 typecheck_pyright:

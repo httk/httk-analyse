@@ -4,8 +4,8 @@ from fractions import Fraction
 
 import numpy as np
 import pytest
-
 from httk.atomistic import Trajectory, UnitcellStructure
+
 from httk.analyse.integrations.trajectory import msd_from_trajectory, rdf_from_trajectory, vacf_from_trajectory
 
 

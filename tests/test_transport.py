@@ -57,7 +57,7 @@ def test_replica_error_and_protocol_mismatch():
 
 @pytest.mark.parametrize('changes', [{'volume': 0}, {'temperature': -1}, {'max_lag': 5}, {'timestep': float('nan')}])
 def test_invalid_metadata(changes):
-    kwargs = dict(timestep=1, temperature=300, volume=10, max_lag=2)
+    kwargs = {'timestep': 1, 'temperature': 300, 'volume': 10, 'max_lag': 2}
     kwargs.update(changes)
     with pytest.raises(ValueError):
         thermal_conductivity(np.ones((5, 3)), **kwargs)

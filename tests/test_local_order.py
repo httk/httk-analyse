@@ -1,6 +1,7 @@
 """Crystal invariants and rotation checks for optional bond order."""
 
 import itertools
+
 import numpy as np
 import pytest
 
