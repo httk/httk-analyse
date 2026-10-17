@@ -52,6 +52,7 @@ __all__ = [
     "AtomicForceMaximumAbsoluteErrorRecord",
     "AtomicForceRmseRecord",
     "BandGapRecord",
+    "BornEffectiveChargesRecord",
     "BulkModulusHillRecord",
     "BulkModulusPressureDerivativeRecord",
     "BulkModulusRecord",
@@ -69,6 +70,7 @@ __all__ = [
     "DirectBandGapRecord",
     "DistinctVanHoveFunctionRecord",
     "ElasticTensorRecord",
+    "ElectronicBandStructureRecord",
     "ElectronicDensityOfStatesRecord",
     "EnergyAboveHullPerAtomRecord",
     "EnergyPredictionErrorsRecord",
@@ -91,6 +93,9 @@ __all__ = [
     "MigrationBarrierReverseRecord",
     "ModeGruneisenParametersRecord",
     "NveEnergyDriftRecord",
+    "PhononBandStructureRecord",
+    "PhononDensityOfStatesRecord",
+    "PiezoelectricTensorRecord",
     "QuasiharmonicThermodynamicsRecord",
     "RadialDistributionFunctionRecord",
     "ReactionEnergyRecord",
@@ -601,6 +606,49 @@ class BandGapRecord(TypedRecord):
 
 
 @dataclass(frozen=True)
+class BornEffectiveChargesRecord(TypedRecord):
+    """Born effective charges as a typed record.
+
+    The Born effective charge tensors of the sites of the referenced structure, in units of the elementary charge e.
+
+    **Requirements/Conventions**:
+
+    - The value is a list over the dimension ``dim_sites`` of 3x3 matrices over ``dim_spatial`` x ``dim_spatial``.
+      The list MUST have one matrix per site of the referenced structure (the entry the record is a product of), in the order of its sites.
+    - The matrix of site kappa holds Z*_{kappa,alpha beta} = (Omega / e) dP_alpha / du_{kappa,beta} at zero macroscopic electric field, where P is the macroscopic polarization, u_{kappa,beta} the displacement of the atom at site kappa, Omega the volume of the referenced cell and e the elementary charge.
+      The first index alpha (the row) is the polarization direction, equivalently the direction of the electric field; the second index beta (the column) is the direction of the atomic displacement.
+    - The directions refer to the Cartesian frame of the referenced structure (the frame of ``lattice_vectors`` and ``cartesian_site_positions``).
+    - The values are in units of the elementary charge e: a value of 1 means a charge of one elementary charge.
+    - The definition does not require the charge-neutrality (acoustic) sum rule, that the matrices sum to zero over the sites, to be enforced; values MAY be given as computed or after a sum-rule correction applied by the producer.
+
+    A null value means the quantity is not available or not recorded.
+
+    :param born_effective_charges: The born effective charges value. Unit: e.
+    :param product_of: The entries this value is a product of, as labeled edges.
+    :param id: The human-readable entry id shared by all revisions; minted by the store when None.
+    :param immutable_id: The per-revision immutable id; minted by the store when None.
+    :param last_modified: The optional timezone-aware metadata timestamp.
+    """
+
+    __httk_storage__: ClassVar[StorageInfo] = StorageInfo(
+        storage_name="analyse_born_effective_charges",
+        identity_name="analyse_born_effective_charges",
+    )
+    __httk_typed_record__: ClassVar[TypedRecordSpec] = TypedRecordSpec(
+        "https://schemas.httk.org/defs/v0.1/properties/electronic/born_effective_charges",
+        "_httk_born_effective_charges",
+    )
+    __httk_property_definitions__: ClassVar[Mapping[str, PropertyDefinition]] = __httk_typed_record__.definitions()
+    __httk_stored_properties__: ClassVar[Mapping[str, StoredPropertyProjection]] = __httk_typed_record__.projections()
+
+    born_effective_charges: tuple[float, ...]
+    product_of: Annotated[tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject")] = ()
+    id: Annotated[str | None, IdentitySkip(), Indexed()] = field(default=None, compare=False)
+    immutable_id: Annotated[str | None, IdentitySkip(), Unique()] = field(default=None, compare=False)
+    last_modified: Annotated[datetime.datetime | None, IdentitySkip()] = field(default=None, compare=False)
+
+
+@dataclass(frozen=True)
 class DirectBandGapRecord(TypedRecord):
     """Direct band gap as a typed record.
 
@@ -626,6 +674,94 @@ class DirectBandGapRecord(TypedRecord):
     __httk_stored_properties__: ClassVar[Mapping[str, StoredPropertyProjection]] = __httk_typed_record__.projections()
 
     direct_band_gap: float
+    product_of: Annotated[tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject")] = ()
+    id: Annotated[str | None, IdentitySkip(), Indexed()] = field(default=None, compare=False)
+    immutable_id: Annotated[str | None, IdentitySkip(), Unique()] = field(default=None, compare=False)
+    last_modified: Annotated[datetime.datetime | None, IdentitySkip()] = field(default=None, compare=False)
+
+
+@dataclass(frozen=True)
+class ElectronicBandStructureRecord(TypedRecord):
+    """Electronic band structure as a typed record.
+
+    Electronic band energies of the referenced structure along a path of k-points through the Brillouin zone (a line-mode band structure).
+
+    Only band structures along a path are meant.
+    Eigenvalues on a uniform k-point mesh are not a band structure in this sense; their energy distribution belongs in an electronic density of states, see ``electronic_density_of_states``.
+
+    **Requirements/Conventions**:
+
+    - It MUST be a dictionary with the following keys:
+
+        - **kpoints**: REQUIRED; List of lists of 3 floats.
+          The k-points of the path, in path order, over the dimension ``_httk_dim_kpoints``.
+          Each k-point is given in fractional coordinates (dimension ``dim_lattice``) in the reciprocal basis of the referenced structure: the Cartesian wavevector is the sum of the coordinates times the reciprocal lattice vectors b_1, b_2, b_3, where b_i . a_j = 2 pi delta_ij for the lattice vectors a_j of the referenced structure.
+          The path is a sequence of straight segments.
+          A segment boundary inside the list is encoded by two consecutive labelled k-points: the same point listed twice with the same label (a junction) or two different points with different labels (a discontinuity, across which the band energies are not continuous).
+          The first and last k-points of the list bound the first and last segment; they SHOULD be labelled.
+          Every segment MUST contain at least one k-point that is not a boundary point.
+
+        - **kpoint\\_label\\_indices**: REQUIRED; List of integers.
+          The 0-based indices into ``kpoints`` of the k-points that carry a label, over the dimension ``_httk_dim_kpoint_labels``.
+          Each index MUST be a valid index into ``kpoints``, and the indices MUST be strictly increasing.
+          The list MAY be empty when the producer has no labels; the path is then a single continuous segment.
+
+        - **kpoint\\_labels**: REQUIRED; List of strings.
+          The label of each k-point listed in ``kpoint_label_indices``, over the dimension ``_httk_dim_kpoint_labels``: ``kpoint_labels[i]`` labels the k-point ``kpoints[kpoint_label_indices[i]]``.
+          It MUST have the same length as ``kpoint_label_indices``.
+          Labels are the names of high-symmetry points as given by the producer (for example ``GAMMA`` or ``\\Gamma`` for the zone centre); no normalized vocabulary is implied.
+
+        - **energies**: REQUIRED; List of lists of floats.
+          The band energies in eV, as a list over the dimension ``_httk_dim_bands`` of lists over ``_httk_dim_kpoints``: ``energies[n][k]`` is the energy of band n at the k-point ``kpoints[k]``.
+          For a collinear spin-polarized calculation it holds the spin-up channel; otherwise it holds the only channel, which for a non-collinear calculation contains all spinor bands.
+          Band n at each k-point MUST be the (n+1)-th lowest eigenvalue at that k-point: the bands are sorted by energy at each k-point and are not reordered to follow band crossings.
+          Producers converting data whose bands were reordered to follow wavefunction connectivity across crossings MUST sort the values at each k-point.
+          The energies are on the absolute energy scale of the calculation (the scale of ``fermi_energy``); they are not shifted to the Fermi energy.
+
+        - **energies\\_spin\\_down**: OPTIONAL; List of lists of floats.
+          The band energies in eV of the spin-down channel, in the same form, order and energy scale as ``energies`` and with the same dimensions.
+          It MUST be present if and only if the calculation is collinear spin-polarized.
+
+        - **fermi\\_energy**: REQUIRED; Float.
+          The Fermi energy in eV reported with the calculation, on the same absolute energy scale as ``energies``.
+
+    - The value refers to the referenced structure (the entry the record is a product of); the k-point coordinates are only meaningful in its reciprocal basis.
+      A producer whose coordinates refer to a different cell MUST either reference that cell as the structure the value is a product of, or transform the coordinates to the referenced structure's reciprocal basis.
+    - Producer note: band structures converted from pymatgen (for example from atomate2 and emmet) carry pymatgen's Fermi energy (``Vasprun.calculate_efermi`` with its default tolerance of 0.001 eV) as ``fermi_energy``.
+      That value is VASP's Fermi energy E-fermi (as written to ``vasprun.xml``) unless E-fermi crosses a band (some band of some spin channel has, over the k-points, eigenvalues both below and above it) while E-fermi + 1 meV or, failing that, E-fermi - 1 meV crosses no band; it is then the midpoint between the highest eigenvalue below and the lowest eigenvalue above that shifted energy (mid-gap).
+      This note describes such data; it is not a requirement of this definition.
+
+    A null value means the quantity is not available or not recorded.
+
+    :param kpoints: The k-points of the path in fractional coordinates of the reciprocal basis of the referenced structure, in path order.
+    :param kpoint_label_indices: The strictly increasing 0-based indices into ``kpoints`` of the labelled k-points.
+    :param kpoint_labels: The label of each k-point listed in ``kpoint_label_indices``, in the same order.
+    :param energies: The band energies of the spin-up or only channel, per band and k-point, on the absolute energy scale of the calculation. Unit: eV.
+    :param fermi_energy: The Fermi energy reported with the calculation, on the absolute energy scale of ``energies``. Unit: eV.
+    :param energies_spin_down: The band energies of the spin-down channel of a collinear spin-polarized calculation, in the form of ``energies``. Unit: eV.
+    :param product_of: The entries this value is a product of, as labeled edges.
+    :param id: The human-readable entry id shared by all revisions; minted by the store when None.
+    :param immutable_id: The per-revision immutable id; minted by the store when None.
+    :param last_modified: The optional timezone-aware metadata timestamp.
+    """
+
+    __httk_storage__: ClassVar[StorageInfo] = StorageInfo(
+        storage_name="analyse_electronic_band_structure",
+        identity_name="analyse_electronic_band_structure",
+    )
+    __httk_typed_record__: ClassVar[TypedRecordSpec] = TypedRecordSpec(
+        "https://schemas.httk.org/defs/v0.1/properties/electronic/electronic_band_structure",
+        "_httk_electronic_band_structure",
+    )
+    __httk_property_definitions__: ClassVar[Mapping[str, PropertyDefinition]] = __httk_typed_record__.definitions()
+    __httk_stored_properties__: ClassVar[Mapping[str, StoredPropertyProjection]] = __httk_typed_record__.projections()
+
+    kpoints: tuple[float, ...]
+    kpoint_label_indices: tuple[int, ...]
+    kpoint_labels: tuple[str, ...]
+    energies: tuple[float, ...]
+    fermi_energy: float
+    energies_spin_down: tuple[float, ...] | None = None
     product_of: Annotated[tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject")] = ()
     id: Annotated[str | None, IdentitySkip(), Indexed()] = field(default=None, compare=False)
     immutable_id: Annotated[str | None, IdentitySkip(), Unique()] = field(default=None, compare=False)
@@ -1547,6 +1683,47 @@ class EquilibriumVolumeRecord(TypedRecord):
 
 
 @dataclass(frozen=True)
+class PiezoelectricTensorRecord(TypedRecord):
+    """Piezoelectric tensor as a typed record.
+
+    The piezoelectric stress tensor e of the referenced structure in Voigt notation, in coulomb per square metre.
+
+    **Requirements/Conventions**:
+
+    - The value is a 3x6 matrix: a list over ``dim_spatial`` of lists over ``_httk_dim_voigt``.
+    - The element e_{iJ} = dP_i / d(epsilon_J) at zero macroscopic electric field is the change of the macroscopic polarization P along the Cartesian direction i (the row) with the strain component J (the column), where J is the Voigt strain index in the order [xx, yy, zz, yz, xz, xy].
+      The Voigt strain has engineering shear components (epsilon_yz in Voigt form is gamma_yz = 2 epsilon_yz, likewise for xz and xy), as for ``elastic_tensor``, so that the strain-induced polarization is P_i = sum_J e_{iJ} epsilon_J and e_{iJ} equals the tensor component e_{ijk} = dP_i / d(epsilon_jk) for J = (jk).
+    - The directions refer to the Cartesian frame of the referenced structure (the entry the record is a product of), that is the frame of its ``lattice_vectors`` and ``cartesian_site_positions``.
+    - The tensor is the total relaxed-ion response: the sum of the clamped-ion (electronic) contribution and the ionic contribution from the internal relaxation of the atoms under strain.
+
+    A null value means the quantity is not available or not recorded.
+
+    :param piezoelectric_tensor: The piezoelectric tensor value. Unit: C*m^-2.
+    :param product_of: The entries this value is a product of, as labeled edges.
+    :param id: The human-readable entry id shared by all revisions; minted by the store when None.
+    :param immutable_id: The per-revision immutable id; minted by the store when None.
+    :param last_modified: The optional timezone-aware metadata timestamp.
+    """
+
+    __httk_storage__: ClassVar[StorageInfo] = StorageInfo(
+        storage_name="analyse_piezoelectric_tensor",
+        identity_name="analyse_piezoelectric_tensor",
+    )
+    __httk_typed_record__: ClassVar[TypedRecordSpec] = TypedRecordSpec(
+        "https://schemas.httk.org/defs/v0.1/properties/mechanics/piezoelectric_tensor",
+        "_httk_piezoelectric_tensor",
+    )
+    __httk_property_definitions__: ClassVar[Mapping[str, PropertyDefinition]] = __httk_typed_record__.definitions()
+    __httk_stored_properties__: ClassVar[Mapping[str, StoredPropertyProjection]] = __httk_typed_record__.projections()
+
+    piezoelectric_tensor: tuple[float, ...]
+    product_of: Annotated[tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject")] = ()
+    id: Annotated[str | None, IdentitySkip(), Indexed()] = field(default=None, compare=False)
+    immutable_id: Annotated[str | None, IdentitySkip(), Unique()] = field(default=None, compare=False)
+    last_modified: Annotated[datetime.datetime | None, IdentitySkip()] = field(default=None, compare=False)
+
+
+@dataclass(frozen=True)
 class ShearModulusHillRecord(TypedRecord):
     """Shear modulus (Hill) as a typed record.
 
@@ -1938,6 +2115,129 @@ class ModeGruneisenParametersRecord(TypedRecord):
     reference_volume: float
     values: tuple[float, ...]
     degree: int
+    product_of: Annotated[tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject")] = ()
+    id: Annotated[str | None, IdentitySkip(), Indexed()] = field(default=None, compare=False)
+    immutable_id: Annotated[str | None, IdentitySkip(), Unique()] = field(default=None, compare=False)
+    last_modified: Annotated[datetime.datetime | None, IdentitySkip()] = field(default=None, compare=False)
+
+
+@dataclass(frozen=True)
+class PhononBandStructureRecord(TypedRecord):
+    """Phonon band structure as a typed record.
+
+    Harmonic phonon frequencies of the referenced structure along a path of q-points through the Brillouin zone (a phonon dispersion).
+
+    Only dispersions along a path are meant.
+    Frequencies on a uniform q-point mesh belong in a phonon density of states, see ``phonon_density_of_states``.
+
+    **Requirements/Conventions**:
+
+    - It MUST be a dictionary with the following keys:
+
+        - **qpoints**: REQUIRED; List of lists of 3 floats.
+          The q-points of the path, in path order, over the dimension ``_httk_dim_qpoints``.
+          Each q-point is given in fractional coordinates (dimension ``dim_lattice``) in the reciprocal basis of the referenced structure: the Cartesian wavevector is the sum of the coordinates times the reciprocal lattice vectors b_1, b_2, b_3, where b_i . a_j = 2 pi delta_ij for the lattice vectors a_j of the referenced structure.
+          The path is a sequence of straight segments.
+          A segment boundary inside the list is encoded by two consecutive labelled q-points: the same point listed twice with the same label (a junction) or two different points with different labels (a discontinuity, across which the frequencies are not continuous).
+          The first and last q-points of the list bound the first and last segment; they SHOULD be labelled.
+          Every segment MUST contain at least one q-point that is not a boundary point.
+
+        - **qpoint\\_label\\_indices**: REQUIRED; List of integers.
+          The 0-based indices into ``qpoints`` of the q-points that carry a label, over the dimension ``_httk_dim_qpoint_labels``.
+          Each index MUST be a valid index into ``qpoints``, and the indices MUST be strictly increasing.
+          The list MAY be empty when the producer has no labels; the path is then a single continuous segment.
+
+        - **qpoint\\_labels**: REQUIRED; List of strings.
+          The label of each q-point listed in ``qpoint_label_indices``, over the dimension ``_httk_dim_qpoint_labels``: ``qpoint_labels[i]`` labels the q-point ``qpoints[qpoint_label_indices[i]]``.
+          It MUST have the same length as ``qpoint_label_indices``.
+          Labels are the names of high-symmetry points as given by the producer (for example ``GAMMA`` or ``\\Gamma`` for the zone centre); no normalized vocabulary is implied.
+
+        - **frequencies**: REQUIRED; List of lists of floats.
+          The phonon frequencies in THz (ordinary frequency nu, not angular frequency omega = 2 pi nu), as a list over the dimension ``_httk_dim_modes`` of lists over ``_httk_dim_qpoints``: ``frequencies[m][q]`` is the frequency of mode m at the q-point ``qpoints[q]``.
+          The number of modes MUST equal 3 times the number of sites of the referenced structure.
+          Mode m at each q-point MUST be the (m+1)-th lowest frequency at that q-point: the modes are sorted at each q-point and are not reordered to follow branch crossings.
+          Producers converting data whose branches were reordered to follow eigenvector connectivity (for example phonopy's band connection) MUST sort the values at each q-point.
+          An imaginary frequency (a negative eigenvalue of the dynamical matrix) is given as the negative of its magnitude, following the phonopy convention.
+
+    - The value refers to the referenced structure (the entry the record is a product of), which is the cell whose dynamical matrix was diagonalized; the q-point coordinates and the number of modes are only meaningful for that cell.
+      A producer whose coordinates refer to a different cell MUST either reference that cell as the structure the value is a product of, or transform the coordinates to the referenced structure's reciprocal basis.
+
+    A null value means the quantity is not available or not recorded.
+
+    :param qpoints: The q-points of the path in fractional coordinates of the reciprocal basis of the referenced structure, in path order.
+    :param qpoint_label_indices: The strictly increasing 0-based indices into ``qpoints`` of the labelled q-points.
+    :param qpoint_labels: The label of each q-point listed in ``qpoint_label_indices``, in the same order.
+    :param frequencies: The phonon frequencies per mode and q-point, with imaginary frequencies given as negative values. Unit: THz.
+    :param product_of: The entries this value is a product of, as labeled edges.
+    :param id: The human-readable entry id shared by all revisions; minted by the store when None.
+    :param immutable_id: The per-revision immutable id; minted by the store when None.
+    :param last_modified: The optional timezone-aware metadata timestamp.
+    """
+
+    __httk_storage__: ClassVar[StorageInfo] = StorageInfo(
+        storage_name="analyse_phonon_band_structure",
+        identity_name="analyse_phonon_band_structure",
+    )
+    __httk_typed_record__: ClassVar[TypedRecordSpec] = TypedRecordSpec(
+        "https://schemas.httk.org/defs/v0.1/properties/thermodynamics/phonon_band_structure",
+        "_httk_phonon_band_structure",
+    )
+    __httk_property_definitions__: ClassVar[Mapping[str, PropertyDefinition]] = __httk_typed_record__.definitions()
+    __httk_stored_properties__: ClassVar[Mapping[str, StoredPropertyProjection]] = __httk_typed_record__.projections()
+
+    qpoints: tuple[float, ...]
+    qpoint_label_indices: tuple[int, ...]
+    qpoint_labels: tuple[str, ...]
+    frequencies: tuple[float, ...]
+    product_of: Annotated[tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject")] = ()
+    id: Annotated[str | None, IdentitySkip(), Indexed()] = field(default=None, compare=False)
+    immutable_id: Annotated[str | None, IdentitySkip(), Unique()] = field(default=None, compare=False)
+    last_modified: Annotated[datetime.datetime | None, IdentitySkip()] = field(default=None, compare=False)
+
+
+@dataclass(frozen=True)
+class PhononDensityOfStatesRecord(TypedRecord):
+    """Phonon density of states as a typed record.
+
+    Harmonic phonon density of states of the referenced structure as a function of frequency.
+
+    **Requirements/Conventions**:
+
+    - It MUST be a dictionary with the following keys:
+
+        - **frequencies**: REQUIRED; List of floats.
+          The frequencies in THz (ordinary frequency nu, not angular frequency omega = 2 pi nu) at which the density is given, in increasing order, over the dimension ``_httk_dim_phonon_frequencies``.
+          Negative frequencies represent imaginary modes, given as the negative of their magnitude as in ``phonon_band_structure``.
+
+        - **density**: REQUIRED; List of floats.
+          The number of phonon modes per THz per referenced cell at each frequency, in THz^-1, over the dimension ``_httk_dim_phonon_frequencies``.
+          Its integral over frequency is 3 times the number of sites of the referenced structure (up to the sampling and broadening of the producing calculation).
+
+    - The value refers to the referenced structure (the entry the record is a product of), which is the cell whose dynamical matrix was diagonalized.
+
+    A null value means the quantity is not available or not recorded.
+
+    :param frequencies: The frequencies at which the density is given, in increasing order. Unit: THz.
+    :param density: The number of phonon modes per THz per referenced cell at each frequency. Unit: THz^-1.
+    :param product_of: The entries this value is a product of, as labeled edges.
+    :param id: The human-readable entry id shared by all revisions; minted by the store when None.
+    :param immutable_id: The per-revision immutable id; minted by the store when None.
+    :param last_modified: The optional timezone-aware metadata timestamp.
+    """
+
+    __httk_storage__: ClassVar[StorageInfo] = StorageInfo(
+        storage_name="analyse_phonon_density_of_states",
+        identity_name="analyse_phonon_density_of_states",
+    )
+    __httk_typed_record__: ClassVar[TypedRecordSpec] = TypedRecordSpec(
+        "https://schemas.httk.org/defs/v0.1/properties/thermodynamics/phonon_density_of_states",
+        "_httk_phonon_density_of_states",
+    )
+    __httk_property_definitions__: ClassVar[Mapping[str, PropertyDefinition]] = __httk_typed_record__.definitions()
+    __httk_stored_properties__: ClassVar[Mapping[str, StoredPropertyProjection]] = __httk_typed_record__.projections()
+
+    frequencies: tuple[float, ...]
+    density: tuple[float, ...]
     product_of: Annotated[tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject")] = ()
     id: Annotated[str | None, IdentitySkip(), Indexed()] = field(default=None, compare=False)
     immutable_id: Annotated[str | None, IdentitySkip(), Unique()] = field(default=None, compare=False)
@@ -3657,7 +3957,9 @@ RECORD_KINDS: Mapping[str, type[TypedRecord]] = MappingProxyType(
         "https://schemas.httk.org/defs/v0.1/properties/dynamics/self_van_hove_function": SelfVanHoveFunctionRecord,
         "https://schemas.httk.org/defs/v0.1/properties/dynamics/velocity_power_spectrum": VelocityPowerSpectrumRecord,
         "https://schemas.httk.org/defs/v0.1/properties/electronic/band_gap": BandGapRecord,
+        "https://schemas.httk.org/defs/v0.1/properties/electronic/born_effective_charges": BornEffectiveChargesRecord,
         "https://schemas.httk.org/defs/v0.1/properties/electronic/direct_band_gap": DirectBandGapRecord,
+        "https://schemas.httk.org/defs/v0.1/properties/electronic/electronic_band_structure": ElectronicBandStructureRecord,
         "https://schemas.httk.org/defs/v0.1/properties/electronic/electronic_density_of_states": ElectronicDensityOfStatesRecord,
         "https://schemas.httk.org/defs/v0.1/properties/electronic/fermi_energy": FermiEnergyRecord,
         "https://schemas.httk.org/defs/v0.1/properties/electronic/high_frequency_relative_permittivity": HighFrequencyRelativePermittivityRecord,
@@ -3684,6 +3986,7 @@ RECORD_KINDS: Mapping[str, type[TypedRecord]] = MappingProxyType(
         "https://schemas.httk.org/defs/v0.1/properties/mechanics/elastic_tensor": ElasticTensorRecord,
         "https://schemas.httk.org/defs/v0.1/properties/mechanics/equilibrium_energy": EquilibriumEnergyRecord,
         "https://schemas.httk.org/defs/v0.1/properties/mechanics/equilibrium_volume": EquilibriumVolumeRecord,
+        "https://schemas.httk.org/defs/v0.1/properties/mechanics/piezoelectric_tensor": PiezoelectricTensorRecord,
         "https://schemas.httk.org/defs/v0.1/properties/mechanics/shear_modulus_hill": ShearModulusHillRecord,
         "https://schemas.httk.org/defs/v0.1/properties/mechanics/shear_modulus_reuss": ShearModulusReussRecord,
         "https://schemas.httk.org/defs/v0.1/properties/mechanics/shear_modulus_voigt": ShearModulusVoigtRecord,
@@ -3695,6 +3998,8 @@ RECORD_KINDS: Mapping[str, type[TypedRecord]] = MappingProxyType(
         "https://schemas.httk.org/defs/v0.1/properties/thermodynamics/helmholtz_free_energy": HelmholtzFreeEnergyRecord,
         "https://schemas.httk.org/defs/v0.1/properties/thermodynamics/isothermal_compressibility": IsothermalCompressibilityRecord,
         "https://schemas.httk.org/defs/v0.1/properties/thermodynamics/mode_gruneisen_parameters": ModeGruneisenParametersRecord,
+        "https://schemas.httk.org/defs/v0.1/properties/thermodynamics/phonon_band_structure": PhononBandStructureRecord,
+        "https://schemas.httk.org/defs/v0.1/properties/thermodynamics/phonon_density_of_states": PhononDensityOfStatesRecord,
         "https://schemas.httk.org/defs/v0.1/properties/thermodynamics/quasiharmonic_thermodynamics": QuasiharmonicThermodynamicsRecord,
         "https://schemas.httk.org/defs/v0.1/properties/thermodynamics/vibrational_entropy": VibrationalEntropyRecord,
         "https://schemas.httk.org/defs/v0.1/properties/thermodynamics/vibrational_heat_capacity": VibrationalHeatCapacityRecord,

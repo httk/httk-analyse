@@ -356,3 +356,28 @@ register_property_definition(
     definition_id="https://schemas.httk.org/defs/v0.1/properties/energetics/convex_hull_phase_diagram",
     resource="httk.registry.schemas.analyse:convex_hull_phase_diagram.json",
 )
+
+register_property_definition(
+    definition_id="https://schemas.httk.org/defs/v0.1/properties/electronic/electronic_band_structure",
+    resource="httk.registry.schemas.analyse:electronic_band_structure.json",
+)
+
+register_property_definition(
+    definition_id="https://schemas.httk.org/defs/v0.1/properties/thermodynamics/phonon_band_structure",
+    resource="httk.registry.schemas.analyse:phonon_band_structure.json",
+)
+
+register_property_definition(
+    definition_id="https://schemas.httk.org/defs/v0.1/properties/thermodynamics/phonon_density_of_states",
+    resource="httk.registry.schemas.analyse:phonon_density_of_states.json",
+)
+
+register_property_definition(
+    definition_id="https://schemas.httk.org/defs/v0.1/properties/electronic/born_effective_charges",
+    resource="httk.registry.schemas.analyse:born_effective_charges.json",
+)
+
+register_property_definition(
+    definition_id="https://schemas.httk.org/defs/v0.1/properties/mechanics/piezoelectric_tensor",
+    resource="httk.registry.schemas.analyse:piezoelectric_tensor.json",
+)

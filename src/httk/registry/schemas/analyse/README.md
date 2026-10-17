@@ -84,6 +84,11 @@ their IRIs are used.
 | `spin_channel_electronic_density_of_states.json` | `https://schemas.httk.org/defs/v0.1/properties/electronic/spin_channel_electronic_density_of_states` | `httk-schemas-source/output/defs/v0.1/properties/electronic/spin_channel_electronic_density_of_states.json` | MIT |
 | `chemical_potential_region.json` | `https://schemas.httk.org/defs/v0.1/properties/energetics/chemical_potential_region` | `httk-schemas-source/output/defs/v0.1/properties/energetics/chemical_potential_region.json` | MIT |
 | `convex_hull_phase_diagram.json` | `https://schemas.httk.org/defs/v0.1/properties/energetics/convex_hull_phase_diagram` | `httk-schemas-source/output/defs/v0.1/properties/energetics/convex_hull_phase_diagram.json` | MIT |
+| `electronic_band_structure.json` | `https://schemas.httk.org/defs/v0.1/properties/electronic/electronic_band_structure` | `httk-schemas-source/output/defs/v0.1/properties/electronic/electronic_band_structure.json` | MIT |
+| `phonon_band_structure.json` | `https://schemas.httk.org/defs/v0.1/properties/thermodynamics/phonon_band_structure` | `httk-schemas-source/output/defs/v0.1/properties/thermodynamics/phonon_band_structure.json` | MIT |
+| `phonon_density_of_states.json` | `https://schemas.httk.org/defs/v0.1/properties/thermodynamics/phonon_density_of_states` | `httk-schemas-source/output/defs/v0.1/properties/thermodynamics/phonon_density_of_states.json` | MIT |
+| `born_effective_charges.json` | `https://schemas.httk.org/defs/v0.1/properties/electronic/born_effective_charges` | `httk-schemas-source/output/defs/v0.1/properties/electronic/born_effective_charges.json` | MIT |
+| `piezoelectric_tensor.json` | `https://schemas.httk.org/defs/v0.1/properties/mechanics/piezoelectric_tensor` | `httk-schemas-source/output/defs/v0.1/properties/mechanics/piezoelectric_tensor.json` | MIT |
 
 ## License
 

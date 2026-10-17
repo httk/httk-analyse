@@ -20,6 +20,7 @@ __all__ = [
     "ARRHENIUS_PREFACTOR",
     "BAND_GAP",
     "BIAS",
+    "BORN_EFFECTIVE_CHARGES",
     "BULK_MODULUS",
     "BULK_MODULUS_HILL",
     "BULK_MODULUS_PRESSURE_DERIVATIVE",
@@ -37,6 +38,7 @@ __all__ = [
     "DIRECT_BAND_GAP",
     "DISTINCT_VAN_HOVE_FUNCTION",
     "ELASTIC_TENSOR",
+    "ELECTRONIC_BAND_STRUCTURE",
     "ELECTRONIC_DENSITY_OF_STATES",
     "ENERGY_ABOVE_HULL_PER_ATOM",
     "ENERGY_PREDICTION_ERRORS",
@@ -59,6 +61,9 @@ __all__ = [
     "MIGRATION_BARRIER_REVERSE",
     "MODE_GRUNEISEN_PARAMETERS",
     "NVE_ENERGY_DRIFT",
+    "PHONON_BAND_STRUCTURE",
+    "PHONON_DENSITY_OF_STATES",
+    "PIEZOELECTRIC_TENSOR",
     "QUASIHARMONIC_THERMODYNAMICS",
     "RADIAL_DISTRIBUTION_FUNCTION",
     "REACTION_ENERGY",
@@ -354,6 +359,21 @@ MODE_GRUNEISEN_PARAMETERS = "https://schemas.httk.org/defs/v0.1/properties/therm
 SPIN_CHANNEL_ELECTRONIC_DENSITY_OF_STATES = (
     "https://schemas.httk.org/defs/v0.1/properties/electronic/spin_channel_electronic_density_of_states"
 )
+
+#: Property definition ``electronic_band_structure``.
+ELECTRONIC_BAND_STRUCTURE = "https://schemas.httk.org/defs/v0.1/properties/electronic/electronic_band_structure"
+
+#: Property definition ``phonon_band_structure``.
+PHONON_BAND_STRUCTURE = "https://schemas.httk.org/defs/v0.1/properties/thermodynamics/phonon_band_structure"
+
+#: Property definition ``phonon_density_of_states``.
+PHONON_DENSITY_OF_STATES = "https://schemas.httk.org/defs/v0.1/properties/thermodynamics/phonon_density_of_states"
+
+#: Property definition ``born_effective_charges``.
+BORN_EFFECTIVE_CHARGES = "https://schemas.httk.org/defs/v0.1/properties/electronic/born_effective_charges"
+
+#: Property definition ``piezoelectric_tensor``.
+PIEZOELECTRIC_TENSOR = "https://schemas.httk.org/defs/v0.1/properties/mechanics/piezoelectric_tensor"
 
 
 @dataclass(frozen=True, slots=True)

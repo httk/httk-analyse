@@ -1,0 +1,154 @@
+{
+    "$id": "https://schemas.httk.org/defs/v0.1/properties/thermodynamics/phonon_density_of_states",
+    "$schema": "https://schemas.optimade.org/meta/v1.3/optimade/property_definition.json",
+    "title": "Phonon density of states",
+    "x-optimade-type": "dictionary",
+    "x-optimade-definition": {
+        "kind": "property",
+        "version": "0.1.0",
+        "format": "1.3",
+        "name": "phonon_density_of_states",
+        "label": "phonon_density_of_states_thermodynamics_httk"
+    },
+    "x-optimade-unit": "inapplicable",
+    "x-optimade-unit-definitions": [
+        {
+            "$id": "https://schemas.optimade.org/defs/v1.2/prefixes/si/tera",
+            "title": "tera",
+            "symbol": "T",
+            "display-symbol": "T",
+            "description": "The tera SI prefix defined as a dimensionless multiple of 10\u00b9\u00b2, adopted into SI at its creation at the 11th CGPM Meeting in 1960, resolution 12.",
+            "resources": [
+                {
+                    "relation": "Definition in the 11th CGPM Meeting in 1960, resolution 12",
+                    "resource-id": "https://www.bipm.org/en/committees/cg/cgpm/11-1960/resolution-12"
+                },
+                {
+                    "relation": "Wikipedia article describing the SI prefixes",
+                    "resource-id": "https://en.wikipedia.org/wiki/Metric_prefix"
+                }
+            ],
+            "defining-relation": {
+                "base-units": [],
+                "base-units-expression": "",
+                "scale": {
+                    "exponent": 12
+                }
+            },
+            "x-optimade-definition": {
+                "label": "tera_prefix_si",
+                "kind": "prefix",
+                "format": "1.2",
+                "version": "1.2.0",
+                "name": "tera"
+            }
+        },
+        {
+            "$id": "https://schemas.optimade.org/defs/v1.2/units/si/general/hertz",
+            "title": "hertz",
+            "symbol": "Hz",
+            "display-symbol": "Hz",
+            "description": "A unit for frequency equal to s\u207b\u00b9 using the current, or one of the historical, definitions of the SI units.\n\n\"The frequency of a periodic phenomenon is expressed in hertz, as the inverse of its period expressed in seconds.\" [9th CGPM meeting in 1946]\n\nThe hertz was defined at the 9th CGPM Meeting in 1946, included in SI at the 11th CGPM meeting in 1960, resolution 12 and implicitly redefined via the redefinition of the second at the 13th CGPM Meeting in 1967, resolution 1.\n\nThis is a generalized definition taken to reference the current, or one of the historical, SI unit definitions.\nThis definition is intended for situations when it is not possible to be more precise, e.g., in contexts where data have been collected that uses different historical SI definitions.",
+            "compatibility": [
+                "https://schemas.optimade.org/defs/v1.2/units/si/1960/named/hertz",
+                "https://schemas.optimade.org/defs/v1.2/units/si/1967/named/hertz"
+            ],
+            "resources": [
+                {
+                    "relation": "Definition at the 9th CGPM meeting (1948)",
+                    "resource-id": "https://www.bipm.org/en/committees/cg/cgpm/9-1948"
+                },
+                {
+                    "relation": "Definition and establishment of the SI unit system at the 11th CGPM meeting (1960), resolution 12.",
+                    "resource-id": "https://www.bipm.org/en/committees/cg/cgpm/11-1960/resolution-12"
+                },
+                {
+                    "relation": "Redefinition of the second in the 13th CGPM Meeting (1967), resolution 1",
+                    "resource-id": "https://www.bipm.org/en/committees/cg/cgpm/13-1967/resolution-1"
+                },
+                {
+                    "relation": "Wikipedia article describing the unit",
+                    "resource-id": "https://en.wikipedia.org/wiki/Hertz"
+                }
+            ],
+            "defining-relation": {
+                "base-units": [
+                    {
+                        "symbol": "s",
+                        "id": "https://schemas.optimade.org/defs/v1.2/units/si/general/second"
+                    }
+                ],
+                "base-units-expression": "s^-1"
+            },
+            "x-optimade-definition": {
+                "label": "hertz_si_general",
+                "kind": "unit",
+                "format": "1.2",
+                "version": "1.2.0",
+                "name": "hertz"
+            }
+        }
+    ],
+    "x-optimade-requirements": {
+        "support": "may",
+        "sortable": false,
+        "query-support": "none"
+    },
+    "type": [
+        "object",
+        "null"
+    ],
+    "required": [
+        "frequencies",
+        "density"
+    ],
+    "description": "Harmonic phonon density of states of the referenced structure as a function of frequency.\n\n**Requirements/Conventions**:\n\n- It MUST be a dictionary with the following keys:\n\n    - **frequencies**: REQUIRED; List of floats.\n      The frequencies in THz (ordinary frequency nu, not angular frequency omega = 2 pi nu) at which the density is given, in increasing order, over the dimension `_httk_dim_phonon_frequencies`.\n      Negative frequencies represent imaginary modes, given as the negative of their magnitude as in `phonon_band_structure`.\n\n    - **density**: REQUIRED; List of floats.\n      The number of phonon modes per THz per referenced cell at each frequency, in THz^-1, over the dimension `_httk_dim_phonon_frequencies`.\n      Its integral over frequency is 3 times the number of sites of the referenced structure (up to the sampling and broadening of the producing calculation).\n\n- The value refers to the referenced structure (the entry the record is a product of), which is the cell whose dynamical matrix was diagonalized.\n\nA null value means the quantity is not available or not recorded.",
+    "properties": {
+        "frequencies": {
+            "x-optimade-type": "list",
+            "x-optimade-unit": "inapplicable",
+            "x-optimade-dimensions": {
+                "names": [
+                    "_httk_dim_phonon_frequencies"
+                ],
+                "sizes": [
+                    null
+                ]
+            },
+            "type": [
+                "array"
+            ],
+            "description": "The frequencies at which the density is given, in increasing order.",
+            "items": {
+                "x-optimade-type": "float",
+                "x-optimade-unit": "THz",
+                "type": [
+                    "number"
+                ]
+            }
+        },
+        "density": {
+            "x-optimade-type": "list",
+            "x-optimade-unit": "inapplicable",
+            "x-optimade-dimensions": {
+                "names": [
+                    "_httk_dim_phonon_frequencies"
+                ],
+                "sizes": [
+                    null
+                ]
+            },
+            "type": [
+                "array"
+            ],
+            "description": "The number of phonon modes per THz per referenced cell at each frequency.",
+            "items": {
+                "x-optimade-type": "float",
+                "x-optimade-unit": "THz^-1",
+                "type": [
+                    "number"
+                ]
+            }
+        }
+    }
+}

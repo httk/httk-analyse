@@ -13,7 +13,12 @@ from httk.core import load_property_definition
 from httk.core._typed_record_tool import check_typed_records, generate_typed_records
 from httk.core.register.entries import known_entry_records, resolve_entry_record
 
-from httk.analyse.property_records import DERIVED_RECORD_KINDS, RECORD_KINDS
+from httk.analyse.property_records import (
+    DERIVED_RECORD_KINDS,
+    RECORD_KINDS,
+    ElectronicBandStructureRecord,
+    PhononBandStructureRecord,
+)
 
 TOOL = runpy.run_path(str(Path(__file__).resolve().parents[1] / "tools" / "generate_records.py"))
 KINDS = sorted([*RECORD_KINDS.values(), *DERIVED_RECORD_KINDS.values()], key=lambda cls: cls.__name__)
@@ -36,7 +41,7 @@ def test_tool_check_passes():
 
 
 def test_every_definition_has_one_registered_kind():
-    assert len(TOOL["DEFINITION_IDS"]) == 71
+    assert len(TOOL["DEFINITION_IDS"]) == 76
     assert list(RECORD_KINDS) == TOOL["DEFINITION_IDS"]
     assert list(DERIVED_RECORD_KINDS) == [(base, derivation) for base, derivation, _ in TOOL["DERIVED"]]
     assert len(set(KINDS)) == len(RECORD_KINDS) + len(DERIVED_RECORD_KINDS)
@@ -105,6 +110,8 @@ def test_synthetic_values_cover_every_shape():
     layouts = [item for cls in RECORD_KINDS.values() for item in cls.__httk_typed_record__.layout]
     top_level = {item.field for item in layouts if not item.path and item.dimensions}
     assert top_level == {
+        "born_effective_charges",
+        "piezoelectric_tensor",
         "total_magnetic_moment",
         "diffusion_tensor",
         "thermal_conductivity_tensor",
@@ -112,13 +119,22 @@ def test_synthetic_values_cover_every_shape():
         "compliance_tensor",
     }
     assert {item.field for item in layouts if len(item.dimensions) == 3} == {
+        "born_effective_charges",
         "diffusion_tensors",
         "msd",
         "thermal_conductivity_tensors",
         "vacf",
     }
     variable_inner = {item.field for item in layouts if any(size is None for _, size in item.dimensions[1:])}
-    assert variable_inner == {"compositions", "competing_coefficients", "real", "imaginary"}
+    assert variable_inner == {
+        "compositions",
+        "competing_coefficients",
+        "real",
+        "imaginary",
+        "energies",
+        "energies_spin_down",
+        "frequencies",
+    }
     assert {item.field for item in layouts if item.element_nullable} == {"local_orders"}
     assert any(not item.required for item in layouts)
 
@@ -144,3 +160,53 @@ def test_kind_round_trips_a_checked_value(cls, full):
         assert DERIVED_RECORD_KINDS[spec.definition_id, spec.derivation] is cls
         assert stored_name == f"{spec.definition.name}_{spec.derivation.rsplit('/', 1)[1]}"
         assert spec.served_definition.definition_id.startswith("https://schemas.httk.org/ad-hoc/")
+
+
+BANDS = {
+    "kpoints": [[0.0, 0.0, 0.0], [0.25, 0.0, 0.25], [0.5, 0.0, 0.5]],
+    "kpoint_label_indices": [0, 2],
+    "kpoint_labels": ["GAMMA", "X"],
+    "energies": [[-5.1, -4.2, -3.0], [1.2, 2.3, 3.4]],
+    "fermi_energy": 0.4,
+}
+
+
+@pytest.mark.parametrize(
+    ("change", "drop", "message"),
+    [
+        # k-point rows of two coordinates
+        ({"kpoints": [[0.0, 0.0], [0.25, 0.0], [0.5, 0.0]]}, None, "kpoints"),
+        # band rows shorter than the k-point list
+        ({"energies": [[-5.1, -4.2], [1.2, 2.3]]}, None, "member .energies.: 4 items do not divide into rows of 3"),
+        # one label for two label indices
+        ({"kpoint_labels": ["GAMMA"]}, None, "member .kpoint_labels.: 1 items do not fill shape"),
+        # a member the definition does not have
+        ({"occupations": [[1.0, 1.0, 1.0], [0.0, 0.0, 0.0]]}, None, "occupations"),
+        # a missing required member
+        ({}, "fermi_energy", "fermi_energy"),
+    ],
+    ids=["kpoint-row-length", "energies-vs-kpoints", "label-count", "unknown-member", "missing-fermi-energy"],
+)
+def test_band_structure_rejects_inconsistent_values(change, drop, message):
+    value = {key: item for key, item in {**BANDS, **change}.items() if key != drop}
+    with pytest.raises(ValueError, match=message):
+        ElectronicBandStructureRecord.from_value(value)
+
+
+def test_band_structure_absent_and_null_spin_down_are_equivalent():
+    absent = ElectronicBandStructureRecord.from_value(BANDS)
+    null = ElectronicBandStructureRecord.from_value({**BANDS, "energies_spin_down": None})
+    assert absent == null and absent.energies_spin_down is None
+    assert absent.value == null.value == BANDS
+
+
+def test_band_structures_may_be_unlabelled():
+    bands = {**BANDS, "kpoint_label_indices": [], "kpoint_labels": []}
+    assert ElectronicBandStructureRecord.from_value(bands).value == bands
+    phonons = {
+        "qpoints": BANDS["kpoints"],
+        "qpoint_label_indices": [],
+        "qpoint_labels": [],
+        "frequencies": [[0.0, 1.0, 2.0]] * 3,
+    }
+    assert PhononBandStructureRecord.from_value(phonons).value == phonons

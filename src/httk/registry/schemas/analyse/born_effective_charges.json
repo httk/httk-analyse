@@ -1,0 +1,114 @@
+{
+    "$id": "https://schemas.httk.org/defs/v0.1/properties/electronic/born_effective_charges",
+    "$schema": "https://schemas.optimade.org/meta/v1.3/optimade/property_definition.json",
+    "title": "Born effective charges",
+    "x-optimade-type": "list",
+    "x-optimade-definition": {
+        "kind": "property",
+        "version": "0.1.0",
+        "format": "1.3",
+        "name": "born_effective_charges",
+        "label": "born_effective_charges_electronic_httk"
+    },
+    "x-optimade-unit": "e",
+    "x-optimade-unit-definitions": [
+        {
+            "$id": "https://schemas.optimade.org/defs/v1.2/constants/codata/2018/electromagnetic/elementarycharge",
+            "title": "elementary charge",
+            "symbol": "e",
+            "display-symbol": "\\(e\\)",
+            "description": "The CODATA 2018 value for the absolute value of the charge of the electron.\n\nThis constant is described in Rev. Mod. Phys. 93, 025010 (2021) as \"Absolute value of the charge of the electron and one of the seven defining constants of the SI\".\nIt is exactly 1.602176634\u00b710\u207b\u00b9\u2079 C following the 2019 redefinition of the SI base units.",
+            "resources": [
+                {
+                    "relation": "Definition in: E. Tiesinga, P. J. Mohr, D. B. Newell, and B. N. Taylor, Rev. Mod. Phys. 93, 025010 (2021)",
+                    "resource-id": "https://doi.org/10.1103/RevModPhys.93.025010"
+                },
+                {
+                    "relation": "Wikipedia article describing the constant",
+                    "resource-id": "https://en.wikipedia.org/wiki/Elementary_charge"
+                }
+            ],
+            "defining-relation": {
+                "base-units": [
+                    {
+                        "symbol": "C",
+                        "id": "https://schemas.optimade.org/defs/v1.2/units/si/2019/named/coulomb"
+                    }
+                ],
+                "base-units-expression": "C",
+                "scale": {
+                    "numerator": 1602176634,
+                    "exponent": -28
+                }
+            },
+            "standard": {
+                "name": "codata",
+                "year": 2018,
+                "category": "electromagnetic",
+                "symbol": "e"
+            },
+            "x-optimade-definition": {
+                "label": "elementary_charge_constant_codata_2019_electromagnetic",
+                "kind": "constant",
+                "format": "1.2",
+                "version": "1.2.0",
+                "name": "elementarycharge"
+            }
+        }
+    ],
+    "x-optimade-requirements": {
+        "support": "may",
+        "sortable": false,
+        "query-support": "none"
+    },
+    "x-optimade-dimensions": {
+        "names": [
+            "dim_sites"
+        ],
+        "sizes": [
+            null
+        ]
+    },
+    "type": [
+        "array",
+        "null"
+    ],
+    "items": {
+        "x-optimade-type": "list",
+        "x-optimade-unit": "inapplicable",
+        "x-optimade-dimensions": {
+            "names": [
+                "dim_spatial"
+            ],
+            "sizes": [
+                3
+            ]
+        },
+        "type": [
+            "array"
+        ],
+        "items": {
+            "x-optimade-type": "list",
+            "x-optimade-unit": "inapplicable",
+            "x-optimade-dimensions": {
+                "names": [
+                    "dim_spatial"
+                ],
+                "sizes": [
+                    3
+                ]
+            },
+            "type": [
+                "array"
+            ],
+            "items": {
+                "x-optimade-type": "float",
+                "x-optimade-unit": "e",
+                "type": [
+                    "number"
+                ]
+            }
+        }
+    },
+    "description": "The Born effective charge tensors of the sites of the referenced structure, in units of the elementary charge e.\n\n**Requirements/Conventions**:\n\n- The value is a list over the dimension `dim_sites` of 3x3 matrices over `dim_spatial` x `dim_spatial`.\n  The list MUST have one matrix per site of the referenced structure (the entry the record is a product of), in the order of its sites.\n- The matrix of site kappa holds Z*_{kappa,alpha beta} = (Omega / e) dP_alpha / du_{kappa,beta} at zero macroscopic electric field, where P is the macroscopic polarization, u_{kappa,beta} the displacement of the atom at site kappa, Omega the volume of the referenced cell and e the elementary charge.\n  The first index alpha (the row) is the polarization direction, equivalently the direction of the electric field; the second index beta (the column) is the direction of the atomic displacement.\n- The directions refer to the Cartesian frame of the referenced structure (the frame of `lattice_vectors` and `cartesian_site_positions`).\n- The values are in units of the elementary charge e: a value of 1 means a charge of one elementary charge.\n- The definition does not require the charge-neutrality (acoustic) sum rule, that the matrices sum to zero over the sites, to be enforced; values MAY be given as computed or after a sum-rule correction applied by the producer.\n\nA null value means the quantity is not available or not recorded."
+}
