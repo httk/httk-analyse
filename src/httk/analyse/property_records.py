@@ -1589,6 +1589,7 @@ class ElasticTensorRecord(TypedRecord):
     """Elastic tensor as a typed record.
 
     The 6x6 elastic stiffness tensor C in Voigt notation, in gigapascal; symmetric. Rows and columns follow Voigt order [xx, yy, zz, yz, xz, xy]. Elastic stiffness relates tensor stress to ENGINEERING shear strain (gamma = 2 epsilon), so that sigma_i = C_ij e_j in Voigt form; compliance S = C^-1 in the same convention (S includes the factors 2 and 4 for shear components relative to the tensor compliance).
+    The components refer to the Cartesian frame of the referenced structure (the entry the record is a product of), that is the frame of its ``lattice_vectors`` and ``cartesian_site_positions``; no IEEE standard orientation is applied.
     At finite pressure this is the stress-strain coefficient tensor (Wallace's B), and stability tests on it use positive definiteness directly.
     A null value means the quantity is not available or not recorded.
 
