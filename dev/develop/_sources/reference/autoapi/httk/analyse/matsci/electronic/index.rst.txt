@@ -1,0 +1,334 @@
+httk.analyse.matsci.electronic
+==============================
+
+.. py:module:: httk.analyse.matsci.electronic
+
+.. autoapi-nested-parse::
+
+   Electronic, magnetic and static dielectric analysis for sampled data.
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   httk.analyse.matsci.electronic.BandEdges
+   httk.analyse.matsci.electronic.EffectiveMassFit
+   httk.analyse.matsci.electronic.MagneticMoments
+   httk.analyse.matsci.electronic.DielectricSummary
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   httk.analyse.matsci.electronic.integrate_dos
+   httk.analyse.matsci.electronic.electron_count
+   httk.analyse.matsci.electronic.solve_chemical_potential
+   httk.analyse.matsci.electronic.band_edges
+   httk.analyse.matsci.electronic.fit_effective_mass
+   httk.analyse.matsci.electronic.align_energies
+   httk.analyse.matsci.electronic.magnetic_moments
+   httk.analyse.matsci.electronic.summarize_dielectric
+
+
+Module Contents
+---------------
+
+.. py:class:: BandEdges
+
+   Band extrema on the supplied sampled k points, with energies in eV.
+
+   :param metallic: Whether any state is partially occupied by the supplied criterion.
+   :param indirect_gap: Sampled conduction minimum minus valence maximum in eV.
+   :param direct_gap: Smallest sampled same-k conduction-valence separation in eV.
+   :param vbm_energy: Valence-band maximum in the aligned reference, in eV.
+   :param cbm_energy: Conduction-band minimum in the aligned reference, in eV.
+   :param vbm_band: Input band index of the valence maximum.
+   :param vbm_kpoint: Input k-point index of the valence maximum.
+   :param cbm_band: Input band index of the conduction minimum.
+   :param cbm_kpoint: Input k-point index of the conduction minimum.
+   :param energy_reference: Subtracted reference energy in eV.
+
+
+   .. py:attribute:: metallic
+      :type:  bool
+
+
+   .. py:attribute:: indirect_gap
+      :type:  float
+
+
+   .. py:attribute:: direct_gap
+      :type:  float
+
+
+   .. py:attribute:: vbm_energy
+      :type:  float
+
+
+   .. py:attribute:: cbm_energy
+      :type:  float
+
+
+   .. py:attribute:: vbm_band
+      :type:  int
+
+
+   .. py:attribute:: vbm_kpoint
+      :type:  int
+
+
+   .. py:attribute:: cbm_band
+      :type:  int
+
+
+   .. py:attribute:: cbm_kpoint
+      :type:  int
+
+
+   .. py:attribute:: energy_reference
+      :type:  float
+
+
+.. py:class:: EffectiveMassFit
+
+   Full signed effective-mass tensor from a local quadratic band fit.
+
+   :param center: Cartesian fit center in inverse angstroms, with 2π included.
+   :param energy_at_center: Fitted band energy at the center in eV.
+   :param gradient: Local energy gradient in eV angstroms.
+   :param hessian: Energy Hessian in eV angstroms squared.
+   :param mass_tensor: Effective mass tensor in electron-mass units.
+   :param eigenvalues: Signed principal masses in electron-mass units.
+   :param principal_axes: Corresponding Cartesian unit eigenvectors by column.
+   :param rank: Numerical rank of the quadratic design.
+   :param condition_number: Singular-value condition number of the scaled design.
+   :param residual_rms: Root mean square energy residual in eV.
+   :param residuals: Input-order observed-minus-fitted energies in eV.
+
+
+   .. py:attribute:: center
+      :type:  tuple[float, float, float]
+
+
+   .. py:attribute:: energy_at_center
+      :type:  float
+
+
+   .. py:attribute:: gradient
+      :type:  tuple[float, float, float]
+
+
+   .. py:attribute:: hessian
+      :type:  tuple[tuple[float, ...], ...]
+
+
+   .. py:attribute:: mass_tensor
+      :type:  tuple[tuple[float, ...], ...]
+
+
+   .. py:attribute:: eigenvalues
+      :type:  tuple[float, float, float]
+
+
+   .. py:attribute:: principal_axes
+      :type:  tuple[tuple[float, ...], ...]
+
+
+   .. py:attribute:: rank
+      :type:  int
+
+
+   .. py:attribute:: condition_number
+      :type:  float
+
+
+   .. py:attribute:: residual_rms
+      :type:  float
+
+
+   .. py:attribute:: residuals
+      :type:  tuple[float, ...]
+
+
+.. py:class:: MagneticMoments
+
+   Total vector moment and optional pair spin correlations.
+
+   :param total: Sum of input vector moments in Bohr magnetons.
+   :param pairs: Input-order atom-index pairs.
+   :param correlations: Pair dot products in squared Bohr magnetons, or dimensionless if normalized.
+   :param normalized: Whether each nonzero moment was normalized before its pair dot product.
+
+
+   .. py:attribute:: total
+      :type:  tuple[float, float, float]
+
+
+   .. py:attribute:: pairs
+      :type:  tuple[tuple[int, int], ...]
+
+
+   .. py:attribute:: correlations
+      :type:  tuple[float, ...]
+
+
+   .. py:attribute:: normalized
+      :type:  bool
+
+
+.. py:class:: DielectricSummary
+
+   Principal values and axes of a real static dielectric tensor.
+
+   :param eigenvalues: Principal relative dielectric constants, ascending.
+   :param principal_axes: Corresponding Cartesian unit eigenvectors by column.
+   :param mean: Isotropic mean of the principal relative dielectric constants.
+
+
+   .. py:attribute:: eigenvalues
+      :type:  tuple[float, float, float]
+
+
+   .. py:attribute:: principal_axes
+      :type:  tuple[tuple[float, ...], ...]
+
+
+   .. py:attribute:: mean
+      :type:  float
+
+
+.. py:function:: integrate_dos(energies, density, lower, upper, *, spin_degeneracy)
+
+   Integrate a piecewise-linear DOS between energy bounds.
+
+   DOS values are states/eV for one spin channel unless the caller supplies a
+   different convention through ``spin_degeneracy``. Bounds outside the grid
+   are clipped to its endpoints and in-grid bounds are linearly interpolated.
+
+   :param energies: Strictly increasing energy grid in eV.
+   :param density: Nonnegative DOS values in states/eV on the declared spin basis.
+   :param lower: Lower integration bound in eV.
+   :param upper: Upper integration bound in eV.
+   :param spin_degeneracy: Explicit multiplicative channel count, commonly 1 or 2.
+   :return: Integrated state count after applying ``spin_degeneracy``.
+   :raises ValueError: If arrays, bounds, or spin degeneracy are invalid.
+
+
+.. py:function:: electron_count(energies, density, chemical_potential, *, temperature, spin_degeneracy)
+
+   Integrate occupied DOS using Fermi-Dirac occupations.
+
+   At zero temperature the occupation is one below the chemical potential,
+   zero above it, and one half exactly at the chemical potential. At finite
+   temperature, the piecewise-linear DOS times occupation is integrated
+   with thermally resolved Gaussian panels. The DOS spin basis and multiplier must be
+   chosen explicitly by the caller.
+
+   :param energies: Strictly increasing grid in eV.
+   :param density: Nonnegative DOS in states/eV on the declared spin basis.
+   :param chemical_potential: Chemical potential in eV.
+   :param temperature: Temperature in K, including zero.
+   :param spin_degeneracy: Explicit multiplier for spin channels represented.
+   :return: Integrated occupied electron count.
+   :raises ValueError: If inputs are invalid or the result is non-finite.
+
+
+.. py:function:: solve_chemical_potential(energies, density, target_electrons, *, temperature, spin_degeneracy, tolerance = 1e-10, max_iterations = 200)
+
+   Find a chemical potential whose DOS integral matches a target count.
+
+   A bracket is expanded outside the grid for finite-temperature tails. At
+   zero temperature, a count on a gap plateau returns a chemical potential within that plateau. The DOS integral is never renormalized to force the requested
+   count.
+
+   :param energies: Strictly increasing DOS grid in eV.
+   :param density: Nonnegative DOS in states/eV on the declared spin basis.
+   :param target_electrons: Desired electron count.
+   :param temperature: Temperature in K, including zero.
+   :param spin_degeneracy: Explicit multiplier for spin channels represented.
+   :param tolerance: Absolute electron-count convergence tolerance.
+   :param max_iterations: Maximum bisection iterations.
+   :return: Chemical potential in eV.
+   :raises ValueError: If target is unreachable, inputs are invalid, or convergence fails.
+
+
+.. py:function:: band_edges(energies, occupations, *, maximum_occupation, occupation_tolerance = 1e-06, energy_reference)
+
+   Classify sampled band edges using explicit occupations.
+
+   Arrays have shape (bands, k points). Energies are in eV and occupations
+   use the same per-state convention as ``maximum_occupation``. Band-path
+   sampling is retained as supplied and is not a Brillouin-zone integration.
+
+   Occupations outside [0, ``maximum_occupation``] by more than ``occupation_tolerance`` are
+   rejected. Methfessel-Paxton smearing (VASP ISMEAR >= 1) can yield slightly negative or
+   super-maximal occupations, so callers must clean them or choose ``occupation_tolerance``
+   accordingly. The analysis is per spin channel: the spin-polarised material gap is
+   min(CBM over both spins) - max(VBM over both spins).
+
+   :param energies: Finite band energies in eV.
+   :param occupations: Finite occupations matching ``energies``.
+   :param maximum_occupation: Explicit maximum occupancy of a state.
+   :param occupation_tolerance: Absolute tolerance at empty/full endpoints.
+   :param energy_reference: Explicit energy to subtract from every band energy.
+   :return: Sampled valence/conduction extrema and sampled gaps.
+   :raises ValueError: If the arrays or occupation conventions are invalid.
+
+
+.. py:function:: fit_effective_mass(kpoints, energies, center)
+
+   Fit a full local quadratic band and return its signed mass tensor.
+
+   Cartesian k coordinates use inverse angstroms with the 2π included (physical k,
+   ``|k| = 2π/λ``), energies use eV, and ``center`` uses the same Cartesian reciprocal-space
+   basis. Reciprocal-lattice fractions or 1/λ coordinates give masses off by (2π)² ≈ 39.5.
+   The local model
+   is E=E0+g·dk+0.5*dk.T@H@dk. The conversion is m*/m_e =
+   (hbar²/m_e)*H⁻¹, with hbar²/m_e in eV angstrom².
+
+   :param kpoints: Cartesian sample vectors with shape (n, 3), in inverse angstroms including 2π.
+   :param energies: Matching energies in eV.
+   :param center: Expansion point in inverse angstroms, including 2π.
+   :return: Fitted Hessian, signed mass tensor, axes, and residual diagnostics.
+   :raises ValueError: If data are malformed, rank deficient, or the Hessian is singular.
+
+
+.. py:function:: align_energies(energies, reference_energy)
+
+   Subtract an explicitly supplied energy reference.
+
+   :param energies: Finite energies in eV.
+   :param reference_energy: Reference energy in eV.
+   :return: Aligned energies in eV, in input order.
+   :raises ValueError: If any input is non-finite.
+
+
+.. py:function:: magnetic_moments(moments, pairs = (), *, normalize_pairs = False)
+
+   Sum vector moments and calculate requested pair spin correlations.
+
+   Input vectors are in Bohr magnetons. Pair order and indices are preserved;
+   normalization is an explicit option and zero vectors cannot be normalized.
+
+   :param moments: Per-site vector moments in Bohr magnetons, shape (n, 3).
+   :param pairs: Atom-index pairs for which to calculate dot products.
+   :param normalize_pairs: Normalize the two moments before each correlation.
+   :return: Total vector moment and pair correlations.
+   :raises ValueError: If moments or pair indices are malformed.
+
+
+.. py:function:: summarize_dielectric(tensor, *, tolerance = 1e-10)
+
+   Summarize a real symmetric static relative dielectric tensor.
+
+   :param tensor: Finite 3 by 3 dimensionless relative dielectric tensor.
+   :param tolerance: Absolute symmetry tolerance.
+   :return: Ascending principal values, eigenvectors by column, and isotropic mean.
+   :raises ValueError: If the tensor is malformed, non-real, or not symmetric.
+
+

@@ -1,0 +1,158 @@
+httk.analyse.matsci.structure
+=============================
+
+.. py:module:: httk.analyse.matsci.structure
+
+.. autoapi-nested-parse::
+
+   Approximate geometry and structural statistics for atomistic configurations.
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   httk.analyse.matsci.structure.RadialDistribution
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   httk.analyse.matsci.structure.minimum_image
+   httk.analyse.matsci.structure.coordination_numbers
+   httk.analyse.matsci.structure.bond_angles
+   httk.analyse.matsci.structure.radial_distribution
+   httk.analyse.matsci.structure.static_structure_factor
+
+
+Module Contents
+---------------
+
+.. py:class:: RadialDistribution
+
+   Hold a streamed radial distribution and its directed histogram counts.
+
+   :param edges: Radial bin edges in angstrom.
+   :param centers: Bin centers in angstrom.
+   :param g: Dimensionless radial distribution values.
+   :param hist_counts: Directed pair counts accumulated in each bin.
+   :param frame_count: Number of configurations accumulated.
+   :param mean_coordination: Mean number of selected neighbors within the binned range per selected central atom and frame.
+   :param pair: Ordered ``(central, neighbor)`` labels of a partial RDF, or ``None`` for the total RDF.
+
+
+   .. py:attribute:: edges
+      :type:  tuple[float, ...]
+
+
+   .. py:attribute:: centers
+      :type:  tuple[float, ...]
+
+
+   .. py:attribute:: g
+      :type:  tuple[float, ...]
+
+
+   .. py:attribute:: hist_counts
+      :type:  tuple[int, ...]
+
+
+   .. py:attribute:: frame_count
+      :type:  int
+
+
+   .. py:attribute:: mean_coordination
+      :type:  float
+
+
+   .. py:attribute:: pair
+      :type:  tuple[str, str] | None
+      :value: None
+
+
+
+.. py:function:: minimum_image(displacements, cell, periodicity = (True, True, True))
+
+   Return the exact nearest periodic image(s) as nested immutable tuples.
+
+   Cell rows are Cartesian lattice vectors in angstrom. The bounded integer
+   search is exact for the supplied float64 cell and displacement values; it
+   raises instead of using an incomplete neighbor stencil when the search is
+   too large.
+
+   :param displacements: Finite Cartesian vectors with final dimension three.
+   :param cell: Finite nonsingular 3 by 3 row-vector cell matrix.
+   :param periodicity: Boolean periodicity for the three cell directions.
+   :return: A nested tuple with the same shape as ``displacements``.
+   :raises ValueError: If inputs are invalid or exact enumeration exceeds its safety bound.
+
+
+.. py:function:: coordination_numbers(positions, cell, cutoff, periodicity = (True, True, True))
+
+   Count neighbors within a cutoff for each atom in input order.
+
+   Distances use the true nearest lattice image. A cutoff must be strictly below half
+   the shortest periodic translation, which guarantees a unique image.
+
+   :param positions: Finite Cartesian atom positions in angstrom, shape ``(N, 3)``.
+   :param cell: Finite nonsingular 3 by 3 row-vector cell matrix in angstrom.
+   :param cutoff: Positive neighbor distance cutoff in angstrom; the boundary is inclusive.
+   :param periodicity: Boolean periodicity for the three cell directions.
+   :return: Integer coordination counts in atom order, excluding each atom itself.
+   :raises ValueError: If inputs are invalid or the cutoff violates the unique-image limit.
+
+
+.. py:function:: bond_angles(positions, cell, cutoff, periodicity = (True, True, True))
+
+   Return per-center angles between unordered neighbor pairs in degrees.
+
+   Center atoms and neighbor pairs retain input order. Periodic displacements
+   use the true nearest image and the cutoff follows the unique-image rule.
+
+   :param positions: Finite Cartesian atom positions in angstrom, shape ``(N, 3)``.
+   :param cell: Finite nonsingular 3 by 3 row-vector cell matrix in angstrom.
+   :param cutoff: Positive inclusive neighbor distance cutoff in angstrom.
+   :param periodicity: Boolean periodicity for the three cell directions.
+   :return: One tuple per center, containing angles in lexicographic neighbor-pair order.
+   :raises ValueError: If inputs are invalid or the cutoff violates the unique-image limit.
+
+
+.. py:function:: radial_distribution(frames, cells, bins, *, species = None, pair = None, periodicity = (True, True, True))
+
+   Stream a total or explicitly selected partial RDF for periodic bulk cells.
+
+   Counts are directed and exclude self pairs. Each frame contributes its own
+   ``N_A * (N_B - delta_AB) / V`` ideal-gas count to the shell-volume
+   normalization. Partial RDFs require fixed per-atom labels and an explicit
+   ordered ``(A, B)`` pair. The maximum edge must fit within the unique-image
+   radius for every frame.
+
+   :param frames: Single-pass iterable of finite Cartesian configurations in angstrom.
+   :param cells: One fixed cell matrix or a single-pass iterable with one cell per frame.
+   :param bins: Strictly increasing nonnegative bin edges in angstrom.
+   :param species: Optional fixed atom labels, one per atom in every frame.
+   :param pair: Explicit ordered labels ``(central, neighbor)`` for a partial RDF.
+   :param periodicity: Must be fully periodic for homogeneous bulk normalization.
+   :return: Immutable bin geometry, normalized values, directed counts and frame summary.
+   :raises ValueError: If geometry, bins, labels or frame/cell counts are invalid.
+
+
+.. py:function:: static_structure_factor(positions, wavevectors, weights = None)
+
+   Evaluate the direct static structure factor at caller-supplied wavevectors.
+
+   The result is ``|sum_j w_j exp(i q.r_j)|² / sum_j w_j²``. Unit weights
+   therefore give the requested ``/N`` normalization. The zero-wavevector
+   density peak is retained; callers select species by passing only those atoms.
+
+   :param positions: Finite Cartesian positions in angstrom, shape ``(N, 3)``.
+   :param wavevectors: Finite q vectors in inverse angstrom, shape ``(M, 3)``.
+   :param weights: Optional finite real atom weights, shape ``(N,)``.
+   :return: Structure-factor values in wavevector order.
+   :raises ValueError: If arrays have invalid shapes or weights have zero norm.
+
+

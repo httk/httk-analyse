@@ -1,0 +1,85 @@
+httk.analyse.matsci.local_order
+===============================
+
+.. py:module:: httk.analyse.matsci.local_order
+
+.. autoapi-nested-parse::
+
+   Optional spherical-harmonic bond order with explicit neighbor geometry.
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   httk.analyse.matsci.local_order.BondOrder
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   httk.analyse.matsci.local_order.bond_order
+
+
+Module Contents
+---------------
+
+.. py:class:: BondOrder
+
+   Rotational invariants of local and pooled directed neighbor bonds.
+
+   :param degree: Spherical-harmonic degree l.
+   :param local: Per-atom q_l, or None for an isolated atom.
+   :param global_order: Q_l from pooled directed bonds, or None without bonds.
+   :param coordination: Number of neighbor bonds per atom.
+   :param cutoff: Inclusive neighbor radius in angstrom used to find the bonds.
+
+
+   .. py:attribute:: degree
+      :type:  int
+
+
+   .. py:attribute:: local
+      :type:  tuple[float | None, ...]
+
+
+   .. py:attribute:: global_order
+      :type:  float | None
+
+
+   .. py:attribute:: coordination
+      :type:  tuple[int, ...]
+
+
+   .. py:attribute:: cutoff
+      :type:  float
+
+
+.. py:function:: bond_order(positions, cell, cutoff, degree, periodicity = (True, True, True))
+
+   Compute Steinhardt q_l per atom and bond-weighted global Q_l.
+
+   Averages complex Y_lm over directed bonds, then takes
+   ``sqrt(4*pi/(2*l+1) * sum_m abs(mean(Y_lm))**2)``. No neighbor-of-neighbor
+   averaging or crystalline/liquid classification is implied.
+
+   The global Q_l pools directed bonds, so each pair contributes both r and -r. Since
+   Y_lm(-r) = (-1)^l Y_lm(r), the global value is identically zero (to rounding) for odd l;
+   it is meaningful for even l, as in Steinhardt's definition. Per-atom q_l remains valid
+   for odd l. The global value is bond-weighted (Steinhardt), not atom-averaged as in
+   Lechner-Dellago or pyscal, so it differs from those codes for non-uniform coordination.
+
+   :param positions: Cartesian positions (N,3) in angstrom.
+   :param cell: Nonsingular row-vector cell in angstrom.
+   :param cutoff: Positive inclusive neighbor radius, strictly below the unique-image limit.
+   :param degree: Nonnegative integer harmonic degree, commonly four or six.
+   :param periodicity: Periodicity per cell direction.
+   :return: Local q_l and directed-bond-weighted global Q_l.
+   :raises ImportError: If the optional SciPy spherical-harmonic implementation is unavailable.
+   :raises ValueError: If geometry or degree is invalid, or distinct atoms coincide.
+
+

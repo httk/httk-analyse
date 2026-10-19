@@ -1,0 +1,11 @@
+httk.registry.entries.analyse
+=============================
+
+.. py:module:: httk.registry.entries.analyse
+
+.. autoapi-nested-parse::
+
+   Register httk-analyse's generated typed result records lazily (no record module is imported here).
+
+
+

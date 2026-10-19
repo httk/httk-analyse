@@ -1,0 +1,238 @@
+httk.analyse.matsci.phonons
+===========================
+
+.. py:module:: httk.analyse.matsci.phonons
+
+.. autoapi-nested-parse::
+
+   Harmonic phonon thermodynamics and quasi-harmonic volume response.
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   httk.analyse.matsci.phonons.HarmonicThermodynamics
+   httk.analyse.matsci.phonons.GruneisenFit
+   httk.analyse.matsci.phonons.QuasiHarmonicResult
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   httk.analyse.matsci.phonons.harmonic_thermodynamics
+   httk.analyse.matsci.phonons.harmonic_thermodynamics_from_dos
+   httk.analyse.matsci.phonons.mode_gruneisen
+   httk.analyse.matsci.phonons.quasiharmonic
+
+
+Module Contents
+---------------
+
+.. py:class:: HarmonicThermodynamics
+
+   Tuple-backed harmonic thermodynamic properties in the input normalization.
+
+   :param temperatures: Temperatures in K, in caller order.
+   :param free_energy: Helmholtz free energy in eV.
+   :param internal_energy: Vibrational internal energy in eV.
+   :param entropy: Entropy in eV/K.
+   :param heat_capacity: Constant-volume heat capacity in eV/K.
+   :param zero_point_energy: Zero-point energy in eV.
+   :param retained_mode_weight: Sum of retained mode weights.
+   :param excluded_zero_weight: Sum of omitted zero-mode weights.
+   :param excluded_imaginary_weight: Sum of omitted negative-frequency weights.
+   :param cutoff_frequency: Zero-mode cutoff in THz that produced this result.
+
+
+   .. py:attribute:: temperatures
+      :type:  tuple[float, ...]
+
+
+   .. py:attribute:: free_energy
+      :type:  tuple[float, ...]
+
+
+   .. py:attribute:: internal_energy
+      :type:  tuple[float, ...]
+
+
+   .. py:attribute:: entropy
+      :type:  tuple[float, ...]
+
+
+   .. py:attribute:: heat_capacity
+      :type:  tuple[float, ...]
+
+
+   .. py:attribute:: zero_point_energy
+      :type:  float
+
+
+   .. py:attribute:: retained_mode_weight
+      :type:  float
+
+
+   .. py:attribute:: excluded_zero_weight
+      :type:  float
+
+
+   .. py:attribute:: excluded_imaginary_weight
+      :type:  float
+
+
+   .. py:attribute:: cutoff_frequency
+      :type:  float
+
+
+.. py:class:: GruneisenFit
+
+   Local polynomial mode Grüneisen estimates for caller-matched modes.
+
+   :param reference_volume: Volume where derivatives are evaluated, in angstrom³.
+   :param values: Mode Grüneisen parameters in mode order.
+   :param rank: Rank of the shared log-volume polynomial design.
+   :param condition_number: Condition number of its centered/scaled design.
+   :param degree: Polynomial degree used for the fit.
+
+
+   .. py:attribute:: reference_volume
+      :type:  float
+
+
+   .. py:attribute:: values
+      :type:  tuple[float, ...]
+
+
+   .. py:attribute:: rank
+      :type:  int
+
+
+   .. py:attribute:: condition_number
+      :type:  float
+
+
+   .. py:attribute:: degree
+      :type:  int
+
+
+.. py:class:: QuasiHarmonicResult
+
+   Equilibrium QHA properties fitted independently at each temperature.
+
+   :param temperatures: Strictly increasing temperatures in K.
+   :param equilibrium_volumes: Equilibrium volumes in angstrom³.
+   :param free_energies: Minimized total (static plus vibrational) Helmholtz energies in eV.
+   :param bulk_moduli: Equilibrium bulk moduli in GPa.
+   :param volumetric_expansion: Finite-difference alpha_V in 1/K.
+   :param retained_mode_weight: Common retained mode count at every volume.
+   :param excluded_zero_weight: Common omitted zero-mode weight at every volume.
+   :param excluded_imaginary_weight: Common omitted imaginary-mode weight at every volume.
+   :param cutoff_frequency: Zero-mode cutoff in THz that produced this result.
+
+
+   .. py:attribute:: temperatures
+      :type:  tuple[float, ...]
+
+
+   .. py:attribute:: equilibrium_volumes
+      :type:  tuple[float, ...]
+
+
+   .. py:attribute:: free_energies
+      :type:  tuple[float, ...]
+
+
+   .. py:attribute:: bulk_moduli
+      :type:  tuple[float, ...]
+
+
+   .. py:attribute:: volumetric_expansion
+      :type:  tuple[float, ...]
+
+
+   .. py:attribute:: retained_mode_weight
+      :type:  float
+
+
+   .. py:attribute:: excluded_zero_weight
+      :type:  float
+
+
+   .. py:attribute:: excluded_imaginary_weight
+      :type:  float
+
+
+   .. py:attribute:: cutoff_frequency
+      :type:  float
+
+
+.. py:function:: harmonic_thermodynamics(frequencies, temperatures, weights = None, *, zero_modes = 'raise', imaginary = 'raise', cutoff_frequency = 0.0)
+
+   Calculate harmonic free energy, energy, entropy and heat capacity.
+
+   Frequencies are signed THz values; weights are nonnegative mode counts and
+   are never normalized automatically. Negative modes are imaginary modes.
+
+   :param frequencies: One-dimensional frequencies in THz.
+   :param temperatures: Nonnegative temperatures in K, retained in input order.
+   :param weights: Optional nonnegative mode counts matching the frequencies.
+   :param zero_modes: Raise on zero frequencies or explicitly omit their weight.
+   :param imaginary: Raise on negative frequencies or explicitly omit their weight.
+   :param cutoff_frequency: Nonnegative THz; modes with ``|frequency|`` below it count as zero modes, of either sign.
+   :return: Immutable properties in eV and eV/K, with mode exclusions reported.
+   :raises ValueError: If inputs are malformed, policies reject modes, or results are non-finite.
+
+
+.. py:function:: harmonic_thermodynamics_from_dos(frequencies, density, temperatures, *, zero_modes = 'raise', imaginary = 'raise', cutoff_frequency = 0.0)
+
+   Integrate a sampled density of states with trapezoid node weights.
+
+   :param frequencies: Strictly increasing DOS grid in THz.
+   :param density: Nonnegative states/THz density at each grid point.
+   :param temperatures: Nonnegative temperatures in K.
+   :param zero_modes: Raise or omit quadrature weight located at zero frequency.
+   :param imaginary: Raise or omit quadrature weight on negative frequencies.
+   :param cutoff_frequency: Nonnegative THz; quadrature nodes with ``|frequency|`` below it count as zero modes.
+   :return: Harmonic properties, with DOS quadrature weights as mode counts.
+   :raises ValueError: If the grid, DOS integral, or selected mode policies are invalid.
+
+
+.. py:function:: mode_gruneisen(volumes, frequencies, reference_volume = None)
+
+   Fit log frequency against log volume for already matched positive modes.
+
+   Quadratic fits are used with three or more volumes, otherwise linear fits.
+   There is no automatic branch or band matching.
+
+   :param volumes: Distinct positive volumes in angstrom³.
+   :param frequencies: Positive frequency matrix with shape (volume, mode), in THz.
+   :param reference_volume: Positive derivative volume; defaults to the geometric mean.
+   :return: Per-mode ``-d log(omega)/d log(V)`` and design diagnostics.
+   :raises ValueError: If values are invalid, modes are nonpositive, or the fit is rank deficient.
+
+
+.. py:function:: quasiharmonic(volumes, static_energies, frequencies_by_volume, temperatures, weights = None, *, zero_modes = 'raise', imaginary = 'raise', cutoff_frequency = 0.0)
+
+   Fit static energy plus harmonic Helmholtz free energy at each temperature.
+
+   Frequency columns must identify the same modes at every volume. Temperatures
+   must be strictly increasing so the endpoint-aware numerical derivative is
+   well defined. The returned alpha_V uses ``numpy.gradient`` at endpoints.
+
+   :param volumes: Distinct positive sampled volumes in angstrom³.
+   :param static_energies: Matching static energies in eV on one extensive basis.
+   :param frequencies_by_volume: Matched signed mode frequencies, one row per volume.
+   :param temperatures: At least three strictly increasing nonnegative K values.
+   :param weights: Optional common mode counts.
+   :param zero_modes: Explicit zero-mode policy.
+   :param imaginary: Explicit negative-frequency policy.
+   :param cutoff_frequency: Nonnegative THz zero-mode cutoff, applied identically at every volume.
+   :return: Equilibrium volume, minimized free energy, bulk modulus and alpha_V.
+   :raises ValueError: If scans, mode exclusions or temperature data are inconsistent.
+
+
