@@ -32,12 +32,14 @@ from httk.core import (
     IdentitySkip,
     Indexed,
     PropertyDefinition,
+    ReferenceRecord,
     RunEdge,
     StorageInfo,
     StrongLink,
     TypedRecord,
     TypedRecordSpec,
     Unique,
+    WeakLink,
 )
 from httk.core.storage import StoredPropertyProjection
 
@@ -162,6 +164,7 @@ class AdsorptionEnergyRecord(TypedRecord):
     __httk_storage__: ClassVar[StorageInfo] = StorageInfo(
         storage_name="analyse_adsorption_energy",
         identity_name="analyse_adsorption_energy",
+        links=(WeakLink("references", ReferenceRecord, exposed_relationship=True),),
     )
     __httk_typed_record__: ClassVar[TypedRecordSpec] = TypedRecordSpec(
         "https://schemas.httk.org/defs/v0.1/properties/defects/adsorption_energy",
@@ -195,6 +198,7 @@ class ChargeTransitionLevelRecord(TypedRecord):
     __httk_storage__: ClassVar[StorageInfo] = StorageInfo(
         storage_name="analyse_charge_transition_level",
         identity_name="analyse_charge_transition_level",
+        links=(WeakLink("references", ReferenceRecord, exposed_relationship=True),),
     )
     __httk_typed_record__: ClassVar[TypedRecordSpec] = TypedRecordSpec(
         "https://schemas.httk.org/defs/v0.1/properties/defects/charge_transition_level",
@@ -237,6 +241,7 @@ class ChargedDefectFormationEnergyRecord(TypedRecord):
     __httk_storage__: ClassVar[StorageInfo] = StorageInfo(
         storage_name="analyse_charged_defect_formation_energy",
         identity_name="analyse_charged_defect_formation_energy",
+        links=(WeakLink("references", ReferenceRecord, exposed_relationship=True),),
     )
     __httk_typed_record__: ClassVar[TypedRecordSpec] = TypedRecordSpec(
         "https://schemas.httk.org/defs/v0.1/properties/defects/charged_defect_formation_energy",
@@ -278,6 +283,7 @@ class SegregationEnergyRecord(TypedRecord):
     __httk_storage__: ClassVar[StorageInfo] = StorageInfo(
         storage_name="analyse_segregation_energy",
         identity_name="analyse_segregation_energy",
+        links=(WeakLink("references", ReferenceRecord, exposed_relationship=True),),
     )
     __httk_typed_record__: ClassVar[TypedRecordSpec] = TypedRecordSpec(
         "https://schemas.httk.org/defs/v0.1/properties/defects/segregation_energy",
@@ -311,6 +317,7 @@ class SurfaceEnergyRecord(TypedRecord):
     __httk_storage__: ClassVar[StorageInfo] = StorageInfo(
         storage_name="analyse_surface_energy",
         identity_name="analyse_surface_energy",
+        links=(WeakLink("references", ReferenceRecord, exposed_relationship=True),),
     )
     __httk_typed_record__: ClassVar[TypedRecordSpec] = TypedRecordSpec(
         "https://schemas.httk.org/defs/v0.1/properties/defects/surface_energy",
@@ -356,6 +363,7 @@ class DistinctVanHoveFunctionRecord(TypedRecord):
     __httk_storage__: ClassVar[StorageInfo] = StorageInfo(
         storage_name="analyse_distinct_van_hove_function",
         identity_name="analyse_distinct_van_hove_function",
+        links=(WeakLink("references", ReferenceRecord, exposed_relationship=True),),
     )
     __httk_typed_record__: ClassVar[TypedRecordSpec] = TypedRecordSpec(
         "https://schemas.httk.org/defs/v0.1/properties/dynamics/distinct_van_hove_function",
@@ -406,6 +414,7 @@ class IntermediateScatteringFunctionRecord(TypedRecord):
     __httk_storage__: ClassVar[StorageInfo] = StorageInfo(
         storage_name="analyse_intermediate_scattering_function",
         identity_name="analyse_intermediate_scattering_function",
+        links=(WeakLink("references", ReferenceRecord, exposed_relationship=True),),
     )
     __httk_typed_record__: ClassVar[TypedRecordSpec] = TypedRecordSpec(
         "https://schemas.httk.org/defs/v0.1/properties/dynamics/intermediate_scattering_function",
@@ -456,6 +465,7 @@ class SelfIntermediateScatteringFunctionRecord(TypedRecord):
     __httk_storage__: ClassVar[StorageInfo] = StorageInfo(
         storage_name="analyse_self_intermediate_scattering_function",
         identity_name="analyse_self_intermediate_scattering_function",
+        links=(WeakLink("references", ReferenceRecord, exposed_relationship=True),),
     )
     __httk_typed_record__: ClassVar[TypedRecordSpec] = TypedRecordSpec(
         "https://schemas.httk.org/defs/v0.1/properties/dynamics/self_intermediate_scattering_function",
@@ -505,6 +515,7 @@ class SelfVanHoveFunctionRecord(TypedRecord):
     __httk_storage__: ClassVar[StorageInfo] = StorageInfo(
         storage_name="analyse_self_van_hove_function",
         identity_name="analyse_self_van_hove_function",
+        links=(WeakLink("references", ReferenceRecord, exposed_relationship=True),),
     )
     __httk_typed_record__: ClassVar[TypedRecordSpec] = TypedRecordSpec(
         "https://schemas.httk.org/defs/v0.1/properties/dynamics/self_van_hove_function",
@@ -554,6 +565,7 @@ class VelocityPowerSpectrumRecord(TypedRecord):
     __httk_storage__: ClassVar[StorageInfo] = StorageInfo(
         storage_name="analyse_velocity_power_spectrum",
         identity_name="analyse_velocity_power_spectrum",
+        links=(WeakLink("references", ReferenceRecord, exposed_relationship=True),),
     )
     __httk_typed_record__: ClassVar[TypedRecordSpec] = TypedRecordSpec(
         "https://schemas.httk.org/defs/v0.1/properties/dynamics/velocity_power_spectrum",
@@ -590,6 +602,7 @@ class BandGapRecord(TypedRecord):
     __httk_storage__: ClassVar[StorageInfo] = StorageInfo(
         storage_name="analyse_band_gap",
         identity_name="analyse_band_gap",
+        links=(WeakLink("references", ReferenceRecord, exposed_relationship=True),),
     )
     __httk_typed_record__: ClassVar[TypedRecordSpec] = TypedRecordSpec(
         "https://schemas.httk.org/defs/v0.1/properties/electronic/band_gap",
@@ -633,6 +646,7 @@ class BornEffectiveChargesRecord(TypedRecord):
     __httk_storage__: ClassVar[StorageInfo] = StorageInfo(
         storage_name="analyse_born_effective_charges",
         identity_name="analyse_born_effective_charges",
+        links=(WeakLink("references", ReferenceRecord, exposed_relationship=True),),
     )
     __httk_typed_record__: ClassVar[TypedRecordSpec] = TypedRecordSpec(
         "https://schemas.httk.org/defs/v0.1/properties/electronic/born_effective_charges",
@@ -665,6 +679,7 @@ class DirectBandGapRecord(TypedRecord):
     __httk_storage__: ClassVar[StorageInfo] = StorageInfo(
         storage_name="analyse_direct_band_gap",
         identity_name="analyse_direct_band_gap",
+        links=(WeakLink("references", ReferenceRecord, exposed_relationship=True),),
     )
     __httk_typed_record__: ClassVar[TypedRecordSpec] = TypedRecordSpec(
         "https://schemas.httk.org/defs/v0.1/properties/electronic/direct_band_gap",
@@ -748,6 +763,7 @@ class ElectronicBandStructureRecord(TypedRecord):
     __httk_storage__: ClassVar[StorageInfo] = StorageInfo(
         storage_name="analyse_electronic_band_structure",
         identity_name="analyse_electronic_band_structure",
+        links=(WeakLink("references", ReferenceRecord, exposed_relationship=True),),
     )
     __httk_typed_record__: ClassVar[TypedRecordSpec] = TypedRecordSpec(
         "https://schemas.httk.org/defs/v0.1/properties/electronic/electronic_band_structure",
@@ -796,6 +812,7 @@ class ElectronicDensityOfStatesRecord(TypedRecord):
     __httk_storage__: ClassVar[StorageInfo] = StorageInfo(
         storage_name="analyse_electronic_density_of_states",
         identity_name="analyse_electronic_density_of_states",
+        links=(WeakLink("references", ReferenceRecord, exposed_relationship=True),),
     )
     __httk_typed_record__: ClassVar[TypedRecordSpec] = TypedRecordSpec(
         "https://schemas.httk.org/defs/v0.1/properties/electronic/electronic_density_of_states",
@@ -831,6 +848,7 @@ class FermiEnergyRecord(TypedRecord):
     __httk_storage__: ClassVar[StorageInfo] = StorageInfo(
         storage_name="analyse_fermi_energy",
         identity_name="analyse_fermi_energy",
+        links=(WeakLink("references", ReferenceRecord, exposed_relationship=True),),
     )
     __httk_typed_record__: ClassVar[TypedRecordSpec] = TypedRecordSpec(
         "https://schemas.httk.org/defs/v0.1/properties/electronic/fermi_energy",
@@ -863,6 +881,7 @@ class HighFrequencyRelativePermittivityRecord(TypedRecord):
     __httk_storage__: ClassVar[StorageInfo] = StorageInfo(
         storage_name="analyse_high_frequency_relative_permittivity",
         identity_name="analyse_high_frequency_relative_permittivity",
+        links=(WeakLink("references", ReferenceRecord, exposed_relationship=True),),
     )
     __httk_typed_record__: ClassVar[TypedRecordSpec] = TypedRecordSpec(
         "https://schemas.httk.org/defs/v0.1/properties/electronic/high_frequency_relative_permittivity",
@@ -897,6 +916,7 @@ class RelativeEffectiveMassRecord(TypedRecord):
     __httk_storage__: ClassVar[StorageInfo] = StorageInfo(
         storage_name="analyse_relative_effective_mass",
         identity_name="analyse_relative_effective_mass",
+        links=(WeakLink("references", ReferenceRecord, exposed_relationship=True),),
     )
     __httk_typed_record__: ClassVar[TypedRecordSpec] = TypedRecordSpec(
         "https://schemas.httk.org/defs/v0.1/properties/electronic/relative_effective_mass",
@@ -943,6 +963,7 @@ class SpinChannelElectronicDensityOfStatesRecord(TypedRecord):
     __httk_storage__: ClassVar[StorageInfo] = StorageInfo(
         storage_name="analyse_spin_channel_electronic_density_of_states",
         identity_name="analyse_spin_channel_electronic_density_of_states",
+        links=(WeakLink("references", ReferenceRecord, exposed_relationship=True),),
     )
     __httk_typed_record__: ClassVar[TypedRecordSpec] = TypedRecordSpec(
         "https://schemas.httk.org/defs/v0.1/properties/electronic/spin_channel_electronic_density_of_states",
@@ -978,6 +999,7 @@ class StaticRelativePermittivityRecord(TypedRecord):
     __httk_storage__: ClassVar[StorageInfo] = StorageInfo(
         storage_name="analyse_static_relative_permittivity",
         identity_name="analyse_static_relative_permittivity",
+        links=(WeakLink("references", ReferenceRecord, exposed_relationship=True),),
     )
     __httk_typed_record__: ClassVar[TypedRecordSpec] = TypedRecordSpec(
         "https://schemas.httk.org/defs/v0.1/properties/electronic/static_relative_permittivity",
@@ -1025,6 +1047,7 @@ class ChemicalPotentialRegionRecord(TypedRecord):
     __httk_storage__: ClassVar[StorageInfo] = StorageInfo(
         storage_name="analyse_chemical_potential_region",
         identity_name="analyse_chemical_potential_region",
+        links=(WeakLink("references", ReferenceRecord, exposed_relationship=True),),
     )
     __httk_typed_record__: ClassVar[TypedRecordSpec] = TypedRecordSpec(
         "https://schemas.httk.org/defs/v0.1/properties/energetics/chemical_potential_region",
@@ -1080,6 +1103,7 @@ class ConvexHullPhaseDiagramRecord(TypedRecord):
     __httk_storage__: ClassVar[StorageInfo] = StorageInfo(
         storage_name="analyse_convex_hull_phase_diagram",
         identity_name="analyse_convex_hull_phase_diagram",
+        links=(WeakLink("references", ReferenceRecord, exposed_relationship=True),),
     )
     __httk_typed_record__: ClassVar[TypedRecordSpec] = TypedRecordSpec(
         "https://schemas.httk.org/defs/v0.1/properties/energetics/convex_hull_phase_diagram",
@@ -1118,6 +1142,7 @@ class EnergyAboveHullPerAtomRecord(TypedRecord):
     __httk_storage__: ClassVar[StorageInfo] = StorageInfo(
         storage_name="analyse_energy_above_hull_per_atom",
         identity_name="analyse_energy_above_hull_per_atom",
+        links=(WeakLink("references", ReferenceRecord, exposed_relationship=True),),
     )
     __httk_typed_record__: ClassVar[TypedRecordSpec] = TypedRecordSpec(
         "https://schemas.httk.org/defs/v0.1/properties/energetics/energy_above_hull_per_atom",
@@ -1151,6 +1176,7 @@ class FormationEnergyPerAtomRecord(TypedRecord):
     __httk_storage__: ClassVar[StorageInfo] = StorageInfo(
         storage_name="analyse_formation_energy_per_atom",
         identity_name="analyse_formation_energy_per_atom",
+        links=(WeakLink("references", ReferenceRecord, exposed_relationship=True),),
     )
     __httk_typed_record__: ClassVar[TypedRecordSpec] = TypedRecordSpec(
         "https://schemas.httk.org/defs/v0.1/properties/energetics/formation_energy_per_atom",
@@ -1183,6 +1209,7 @@ class ReactionEnergyRecord(TypedRecord):
     __httk_storage__: ClassVar[StorageInfo] = StorageInfo(
         storage_name="analyse_reaction_energy",
         identity_name="analyse_reaction_energy",
+        links=(WeakLink("references", ReferenceRecord, exposed_relationship=True),),
     )
     __httk_typed_record__: ClassVar[TypedRecordSpec] = TypedRecordSpec(
         "https://schemas.httk.org/defs/v0.1/properties/energetics/reaction_energy",
@@ -1216,6 +1243,7 @@ class TotalEnergyPerAtomRecord(TypedRecord):
     __httk_storage__: ClassVar[StorageInfo] = StorageInfo(
         storage_name="analyse_total_energy_per_atom",
         identity_name="analyse_total_energy_per_atom",
+        links=(WeakLink("references", ReferenceRecord, exposed_relationship=True),),
     )
     __httk_typed_record__: ClassVar[TypedRecordSpec] = TypedRecordSpec(
         "https://schemas.httk.org/defs/v0.1/properties/energetics/total_energy_per_atom",
@@ -1248,6 +1276,7 @@ class ActivationEnergyRecord(TypedRecord):
     __httk_storage__: ClassVar[StorageInfo] = StorageInfo(
         storage_name="analyse_activation_energy",
         identity_name="analyse_activation_energy",
+        links=(WeakLink("references", ReferenceRecord, exposed_relationship=True),),
     )
     __httk_typed_record__: ClassVar[TypedRecordSpec] = TypedRecordSpec(
         "https://schemas.httk.org/defs/v0.1/properties/kinetics/activation_energy",
@@ -1280,6 +1309,7 @@ class ArrheniusPrefactorRecord(TypedRecord):
     __httk_storage__: ClassVar[StorageInfo] = StorageInfo(
         storage_name="analyse_arrhenius_prefactor",
         identity_name="analyse_arrhenius_prefactor",
+        links=(WeakLink("references", ReferenceRecord, exposed_relationship=True),),
     )
     __httk_typed_record__: ClassVar[TypedRecordSpec] = TypedRecordSpec(
         "https://schemas.httk.org/defs/v0.1/properties/kinetics/arrhenius_prefactor",
@@ -1312,6 +1342,7 @@ class MigrationBarrierForwardRecord(TypedRecord):
     __httk_storage__: ClassVar[StorageInfo] = StorageInfo(
         storage_name="analyse_migration_barrier_forward",
         identity_name="analyse_migration_barrier_forward",
+        links=(WeakLink("references", ReferenceRecord, exposed_relationship=True),),
     )
     __httk_typed_record__: ClassVar[TypedRecordSpec] = TypedRecordSpec(
         "https://schemas.httk.org/defs/v0.1/properties/kinetics/migration_barrier_forward",
@@ -1344,6 +1375,7 @@ class MigrationBarrierReverseRecord(TypedRecord):
     __httk_storage__: ClassVar[StorageInfo] = StorageInfo(
         storage_name="analyse_migration_barrier_reverse",
         identity_name="analyse_migration_barrier_reverse",
+        links=(WeakLink("references", ReferenceRecord, exposed_relationship=True),),
     )
     __httk_typed_record__: ClassVar[TypedRecordSpec] = TypedRecordSpec(
         "https://schemas.httk.org/defs/v0.1/properties/kinetics/migration_barrier_reverse",
@@ -1377,6 +1409,7 @@ class TotalMagneticMomentRecord(TypedRecord):
     __httk_storage__: ClassVar[StorageInfo] = StorageInfo(
         storage_name="analyse_total_magnetic_moment",
         identity_name="analyse_total_magnetic_moment",
+        links=(WeakLink("references", ReferenceRecord, exposed_relationship=True),),
     )
     __httk_typed_record__: ClassVar[TypedRecordSpec] = TypedRecordSpec(
         "https://schemas.httk.org/defs/v0.1/properties/magnetism/total_magnetic_moment",
@@ -1409,6 +1442,7 @@ class BulkModulusRecord(TypedRecord):
     __httk_storage__: ClassVar[StorageInfo] = StorageInfo(
         storage_name="analyse_bulk_modulus",
         identity_name="analyse_bulk_modulus",
+        links=(WeakLink("references", ReferenceRecord, exposed_relationship=True),),
     )
     __httk_typed_record__: ClassVar[TypedRecordSpec] = TypedRecordSpec(
         "https://schemas.httk.org/defs/v0.1/properties/mechanics/bulk_modulus",
@@ -1441,6 +1475,7 @@ class BulkModulusHillRecord(TypedRecord):
     __httk_storage__: ClassVar[StorageInfo] = StorageInfo(
         storage_name="analyse_bulk_modulus_hill",
         identity_name="analyse_bulk_modulus_hill",
+        links=(WeakLink("references", ReferenceRecord, exposed_relationship=True),),
     )
     __httk_typed_record__: ClassVar[TypedRecordSpec] = TypedRecordSpec(
         "https://schemas.httk.org/defs/v0.1/properties/mechanics/bulk_modulus_hill",
@@ -1473,6 +1508,7 @@ class BulkModulusPressureDerivativeRecord(TypedRecord):
     __httk_storage__: ClassVar[StorageInfo] = StorageInfo(
         storage_name="analyse_bulk_modulus_pressure_derivative",
         identity_name="analyse_bulk_modulus_pressure_derivative",
+        links=(WeakLink("references", ReferenceRecord, exposed_relationship=True),),
     )
     __httk_typed_record__: ClassVar[TypedRecordSpec] = TypedRecordSpec(
         "https://schemas.httk.org/defs/v0.1/properties/mechanics/bulk_modulus_pressure_derivative",
@@ -1505,6 +1541,7 @@ class BulkModulusReussRecord(TypedRecord):
     __httk_storage__: ClassVar[StorageInfo] = StorageInfo(
         storage_name="analyse_bulk_modulus_reuss",
         identity_name="analyse_bulk_modulus_reuss",
+        links=(WeakLink("references", ReferenceRecord, exposed_relationship=True),),
     )
     __httk_typed_record__: ClassVar[TypedRecordSpec] = TypedRecordSpec(
         "https://schemas.httk.org/defs/v0.1/properties/mechanics/bulk_modulus_reuss",
@@ -1537,6 +1574,7 @@ class BulkModulusVoigtRecord(TypedRecord):
     __httk_storage__: ClassVar[StorageInfo] = StorageInfo(
         storage_name="analyse_bulk_modulus_voigt",
         identity_name="analyse_bulk_modulus_voigt",
+        links=(WeakLink("references", ReferenceRecord, exposed_relationship=True),),
     )
     __httk_typed_record__: ClassVar[TypedRecordSpec] = TypedRecordSpec(
         "https://schemas.httk.org/defs/v0.1/properties/mechanics/bulk_modulus_voigt",
@@ -1569,6 +1607,7 @@ class ComplianceTensorRecord(TypedRecord):
     __httk_storage__: ClassVar[StorageInfo] = StorageInfo(
         storage_name="analyse_compliance_tensor",
         identity_name="analyse_compliance_tensor",
+        links=(WeakLink("references", ReferenceRecord, exposed_relationship=True),),
     )
     __httk_typed_record__: ClassVar[TypedRecordSpec] = TypedRecordSpec(
         "https://schemas.httk.org/defs/v0.1/properties/mechanics/compliance_tensor",
@@ -1603,6 +1642,7 @@ class ElasticTensorRecord(TypedRecord):
     __httk_storage__: ClassVar[StorageInfo] = StorageInfo(
         storage_name="analyse_elastic_tensor",
         identity_name="analyse_elastic_tensor",
+        links=(WeakLink("references", ReferenceRecord, exposed_relationship=True),),
     )
     __httk_typed_record__: ClassVar[TypedRecordSpec] = TypedRecordSpec(
         "https://schemas.httk.org/defs/v0.1/properties/mechanics/elastic_tensor",
@@ -1636,6 +1676,7 @@ class EquilibriumEnergyRecord(TypedRecord):
     __httk_storage__: ClassVar[StorageInfo] = StorageInfo(
         storage_name="analyse_equilibrium_energy",
         identity_name="analyse_equilibrium_energy",
+        links=(WeakLink("references", ReferenceRecord, exposed_relationship=True),),
     )
     __httk_typed_record__: ClassVar[TypedRecordSpec] = TypedRecordSpec(
         "https://schemas.httk.org/defs/v0.1/properties/mechanics/equilibrium_energy",
@@ -1668,6 +1709,7 @@ class EquilibriumVolumeRecord(TypedRecord):
     __httk_storage__: ClassVar[StorageInfo] = StorageInfo(
         storage_name="analyse_equilibrium_volume",
         identity_name="analyse_equilibrium_volume",
+        links=(WeakLink("references", ReferenceRecord, exposed_relationship=True),),
     )
     __httk_typed_record__: ClassVar[TypedRecordSpec] = TypedRecordSpec(
         "https://schemas.httk.org/defs/v0.1/properties/mechanics/equilibrium_volume",
@@ -1709,6 +1751,7 @@ class PiezoelectricTensorRecord(TypedRecord):
     __httk_storage__: ClassVar[StorageInfo] = StorageInfo(
         storage_name="analyse_piezoelectric_tensor",
         identity_name="analyse_piezoelectric_tensor",
+        links=(WeakLink("references", ReferenceRecord, exposed_relationship=True),),
     )
     __httk_typed_record__: ClassVar[TypedRecordSpec] = TypedRecordSpec(
         "https://schemas.httk.org/defs/v0.1/properties/mechanics/piezoelectric_tensor",
@@ -1741,6 +1784,7 @@ class ShearModulusHillRecord(TypedRecord):
     __httk_storage__: ClassVar[StorageInfo] = StorageInfo(
         storage_name="analyse_shear_modulus_hill",
         identity_name="analyse_shear_modulus_hill",
+        links=(WeakLink("references", ReferenceRecord, exposed_relationship=True),),
     )
     __httk_typed_record__: ClassVar[TypedRecordSpec] = TypedRecordSpec(
         "https://schemas.httk.org/defs/v0.1/properties/mechanics/shear_modulus_hill",
@@ -1773,6 +1817,7 @@ class ShearModulusReussRecord(TypedRecord):
     __httk_storage__: ClassVar[StorageInfo] = StorageInfo(
         storage_name="analyse_shear_modulus_reuss",
         identity_name="analyse_shear_modulus_reuss",
+        links=(WeakLink("references", ReferenceRecord, exposed_relationship=True),),
     )
     __httk_typed_record__: ClassVar[TypedRecordSpec] = TypedRecordSpec(
         "https://schemas.httk.org/defs/v0.1/properties/mechanics/shear_modulus_reuss",
@@ -1805,6 +1850,7 @@ class ShearModulusVoigtRecord(TypedRecord):
     __httk_storage__: ClassVar[StorageInfo] = StorageInfo(
         storage_name="analyse_shear_modulus_voigt",
         identity_name="analyse_shear_modulus_voigt",
+        links=(WeakLink("references", ReferenceRecord, exposed_relationship=True),),
     )
     __httk_typed_record__: ClassVar[TypedRecordSpec] = TypedRecordSpec(
         "https://schemas.httk.org/defs/v0.1/properties/mechanics/shear_modulus_voigt",
@@ -1837,6 +1883,7 @@ class UniversalAnisotropyIndexRecord(TypedRecord):
     __httk_storage__: ClassVar[StorageInfo] = StorageInfo(
         storage_name="analyse_universal_anisotropy_index",
         identity_name="analyse_universal_anisotropy_index",
+        links=(WeakLink("references", ReferenceRecord, exposed_relationship=True),),
     )
     __httk_typed_record__: ClassVar[TypedRecordSpec] = TypedRecordSpec(
         "https://schemas.httk.org/defs/v0.1/properties/mechanics/universal_anisotropy_index",
@@ -1879,6 +1926,7 @@ class RadialDistributionFunctionRecord(TypedRecord):
     __httk_storage__: ClassVar[StorageInfo] = StorageInfo(
         storage_name="analyse_radial_distribution_function",
         identity_name="analyse_radial_distribution_function",
+        links=(WeakLink("references", ReferenceRecord, exposed_relationship=True),),
     )
     __httk_typed_record__: ClassVar[TypedRecordSpec] = TypedRecordSpec(
         "https://schemas.httk.org/defs/v0.1/properties/structure/radial_distribution_function",
@@ -1927,6 +1975,7 @@ class SteinhardtBondOrderRecord(TypedRecord):
     __httk_storage__: ClassVar[StorageInfo] = StorageInfo(
         storage_name="analyse_steinhardt_bond_order",
         identity_name="analyse_steinhardt_bond_order",
+        links=(WeakLink("references", ReferenceRecord, exposed_relationship=True),),
     )
     __httk_typed_record__: ClassVar[TypedRecordSpec] = TypedRecordSpec(
         "https://schemas.httk.org/defs/v0.1/properties/structure/steinhardt_bond_order",
@@ -1964,6 +2013,7 @@ class HeatCapacityConstantPressureRecord(TypedRecord):
     __httk_storage__: ClassVar[StorageInfo] = StorageInfo(
         storage_name="analyse_heat_capacity_constant_pressure",
         identity_name="analyse_heat_capacity_constant_pressure",
+        links=(WeakLink("references", ReferenceRecord, exposed_relationship=True),),
     )
     __httk_typed_record__: ClassVar[TypedRecordSpec] = TypedRecordSpec(
         "https://schemas.httk.org/defs/v0.1/properties/thermodynamics/heat_capacity_constant_pressure",
@@ -1997,6 +2047,7 @@ class HeatCapacityConstantVolumeRecord(TypedRecord):
     __httk_storage__: ClassVar[StorageInfo] = StorageInfo(
         storage_name="analyse_heat_capacity_constant_volume",
         identity_name="analyse_heat_capacity_constant_volume",
+        links=(WeakLink("references", ReferenceRecord, exposed_relationship=True),),
     )
     __httk_typed_record__: ClassVar[TypedRecordSpec] = TypedRecordSpec(
         "https://schemas.httk.org/defs/v0.1/properties/thermodynamics/heat_capacity_constant_volume",
@@ -2031,6 +2082,7 @@ class HelmholtzFreeEnergyRecord(TypedRecord):
     __httk_storage__: ClassVar[StorageInfo] = StorageInfo(
         storage_name="analyse_helmholtz_free_energy",
         identity_name="analyse_helmholtz_free_energy",
+        links=(WeakLink("references", ReferenceRecord, exposed_relationship=True),),
     )
     __httk_typed_record__: ClassVar[TypedRecordSpec] = TypedRecordSpec(
         "https://schemas.httk.org/defs/v0.1/properties/thermodynamics/helmholtz_free_energy",
@@ -2064,6 +2116,7 @@ class IsothermalCompressibilityRecord(TypedRecord):
     __httk_storage__: ClassVar[StorageInfo] = StorageInfo(
         storage_name="analyse_isothermal_compressibility",
         identity_name="analyse_isothermal_compressibility",
+        links=(WeakLink("references", ReferenceRecord, exposed_relationship=True),),
     )
     __httk_typed_record__: ClassVar[TypedRecordSpec] = TypedRecordSpec(
         "https://schemas.httk.org/defs/v0.1/properties/thermodynamics/isothermal_compressibility",
@@ -2105,6 +2158,7 @@ class ModeGruneisenParametersRecord(TypedRecord):
     __httk_storage__: ClassVar[StorageInfo] = StorageInfo(
         storage_name="analyse_mode_gruneisen_parameters",
         identity_name="analyse_mode_gruneisen_parameters",
+        links=(WeakLink("references", ReferenceRecord, exposed_relationship=True),),
     )
     __httk_typed_record__: ClassVar[TypedRecordSpec] = TypedRecordSpec(
         "https://schemas.httk.org/defs/v0.1/properties/thermodynamics/mode_gruneisen_parameters",
@@ -2178,6 +2232,7 @@ class PhononBandStructureRecord(TypedRecord):
     __httk_storage__: ClassVar[StorageInfo] = StorageInfo(
         storage_name="analyse_phonon_band_structure",
         identity_name="analyse_phonon_band_structure",
+        links=(WeakLink("references", ReferenceRecord, exposed_relationship=True),),
     )
     __httk_typed_record__: ClassVar[TypedRecordSpec] = TypedRecordSpec(
         "https://schemas.httk.org/defs/v0.1/properties/thermodynamics/phonon_band_structure",
@@ -2229,6 +2284,7 @@ class PhononDensityOfStatesRecord(TypedRecord):
     __httk_storage__: ClassVar[StorageInfo] = StorageInfo(
         storage_name="analyse_phonon_density_of_states",
         identity_name="analyse_phonon_density_of_states",
+        links=(WeakLink("references", ReferenceRecord, exposed_relationship=True),),
     )
     __httk_typed_record__: ClassVar[TypedRecordSpec] = TypedRecordSpec(
         "https://schemas.httk.org/defs/v0.1/properties/thermodynamics/phonon_density_of_states",
@@ -2276,6 +2332,7 @@ class QuasiharmonicThermodynamicsRecord(TypedRecord):
     __httk_storage__: ClassVar[StorageInfo] = StorageInfo(
         storage_name="analyse_quasiharmonic_thermodynamics",
         identity_name="analyse_quasiharmonic_thermodynamics",
+        links=(WeakLink("references", ReferenceRecord, exposed_relationship=True),),
     )
     __httk_typed_record__: ClassVar[TypedRecordSpec] = TypedRecordSpec(
         "https://schemas.httk.org/defs/v0.1/properties/thermodynamics/quasiharmonic_thermodynamics",
@@ -2313,6 +2370,7 @@ class VibrationalEntropyRecord(TypedRecord):
     __httk_storage__: ClassVar[StorageInfo] = StorageInfo(
         storage_name="analyse_vibrational_entropy",
         identity_name="analyse_vibrational_entropy",
+        links=(WeakLink("references", ReferenceRecord, exposed_relationship=True),),
     )
     __httk_typed_record__: ClassVar[TypedRecordSpec] = TypedRecordSpec(
         "https://schemas.httk.org/defs/v0.1/properties/thermodynamics/vibrational_entropy",
@@ -2346,6 +2404,7 @@ class VibrationalHeatCapacityRecord(TypedRecord):
     __httk_storage__: ClassVar[StorageInfo] = StorageInfo(
         storage_name="analyse_vibrational_heat_capacity",
         identity_name="analyse_vibrational_heat_capacity",
+        links=(WeakLink("references", ReferenceRecord, exposed_relationship=True),),
     )
     __httk_typed_record__: ClassVar[TypedRecordSpec] = TypedRecordSpec(
         "https://schemas.httk.org/defs/v0.1/properties/thermodynamics/vibrational_heat_capacity",
@@ -2379,6 +2438,7 @@ class VibrationalInternalEnergyRecord(TypedRecord):
     __httk_storage__: ClassVar[StorageInfo] = StorageInfo(
         storage_name="analyse_vibrational_internal_energy",
         identity_name="analyse_vibrational_internal_energy",
+        links=(WeakLink("references", ReferenceRecord, exposed_relationship=True),),
     )
     __httk_typed_record__: ClassVar[TypedRecordSpec] = TypedRecordSpec(
         "https://schemas.httk.org/defs/v0.1/properties/thermodynamics/vibrational_internal_energy",
@@ -2424,6 +2484,7 @@ class VibrationalThermodynamicsRecord(TypedRecord):
     __httk_storage__: ClassVar[StorageInfo] = StorageInfo(
         storage_name="analyse_vibrational_thermodynamics",
         identity_name="analyse_vibrational_thermodynamics",
+        links=(WeakLink("references", ReferenceRecord, exposed_relationship=True),),
     )
     __httk_typed_record__: ClassVar[TypedRecordSpec] = TypedRecordSpec(
         "https://schemas.httk.org/defs/v0.1/properties/thermodynamics/vibrational_thermodynamics",
@@ -2461,6 +2522,7 @@ class VolumetricThermalExpansionRecord(TypedRecord):
     __httk_storage__: ClassVar[StorageInfo] = StorageInfo(
         storage_name="analyse_volumetric_thermal_expansion",
         identity_name="analyse_volumetric_thermal_expansion",
+        links=(WeakLink("references", ReferenceRecord, exposed_relationship=True),),
     )
     __httk_typed_record__: ClassVar[TypedRecordSpec] = TypedRecordSpec(
         "https://schemas.httk.org/defs/v0.1/properties/thermodynamics/volumetric_thermal_expansion",
@@ -2494,6 +2556,7 @@ class ZeroPointEnergyRecord(TypedRecord):
     __httk_storage__: ClassVar[StorageInfo] = StorageInfo(
         storage_name="analyse_zero_point_energy",
         identity_name="analyse_zero_point_energy",
+        links=(WeakLink("references", ReferenceRecord, exposed_relationship=True),),
     )
     __httk_typed_record__: ClassVar[TypedRecordSpec] = TypedRecordSpec(
         "https://schemas.httk.org/defs/v0.1/properties/thermodynamics/zero_point_energy",
@@ -2528,6 +2591,7 @@ class DiffusionCoefficientRecord(TypedRecord):
     __httk_storage__: ClassVar[StorageInfo] = StorageInfo(
         storage_name="analyse_diffusion_coefficient",
         identity_name="analyse_diffusion_coefficient",
+        links=(WeakLink("references", ReferenceRecord, exposed_relationship=True),),
     )
     __httk_typed_record__: ClassVar[TypedRecordSpec] = TypedRecordSpec(
         "https://schemas.httk.org/defs/v0.1/properties/transport/diffusion_coefficient",
@@ -2560,6 +2624,7 @@ class DiffusionPrefactorRecord(TypedRecord):
     __httk_storage__: ClassVar[StorageInfo] = StorageInfo(
         storage_name="analyse_diffusion_prefactor",
         identity_name="analyse_diffusion_prefactor",
+        links=(WeakLink("references", ReferenceRecord, exposed_relationship=True),),
     )
     __httk_typed_record__: ClassVar[TypedRecordSpec] = TypedRecordSpec(
         "https://schemas.httk.org/defs/v0.1/properties/transport/diffusion_prefactor",
@@ -2601,6 +2666,7 @@ class DiffusionRunningIntegralRecord(TypedRecord):
     __httk_storage__: ClassVar[StorageInfo] = StorageInfo(
         storage_name="analyse_diffusion_running_integral",
         identity_name="analyse_diffusion_running_integral",
+        links=(WeakLink("references", ReferenceRecord, exposed_relationship=True),),
     )
     __httk_typed_record__: ClassVar[TypedRecordSpec] = TypedRecordSpec(
         "https://schemas.httk.org/defs/v0.1/properties/transport/diffusion_running_integral",
@@ -2635,6 +2701,7 @@ class DiffusionTensorRecord(TypedRecord):
     __httk_storage__: ClassVar[StorageInfo] = StorageInfo(
         storage_name="analyse_diffusion_tensor",
         identity_name="analyse_diffusion_tensor",
+        links=(WeakLink("references", ReferenceRecord, exposed_relationship=True),),
     )
     __httk_typed_record__: ClassVar[TypedRecordSpec] = TypedRecordSpec(
         "https://schemas.httk.org/defs/v0.1/properties/transport/diffusion_tensor",
@@ -2678,6 +2745,7 @@ class MeanSquaredDisplacementRecord(TypedRecord):
     __httk_storage__: ClassVar[StorageInfo] = StorageInfo(
         storage_name="analyse_mean_squared_displacement",
         identity_name="analyse_mean_squared_displacement",
+        links=(WeakLink("references", ReferenceRecord, exposed_relationship=True),),
     )
     __httk_typed_record__: ClassVar[TypedRecordSpec] = TypedRecordSpec(
         "https://schemas.httk.org/defs/v0.1/properties/transport/mean_squared_displacement",
@@ -2713,6 +2781,7 @@ class ShearViscosityRecord(TypedRecord):
     __httk_storage__: ClassVar[StorageInfo] = StorageInfo(
         storage_name="analyse_shear_viscosity",
         identity_name="analyse_shear_viscosity",
+        links=(WeakLink("references", ReferenceRecord, exposed_relationship=True),),
     )
     __httk_typed_record__: ClassVar[TypedRecordSpec] = TypedRecordSpec(
         "https://schemas.httk.org/defs/v0.1/properties/transport/shear_viscosity",
@@ -2754,6 +2823,7 @@ class ShearViscosityRunningIntegralRecord(TypedRecord):
     __httk_storage__: ClassVar[StorageInfo] = StorageInfo(
         storage_name="analyse_shear_viscosity_running_integral",
         identity_name="analyse_shear_viscosity_running_integral",
+        links=(WeakLink("references", ReferenceRecord, exposed_relationship=True),),
     )
     __httk_typed_record__: ClassVar[TypedRecordSpec] = TypedRecordSpec(
         "https://schemas.httk.org/defs/v0.1/properties/transport/shear_viscosity_running_integral",
@@ -2788,6 +2858,7 @@ class ThermalConductivityRecord(TypedRecord):
     __httk_storage__: ClassVar[StorageInfo] = StorageInfo(
         storage_name="analyse_thermal_conductivity",
         identity_name="analyse_thermal_conductivity",
+        links=(WeakLink("references", ReferenceRecord, exposed_relationship=True),),
     )
     __httk_typed_record__: ClassVar[TypedRecordSpec] = TypedRecordSpec(
         "https://schemas.httk.org/defs/v0.1/properties/transport/thermal_conductivity",
@@ -2828,6 +2899,7 @@ class ThermalConductivityRunningIntegralRecord(TypedRecord):
     __httk_storage__: ClassVar[StorageInfo] = StorageInfo(
         storage_name="analyse_thermal_conductivity_running_integral",
         identity_name="analyse_thermal_conductivity_running_integral",
+        links=(WeakLink("references", ReferenceRecord, exposed_relationship=True),),
     )
     __httk_typed_record__: ClassVar[TypedRecordSpec] = TypedRecordSpec(
         "https://schemas.httk.org/defs/v0.1/properties/transport/thermal_conductivity_running_integral",
@@ -2862,6 +2934,7 @@ class ThermalConductivityTensorRecord(TypedRecord):
     __httk_storage__: ClassVar[StorageInfo] = StorageInfo(
         storage_name="analyse_thermal_conductivity_tensor",
         identity_name="analyse_thermal_conductivity_tensor",
+        links=(WeakLink("references", ReferenceRecord, exposed_relationship=True),),
     )
     __httk_typed_record__: ClassVar[TypedRecordSpec] = TypedRecordSpec(
         "https://schemas.httk.org/defs/v0.1/properties/transport/thermal_conductivity_tensor",
@@ -2905,6 +2978,7 @@ class VelocityAutocorrelationRecord(TypedRecord):
     __httk_storage__: ClassVar[StorageInfo] = StorageInfo(
         storage_name="analyse_velocity_autocorrelation",
         identity_name="analyse_velocity_autocorrelation",
+        links=(WeakLink("references", ReferenceRecord, exposed_relationship=True),),
     )
     __httk_typed_record__: ClassVar[TypedRecordSpec] = TypedRecordSpec(
         "https://schemas.httk.org/defs/v0.1/properties/transport/velocity_autocorrelation",
@@ -2959,6 +3033,7 @@ class EnergyPredictionErrorsRecord(TypedRecord):
     __httk_storage__: ClassVar[StorageInfo] = StorageInfo(
         storage_name="analyse_energy_prediction_errors",
         identity_name="analyse_energy_prediction_errors",
+        links=(WeakLink("references", ReferenceRecord, exposed_relationship=True),),
     )
     __httk_typed_record__: ClassVar[TypedRecordSpec] = TypedRecordSpec(
         "https://schemas.httk.org/defs/v0.1/properties/validation/energy_prediction_errors",
@@ -3030,6 +3105,7 @@ class ForcePredictionErrorsRecord(TypedRecord):
     __httk_storage__: ClassVar[StorageInfo] = StorageInfo(
         storage_name="analyse_force_prediction_errors",
         identity_name="analyse_force_prediction_errors",
+        links=(WeakLink("references", ReferenceRecord, exposed_relationship=True),),
     )
     __httk_typed_record__: ClassVar[TypedRecordSpec] = TypedRecordSpec(
         "https://schemas.httk.org/defs/v0.1/properties/validation/force_prediction_errors",
@@ -3098,6 +3174,7 @@ class NveEnergyDriftRecord(TypedRecord):
     __httk_storage__: ClassVar[StorageInfo] = StorageInfo(
         storage_name="analyse_nve_energy_drift",
         identity_name="analyse_nve_energy_drift",
+        links=(WeakLink("references", ReferenceRecord, exposed_relationship=True),),
     )
     __httk_typed_record__: ClassVar[TypedRecordSpec] = TypedRecordSpec(
         "https://schemas.httk.org/defs/v0.1/properties/validation/nve_energy_drift",
@@ -3151,6 +3228,7 @@ class StressPredictionErrorsRecord(TypedRecord):
     __httk_storage__: ClassVar[StorageInfo] = StorageInfo(
         storage_name="analyse_stress_prediction_errors",
         identity_name="analyse_stress_prediction_errors",
+        links=(WeakLink("references", ReferenceRecord, exposed_relationship=True),),
     )
     __httk_typed_record__: ClassVar[TypedRecordSpec] = TypedRecordSpec(
         "https://schemas.httk.org/defs/v0.1/properties/validation/stress_prediction_errors",
@@ -3192,6 +3270,7 @@ class AtomicForceBiasRecord(TypedRecord):
     __httk_storage__: ClassVar[StorageInfo] = StorageInfo(
         storage_name="analyse_atomic_force_bias",
         identity_name="analyse_atomic_force_bias",
+        links=(WeakLink("references", ReferenceRecord, exposed_relationship=True),),
     )
     __httk_typed_record__: ClassVar[TypedRecordSpec] = TypedRecordSpec(
         "https://schemas.httk.org/defs/v0.1/properties/core/atomic_force",
@@ -3229,6 +3308,7 @@ class AtomicForceMaeRecord(TypedRecord):
     __httk_storage__: ClassVar[StorageInfo] = StorageInfo(
         storage_name="analyse_atomic_force_mae",
         identity_name="analyse_atomic_force_mae",
+        links=(WeakLink("references", ReferenceRecord, exposed_relationship=True),),
     )
     __httk_typed_record__: ClassVar[TypedRecordSpec] = TypedRecordSpec(
         "https://schemas.httk.org/defs/v0.1/properties/core/atomic_force",
@@ -3266,6 +3346,7 @@ class AtomicForceMaximumAbsoluteErrorRecord(TypedRecord):
     __httk_storage__: ClassVar[StorageInfo] = StorageInfo(
         storage_name="analyse_atomic_force_maximum_absolute_error",
         identity_name="analyse_atomic_force_maximum_absolute_error",
+        links=(WeakLink("references", ReferenceRecord, exposed_relationship=True),),
     )
     __httk_typed_record__: ClassVar[TypedRecordSpec] = TypedRecordSpec(
         "https://schemas.httk.org/defs/v0.1/properties/core/atomic_force",
@@ -3303,6 +3384,7 @@ class AtomicForceRmseRecord(TypedRecord):
     __httk_storage__: ClassVar[StorageInfo] = StorageInfo(
         storage_name="analyse_atomic_force_rmse",
         identity_name="analyse_atomic_force_rmse",
+        links=(WeakLink("references", ReferenceRecord, exposed_relationship=True),),
     )
     __httk_typed_record__: ClassVar[TypedRecordSpec] = TypedRecordSpec(
         "https://schemas.httk.org/defs/v0.1/properties/core/atomic_force",
@@ -3339,6 +3421,7 @@ class StressTensorBiasRecord(TypedRecord):
     __httk_storage__: ClassVar[StorageInfo] = StorageInfo(
         storage_name="analyse_stress_tensor_bias",
         identity_name="analyse_stress_tensor_bias",
+        links=(WeakLink("references", ReferenceRecord, exposed_relationship=True),),
     )
     __httk_typed_record__: ClassVar[TypedRecordSpec] = TypedRecordSpec(
         "https://schemas.httk.org/defs/v0.1/properties/core/stress_tensor",
@@ -3375,6 +3458,7 @@ class StressTensorMaeRecord(TypedRecord):
     __httk_storage__: ClassVar[StorageInfo] = StorageInfo(
         storage_name="analyse_stress_tensor_mae",
         identity_name="analyse_stress_tensor_mae",
+        links=(WeakLink("references", ReferenceRecord, exposed_relationship=True),),
     )
     __httk_typed_record__: ClassVar[TypedRecordSpec] = TypedRecordSpec(
         "https://schemas.httk.org/defs/v0.1/properties/core/stress_tensor",
@@ -3411,6 +3495,7 @@ class StressTensorMaximumAbsoluteErrorRecord(TypedRecord):
     __httk_storage__: ClassVar[StorageInfo] = StorageInfo(
         storage_name="analyse_stress_tensor_maximum_absolute_error",
         identity_name="analyse_stress_tensor_maximum_absolute_error",
+        links=(WeakLink("references", ReferenceRecord, exposed_relationship=True),),
     )
     __httk_typed_record__: ClassVar[TypedRecordSpec] = TypedRecordSpec(
         "https://schemas.httk.org/defs/v0.1/properties/core/stress_tensor",
@@ -3447,6 +3532,7 @@ class StressTensorRmseRecord(TypedRecord):
     __httk_storage__: ClassVar[StorageInfo] = StorageInfo(
         storage_name="analyse_stress_tensor_rmse",
         identity_name="analyse_stress_tensor_rmse",
+        links=(WeakLink("references", ReferenceRecord, exposed_relationship=True),),
     )
     __httk_typed_record__: ClassVar[TypedRecordSpec] = TypedRecordSpec(
         "https://schemas.httk.org/defs/v0.1/properties/core/stress_tensor",
@@ -3483,6 +3569,7 @@ class TotalEnergyRmseRecord(TypedRecord):
     __httk_storage__: ClassVar[StorageInfo] = StorageInfo(
         storage_name="analyse_total_energy_rmse",
         identity_name="analyse_total_energy_rmse",
+        links=(WeakLink("references", ReferenceRecord, exposed_relationship=True),),
     )
     __httk_typed_record__: ClassVar[TypedRecordSpec] = TypedRecordSpec(
         "https://schemas.httk.org/defs/v0.1/properties/core/total_energy",
@@ -3520,6 +3607,7 @@ class TotalEnergyPerAtomBiasRecord(TypedRecord):
     __httk_storage__: ClassVar[StorageInfo] = StorageInfo(
         storage_name="analyse_total_energy_per_atom_bias",
         identity_name="analyse_total_energy_per_atom_bias",
+        links=(WeakLink("references", ReferenceRecord, exposed_relationship=True),),
     )
     __httk_typed_record__: ClassVar[TypedRecordSpec] = TypedRecordSpec(
         "https://schemas.httk.org/defs/v0.1/properties/energetics/total_energy_per_atom",
@@ -3557,6 +3645,7 @@ class TotalEnergyPerAtomMaeRecord(TypedRecord):
     __httk_storage__: ClassVar[StorageInfo] = StorageInfo(
         storage_name="analyse_total_energy_per_atom_mae",
         identity_name="analyse_total_energy_per_atom_mae",
+        links=(WeakLink("references", ReferenceRecord, exposed_relationship=True),),
     )
     __httk_typed_record__: ClassVar[TypedRecordSpec] = TypedRecordSpec(
         "https://schemas.httk.org/defs/v0.1/properties/energetics/total_energy_per_atom",
@@ -3594,6 +3683,7 @@ class TotalEnergyPerAtomMaximumAbsoluteErrorRecord(TypedRecord):
     __httk_storage__: ClassVar[StorageInfo] = StorageInfo(
         storage_name="analyse_total_energy_per_atom_maximum_absolute_error",
         identity_name="analyse_total_energy_per_atom_maximum_absolute_error",
+        links=(WeakLink("references", ReferenceRecord, exposed_relationship=True),),
     )
     __httk_typed_record__: ClassVar[TypedRecordSpec] = TypedRecordSpec(
         "https://schemas.httk.org/defs/v0.1/properties/energetics/total_energy_per_atom",
@@ -3631,6 +3721,7 @@ class TotalEnergyPerAtomRmseRecord(TypedRecord):
     __httk_storage__: ClassVar[StorageInfo] = StorageInfo(
         storage_name="analyse_total_energy_per_atom_rmse",
         identity_name="analyse_total_energy_per_atom_rmse",
+        links=(WeakLink("references", ReferenceRecord, exposed_relationship=True),),
     )
     __httk_typed_record__: ClassVar[TypedRecordSpec] = TypedRecordSpec(
         "https://schemas.httk.org/defs/v0.1/properties/energetics/total_energy_per_atom",
@@ -3668,6 +3759,7 @@ class HeatCapacityConstantPressureStandardErrorRecord(TypedRecord):
     __httk_storage__: ClassVar[StorageInfo] = StorageInfo(
         storage_name="analyse_heat_capacity_constant_pressure_standard_error",
         identity_name="analyse_heat_capacity_constant_pressure_standard_error",
+        links=(WeakLink("references", ReferenceRecord, exposed_relationship=True),),
     )
     __httk_typed_record__: ClassVar[TypedRecordSpec] = TypedRecordSpec(
         "https://schemas.httk.org/defs/v0.1/properties/thermodynamics/heat_capacity_constant_pressure",
@@ -3705,6 +3797,7 @@ class HeatCapacityConstantVolumeStandardErrorRecord(TypedRecord):
     __httk_storage__: ClassVar[StorageInfo] = StorageInfo(
         storage_name="analyse_heat_capacity_constant_volume_standard_error",
         identity_name="analyse_heat_capacity_constant_volume_standard_error",
+        links=(WeakLink("references", ReferenceRecord, exposed_relationship=True),),
     )
     __httk_typed_record__: ClassVar[TypedRecordSpec] = TypedRecordSpec(
         "https://schemas.httk.org/defs/v0.1/properties/thermodynamics/heat_capacity_constant_volume",
@@ -3742,6 +3835,7 @@ class IsothermalCompressibilityStandardErrorRecord(TypedRecord):
     __httk_storage__: ClassVar[StorageInfo] = StorageInfo(
         storage_name="analyse_isothermal_compressibility_standard_error",
         identity_name="analyse_isothermal_compressibility_standard_error",
+        links=(WeakLink("references", ReferenceRecord, exposed_relationship=True),),
     )
     __httk_typed_record__: ClassVar[TypedRecordSpec] = TypedRecordSpec(
         "https://schemas.httk.org/defs/v0.1/properties/thermodynamics/isothermal_compressibility",
@@ -3779,6 +3873,7 @@ class VolumetricThermalExpansionStandardErrorRecord(TypedRecord):
     __httk_storage__: ClassVar[StorageInfo] = StorageInfo(
         storage_name="analyse_volumetric_thermal_expansion_standard_error",
         identity_name="analyse_volumetric_thermal_expansion_standard_error",
+        links=(WeakLink("references", ReferenceRecord, exposed_relationship=True),),
     )
     __httk_typed_record__: ClassVar[TypedRecordSpec] = TypedRecordSpec(
         "https://schemas.httk.org/defs/v0.1/properties/thermodynamics/volumetric_thermal_expansion",
@@ -3816,6 +3911,7 @@ class ShearViscosityMeanRecord(TypedRecord):
     __httk_storage__: ClassVar[StorageInfo] = StorageInfo(
         storage_name="analyse_shear_viscosity_mean",
         identity_name="analyse_shear_viscosity_mean",
+        links=(WeakLink("references", ReferenceRecord, exposed_relationship=True),),
     )
     __httk_typed_record__: ClassVar[TypedRecordSpec] = TypedRecordSpec(
         "https://schemas.httk.org/defs/v0.1/properties/transport/shear_viscosity",
@@ -3853,6 +3949,7 @@ class ThermalConductivityMeanRecord(TypedRecord):
     __httk_storage__: ClassVar[StorageInfo] = StorageInfo(
         storage_name="analyse_thermal_conductivity_mean",
         identity_name="analyse_thermal_conductivity_mean",
+        links=(WeakLink("references", ReferenceRecord, exposed_relationship=True),),
     )
     __httk_typed_record__: ClassVar[TypedRecordSpec] = TypedRecordSpec(
         "https://schemas.httk.org/defs/v0.1/properties/transport/thermal_conductivity",
@@ -3890,6 +3987,7 @@ class ThermalConductivityTensorMeanRecord(TypedRecord):
     __httk_storage__: ClassVar[StorageInfo] = StorageInfo(
         storage_name="analyse_thermal_conductivity_tensor_mean",
         identity_name="analyse_thermal_conductivity_tensor_mean",
+        links=(WeakLink("references", ReferenceRecord, exposed_relationship=True),),
     )
     __httk_typed_record__: ClassVar[TypedRecordSpec] = TypedRecordSpec(
         "https://schemas.httk.org/defs/v0.1/properties/transport/thermal_conductivity_tensor",
@@ -3927,6 +4025,7 @@ class ThermalConductivityTensorStandardErrorRecord(TypedRecord):
     __httk_storage__: ClassVar[StorageInfo] = StorageInfo(
         storage_name="analyse_thermal_conductivity_tensor_standard_error",
         identity_name="analyse_thermal_conductivity_tensor_standard_error",
+        links=(WeakLink("references", ReferenceRecord, exposed_relationship=True),),
     )
     __httk_typed_record__: ClassVar[TypedRecordSpec] = TypedRecordSpec(
         "https://schemas.httk.org/defs/v0.1/properties/transport/thermal_conductivity_tensor",

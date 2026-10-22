@@ -9,7 +9,7 @@ from pathlib import Path
 from typing import Any
 
 import pytest
-from httk.core import load_property_definition
+from httk.core import ReferenceRecord, WeakLink, load_property_definition
 from httk.core._typed_record_tool import check_typed_records, generate_typed_records
 from httk.core.register.entries import known_entry_records, resolve_entry_record
 
@@ -38,6 +38,12 @@ def test_generated_module_is_current():
 def test_tool_check_passes():
     tool = Path(TOOL["__file__"])
     subprocess.run([sys.executable, str(tool), "--check"], cwd=tool.parents[1], check=True)
+
+
+def test_every_kind_declares_the_exposed_references_link():
+    link = WeakLink("references", ReferenceRecord, exposed_relationship=True)
+    for cls in KINDS:
+        assert vars(cls)["__httk_storage__"].links == (link,), cls.__name__
 
 
 def test_every_definition_has_one_registered_kind():
