@@ -1,0 +1,181 @@
+httk.analyse.matsci.transport
+=============================
+
+.. py:module:: httk.analyse.matsci.transport
+
+.. autoapi-nested-parse::
+
+   Dimensionful Green–Kubo running integrals with explicit flux conventions.
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   httk.analyse.matsci.transport.TransportResult
+   httk.analyse.matsci.transport.ReplicaTransport
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   httk.analyse.matsci.transport.thermal_conductivity
+   httk.analyse.matsci.transport.viscosity
+   httk.analyse.matsci.transport.replica_transport
+
+
+Module Contents
+---------------
+
+.. py:class:: TransportResult
+
+   Running transport coefficients, without inferred plateau selection.
+
+   :param times: Lag times in ps.
+   :param components: Tensor/component names in row order.
+   :param correlations: Dimensionful correlations before physical prefactors.
+   :param integrals: Running transport coefficients in the unit of the ``quantity`` definition.
+   :param counts: Number of time origins at each lag.
+   :param quantity: ``thermal_conductivity`` (integrals in W/(m K)) or ``viscosity`` (shear viscosity, integrals in Pa s).
+   :param temperature: Equilibrium temperature in K.
+   :param volume: Fixed cell volume in angstrom³.
+   :param remove_mean: Whether the time mean of each input component was removed.
+
+
+   .. py:attribute:: times
+      :type:  tuple[float, ...]
+
+
+   .. py:attribute:: components
+      :type:  tuple[str, ...]
+
+
+   .. py:attribute:: correlations
+      :type:  tuple[tuple[float, ...], ...]
+
+
+   .. py:attribute:: integrals
+      :type:  tuple[tuple[float, ...], ...]
+
+
+   .. py:attribute:: counts
+      :type:  tuple[int, ...]
+
+
+   .. py:attribute:: quantity
+      :type:  Literal['thermal_conductivity', 'viscosity']
+
+
+   .. py:attribute:: temperature
+      :type:  float
+
+
+   .. py:attribute:: volume
+      :type:  float
+
+
+   .. py:attribute:: remove_mean
+      :type:  bool
+
+
+   .. py:property:: isotropic
+      :type: tuple[float, ...]
+
+
+      Return the mean diagonal conductivity or mean three shear viscosities.
+
+
+.. py:class:: ReplicaTransport
+
+   Mean and standard error across independent equal-protocol replicas.
+
+   :param times: Common lag times in ps.
+   :param components: Common component names.
+   :param mean: Replica-mean running coefficients.
+   :param standard_error: Sample standard deviation divided by sqrt(replica count).
+   :param replicas: Number of independent replicas.
+
+
+   .. py:attribute:: times
+      :type:  tuple[float, ...]
+
+
+   .. py:attribute:: components
+      :type:  tuple[str, ...]
+
+
+   .. py:attribute:: mean
+      :type:  tuple[tuple[float, ...], ...]
+
+
+   .. py:attribute:: standard_error
+      :type:  tuple[tuple[float, ...], ...]
+
+
+   .. py:attribute:: replicas
+      :type:  int
+
+
+.. py:function:: thermal_conductivity(heat_current, timestep, *, temperature, volume, max_lag, remove_mean = True)
+
+   Integrate total heat-current correlations into a conductivity tensor.
+
+   Supply the EXTENSIVE total heat current J of the whole cell in eV*angstrom/ps,
+   not flux density J/V. LAMMPS ``compute heat/flux`` in ``metal`` units is
+   directly usable; in ``real`` units (kcal/mol*angstrom/fs) multiply by
+   43.3641 (0.0433641 eV per kcal/mol times 1000 fs/ps). The tensor is integral <J_i(0)J_j(t)>/(kB*T²*V). Results retain
+   off-diagonal asymmetry of finite sampling. Equilibrium stationarity and the
+   physical current definition must be established upstream, especially for
+   many-body MLIPs; energies and velocities alone do not define that current.
+
+   :param heat_current: Finite (samples,3) extensive heat-current vectors.
+   :param timestep: Uniform sample spacing in ps.
+   :param temperature: Positive equilibrium temperature in K.
+   :param volume: Positive fixed cell volume in angstrom³.
+   :param max_lag: Largest inclusive lag, smaller than the sample count.
+   :param remove_mean: Subtract each current component's temporal mean.
+   :return: Running conductivity tensor in W/(m*K), starting at zero.
+   :raises ValueError: If input shapes, units metadata, lags or derived values are invalid.
+
+
+.. py:function:: viscosity(stresses, timestep, *, temperature, volume, max_lag, remove_mean = True)
+
+   Integrate off-diagonal stress fluctuations into three shear viscosities.
+
+   Uses xy, xz and yz auto-correlations times V/(kB*T), with a fixed volume and
+   equilibrium temperature. The isotropic result averages only these three
+   shear components; the five-component traceless (Daivis-Evans) estimator is
+   not implemented, and the result is not a complete anisotropic fourth-rank
+   viscosity tensor. Stress must be tensile-positive in GPa. The LAMMPS
+   pressure tensor is compressive-positive and in bar: negate it and multiply by
+   1e-4 to get GPa.
+
+   :param stresses: Symmetric tensile-positive (samples,3,3) stress in GPa.
+   :param timestep: Uniform sample spacing in ps.
+   :param temperature: Positive equilibrium temperature in K.
+   :param volume: Positive fixed cell volume in angstrom³.
+   :param max_lag: Largest inclusive lag.
+   :param remove_mean: Subtract each shear component's temporal mean.
+   :return: Running xy, xz, yz shear viscosities in Pa*s.
+   :raises ValueError: If shapes, symmetry, metadata, lags or results are invalid.
+
+
+.. py:function:: replica_transport(results)
+
+   Aggregate independent runs or caller-selected decorrelated blocks.
+
+   Equal protocol means the same quantity, T, V, lag grid, components and
+   centering. Counts may differ. This estimates between-replica standard error;
+   it does not prove replica independence or remove truncation/finite-size bias.
+   To use blocks, run the estimator separately on each equal-length block with
+   a lag smaller than the block and compare results across block lengths.
+
+   :param results: At least two independent equal-protocol transport results.
+   :return: Per-component means and standard errors at every lag.
+   :raises ValueError: If fewer than two results or mismatched protocols are supplied.
+
+

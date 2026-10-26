@@ -1,0 +1,369 @@
+httk.analyse.matsci.dynamics
+============================
+
+.. py:module:: httk.analyse.matsci.dynamics
+
+.. autoapi-nested-parse::
+
+   Multiple-origin fixed-frame dynamics with explicit sampling conventions.
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   httk.analyse.matsci.dynamics.TensorSeries
+   httk.analyse.matsci.dynamics.DiffusionFit
+   httk.analyse.matsci.dynamics.RadialDynamics
+   httk.analyse.matsci.dynamics.ScatteringSeries
+   httk.analyse.matsci.dynamics.VelocitySpectrum
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   httk.analyse.matsci.dynamics.mean_squared_displacement
+   httk.analyse.matsci.dynamics.velocity_autocorrelation
+   httk.analyse.matsci.dynamics.diffusion_from_msd
+   httk.analyse.matsci.dynamics.integrate_vacf
+   httk.analyse.matsci.dynamics.van_hove_self
+   httk.analyse.matsci.dynamics.van_hove_distinct
+   httk.analyse.matsci.dynamics.intermediate_scattering
+   httk.analyse.matsci.dynamics.velocity_spectrum
+
+
+Module Contents
+---------------
+
+.. py:class:: TensorSeries
+
+   Immutable lag times, tensor values and time-origin counts.
+
+   Tensor units follow ``kind``: angstrom² for ``msd``, (angstrom/ps)² for
+   ``vacf`` and angstrom²/ps for ``vacf_integral``.
+
+   :param times: Lag times in ps.
+   :param tensors: One 3x3 Cartesian tensor per lag.
+   :param counts: Number of time origins contributing at each lag.
+   :param kind: Estimator: ``msd``, ``vacf`` or ``vacf_integral``.
+   :param remove_com: Whether center-of-mass motion was removed (MSD), else ``None``.
+   :param remove_mean: Whether per-atom temporal means were removed (VACF and its integral), else ``None``.
+   :raises ValueError: If ``kind`` is unknown.
+
+
+   .. py:attribute:: times
+      :type:  tuple[float, ...]
+
+
+   .. py:attribute:: tensors
+      :type:  tuple[tuple[tuple[float, ...], ...], ...]
+
+
+   .. py:attribute:: counts
+      :type:  tuple[int, ...]
+
+
+   .. py:attribute:: kind
+      :type:  Literal['msd', 'vacf', 'vacf_integral']
+
+
+   .. py:attribute:: remove_com
+      :type:  bool | None
+      :value: None
+
+
+
+   .. py:attribute:: remove_mean
+      :type:  bool | None
+      :value: None
+
+
+
+   .. py:property:: trace
+      :type: tuple[float, ...]
+
+
+      Return tensor traces in lag order.
+
+
+.. py:class:: DiffusionFit
+
+   A user-window linear MSD fit, without an inferred diffusive regime.
+
+   :param tensor: Diffusion tensor in m²/s (the unit of the ``diffusion_tensor`` definition).
+   :param intercept: MSD intercept tensor in angstrom² (a fit diagnostic of the MSD series).
+   :param rmse: RMS residual per tensor component in angstrom² (MSD units).
+   :param window: Inclusive start/stop lag indices.
+   :param condition_number: Condition of the centered/scaled time design.
+
+
+   .. py:attribute:: tensor
+      :type:  tuple[tuple[float, ...], ...]
+
+
+   .. py:attribute:: intercept
+      :type:  tuple[tuple[float, ...], ...]
+
+
+   .. py:attribute:: rmse
+      :type:  tuple[tuple[float, ...], ...]
+
+
+   .. py:attribute:: window
+      :type:  tuple[int, int]
+
+
+   .. py:attribute:: condition_number
+      :type:  float
+
+
+   .. py:property:: isotropic
+      :type: float
+
+
+      Return one third of the diffusion tensor trace in m²/s.
+
+
+.. py:class:: RadialDynamics
+
+   Self probability or distinct number density in spherical shells.
+
+   :param lag: Selected integer lag.
+   :param time: Lag time in ps.
+   :param edges: Radial shell edges in angstrom.
+   :param density: Self probability or distinct neighbor density per angstrom³, without range renormalization.
+   :param counts: Number of displacement samples in each shell.
+   :param samples: Number of central-atom/time-origin samples, including those outside the bins.
+   :param kind: Self or distinct radial correlation.
+
+
+   .. py:attribute:: lag
+      :type:  int
+
+
+   .. py:attribute:: time
+      :type:  float
+
+
+   .. py:attribute:: edges
+      :type:  tuple[float, ...]
+
+
+   .. py:attribute:: density
+      :type:  tuple[float, ...]
+
+
+   .. py:attribute:: counts
+      :type:  tuple[int, ...]
+
+
+   .. py:attribute:: samples
+      :type:  int
+
+
+   .. py:attribute:: kind
+      :type:  Literal['self', 'distinct']
+      :value: 'self'
+
+
+
+.. py:class:: ScatteringSeries
+
+   Complex intermediate scattering on explicitly supplied wavevectors.
+
+   :param times: Lag times in ps.
+   :param wavevectors: Cartesian wavevectors in inverse angstrom.
+   :param values: Complex correlations indexed by lag then wavevector.
+   :param counts: Time-origin counts per lag.
+   :param kind: Self or coherent density correlation.
+
+
+   .. py:attribute:: times
+      :type:  tuple[float, ...]
+
+
+   .. py:attribute:: wavevectors
+      :type:  tuple[tuple[float, ...], ...]
+
+
+   .. py:attribute:: values
+      :type:  tuple[tuple[complex, ...], ...]
+
+
+   .. py:attribute:: counts
+      :type:  tuple[int, ...]
+
+
+   .. py:attribute:: kind
+      :type:  Literal['self', 'coherent']
+
+
+.. py:class:: VelocitySpectrum
+
+   One-sided velocity power spectral density averaged over atoms and axes.
+
+   :param frequencies: Frequencies in THz (inverse ps).
+   :param power: Power per THz, in (angstrom/ps)²/THz.
+   :param window: Applied window.
+   :param remove_mean: Whether each atom/component time mean was removed.
+   :param frequency_spacing: Uniform frequency increment in THz.
+   :param mean_square: Window-weighted mean-square velocity matching the discrete spectral integral.
+
+
+   .. py:attribute:: frequencies
+      :type:  tuple[float, ...]
+
+
+   .. py:attribute:: power
+      :type:  tuple[float, ...]
+
+
+   .. py:attribute:: window
+      :type:  Literal['none', 'hann']
+
+
+   .. py:attribute:: remove_mean
+      :type:  bool
+
+
+   .. py:attribute:: frequency_spacing
+      :type:  float
+
+
+   .. py:attribute:: mean_square
+      :type:  float
+
+
+.. py:function:: mean_squared_displacement(unwrapped_positions, timestep, *, max_lag = None, remove_com = False, masses = None)
+
+   Average displacement outer products over every time origin and atom.
+
+   Positions must use persistent atom order and one fixed laboratory/material
+   frame. Wrapped coordinates and changing-cell frame transformations must be
+   resolved upstream. Masses are required for optional center-of-mass removal.
+
+   :param unwrapped_positions: Finite Cartesian array (frames, atoms, 3), in angstrom.
+   :param timestep: Uniform positive time between frames in ps.
+   :param max_lag: Largest lag, inclusive; default frames minus one.
+   :param remove_com: Subtract each frame's mass-weighted center before displacements.
+   :param masses: Positive atom masses, required only when removing COM motion.
+   :return: Symmetric MSD tensors in angstrom² on lag times in ps, with time-origin counts.
+   :raises ValueError: If data, lag, masses or derived quantities are invalid.
+
+
+.. py:function:: velocity_autocorrelation(velocities, timestep, *, max_lag = None, remove_mean = False)
+
+   Compute dimensionful velocity correlation tensors over all origins.
+
+   C_ij(k)=mean[v_i(t)*v_j(t+k)] over origins and atoms. The lagged tensor need
+   not be symmetric. This pair-count estimator is not a power spectral density.
+
+   Removing each atom's own time mean also removes Δr/T, the diffusive signal. It biases the
+   integral estimate of D low by about t_plateau/T and drives the full-length integral to zero,
+   so use ``remove_mean=True`` only for non-diffusive (solid) systems.
+
+   :param velocities: Array (frames, atoms, 3) in angstrom/ps.
+   :param timestep: Uniform frame spacing in ps.
+   :param max_lag: Largest inclusive lag.
+   :param remove_mean: Subtract each atom/component time mean before correlation; only for non-diffusive systems.
+   :return: Correlation tensors in (angstrom/ps)² on lag times in ps.
+   :raises ValueError: If data, lag or results are invalid.
+
+
+.. py:function:: diffusion_from_msd(msd, *, window)
+
+   Fit MSD_ij=2*D_ij*t+intercept on an explicit inclusive lag window.
+
+   A linear fit alone cannot establish diffusive behavior. Inspect window
+   sensitivity and residuals; negative noisy fitted eigenvalues are retained.
+
+   :param msd: MSD tensor series in angstrom² and ps.
+   :param window: Inclusive (start, stop) lag indices with at least three points.
+   :return: Diffusion tensor, intercepts and component residual RMS.
+   :raises ValueError: If the window, times or tensor data are invalid.
+
+
+.. py:function:: integrate_vacf(vacf)
+
+   Trapezoid-integrate a velocity correlation into a running diffusion tensor.
+
+   The result is a running series kept in angstrom²/ps; the diffusion coefficient
+   as a property (m²/s) is reported by :func:`diffusion_from_msd`.
+
+   :param vacf: Dimensionful VACF in (angstrom/ps)² on increasing ps lags.
+   :return: Running integral in angstrom²/ps, starting at zero.
+   :raises ValueError: If lag times or tensor values are invalid.
+
+
+.. py:function:: van_hove_self(unwrapped_positions, timestep, *, lag, bins)
+
+   Histogram self displacements without renormalizing a truncated radial range.
+
+   :param unwrapped_positions: Persistent-atom Cartesian positions (frames, atoms, 3) in angstrom.
+   :param timestep: Uniform frame spacing in ps.
+   :param lag: Nonnegative integer lag.
+   :param bins: Strictly increasing nonnegative spherical-shell edges in angstrom.
+   :return: Probability per shell volume and raw sample counts.
+   :raises ValueError: If inputs or shell edges are invalid.
+
+
+.. py:function:: van_hove_distinct(positions, timestep, *, lag, bins, cell)
+
+   Compute the bulk distinct van Hove density with persistent atom identity.
+
+   Counts displacements from atom i at each origin to atom j at the lag, with
+   i != j. Minimum images use one fixed periodic 3D cell. The integral over a
+   complete spatial domain is N-1; a finite spherical range is not renormalized.
+
+   :param positions: Cartesian array (frames, atoms, 3) in angstrom, with persistent atom order.
+   :param timestep: Uniform frame spacing in ps.
+   :param lag: Nonnegative integer lag.
+   :param bins: Increasing nonnegative radial edges, within the unique-image radius.
+   :param cell: Fixed fully periodic 3x3 row-vector cell in angstrom.
+   :return: Distinct neighbor density per angstrom³, directed counts and center-origin count.
+   :raises ValueError: If data, cell or radial range is invalid.
+
+
+.. py:function:: intermediate_scattering(positions, timestep, wavevectors, *, kind, max_lag = None)
+
+   Compute self or coherent scattering with exp(+i q·displacement).
+
+   Self scattering averages over atoms and origins. Coherent scattering is
+   mean[conj(rho(q,t))*rho(q,t+lag)]/N, retaining the density peak at q=0.
+   For arbitrary q use unwrapped positions; periodic wrapped coordinates are
+   phase equivalent only for wavevectors commensurate with the fixed cell.
+
+   :param positions: Cartesian array (frames, atoms, 3) in angstrom.
+   :param timestep: Uniform frame spacing in ps.
+   :param wavevectors: Finite Cartesian (wavevectors, 3) array in inverse angstrom.
+   :param kind: Explicit self or coherent definition.
+   :param max_lag: Largest inclusive lag.
+   :return: Complex correlations in lag and wavevector order.
+   :raises ValueError: If shapes, kind or numeric values are invalid.
+
+
+.. py:function:: velocity_spectrum(velocities, timestep, *, window = 'hann', remove_mean = False)
+
+   Compute a one-sided periodogram whose discrete integral obeys Parseval.
+
+   This is a velocity power spectrum, not a normalized phonon density of states.
+   It averages equally over atoms and Cartesian components. Multiplying power
+   by frequency spacing and summing gives the window-weighted mean square.
+
+   The default keeps each atom's time-averaged velocity. For a diffusing atom that mean is
+   Δr/T, the diffusive signal: removing it zeroes the rectangular-window ω=0 bin, which is
+   proportional to the diffusion coefficient. Per-atom mean removal is appropriate only for
+   non-diffusive (solid) systems.
+
+   :param velocities: Array (frames, atoms, 3) in angstrom/ps.
+   :param timestep: Uniform positive frame spacing in ps.
+   :param window: Rectangular (none) or Hann window.
+   :param remove_mean: Remove each atom/component time mean before windowing; only for non-diffusive systems.
+   :return: THz frequencies and dimensionful velocity power density.
+   :raises ValueError: If input, window or spectral values are invalid.
+
+

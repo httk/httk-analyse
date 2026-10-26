@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "version": "dev:main",
+  "pages": [
+    "_modules/httk/analyse/crysviz.html",
+    "_modules/httk/analyse/generic/lower_hull.html",
+    "_modules/httk/analyse/matsci/phase_diagrams.html",
+    "_modules/index.html",
+    "crysviz.html",
+    "generic-hulls.html",
+    "genindex.html",
+    "index.html",
+    "notebooks/examples.html",
+    "phase-diagrams.html",
+    "py-modindex.html",
+    "reference/autoapi/httk/analyse/crysviz/index.html",
+    "reference/autoapi/httk/analyse/generic/index.html",
+    "reference/autoapi/httk/analyse/generic/lower_hull/index.html",
+    "reference/autoapi/httk/analyse/index.html",
+    "reference/autoapi/httk/analyse/matsci/index.html",
+    "reference/autoapi/httk/analyse/matsci/phase_diagrams/index.html",
+    "reference/autoapi/index.html",
+    "reference/index.html",
+    "search.html"
+  ]
+}
