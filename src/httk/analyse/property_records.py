@@ -30,6 +30,7 @@ from typing import Annotated, ClassVar
 
 from httk.core import (
     IdentitySkip,
+    IdentitySkipWhenNone,
     Indexed,
     PropertyDefinition,
     ReferenceRecord,
@@ -1133,6 +1134,7 @@ class EnergyAboveHullPerAtomRecord(TypedRecord):
     A null value means the quantity is not available or not recorded.
 
     :param energy_above_hull_per_atom: The energy above hull per atom value. Unit: eV.
+    :param natoms: Number of atoms, the count the value is normalized by; None when unknown.
     :param product_of: The entries this value is a product of, as labeled edges.
     :param id: The human-readable entry id shared by all revisions; minted by the store when None.
     :param immutable_id: The per-revision immutable id; minted by the store when None.
@@ -1147,11 +1149,13 @@ class EnergyAboveHullPerAtomRecord(TypedRecord):
     __httk_typed_record__: ClassVar[TypedRecordSpec] = TypedRecordSpec(
         "https://schemas.httk.org/defs/v0.1/properties/energetics/energy_above_hull_per_atom",
         "_httk_energy_above_hull_per_atom",
+        count_name="_httk_natoms",
     )
     __httk_property_definitions__: ClassVar[Mapping[str, PropertyDefinition]] = __httk_typed_record__.definitions()
     __httk_stored_properties__: ClassVar[Mapping[str, StoredPropertyProjection]] = __httk_typed_record__.projections()
 
     energy_above_hull_per_atom: float
+    natoms: Annotated[int | None, IdentitySkipWhenNone()] = None
     product_of: Annotated[tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject")] = ()
     id: Annotated[str | None, IdentitySkip(), Indexed()] = field(default=None, compare=False)
     immutable_id: Annotated[str | None, IdentitySkip(), Unique()] = field(default=None, compare=False)
@@ -1167,6 +1171,7 @@ class FormationEnergyPerAtomRecord(TypedRecord):
     A null value means the quantity is not available or not recorded.
 
     :param formation_energy_per_atom: The formation energy per atom value. Unit: eV.
+    :param natoms: Number of atoms, the count the value is normalized by; None when unknown.
     :param product_of: The entries this value is a product of, as labeled edges.
     :param id: The human-readable entry id shared by all revisions; minted by the store when None.
     :param immutable_id: The per-revision immutable id; minted by the store when None.
@@ -1181,11 +1186,13 @@ class FormationEnergyPerAtomRecord(TypedRecord):
     __httk_typed_record__: ClassVar[TypedRecordSpec] = TypedRecordSpec(
         "https://schemas.httk.org/defs/v0.1/properties/energetics/formation_energy_per_atom",
         "_httk_formation_energy_per_atom",
+        count_name="_httk_natoms",
     )
     __httk_property_definitions__: ClassVar[Mapping[str, PropertyDefinition]] = __httk_typed_record__.definitions()
     __httk_stored_properties__: ClassVar[Mapping[str, StoredPropertyProjection]] = __httk_typed_record__.projections()
 
     formation_energy_per_atom: float
+    natoms: Annotated[int | None, IdentitySkipWhenNone()] = None
     product_of: Annotated[tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject")] = ()
     id: Annotated[str | None, IdentitySkip(), Indexed()] = field(default=None, compare=False)
     immutable_id: Annotated[str | None, IdentitySkip(), Unique()] = field(default=None, compare=False)
@@ -1234,6 +1241,7 @@ class TotalEnergyPerAtomRecord(TypedRecord):
     A null value means the quantity is not available or not recorded.
 
     :param total_energy_per_atom: The total energy per atom value. Unit: eV.
+    :param natoms: Number of atoms, the count the value is normalized by; None when unknown.
     :param product_of: The entries this value is a product of, as labeled edges.
     :param id: The human-readable entry id shared by all revisions; minted by the store when None.
     :param immutable_id: The per-revision immutable id; minted by the store when None.
@@ -1248,11 +1256,13 @@ class TotalEnergyPerAtomRecord(TypedRecord):
     __httk_typed_record__: ClassVar[TypedRecordSpec] = TypedRecordSpec(
         "https://schemas.httk.org/defs/v0.1/properties/energetics/total_energy_per_atom",
         "_httk_total_energy_per_atom",
+        count_name="_httk_natoms",
     )
     __httk_property_definitions__: ClassVar[Mapping[str, PropertyDefinition]] = __httk_typed_record__.definitions()
     __httk_stored_properties__: ClassVar[Mapping[str, StoredPropertyProjection]] = __httk_typed_record__.projections()
 
     total_energy_per_atom: float
+    natoms: Annotated[int | None, IdentitySkipWhenNone()] = None
     product_of: Annotated[tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject")] = ()
     id: Annotated[str | None, IdentitySkip(), Indexed()] = field(default=None, compare=False)
     immutable_id: Annotated[str | None, IdentitySkip(), Unique()] = field(default=None, compare=False)

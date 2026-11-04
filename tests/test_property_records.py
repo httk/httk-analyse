@@ -1,15 +1,28 @@
 """The generated analyse typed records are current, registered, and round-trip every definition's shape."""
 
+import datetime
 import itertools
 import json
 import runpy
 import subprocess
 import sys
+from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any
+from typing import Annotated, Any, ClassVar
 
 import pytest
-from httk.core import ReferenceRecord, WeakLink, load_property_definition
+from httk.core import (
+    IdentitySkip,
+    Indexed,
+    ReferenceRecord,
+    RunEdge,
+    StorageInfo,
+    StrongLink,
+    Unique,
+    WeakLink,
+    content_id,
+    load_property_definition,
+)
 from httk.core._typed_record_tool import check_typed_records, generate_typed_records
 from httk.core.register.entries import known_entry_records, resolve_entry_record
 
@@ -18,6 +31,7 @@ from httk.analyse.property_records import (
     RECORD_KINDS,
     ElectronicBandStructureRecord,
     PhononBandStructureRecord,
+    TotalEnergyPerAtomRecord,
 )
 
 TOOL = runpy.run_path(str(Path(__file__).resolve().parents[1] / "tools" / "generate_records.py"))
@@ -157,7 +171,8 @@ def test_kind_round_trips_a_checked_value(cls, full):
     assert cls.from_value(record.value) == record
     stored_name = spec.served_name.removeprefix("_httk_")
     assert vars(cls)["__httk_storage__"].storage_name == f"analyse_{stored_name}"
-    assert list(vars(cls)["__httk_property_definitions__"]) == [spec.served_name]
+    count = [spec.count_name] if spec.count_name else []
+    assert list(vars(cls)["__httk_property_definitions__"]) == [spec.served_name, *count]
     assert spec.served_definition.name == spec.served_name
     assert (record.definition_id, record.derivation) == (spec.definition_id, spec.derivation)
     if spec.derivation is None:
@@ -216,3 +231,22 @@ def test_band_structures_may_be_unlabelled():
         "frequencies": [[0.0, 1.0, 2.0]] * 3,
     }
     assert PhononBandStructureRecord.from_value(phonons).value == phonons
+
+
+def test_per_atom_record_serves_its_natoms_count_without_changing_identity():
+    record = TotalEnergyPerAtomRecord(-3.2, natoms=4)
+    assert TotalEnergyPerAtomRecord.__httk_stored_properties__["_httk_natoms"].response(record) == 4
+    assert TotalEnergyPerAtomRecord.__httk_property_definitions__["_httk_natoms"].optimade_type == "integer"
+
+    @dataclass(frozen=True)
+    class Before:  # The record's layout before the count field existed.
+        __httk_storage__: ClassVar[StorageInfo] = TotalEnergyPerAtomRecord.__httk_storage__
+
+        total_energy_per_atom: float
+        product_of: Annotated[tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject")] = ()
+        id: Annotated[str | None, IdentitySkip(), Indexed()] = field(default=None, compare=False)
+        immutable_id: Annotated[str | None, IdentitySkip(), Unique()] = field(default=None, compare=False)
+        last_modified: Annotated[datetime.datetime | None, IdentitySkip()] = field(default=None, compare=False)
+
+    assert content_id(TotalEnergyPerAtomRecord(-3.2)) == content_id(Before(-3.2))
+    assert content_id(record) != content_id(Before(-3.2))
