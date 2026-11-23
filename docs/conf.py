@@ -127,6 +127,7 @@ nitpick_ignore = [
     # AutoAPI renders the storage markers of generated typed-record fields unqualified when it
     # displays Annotated record fields; the classes are documented in httk-core.
     ("py:class", "IdentitySkip"),
+    ("py:class", "IdentitySkipWhenNone"),
     ("py:class", "Indexed"),
     ("py:class", "Unique"),
     ("py:class", "StrongLink"),
