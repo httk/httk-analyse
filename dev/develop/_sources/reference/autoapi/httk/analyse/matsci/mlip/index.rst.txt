@@ -1,0 +1,245 @@
+httk.analyse.matsci.mlip
+========================
+
+.. py:module:: httk.analyse.matsci.mlip
+
+.. autoapi-nested-parse::
+
+   Residual metrics for machine-learning interatomic potentials.
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   httk.analyse.matsci.mlip.ErrorStatistics
+   httk.analyse.matsci.mlip.EnergyErrors
+   httk.analyse.matsci.mlip.ForceErrors
+   httk.analyse.matsci.mlip.StressErrors
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   httk.analyse.matsci.mlip.energy_errors
+   httk.analyse.matsci.mlip.force_errors
+   httk.analyse.matsci.mlip.stress_errors
+
+
+Module Contents
+---------------
+
+.. py:class:: ErrorStatistics
+
+   Summarize a set of prediction-minus-reference residuals.
+
+   :param count: Number of residual samples before weighting.
+   :param bias: Weighted mean signed residual.
+   :param mae: Weighted mean absolute residual.
+   :param rmse: Weighted root mean square residual.
+   :param maximum_absolute_error: Largest absolute residual.
+   :param percentile95_absolute_error: Unweighted 95th percentile absolute residual using NumPy's linear interpolation.
+
+
+   .. py:attribute:: count
+      :type:  int
+
+
+   .. py:attribute:: bias
+      :type:  float
+
+
+   .. py:attribute:: mae
+      :type:  float
+
+
+   .. py:attribute:: rmse
+      :type:  float
+
+
+   .. py:attribute:: maximum_absolute_error
+      :type:  float
+
+
+   .. py:attribute:: percentile95_absolute_error
+      :type:  float
+
+
+.. py:class:: EnergyErrors
+
+   Hold raw and optional offset-corrected per-atom energy errors.
+
+   :param residuals: Raw predicted-minus-reference residuals in eV/atom, in configuration order.
+   :param statistics: Raw energy error statistics.
+   :param offset_per_atom: Explicit offset subtracted from predicted energies, or ``None`` when no correction was requested.
+   :param corrected_residuals: Corrected residuals in eV/atom, or ``None`` when no correction was requested.
+   :param corrected_statistics: Corrected energy error statistics, or ``None`` when no correction was requested.
+   :param weighting: Weighting used for mean and RMS statistics.
+
+
+   .. py:attribute:: residuals
+      :type:  tuple[float, ...]
+
+
+   .. py:attribute:: statistics
+      :type:  ErrorStatistics
+
+
+   .. py:attribute:: offset_per_atom
+      :type:  float | None
+
+
+   .. py:attribute:: corrected_residuals
+      :type:  tuple[float, ...] | None
+
+
+   .. py:attribute:: corrected_statistics
+      :type:  ErrorStatistics | None
+
+
+   .. py:attribute:: weighting
+      :type:  Literal['configuration', 'atom']
+
+
+.. py:class:: ForceErrors
+
+   Hold force residuals and aggregate, configuration, and species metrics.
+
+   :param residuals: Per-atom ``(x, y, z)`` residual tuples in configuration and atom order, in eV/angstrom.
+   :param weighting: Weighting policy used by aggregate and grouped summaries.
+   :param component_statistics: Aggregate residual statistics in x, y, z order.
+   :param mean_vector_error: Weighted mean Euclidean norm of atom force residuals.
+   :param rms_vector_error: Weighted root mean square Euclidean norm of atom force residuals.
+   :param per_configuration_component_statistics: Component statistics for each configuration.
+   :param per_configuration_mean_vector_error: Mean vector error for each configuration.
+   :param per_configuration_rms_vector_error: RMS vector error for each configuration.
+   :param per_species_component_statistics: Species labels and their conditional component statistics, sorted by label.
+   :param species: Species labels in configuration and atom order, matching residuals.
+
+
+   .. py:attribute:: residuals
+      :type:  tuple[tuple[tuple[float, float, float], ...], ...]
+
+
+   .. py:attribute:: weighting
+      :type:  Literal['atom', 'configuration']
+
+
+   .. py:attribute:: component_statistics
+      :type:  tuple[ErrorStatistics, ErrorStatistics, ErrorStatistics]
+
+
+   .. py:attribute:: mean_vector_error
+      :type:  float
+
+
+   .. py:attribute:: rms_vector_error
+      :type:  float
+
+
+   .. py:attribute:: per_configuration_component_statistics
+      :type:  tuple[tuple[ErrorStatistics, ErrorStatistics, ErrorStatistics], ...]
+
+
+   .. py:attribute:: per_configuration_mean_vector_error
+      :type:  tuple[float, ...]
+
+
+   .. py:attribute:: per_configuration_rms_vector_error
+      :type:  tuple[float, ...]
+
+
+   .. py:attribute:: per_species_component_statistics
+      :type:  tuple[tuple[str, tuple[ErrorStatistics, ErrorStatistics, ErrorStatistics]], ...]
+
+
+   .. py:attribute:: species
+      :type:  tuple[tuple[str, ...], ...]
+
+
+.. py:class:: StressErrors
+
+   Hold stress residuals and aggregate and per-configuration metrics.
+
+   :param residuals: Six component residual tuples per configuration in ``xx, yy, zz, yz, xz, xy`` order, in GPa.
+   :param component_statistics: Aggregate component statistics in ``xx, yy, zz, yz, xz, xy`` order.
+   :param per_configuration_component_statistics: Component statistics for each configuration.
+
+
+   .. py:attribute:: residuals
+      :type:  tuple[tuple[float, float, float, float, float, float], ...]
+
+
+   .. py:attribute:: component_statistics
+      :type:  tuple[ErrorStatistics, ErrorStatistics, ErrorStatistics, ErrorStatistics, ErrorStatistics, ErrorStatistics]
+
+
+   .. py:attribute:: per_configuration_component_statistics
+      :type:  tuple[tuple[ErrorStatistics, ErrorStatistics, ErrorStatistics, ErrorStatistics, ErrorStatistics, ErrorStatistics], ...]
+
+
+.. py:function:: energy_errors(reference, predicted, *, atom_counts, offset_per_atom = None, weighting = 'configuration')
+
+   Compare total energies and report per-atom prediction residuals.
+
+   Raw residuals are always reported. An explicit offset is subtracted from
+   each predicted energy per atom; no energy shift is inferred from the data.
+   Mean and RMS statistics weight each configuration equally by default.
+   Choose ``weighting="atom"`` to weight each atom equally instead. The
+   reported 95th percentile is unweighted under either policy.
+
+   :param reference: Reference total energies in eV.
+   :param predicted: Predicted total energies in eV.
+   :param atom_counts: Positive integer atom count for each configuration.
+   :param offset_per_atom: Optional explicit energy offset in eV/atom to subtract from each prediction.
+   :param weighting: Weight configurations equally or weight each atom equally in means and RMS.
+   :return: Immutable raw and optionally corrected per-atom residual summaries.
+   :raises ValueError: If inputs have incompatible shapes, invalid counts, non-finite values, or unrepresentable residuals.
+
+
+.. py:function:: force_errors(reference, predicted, *, species, weighting = 'atom')
+
+   Compare paired ragged force arrays in eV/angstrom.
+
+   Atom order and species labels must identify the same physical atoms in each
+   reference/prediction pair. This array API cannot detect atom permutations or
+   dataset leakage. ``atom`` weights every atom equally; ``configuration``
+   gives each configuration equal total weight. Species summaries condition
+   and renormalize those same weights on atoms of that species. The 95th
+   percentile remains unweighted in every summary. The pooled per-component
+   RMSE common in the literature equals ``rms_vector_error / sqrt(3)`` of the
+   result with ``weighting="atom"``; ``rms_vector_error`` is the Euclidean
+   vector RMSE and is not directly comparable to it.
+
+   :param reference: One finite ``(atoms, 3)`` force array per configuration.
+   :param predicted: Matching predicted force arrays in eV/angstrom.
+   :param species: One chemical-symbol label per atom in matching atom order.
+   :param weighting: Weight every atom equally or every configuration equally.
+   :return: Immutable component, vector, configuration, and species metrics.
+   :raises ValueError: If shapes, species labels, weighting, or finite numeric values are invalid.
+
+
+.. py:function:: stress_errors(reference, predicted)
+
+   Compare symmetric tensile-positive stress tensors in GPa.
+
+   Tensor pairs are compared without symmetrizing. Components use the order
+   ``xx, yy, zz, yz, xz, xy`` and take the upper-triangle value for each shear
+   component. The symmetry check permits absolute or relative differences up
+   to ``1e-12``; convert virials and source sign conventions before calling.
+   Typical float32 model outputs and virial (``-sum(r (x) F)``) stresses
+   carry asymmetry of order ``1e-8`` GPa and are rejected: inspect
+   the asymmetry and symmetrize explicitly (``(S + S.T)/2``) first.
+   Aggregate component metrics weight each configuration equally. The 95th
+   percentile is unweighted in every summary.
+
+   :param reference: Finite stress tensors with shape ``(configurations, 3, 3)``.
+   :param predicted: Matching predicted stress tensors in GPa.
+   :return: Immutable six-component residuals and statistics.
+   :raises ValueError: If shapes, symmetry, or finite numeric values are invalid.
+
+

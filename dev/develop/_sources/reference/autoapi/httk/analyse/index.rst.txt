@@ -1,0 +1,28 @@
+httk.analyse
+============
+
+.. py:module:: httk.analyse
+
+.. autoapi-nested-parse::
+
+   Analysis capabilities for the httk namespace package.
+
+
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 1
+
+   /reference/autoapi/httk/analyse/crysviz/index
+   /reference/autoapi/httk/analyse/definitions/index
+   /reference/autoapi/httk/analyse/generic/index
+   /reference/autoapi/httk/analyse/integrations/index
+   /reference/autoapi/httk/analyse/matsci/index
+   /reference/autoapi/httk/analyse/plotting/index
+   /reference/autoapi/httk/analyse/property_records/index
+   /reference/autoapi/httk/analyse/records/index
+   /reference/autoapi/httk/analyse/summary/index
+
+

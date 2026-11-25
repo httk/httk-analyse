@@ -1,0 +1,84 @@
+httk.analyse.records
+====================
+
+.. py:module:: httk.analyse.records
+
+.. autoapi-nested-parse::
+
+   Turn analysis results into property-definition data records.
+
+   Bound result types know which of their fields carry which property definition
+   (see :class:`httk.analyse.definitions.FieldBinding`). :func:`records` emits one
+   checked record per bound value. A property value becomes a typed record of its
+   definition: an :mod:`httk.analyse.property_records` kind for an analyse
+   definition, an :mod:`httk.core.property_records` kind for a core definition such
+   as temperature or volume, and :class:`httk.core.TotalEnergyRecord` or
+   :class:`httk.core.AverageTotalEnergyRecord` for the two energies. Typed records
+   store their values in typed columns, so a store serves them and filters on them,
+   including dictionary members by nested name: ``_httk_bulk_modulus > 100`` or
+   ``_httk_energy_prediction_errors.rmse < 0.005``. A statistic (``derivation``) of
+   a fixed base property becomes its generated statistic kind, served as
+   ``_httk_<base>_<derivation>`` (for example ``_httk_total_energy_per_atom_rmse``)
+   under an ad-hoc definition synthesized from the base. A statistic of a
+   caller-chosen base (``PropertyParity``) becomes a :class:`httk.core.DerivedDataRecord`,
+   and a value with no typed kind (or a null value) a generic :class:`httk.core.DataRecord`;
+   these generic records are a catch-all that keep the value as JSON, which a store does
+   not serve.
+   Selection keywords are explicit per result type: ``lag_index`` selects the
+   plateau of transport results (optional for a single run, required for replica
+   statistics).
+
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   httk.analyse.records.AnalysisRecord
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   httk.analyse.records.bound_values
+   httk.analyse.records.records
+
+
+Module Contents
+---------------
+
+.. py:type:: AnalysisRecord
+   :canonical: TypedRecord | TotalEnergyRecord | AverageTotalEnergyRecord | DataRecord | DerivedDataRecord
+
+
+.. py:function:: bound_values(result, **selection)
+
+   Return every bound value of an analysis result, including series and statistics.
+
+   :param result: An analysis result of a bound type, such as ``BirchMurnaghanFit``.
+   :param \*\*selection: Result-specific selection keywords, such as ``lag_index`` for transport results.
+   :return: Bound values in binding order.
+   :raises TypeError: If the result type has no bindings or a selection keyword is missing or unsupported.
+
+
+.. py:function:: records(result, *, product_of = (), **selection)
+
+   Build a checked record for every bound value of an analysis result.
+
+   A property value becomes the typed record of its definition, which a store serves and filters (for
+   example ``_httk_bulk_modulus > 100``, or ``_httk_energy_prediction_errors.rmse < 0.005`` on a
+   dictionary member). A value with a ``derivation`` becomes its statistic kind, served as
+   ``_httk_<base>_<derivation>``, or a derived data record when its base is caller-chosen; a value
+   without a typed kind, or a null value, becomes a generic data record, whose value is not served.
+
+   :param result: An analysis result of a bound type.
+   :param product_of: Provenance edges attached to every record.
+   :param \*\*selection: Result-specific selection keywords, such as ``lag_index`` for transport results.
+   :return: Records in binding order.
+   :raises TypeError: If the result type has no bindings or a selection keyword is missing or unsupported.
+   :raises ValueError: If a value does not satisfy its property definition.
+
+

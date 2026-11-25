@@ -1,0 +1,109 @@
+httk.analyse.plotting
+=====================
+
+.. py:module:: httk.analyse.plotting
+
+.. autoapi-nested-parse::
+
+   Matplotlib figures for analysis results with explicit physical axes.
+
+   Axes of quantities with a property definition are labelled with the
+   definition's title and unit.
+
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   httk.analyse.plotting.plot_eos
+   httk.analyse.plotting.plot_convergence
+   httk.analyse.plotting.plot_rdf
+   httk.analyse.plotting.plot_msd
+   httk.analyse.plotting.plot_transport
+   httk.analyse.plotting.plot_phonons
+   httk.analyse.plotting.plot_parity
+   httk.analyse.plotting.plot_chemical_potential_slice
+
+
+Module Contents
+---------------
+
+.. py:function:: plot_eos(result)
+
+   Plot sampled energies, fitted EOS and residuals on a shared volume axis.
+
+   :param result: EOS fit with input volumes, energies and residuals.
+   :return: Matplotlib figure and two axes; the caller owns their lifecycle.
+
+
+.. py:function:: plot_convergence(result)
+
+   Plot signed energy differences in caller-supplied parameter order.
+
+   :param result: Convergence data with explicit reference index.
+   :return: Matplotlib figure and axis.
+
+
+.. py:function:: plot_rdf(result)
+
+   Plot the normalized radial distribution at shell centers.
+
+   :param result: RDF with its declared normalization.
+   :return: Matplotlib figure and axis.
+
+
+.. py:function:: plot_msd(result)
+
+   Plot an MSD tensor trace without fitting or selecting a diffusive window.
+
+   :param result: Tensor series returned by mean_squared_displacement.
+   :return: Matplotlib figure and axis.
+   :raises ValueError: If the result is not an MSD series.
+
+
+.. py:function:: plot_transport(result)
+
+   Plot all running Green–Kubo components and their isotropic mean.
+
+   :param result: Thermal conductivity or shear viscosity running integrals.
+   :return: Matplotlib figure and axis.
+
+
+.. py:function:: plot_phonons(result)
+
+   Plot harmonic free energy, entropy and heat capacity with separate units.
+
+   :param result: Harmonic thermodynamics in its input mode normalization.
+   :return: Matplotlib figure and three axes.
+
+
+.. py:function:: plot_parity(result)
+
+   Plot paired scalar predictions with a unity reference line.
+
+   :param result: Matched property pairs; axes use its definition, or no unit when it has none.
+   :return: Matplotlib figure and axis.
+
+
+.. py:function:: plot_chemical_potential_slice(region, *, x_element, y_element, dependent_element, fixed, x_limits, y_limits, resolution = 201)
+
+   Plot a sampled two-dimensional slice of chemical-potential constraints.
+
+   The host equality eliminates one dependent potential. All remaining
+   elements must have explicit fixed potentials. Shading is a finite grid
+   visualization, not an exact polygon or a change to the stored constraints.
+
+   :param region: Host equality and competing-phase inequalities.
+   :param x_element: Element on the horizontal axis.
+   :param y_element: Element on the vertical axis.
+   :param dependent_element: Element eliminated using the host equality.
+   :param fixed: Potentials for every other element, in eV/atom.
+   :param x_limits: Increasing horizontal bounds in eV/atom.
+   :param y_limits: Increasing vertical bounds in eV/atom.
+   :param resolution: Grid points per axis, at least two.
+   :return: Matplotlib figure and axis containing the feasible sampled region.
+   :raises ValueError: If elements, bounds, resolution or fixed potentials are invalid.
+
+

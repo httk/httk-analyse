@@ -1,0 +1,98 @@
+httk.analyse.integrations.vasp
+==============================
+
+.. py:module:: httk.analyse.integrations.vasp
+
+.. autoapi-nested-parse::
+
+   Analysis adapters for explicit VASP electronic-structure inputs.
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   httk.analyse.integrations.vasp.VaspDOS
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   httk.analyse.integrations.vasp.dos_from_vasp
+   httk.analyse.integrations.vasp.band_edges_from_wavefunctions
+
+
+Module Contents
+---------------
+
+.. py:class:: VaspDOS
+
+   Hold float-presented DOS data and its explicit spin basis.
+
+   :param energies: Energy grid in eV.
+   :param density: DOS in states/eV.
+   :param integrated_density: Integrated DOS in states.
+   :param fermi_energy: Fermi energy in eV.
+   :param spin_basis: ``spin-summed`` or one resolved spin channel.
+   :param spin: Requested output selection.
+
+
+   .. py:attribute:: energies
+      :type:  tuple[float, ...]
+
+
+   .. py:attribute:: density
+      :type:  tuple[float, ...]
+
+
+   .. py:attribute:: integrated_density
+      :type:  tuple[float, ...]
+
+
+   .. py:attribute:: fermi_energy
+      :type:  float
+
+
+   .. py:attribute:: spin_basis
+      :type:  str
+
+
+   .. py:attribute:: spin
+      :type:  str
+
+
+.. py:function:: dos_from_vasp(payload, spin = 'total')
+
+   Present exact DOSCAR values as floats on an explicit spin basis.
+
+   Collinear ``total`` sums the up and down channels. Nonmagnetic total DOS
+   is returned unchanged because it already represents the spin-summed DOS.
+
+   :param payload: Parsed total-DOS data from ``read_doscar``.
+   :param spin: Total, up, or down channel selection.
+   :return: Float analysis data with spin-basis metadata.
+   :raises ValueError: If the selection is unavailable or values overflow float.
+
+
+.. py:function:: band_edges_from_wavefunctions(wavefunctions, spin, *, occupation_tolerance, energy_reference)
+
+   Analyze one WAVECAR spin channel using its stored eigenvalues and occupations.
+
+   WAVECAR occupations are per state on a 0..1 scale for every spin channel, so the maximum occupation is
+   fixed at one. OUTCAR prints occupations on a 0..2 scale for ISPIN=1; EIGENVAL and vasprun.xml use the same 0..1
+   per-state scale as WAVECAR. Only the selected spin channel is analysed: for ISPIN=2 the material gap is the minimum CBM over both channels minus the
+   maximum VBM over both channels. For metals the returned VBM and CBM are tolerance artifacts and only
+   ``metallic`` is meaningful.
+
+   :param wavefunctions: Existing plane-wave data with axes spin, k point, band.
+   :param spin: Zero-based spin index.
+   :param occupation_tolerance: Explicit absolute empty/full endpoint tolerance on the 0..1 occupation scale.
+   :param energy_reference: Explicit energy reference to subtract, in eV.
+   :return: Sampled band edges from :func:`~httk.analyse.matsci.electronic.band_edges`.
+   :raises ValueError: If the input or spin index is invalid.
+
+

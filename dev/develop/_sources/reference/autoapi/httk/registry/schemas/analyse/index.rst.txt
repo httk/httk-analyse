@@ -1,0 +1,11 @@
+httk.registry.schemas.analyse
+=============================
+
+.. py:module:: httk.registry.schemas.analyse
+
+.. autoapi-nested-parse::
+
+   Register httk-analyse's vendored analysis property schemas.
+
+
+

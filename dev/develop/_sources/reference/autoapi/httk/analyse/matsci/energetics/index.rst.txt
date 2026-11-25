@@ -1,0 +1,213 @@
+httk.analyse.matsci.energetics
+==============================
+
+.. py:module:: httk.analyse.matsci.energetics
+
+.. autoapi-nested-parse::
+
+   Static energy bookkeeping for materials calculations.
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   httk.analyse.matsci.energetics.ConvergenceTable
+   httk.analyse.matsci.energetics.FormationEnergy
+   httk.analyse.matsci.energetics.ChemicalPotentialRegion
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   httk.analyse.matsci.energetics.convergence_table
+   httk.analyse.matsci.energetics.reaction_energy
+   httk.analyse.matsci.energetics.formation_energy
+   httk.analyse.matsci.energetics.chemical_potential_region
+   httk.analyse.matsci.energetics.enthalpy
+
+
+Module Contents
+---------------
+
+.. py:class:: ConvergenceTable
+
+   Immutable input-order energies and signed differences per atom.
+
+   :param parameters: Caller-supplied immutable parameter labels.
+   :param energies: Total energies in eV.
+   :param atom_counts: Positive atom counts for each configuration.
+   :param energies_per_atom: Total energies divided by their atom counts.
+   :param differences_per_atom: Per-atom energies minus the explicit reference.
+   :param reference_index: Index of the reference configuration.
+
+
+   .. py:attribute:: parameters
+      :type:  tuple[str | float | int, ...]
+
+
+   .. py:attribute:: energies
+      :type:  tuple[float, ...]
+
+
+   .. py:attribute:: atom_counts
+      :type:  tuple[int, ...]
+
+
+   .. py:attribute:: energies_per_atom
+      :type:  tuple[float, ...]
+
+
+   .. py:attribute:: differences_per_atom
+      :type:  tuple[float, ...]
+
+
+   .. py:attribute:: reference_index
+      :type:  int
+
+
+.. py:class:: FormationEnergy
+
+   Total and per-atom formation energy for explicit reservoirs.
+
+   :param total: Formation energy in eV, ``E - sum(n_i * mu_i)``.
+   :param per_atom: Formation energy divided by the total atom count, in eV/atom.
+   :param atom_count: Total number of atoms in the composition.
+
+
+   .. py:attribute:: total
+      :type:  float
+
+
+   .. py:attribute:: per_atom
+      :type:  float
+
+
+   .. py:attribute:: atom_count
+      :type:  float
+
+
+.. py:class:: ChemicalPotentialRegion
+
+   Linear host equality and competing-phase chemical-potential bounds.
+
+   Coefficients follow ``elements`` order. The host constraint is
+   ``host_coefficients · mu = host_energy``; each competing row is
+   ``coefficients · mu <= energy``.
+
+   :param elements: Sorted element labels defining the potential-vector order.
+   :param host_coefficients: Host stoichiometry in ``elements`` order.
+   :param host_energy: Host total energy in eV.
+   :param competing_coefficients: Competing-phase stoichiometries in element order.
+   :param competing_energies: Competing-phase total energies in eV.
+
+
+   .. py:attribute:: elements
+      :type:  tuple[str, ...]
+
+
+   .. py:attribute:: host_coefficients
+      :type:  tuple[float, ...]
+
+
+   .. py:attribute:: host_energy
+      :type:  float
+
+
+   .. py:attribute:: competing_coefficients
+      :type:  tuple[tuple[float, ...], ...]
+
+
+   .. py:attribute:: competing_energies
+      :type:  tuple[float, ...]
+
+
+   .. py:method:: contains(potentials, tolerance = 1e-10)
+
+      Check whether elemental potentials satisfy the stored constraints.
+
+      :param potentials: Elemental reference potentials in eV per atom.
+      :param tolerance: Absolute residual tolerance in eV.
+      :return: Whether the host equality and all competing-phase bounds hold.
+      :raises ValueError: If a required potential is missing or inputs are invalid.
+
+
+
+.. py:function:: convergence_table(parameters, energies, *, reference_index, atom_counts)
+
+   Build an input-order convergence table against an explicit reference.
+
+   Parameter order is retained but is never interpreted as evidence of
+   convergence. Energies use eV on each configuration's total-energy basis.
+
+   :param parameters: Immutable labels such as cutoff energies or mesh sizes.
+   :param energies: Finite total energies in eV.
+   :param reference_index: Index of the configuration used for differences.
+   :param atom_counts: Positive integer atom counts for matching configurations.
+   :return: Immutable values and signed per-atom differences in input order.
+   :raises ValueError: If lengths, labels, counts, energies, or reference are invalid.
+
+
+.. py:function:: reaction_energy(energies, coefficients, compositions, *, tolerance = 1e-10)
+
+   Return balanced products-minus-reactants energy in eV.
+
+   Positive coefficients denote products and negative coefficients denote
+   reactants. The energy and composition at each index refer to the same phase.
+
+   :param energies: Finite total phase energies in eV.
+   :param coefficients: Signed reaction coefficients.
+   :param compositions: Element-to-stoichiometric-count mappings.
+   :param tolerance: Absolute per-element balance tolerance in atoms.
+   :return: The signed linear combination of total energies in eV.
+   :raises ValueError: If rows differ in length, data are invalid, or the reaction is unbalanced.
+
+
+.. py:function:: formation_energy(energy, composition, chemical_potentials)
+
+   Compute formation energy relative to explicitly supplied reservoirs.
+
+   :param energy: Total phase energy in eV.
+   :param composition: Element-to-stoichiometric-count mapping.
+   :param chemical_potentials: Required elemental reference potentials in eV per atom.
+   :return: Immutable total and per-atom formation energies.
+   :raises ValueError: If a reservoir is missing or an input is invalid.
+
+
+.. py:function:: chemical_potential_region(host_composition, host_energy, competing_compositions, competing_energies)
+
+   Build host equality and competing-phase chemical-potential constraints.
+
+   The host satisfies ``sum(n_i * mu_i) = E_host``. Each competing phase adds
+   ``sum(n_i * mu_i) <= E_competitor``. Add elemental reference phases as
+   competing phases explicitly when their bounds are desired.
+
+   :param host_composition: Host stoichiometric counts by element.
+   :param host_energy: Host total energy in eV.
+   :param competing_compositions: Competing phase compositions.
+   :param competing_energies: Matching competing phase total energies in eV.
+   :return: Immutable coefficient rows and right-hand-side energies.
+   :raises ValueError: If compositions, energies, or row counts are invalid.
+
+
+.. py:function:: enthalpy(energies, volumes, pressures)
+
+   Return static ``E + P*V`` values in eV.
+
+   Energies use eV and volumes use angstrom³ on the same extensive basis.
+   Pressure is in GPa, positive under compression; VASP prints pressure in
+   kB, so multiply those values by 0.1 to get GPa. A scalar pressure
+   broadcasts to all rows; a pressure vector must match the energy and volume
+   vectors. The caller must decide whether each branch is comparable.
+
+   :param energies: Non-empty one-dimensional total energies in eV.
+   :param volumes: Matching positive volumes in angstrom³.
+   :param pressures: Scalar pressure or matching one-dimensional pressures in GPa.
+   :return: Enthalpies in input order as an immutable tuple.
+   :raises ValueError: If arrays have invalid shape, values, or lengths.
+
+

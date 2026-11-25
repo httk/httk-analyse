@@ -1,0 +1,152 @@
+httk.analyse.matsci.eos_models
+==============================
+
+.. py:module:: httk.analyse.matsci.eos_models
+
+.. autoapi-nested-parse::
+
+   Weighted static EOS fits using optional SciPy nonlinear least squares.
+
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   httk.analyse.matsci.eos_models.EOSModel
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   httk.analyse.matsci.eos_models.EOSFit
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   httk.analyse.matsci.eos_models.fit_eos
+
+
+Module Contents
+---------------
+
+.. py:type:: EOSModel
+   :canonical: Literal['birch-murnaghan', 'murnaghan', 'vinet']
+
+
+.. py:class:: EOSFit
+
+   An approximate static EOS fit with explicit relative weighting.
+
+   The weighted Jacobian condition measures numerical conditioning, not
+   confidence in physical parameters. Inputs must use one static branch,
+   composition and electronic/relaxation protocol. Residuals are observed minus
+   predicted. Pressure is positive in compression.
+
+   :param model: EOS family.
+   :param equilibrium_volume: Minimum volume in angstrom³.
+   :param equilibrium_energy: Minimum energy in eV.
+   :param bulk_modulus: Equilibrium bulk modulus in GPa.
+   :param bulk_modulus_derivative: Dimensionless equilibrium pressure derivative.
+   :param volumes: Input volumes in caller order.
+   :param energies: Input energies in caller order.
+   :param weights: Positive relative least-squares weights in caller order.
+   :param residuals: Energy residuals in eV.
+   :param rmse: Unweighted energy root mean squared error in eV.
+   :param weighted_rmse: Weighted energy root mean squared error in eV.
+   :param condition_number: Condition number of the scaled weighted parameter Jacobian.
+
+
+   .. py:attribute:: model
+      :type:  EOSModel
+
+
+   .. py:attribute:: equilibrium_volume
+      :type:  float
+
+
+   .. py:attribute:: equilibrium_energy
+      :type:  float
+
+
+   .. py:attribute:: bulk_modulus
+      :type:  float
+
+
+   .. py:attribute:: bulk_modulus_derivative
+      :type:  float
+
+
+   .. py:attribute:: volumes
+      :type:  tuple[float, ...]
+
+
+   .. py:attribute:: energies
+      :type:  tuple[float, ...]
+
+
+   .. py:attribute:: weights
+      :type:  tuple[float, ...]
+
+
+   .. py:attribute:: residuals
+      :type:  tuple[float, ...]
+
+
+   .. py:attribute:: rmse
+      :type:  float
+
+
+   .. py:attribute:: weighted_rmse
+      :type:  float
+
+
+   .. py:attribute:: condition_number
+      :type:  float
+
+
+   .. py:method:: energy(volume)
+
+      Evaluate energy, allowing explicit model extrapolation.
+
+      :param volume: Positive volume in angstrom³ on the fit's extensive basis.
+      :return: Model energy in eV.
+      :raises ValueError: If the query or predicted energy is not representable.
+
+
+
+   .. py:method:: pressure(volume)
+
+      Evaluate positive-compression pressure.
+
+      :param volume: Positive volume in angstrom³.
+      :return: Model pressure in GPa.
+      :raises ValueError: If the query or predicted pressure is not representable.
+
+
+
+.. py:function:: fit_eos(volumes, energies, *, model, weights = None)
+
+   Fit BM3, Murnaghan or Vinet static energies with optional relative weights.
+
+   Requires ``httk-analyse[scipy]``. Weights multiply squared residuals and need
+   not sum to one. The initial NumPy BM3 fit must have an interior stable
+   minimum; the nonlinear fit also requires an interior positive-modulus
+   minimum and full Jacobian rank. Results contain no inferred error bars.
+   Fit-window sensitivity and comparing physical protocols remain necessary.
+
+   :param volumes: At least five distinct positive volumes in angstrom³.
+   :param energies: Matching static energies in eV on the same extensive basis.
+   :param model: Explicit EOS family to fit.
+   :param weights: Positive finite relative weights, or equal weighting.
+   :return: Immutable fit with input-order residuals and numerical diagnostics.
+   :raises ImportError: If SciPy is unavailable.
+   :raises ValueError: If data, weights, minimum, convergence or rank are invalid.
+
+

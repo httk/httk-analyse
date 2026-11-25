@@ -1,0 +1,41 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Materials toolbox example\n",
+    "\n",
+    "Execute the packaged synthetic EOS and correlated-series example. The static scan has known parameters; the seeded AR(1) series illustrates sensitivity of the estimated mean error to block size. No simulation engine or input files are required.\n"
+   ],
+   "id": "introduction"
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "from pathlib import Path\n",
+    "import runpy\n",
+    "\n",
+    "example = Path(\"../../examples/materials_toolbox.py\").resolve()\n",
+    "runpy.run_path(str(example), run_name=\"__main__\");\n"
+   ],
+   "id": "execute-example"
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "name": "python",
+   "version": "3.12"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}

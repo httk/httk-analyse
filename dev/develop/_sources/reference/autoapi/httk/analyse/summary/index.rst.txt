@@ -1,0 +1,95 @@
+httk.analyse.summary
+====================
+
+.. py:module:: httk.analyse.summary
+
+.. autoapi-nested-parse::
+
+   Portable analysis summaries with explicit source and numerical provenance.
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   httk.analyse.summary.AnalysisSummary
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   httk.analyse.summary.analysis_summary
+
+
+Module Contents
+---------------
+
+.. py:class:: AnalysisSummary
+
+   Immutable canonical JSON summary, with no embedded source trajectories.
+
+   :param canonical_json: JSON object containing analysis results and provenance.
+
+
+   .. py:attribute:: canonical_json
+      :type:  str
+
+
+   .. py:property:: value
+      :type: dict[str, Any]
+
+
+      Return a fresh decoded copy of the summary.
+
+
+   .. py:method:: write(path)
+
+      Write canonical JSON and a newline to an explicitly selected file.
+
+      :param path: Output file, replaced if it already exists.
+
+
+
+.. py:function:: analysis_summary(result, *, algorithm, parameters, selection, sources, assumptions, units = None, product_of = (), field_values = True, **bound_selection)
+
+   Serialize a result with its field definitions, parameters and hashed input files.
+
+   The envelope's ``fields`` object identifies the meaning of result fields.
+   For a result type bound to property definitions (see
+   :mod:`httk.analyse.records`) each binding name maps to
+   ``{"definition", "derivation", "content_id", "value"}``, built from the records
+   :func:`~httk.analyse.records.records` emits for the same ``product_of`` and selection, so each
+   ``content_id`` links the envelope to the stored record. Content ids depend on the supplied ``product_of``
+   edges (the envelope records only the ids, not the edges). Binding names (such as
+   ``isotropic[4]``, or the definition name of a series) are not paths into ``result``; each entry
+   carries its value. Fields without a published definition (for example fit diagnostics such as
+   residuals or condition numbers) may instead be given an OPTIMADE unit expression in ``units``, stored with the unit
+   definition IRIs it uses.
+
+   Local source files are read in chunks only to calculate SHA-256; their bytes
+   and frames are not embedded. Sources should be stable snapshots during
+   analysis. Complex numbers use explicit real/imaginary JSON objects. Record
+   the same selected files and parameters used to compute the supplied result.
+
+   :param result: Frozen result dataclass or JSON-compatible numerical summary.
+   :param algorithm: Fully qualified routine name or declared algorithm identifier.
+   :param parameters: Actual numerical/model options used for the calculation.
+   :param selection: Frame ranges, fit windows or other explicit sample selection.
+   :param sources: Source paths whose URLs, sizes and SHA-256 checksums are retained.
+   :param assumptions: Scientific assumptions needed to interpret the result.
+   :param units: OPTIMADE unit expression (or ``dimensionless``) per field that has no property definition.
+   :param product_of: Provenance edges the records carry; they enter the records' content ids.
+   :param field_values: Include each bound field's ``value`` in ``fields``; ``False`` keeps only the content id
+       (the ``result`` dump is unaffected), which shortens summaries of long series.
+   :param \*\*bound_selection: Selection keywords of the result's bindings, such as ``lag_index``.
+   :return: Immutable canonical JSON result and provenance envelope.
+   :raises ValueError: If a bound value fails its property definition, metadata is incomplete, nonfinite or unsupported, a unit expression is invalid,
+       a unit is given for a field that has a property definition, or two bound values share a binding name.
+   :raises TypeError: If binding selection keywords are missing or unsupported for the result type.
+   :raises OSError: If a source cannot be read.
+
+
