@@ -22,6 +22,7 @@ from httk.core import (
     WeakLink,
     content_id,
     load_property_definition,
+    standard_links,
 )
 from httk.core._typed_record_tool import check_typed_records, generate_typed_records
 from httk.core.register.entries import known_entry_records, resolve_entry_record
@@ -54,10 +55,11 @@ def test_tool_check_passes():
     subprocess.run([sys.executable, str(tool), "--check"], cwd=tool.parents[1], check=True)
 
 
-def test_every_kind_declares_the_exposed_references_link():
+def test_every_kind_gets_the_exposed_references_link_automatically():
     link = WeakLink("references", ReferenceRecord, exposed_relationship=True)
     for cls in KINDS:
-        assert vars(cls)["__httk_storage__"].links == (link,), cls.__name__
+        assert vars(cls)["__httk_storage__"].links == (), cls.__name__
+        assert link in standard_links(cls), cls.__name__
 
 
 def test_every_definition_has_one_registered_kind():
