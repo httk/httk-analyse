@@ -32,6 +32,7 @@ from httk.core import (
     IdentitySkip,
     IdentitySkipWhenNone,
     Indexed,
+    Inline,
     PropertyDefinition,
     RunEdge,
     StorageInfo,
@@ -172,7 +173,9 @@ class AdsorptionEnergyRecord(TypedRecord):
     __httk_stored_properties__: ClassVar[Mapping[str, StoredPropertyProjection]] = __httk_typed_record__.projections()
 
     adsorption_energy: float
-    product_of: Annotated[tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject")] = ()
+    product_of: Annotated[
+        tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject"), Inline()
+    ] = ()
     id: Annotated[str | None, IdentitySkip(), Indexed()] = field(default=None, compare=False)
     immutable_id: Annotated[str | None, IdentitySkip(), Unique()] = field(default=None, compare=False)
     last_modified: Annotated[datetime.datetime | None, IdentitySkip()] = field(default=None, compare=False)
@@ -206,7 +209,9 @@ class ChargeTransitionLevelRecord(TypedRecord):
 
     charges: tuple[int, ...]
     fermi_level: float
-    product_of: Annotated[tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject")] = ()
+    product_of: Annotated[
+        tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject"), Inline()
+    ] = ()
     id: Annotated[str | None, IdentitySkip(), Indexed()] = field(default=None, compare=False)
     immutable_id: Annotated[str | None, IdentitySkip(), Unique()] = field(default=None, compare=False)
     last_modified: Annotated[datetime.datetime | None, IdentitySkip()] = field(default=None, compare=False)
@@ -255,7 +260,9 @@ class ChargedDefectFormationEnergyRecord(TypedRecord):
     elements: tuple[str, ...]
     atom_changes: tuple[int, ...]
     chemical_potentials: tuple[float, ...]
-    product_of: Annotated[tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject")] = ()
+    product_of: Annotated[
+        tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject"), Inline()
+    ] = ()
     id: Annotated[str | None, IdentitySkip(), Indexed()] = field(default=None, compare=False)
     immutable_id: Annotated[str | None, IdentitySkip(), Unique()] = field(default=None, compare=False)
     last_modified: Annotated[datetime.datetime | None, IdentitySkip()] = field(default=None, compare=False)
@@ -288,7 +295,9 @@ class SegregationEnergyRecord(TypedRecord):
     __httk_stored_properties__: ClassVar[Mapping[str, StoredPropertyProjection]] = __httk_typed_record__.projections()
 
     segregation_energy: float
-    product_of: Annotated[tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject")] = ()
+    product_of: Annotated[
+        tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject"), Inline()
+    ] = ()
     id: Annotated[str | None, IdentitySkip(), Indexed()] = field(default=None, compare=False)
     immutable_id: Annotated[str | None, IdentitySkip(), Unique()] = field(default=None, compare=False)
     last_modified: Annotated[datetime.datetime | None, IdentitySkip()] = field(default=None, compare=False)
@@ -321,7 +330,9 @@ class SurfaceEnergyRecord(TypedRecord):
     __httk_stored_properties__: ClassVar[Mapping[str, StoredPropertyProjection]] = __httk_typed_record__.projections()
 
     surface_energy: float
-    product_of: Annotated[tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject")] = ()
+    product_of: Annotated[
+        tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject"), Inline()
+    ] = ()
     id: Annotated[str | None, IdentitySkip(), Indexed()] = field(default=None, compare=False)
     immutable_id: Annotated[str | None, IdentitySkip(), Unique()] = field(default=None, compare=False)
     last_modified: Annotated[datetime.datetime | None, IdentitySkip()] = field(default=None, compare=False)
@@ -370,7 +381,9 @@ class DistinctVanHoveFunctionRecord(TypedRecord):
     density: tuple[float, ...]
     counts: tuple[int, ...] | None = None
     samples: int | None = None
-    product_of: Annotated[tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject")] = ()
+    product_of: Annotated[
+        tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject"), Inline()
+    ] = ()
     id: Annotated[str | None, IdentitySkip(), Indexed()] = field(default=None, compare=False)
     immutable_id: Annotated[str | None, IdentitySkip(), Unique()] = field(default=None, compare=False)
     last_modified: Annotated[datetime.datetime | None, IdentitySkip()] = field(default=None, compare=False)
@@ -420,7 +433,9 @@ class IntermediateScatteringFunctionRecord(TypedRecord):
     real: tuple[float, ...]
     imaginary: tuple[float, ...]
     origin_counts: tuple[int, ...] | None = None
-    product_of: Annotated[tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject")] = ()
+    product_of: Annotated[
+        tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject"), Inline()
+    ] = ()
     id: Annotated[str | None, IdentitySkip(), Indexed()] = field(default=None, compare=False)
     immutable_id: Annotated[str | None, IdentitySkip(), Unique()] = field(default=None, compare=False)
     last_modified: Annotated[datetime.datetime | None, IdentitySkip()] = field(default=None, compare=False)
@@ -470,7 +485,9 @@ class SelfIntermediateScatteringFunctionRecord(TypedRecord):
     real: tuple[float, ...]
     imaginary: tuple[float, ...]
     origin_counts: tuple[int, ...] | None = None
-    product_of: Annotated[tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject")] = ()
+    product_of: Annotated[
+        tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject"), Inline()
+    ] = ()
     id: Annotated[str | None, IdentitySkip(), Indexed()] = field(default=None, compare=False)
     immutable_id: Annotated[str | None, IdentitySkip(), Unique()] = field(default=None, compare=False)
     last_modified: Annotated[datetime.datetime | None, IdentitySkip()] = field(default=None, compare=False)
@@ -519,7 +536,9 @@ class SelfVanHoveFunctionRecord(TypedRecord):
     density: tuple[float, ...]
     counts: tuple[int, ...] | None = None
     samples: int | None = None
-    product_of: Annotated[tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject")] = ()
+    product_of: Annotated[
+        tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject"), Inline()
+    ] = ()
     id: Annotated[str | None, IdentitySkip(), Indexed()] = field(default=None, compare=False)
     immutable_id: Annotated[str | None, IdentitySkip(), Unique()] = field(default=None, compare=False)
     last_modified: Annotated[datetime.datetime | None, IdentitySkip()] = field(default=None, compare=False)
@@ -568,7 +587,9 @@ class VelocityPowerSpectrumRecord(TypedRecord):
     window: str
     mean_removed: bool
     mean_square: float | None = None
-    product_of: Annotated[tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject")] = ()
+    product_of: Annotated[
+        tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject"), Inline()
+    ] = ()
     id: Annotated[str | None, IdentitySkip(), Indexed()] = field(default=None, compare=False)
     immutable_id: Annotated[str | None, IdentitySkip(), Unique()] = field(default=None, compare=False)
     last_modified: Annotated[datetime.datetime | None, IdentitySkip()] = field(default=None, compare=False)
@@ -600,7 +621,9 @@ class BandGapRecord(TypedRecord):
     __httk_stored_properties__: ClassVar[Mapping[str, StoredPropertyProjection]] = __httk_typed_record__.projections()
 
     band_gap: float
-    product_of: Annotated[tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject")] = ()
+    product_of: Annotated[
+        tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject"), Inline()
+    ] = ()
     id: Annotated[str | None, IdentitySkip(), Indexed()] = field(default=None, compare=False)
     immutable_id: Annotated[str | None, IdentitySkip(), Unique()] = field(default=None, compare=False)
     last_modified: Annotated[datetime.datetime | None, IdentitySkip()] = field(default=None, compare=False)
@@ -643,7 +666,9 @@ class BornEffectiveChargesRecord(TypedRecord):
     __httk_stored_properties__: ClassVar[Mapping[str, StoredPropertyProjection]] = __httk_typed_record__.projections()
 
     born_effective_charges: tuple[float, ...]
-    product_of: Annotated[tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject")] = ()
+    product_of: Annotated[
+        tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject"), Inline()
+    ] = ()
     id: Annotated[str | None, IdentitySkip(), Indexed()] = field(default=None, compare=False)
     immutable_id: Annotated[str | None, IdentitySkip(), Unique()] = field(default=None, compare=False)
     last_modified: Annotated[datetime.datetime | None, IdentitySkip()] = field(default=None, compare=False)
@@ -675,7 +700,9 @@ class DirectBandGapRecord(TypedRecord):
     __httk_stored_properties__: ClassVar[Mapping[str, StoredPropertyProjection]] = __httk_typed_record__.projections()
 
     direct_band_gap: float
-    product_of: Annotated[tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject")] = ()
+    product_of: Annotated[
+        tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject"), Inline()
+    ] = ()
     id: Annotated[str | None, IdentitySkip(), Indexed()] = field(default=None, compare=False)
     immutable_id: Annotated[str | None, IdentitySkip(), Unique()] = field(default=None, compare=False)
     last_modified: Annotated[datetime.datetime | None, IdentitySkip()] = field(default=None, compare=False)
@@ -763,7 +790,9 @@ class ElectronicBandStructureRecord(TypedRecord):
     energies: tuple[float, ...]
     fermi_energy: float
     energies_spin_down: tuple[float, ...] | None = None
-    product_of: Annotated[tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject")] = ()
+    product_of: Annotated[
+        tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject"), Inline()
+    ] = ()
     id: Annotated[str | None, IdentitySkip(), Indexed()] = field(default=None, compare=False)
     immutable_id: Annotated[str | None, IdentitySkip(), Unique()] = field(default=None, compare=False)
     last_modified: Annotated[datetime.datetime | None, IdentitySkip()] = field(default=None, compare=False)
@@ -808,7 +837,9 @@ class ElectronicDensityOfStatesRecord(TypedRecord):
     energies: tuple[float, ...]
     density: tuple[float, ...]
     integrated_density: tuple[float, ...]
-    product_of: Annotated[tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject")] = ()
+    product_of: Annotated[
+        tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject"), Inline()
+    ] = ()
     id: Annotated[str | None, IdentitySkip(), Indexed()] = field(default=None, compare=False)
     immutable_id: Annotated[str | None, IdentitySkip(), Unique()] = field(default=None, compare=False)
     last_modified: Annotated[datetime.datetime | None, IdentitySkip()] = field(default=None, compare=False)
@@ -841,7 +872,9 @@ class FermiEnergyRecord(TypedRecord):
     __httk_stored_properties__: ClassVar[Mapping[str, StoredPropertyProjection]] = __httk_typed_record__.projections()
 
     fermi_energy: float
-    product_of: Annotated[tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject")] = ()
+    product_of: Annotated[
+        tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject"), Inline()
+    ] = ()
     id: Annotated[str | None, IdentitySkip(), Indexed()] = field(default=None, compare=False)
     immutable_id: Annotated[str | None, IdentitySkip(), Unique()] = field(default=None, compare=False)
     last_modified: Annotated[datetime.datetime | None, IdentitySkip()] = field(default=None, compare=False)
@@ -873,7 +906,9 @@ class HighFrequencyRelativePermittivityRecord(TypedRecord):
     __httk_stored_properties__: ClassVar[Mapping[str, StoredPropertyProjection]] = __httk_typed_record__.projections()
 
     high_frequency_relative_permittivity: float
-    product_of: Annotated[tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject")] = ()
+    product_of: Annotated[
+        tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject"), Inline()
+    ] = ()
     id: Annotated[str | None, IdentitySkip(), Indexed()] = field(default=None, compare=False)
     immutable_id: Annotated[str | None, IdentitySkip(), Unique()] = field(default=None, compare=False)
     last_modified: Annotated[datetime.datetime | None, IdentitySkip()] = field(default=None, compare=False)
@@ -908,7 +943,9 @@ class RelativeEffectiveMassRecord(TypedRecord):
 
     center: tuple[float, ...]
     tensor: tuple[float, ...]
-    product_of: Annotated[tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject")] = ()
+    product_of: Annotated[
+        tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject"), Inline()
+    ] = ()
     id: Annotated[str | None, IdentitySkip(), Indexed()] = field(default=None, compare=False)
     immutable_id: Annotated[str | None, IdentitySkip(), Unique()] = field(default=None, compare=False)
     last_modified: Annotated[datetime.datetime | None, IdentitySkip()] = field(default=None, compare=False)
@@ -956,7 +993,9 @@ class SpinChannelElectronicDensityOfStatesRecord(TypedRecord):
     energies: tuple[float, ...]
     density: tuple[float, ...]
     integrated_density: tuple[float, ...]
-    product_of: Annotated[tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject")] = ()
+    product_of: Annotated[
+        tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject"), Inline()
+    ] = ()
     id: Annotated[str | None, IdentitySkip(), Indexed()] = field(default=None, compare=False)
     immutable_id: Annotated[str | None, IdentitySkip(), Unique()] = field(default=None, compare=False)
     last_modified: Annotated[datetime.datetime | None, IdentitySkip()] = field(default=None, compare=False)
@@ -988,7 +1027,9 @@ class StaticRelativePermittivityRecord(TypedRecord):
     __httk_stored_properties__: ClassVar[Mapping[str, StoredPropertyProjection]] = __httk_typed_record__.projections()
 
     static_relative_permittivity: float
-    product_of: Annotated[tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject")] = ()
+    product_of: Annotated[
+        tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject"), Inline()
+    ] = ()
     id: Annotated[str | None, IdentitySkip(), Indexed()] = field(default=None, compare=False)
     immutable_id: Annotated[str | None, IdentitySkip(), Unique()] = field(default=None, compare=False)
     last_modified: Annotated[datetime.datetime | None, IdentitySkip()] = field(default=None, compare=False)
@@ -1039,7 +1080,9 @@ class ChemicalPotentialRegionRecord(TypedRecord):
     host_energy: float
     competing_coefficients: tuple[float, ...]
     competing_energies: tuple[float, ...]
-    product_of: Annotated[tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject")] = ()
+    product_of: Annotated[
+        tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject"), Inline()
+    ] = ()
     id: Annotated[str | None, IdentitySkip(), Indexed()] = field(default=None, compare=False)
     immutable_id: Annotated[str | None, IdentitySkip(), Unique()] = field(default=None, compare=False)
     last_modified: Annotated[datetime.datetime | None, IdentitySkip()] = field(default=None, compare=False)
@@ -1096,7 +1139,9 @@ class ConvexHullPhaseDiagramRecord(TypedRecord):
     stable: tuple[bool, ...]
     tolerance: float
     phase_ids: tuple[str, ...] | None = None
-    product_of: Annotated[tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject")] = ()
+    product_of: Annotated[
+        tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject"), Inline()
+    ] = ()
     id: Annotated[str | None, IdentitySkip(), Indexed()] = field(default=None, compare=False)
     immutable_id: Annotated[str | None, IdentitySkip(), Unique()] = field(default=None, compare=False)
     last_modified: Annotated[datetime.datetime | None, IdentitySkip()] = field(default=None, compare=False)
@@ -1131,7 +1176,9 @@ class EnergyAboveHullPerAtomRecord(TypedRecord):
 
     energy_above_hull_per_atom: float
     natoms: Annotated[int | None, IdentitySkipWhenNone()] = None
-    product_of: Annotated[tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject")] = ()
+    product_of: Annotated[
+        tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject"), Inline()
+    ] = ()
     id: Annotated[str | None, IdentitySkip(), Indexed()] = field(default=None, compare=False)
     immutable_id: Annotated[str | None, IdentitySkip(), Unique()] = field(default=None, compare=False)
     last_modified: Annotated[datetime.datetime | None, IdentitySkip()] = field(default=None, compare=False)
@@ -1167,7 +1214,9 @@ class FormationEnergyPerAtomRecord(TypedRecord):
 
     formation_energy_per_atom: float
     natoms: Annotated[int | None, IdentitySkipWhenNone()] = None
-    product_of: Annotated[tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject")] = ()
+    product_of: Annotated[
+        tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject"), Inline()
+    ] = ()
     id: Annotated[str | None, IdentitySkip(), Indexed()] = field(default=None, compare=False)
     immutable_id: Annotated[str | None, IdentitySkip(), Unique()] = field(default=None, compare=False)
     last_modified: Annotated[datetime.datetime | None, IdentitySkip()] = field(default=None, compare=False)
@@ -1199,7 +1248,9 @@ class ReactionEnergyRecord(TypedRecord):
     __httk_stored_properties__: ClassVar[Mapping[str, StoredPropertyProjection]] = __httk_typed_record__.projections()
 
     reaction_energy: float
-    product_of: Annotated[tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject")] = ()
+    product_of: Annotated[
+        tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject"), Inline()
+    ] = ()
     id: Annotated[str | None, IdentitySkip(), Indexed()] = field(default=None, compare=False)
     immutable_id: Annotated[str | None, IdentitySkip(), Unique()] = field(default=None, compare=False)
     last_modified: Annotated[datetime.datetime | None, IdentitySkip()] = field(default=None, compare=False)
@@ -1235,7 +1286,9 @@ class TotalEnergyPerAtomRecord(TypedRecord):
 
     total_energy_per_atom: float
     natoms: Annotated[int | None, IdentitySkipWhenNone()] = None
-    product_of: Annotated[tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject")] = ()
+    product_of: Annotated[
+        tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject"), Inline()
+    ] = ()
     id: Annotated[str | None, IdentitySkip(), Indexed()] = field(default=None, compare=False)
     immutable_id: Annotated[str | None, IdentitySkip(), Unique()] = field(default=None, compare=False)
     last_modified: Annotated[datetime.datetime | None, IdentitySkip()] = field(default=None, compare=False)
@@ -1267,7 +1320,9 @@ class ActivationEnergyRecord(TypedRecord):
     __httk_stored_properties__: ClassVar[Mapping[str, StoredPropertyProjection]] = __httk_typed_record__.projections()
 
     activation_energy: float
-    product_of: Annotated[tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject")] = ()
+    product_of: Annotated[
+        tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject"), Inline()
+    ] = ()
     id: Annotated[str | None, IdentitySkip(), Indexed()] = field(default=None, compare=False)
     immutable_id: Annotated[str | None, IdentitySkip(), Unique()] = field(default=None, compare=False)
     last_modified: Annotated[datetime.datetime | None, IdentitySkip()] = field(default=None, compare=False)
@@ -1299,7 +1354,9 @@ class ArrheniusPrefactorRecord(TypedRecord):
     __httk_stored_properties__: ClassVar[Mapping[str, StoredPropertyProjection]] = __httk_typed_record__.projections()
 
     arrhenius_prefactor: float
-    product_of: Annotated[tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject")] = ()
+    product_of: Annotated[
+        tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject"), Inline()
+    ] = ()
     id: Annotated[str | None, IdentitySkip(), Indexed()] = field(default=None, compare=False)
     immutable_id: Annotated[str | None, IdentitySkip(), Unique()] = field(default=None, compare=False)
     last_modified: Annotated[datetime.datetime | None, IdentitySkip()] = field(default=None, compare=False)
@@ -1331,7 +1388,9 @@ class MigrationBarrierForwardRecord(TypedRecord):
     __httk_stored_properties__: ClassVar[Mapping[str, StoredPropertyProjection]] = __httk_typed_record__.projections()
 
     migration_barrier_forward: float
-    product_of: Annotated[tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject")] = ()
+    product_of: Annotated[
+        tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject"), Inline()
+    ] = ()
     id: Annotated[str | None, IdentitySkip(), Indexed()] = field(default=None, compare=False)
     immutable_id: Annotated[str | None, IdentitySkip(), Unique()] = field(default=None, compare=False)
     last_modified: Annotated[datetime.datetime | None, IdentitySkip()] = field(default=None, compare=False)
@@ -1363,7 +1422,9 @@ class MigrationBarrierReverseRecord(TypedRecord):
     __httk_stored_properties__: ClassVar[Mapping[str, StoredPropertyProjection]] = __httk_typed_record__.projections()
 
     migration_barrier_reverse: float
-    product_of: Annotated[tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject")] = ()
+    product_of: Annotated[
+        tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject"), Inline()
+    ] = ()
     id: Annotated[str | None, IdentitySkip(), Indexed()] = field(default=None, compare=False)
     immutable_id: Annotated[str | None, IdentitySkip(), Unique()] = field(default=None, compare=False)
     last_modified: Annotated[datetime.datetime | None, IdentitySkip()] = field(default=None, compare=False)
@@ -1396,7 +1457,9 @@ class TotalMagneticMomentRecord(TypedRecord):
     __httk_stored_properties__: ClassVar[Mapping[str, StoredPropertyProjection]] = __httk_typed_record__.projections()
 
     total_magnetic_moment: tuple[float, ...]
-    product_of: Annotated[tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject")] = ()
+    product_of: Annotated[
+        tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject"), Inline()
+    ] = ()
     id: Annotated[str | None, IdentitySkip(), Indexed()] = field(default=None, compare=False)
     immutable_id: Annotated[str | None, IdentitySkip(), Unique()] = field(default=None, compare=False)
     last_modified: Annotated[datetime.datetime | None, IdentitySkip()] = field(default=None, compare=False)
@@ -1428,7 +1491,9 @@ class BulkModulusRecord(TypedRecord):
     __httk_stored_properties__: ClassVar[Mapping[str, StoredPropertyProjection]] = __httk_typed_record__.projections()
 
     bulk_modulus: float
-    product_of: Annotated[tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject")] = ()
+    product_of: Annotated[
+        tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject"), Inline()
+    ] = ()
     id: Annotated[str | None, IdentitySkip(), Indexed()] = field(default=None, compare=False)
     immutable_id: Annotated[str | None, IdentitySkip(), Unique()] = field(default=None, compare=False)
     last_modified: Annotated[datetime.datetime | None, IdentitySkip()] = field(default=None, compare=False)
@@ -1460,7 +1525,9 @@ class BulkModulusHillRecord(TypedRecord):
     __httk_stored_properties__: ClassVar[Mapping[str, StoredPropertyProjection]] = __httk_typed_record__.projections()
 
     bulk_modulus_hill: float
-    product_of: Annotated[tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject")] = ()
+    product_of: Annotated[
+        tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject"), Inline()
+    ] = ()
     id: Annotated[str | None, IdentitySkip(), Indexed()] = field(default=None, compare=False)
     immutable_id: Annotated[str | None, IdentitySkip(), Unique()] = field(default=None, compare=False)
     last_modified: Annotated[datetime.datetime | None, IdentitySkip()] = field(default=None, compare=False)
@@ -1492,7 +1559,9 @@ class BulkModulusPressureDerivativeRecord(TypedRecord):
     __httk_stored_properties__: ClassVar[Mapping[str, StoredPropertyProjection]] = __httk_typed_record__.projections()
 
     bulk_modulus_pressure_derivative: float
-    product_of: Annotated[tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject")] = ()
+    product_of: Annotated[
+        tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject"), Inline()
+    ] = ()
     id: Annotated[str | None, IdentitySkip(), Indexed()] = field(default=None, compare=False)
     immutable_id: Annotated[str | None, IdentitySkip(), Unique()] = field(default=None, compare=False)
     last_modified: Annotated[datetime.datetime | None, IdentitySkip()] = field(default=None, compare=False)
@@ -1524,7 +1593,9 @@ class BulkModulusReussRecord(TypedRecord):
     __httk_stored_properties__: ClassVar[Mapping[str, StoredPropertyProjection]] = __httk_typed_record__.projections()
 
     bulk_modulus_reuss: float
-    product_of: Annotated[tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject")] = ()
+    product_of: Annotated[
+        tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject"), Inline()
+    ] = ()
     id: Annotated[str | None, IdentitySkip(), Indexed()] = field(default=None, compare=False)
     immutable_id: Annotated[str | None, IdentitySkip(), Unique()] = field(default=None, compare=False)
     last_modified: Annotated[datetime.datetime | None, IdentitySkip()] = field(default=None, compare=False)
@@ -1556,7 +1627,9 @@ class BulkModulusVoigtRecord(TypedRecord):
     __httk_stored_properties__: ClassVar[Mapping[str, StoredPropertyProjection]] = __httk_typed_record__.projections()
 
     bulk_modulus_voigt: float
-    product_of: Annotated[tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject")] = ()
+    product_of: Annotated[
+        tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject"), Inline()
+    ] = ()
     id: Annotated[str | None, IdentitySkip(), Indexed()] = field(default=None, compare=False)
     immutable_id: Annotated[str | None, IdentitySkip(), Unique()] = field(default=None, compare=False)
     last_modified: Annotated[datetime.datetime | None, IdentitySkip()] = field(default=None, compare=False)
@@ -1588,7 +1661,9 @@ class ComplianceTensorRecord(TypedRecord):
     __httk_stored_properties__: ClassVar[Mapping[str, StoredPropertyProjection]] = __httk_typed_record__.projections()
 
     compliance_tensor: tuple[float, ...]
-    product_of: Annotated[tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject")] = ()
+    product_of: Annotated[
+        tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject"), Inline()
+    ] = ()
     id: Annotated[str | None, IdentitySkip(), Indexed()] = field(default=None, compare=False)
     immutable_id: Annotated[str | None, IdentitySkip(), Unique()] = field(default=None, compare=False)
     last_modified: Annotated[datetime.datetime | None, IdentitySkip()] = field(default=None, compare=False)
@@ -1622,7 +1697,9 @@ class ElasticTensorRecord(TypedRecord):
     __httk_stored_properties__: ClassVar[Mapping[str, StoredPropertyProjection]] = __httk_typed_record__.projections()
 
     elastic_tensor: tuple[float, ...]
-    product_of: Annotated[tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject")] = ()
+    product_of: Annotated[
+        tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject"), Inline()
+    ] = ()
     id: Annotated[str | None, IdentitySkip(), Indexed()] = field(default=None, compare=False)
     immutable_id: Annotated[str | None, IdentitySkip(), Unique()] = field(default=None, compare=False)
     last_modified: Annotated[datetime.datetime | None, IdentitySkip()] = field(default=None, compare=False)
@@ -1655,7 +1732,9 @@ class EquilibriumEnergyRecord(TypedRecord):
     __httk_stored_properties__: ClassVar[Mapping[str, StoredPropertyProjection]] = __httk_typed_record__.projections()
 
     equilibrium_energy: float
-    product_of: Annotated[tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject")] = ()
+    product_of: Annotated[
+        tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject"), Inline()
+    ] = ()
     id: Annotated[str | None, IdentitySkip(), Indexed()] = field(default=None, compare=False)
     immutable_id: Annotated[str | None, IdentitySkip(), Unique()] = field(default=None, compare=False)
     last_modified: Annotated[datetime.datetime | None, IdentitySkip()] = field(default=None, compare=False)
@@ -1687,7 +1766,9 @@ class EquilibriumVolumeRecord(TypedRecord):
     __httk_stored_properties__: ClassVar[Mapping[str, StoredPropertyProjection]] = __httk_typed_record__.projections()
 
     equilibrium_volume: float
-    product_of: Annotated[tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject")] = ()
+    product_of: Annotated[
+        tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject"), Inline()
+    ] = ()
     id: Annotated[str | None, IdentitySkip(), Indexed()] = field(default=None, compare=False)
     immutable_id: Annotated[str | None, IdentitySkip(), Unique()] = field(default=None, compare=False)
     last_modified: Annotated[datetime.datetime | None, IdentitySkip()] = field(default=None, compare=False)
@@ -1728,7 +1809,9 @@ class PiezoelectricTensorRecord(TypedRecord):
     __httk_stored_properties__: ClassVar[Mapping[str, StoredPropertyProjection]] = __httk_typed_record__.projections()
 
     piezoelectric_tensor: tuple[float, ...]
-    product_of: Annotated[tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject")] = ()
+    product_of: Annotated[
+        tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject"), Inline()
+    ] = ()
     id: Annotated[str | None, IdentitySkip(), Indexed()] = field(default=None, compare=False)
     immutable_id: Annotated[str | None, IdentitySkip(), Unique()] = field(default=None, compare=False)
     last_modified: Annotated[datetime.datetime | None, IdentitySkip()] = field(default=None, compare=False)
@@ -1760,7 +1843,9 @@ class ShearModulusHillRecord(TypedRecord):
     __httk_stored_properties__: ClassVar[Mapping[str, StoredPropertyProjection]] = __httk_typed_record__.projections()
 
     shear_modulus_hill: float
-    product_of: Annotated[tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject")] = ()
+    product_of: Annotated[
+        tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject"), Inline()
+    ] = ()
     id: Annotated[str | None, IdentitySkip(), Indexed()] = field(default=None, compare=False)
     immutable_id: Annotated[str | None, IdentitySkip(), Unique()] = field(default=None, compare=False)
     last_modified: Annotated[datetime.datetime | None, IdentitySkip()] = field(default=None, compare=False)
@@ -1792,7 +1877,9 @@ class ShearModulusReussRecord(TypedRecord):
     __httk_stored_properties__: ClassVar[Mapping[str, StoredPropertyProjection]] = __httk_typed_record__.projections()
 
     shear_modulus_reuss: float
-    product_of: Annotated[tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject")] = ()
+    product_of: Annotated[
+        tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject"), Inline()
+    ] = ()
     id: Annotated[str | None, IdentitySkip(), Indexed()] = field(default=None, compare=False)
     immutable_id: Annotated[str | None, IdentitySkip(), Unique()] = field(default=None, compare=False)
     last_modified: Annotated[datetime.datetime | None, IdentitySkip()] = field(default=None, compare=False)
@@ -1824,7 +1911,9 @@ class ShearModulusVoigtRecord(TypedRecord):
     __httk_stored_properties__: ClassVar[Mapping[str, StoredPropertyProjection]] = __httk_typed_record__.projections()
 
     shear_modulus_voigt: float
-    product_of: Annotated[tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject")] = ()
+    product_of: Annotated[
+        tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject"), Inline()
+    ] = ()
     id: Annotated[str | None, IdentitySkip(), Indexed()] = field(default=None, compare=False)
     immutable_id: Annotated[str | None, IdentitySkip(), Unique()] = field(default=None, compare=False)
     last_modified: Annotated[datetime.datetime | None, IdentitySkip()] = field(default=None, compare=False)
@@ -1856,7 +1945,9 @@ class UniversalAnisotropyIndexRecord(TypedRecord):
     __httk_stored_properties__: ClassVar[Mapping[str, StoredPropertyProjection]] = __httk_typed_record__.projections()
 
     universal_anisotropy_index: float
-    product_of: Annotated[tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject")] = ()
+    product_of: Annotated[
+        tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject"), Inline()
+    ] = ()
     id: Annotated[str | None, IdentitySkip(), Indexed()] = field(default=None, compare=False)
     immutable_id: Annotated[str | None, IdentitySkip(), Unique()] = field(default=None, compare=False)
     last_modified: Annotated[datetime.datetime | None, IdentitySkip()] = field(default=None, compare=False)
@@ -1900,7 +1991,9 @@ class RadialDistributionFunctionRecord(TypedRecord):
     bin_edges: tuple[float, ...]
     g: tuple[float, ...]
     pair: tuple[str, ...] | None = None
-    product_of: Annotated[tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject")] = ()
+    product_of: Annotated[
+        tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject"), Inline()
+    ] = ()
     id: Annotated[str | None, IdentitySkip(), Indexed()] = field(default=None, compare=False)
     immutable_id: Annotated[str | None, IdentitySkip(), Unique()] = field(default=None, compare=False)
     last_modified: Annotated[datetime.datetime | None, IdentitySkip()] = field(default=None, compare=False)
@@ -1950,7 +2043,9 @@ class SteinhardtBondOrderRecord(TypedRecord):
     global_order: float | None
     local_orders: tuple[float | None, ...]
     coordination_numbers: tuple[int, ...]
-    product_of: Annotated[tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject")] = ()
+    product_of: Annotated[
+        tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject"), Inline()
+    ] = ()
     id: Annotated[str | None, IdentitySkip(), Indexed()] = field(default=None, compare=False)
     immutable_id: Annotated[str | None, IdentitySkip(), Unique()] = field(default=None, compare=False)
     last_modified: Annotated[datetime.datetime | None, IdentitySkip()] = field(default=None, compare=False)
@@ -1983,7 +2078,9 @@ class HeatCapacityConstantPressureRecord(TypedRecord):
     __httk_stored_properties__: ClassVar[Mapping[str, StoredPropertyProjection]] = __httk_typed_record__.projections()
 
     heat_capacity_constant_pressure: float
-    product_of: Annotated[tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject")] = ()
+    product_of: Annotated[
+        tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject"), Inline()
+    ] = ()
     id: Annotated[str | None, IdentitySkip(), Indexed()] = field(default=None, compare=False)
     immutable_id: Annotated[str | None, IdentitySkip(), Unique()] = field(default=None, compare=False)
     last_modified: Annotated[datetime.datetime | None, IdentitySkip()] = field(default=None, compare=False)
@@ -2016,7 +2113,9 @@ class HeatCapacityConstantVolumeRecord(TypedRecord):
     __httk_stored_properties__: ClassVar[Mapping[str, StoredPropertyProjection]] = __httk_typed_record__.projections()
 
     heat_capacity_constant_volume: float
-    product_of: Annotated[tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject")] = ()
+    product_of: Annotated[
+        tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject"), Inline()
+    ] = ()
     id: Annotated[str | None, IdentitySkip(), Indexed()] = field(default=None, compare=False)
     immutable_id: Annotated[str | None, IdentitySkip(), Unique()] = field(default=None, compare=False)
     last_modified: Annotated[datetime.datetime | None, IdentitySkip()] = field(default=None, compare=False)
@@ -2050,7 +2149,9 @@ class HelmholtzFreeEnergyRecord(TypedRecord):
     __httk_stored_properties__: ClassVar[Mapping[str, StoredPropertyProjection]] = __httk_typed_record__.projections()
 
     helmholtz_free_energy: float
-    product_of: Annotated[tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject")] = ()
+    product_of: Annotated[
+        tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject"), Inline()
+    ] = ()
     id: Annotated[str | None, IdentitySkip(), Indexed()] = field(default=None, compare=False)
     immutable_id: Annotated[str | None, IdentitySkip(), Unique()] = field(default=None, compare=False)
     last_modified: Annotated[datetime.datetime | None, IdentitySkip()] = field(default=None, compare=False)
@@ -2083,7 +2184,9 @@ class IsothermalCompressibilityRecord(TypedRecord):
     __httk_stored_properties__: ClassVar[Mapping[str, StoredPropertyProjection]] = __httk_typed_record__.projections()
 
     isothermal_compressibility: float
-    product_of: Annotated[tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject")] = ()
+    product_of: Annotated[
+        tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject"), Inline()
+    ] = ()
     id: Annotated[str | None, IdentitySkip(), Indexed()] = field(default=None, compare=False)
     immutable_id: Annotated[str | None, IdentitySkip(), Unique()] = field(default=None, compare=False)
     last_modified: Annotated[datetime.datetime | None, IdentitySkip()] = field(default=None, compare=False)
@@ -2126,7 +2229,9 @@ class ModeGruneisenParametersRecord(TypedRecord):
     reference_volume: float
     values: tuple[float, ...]
     degree: int
-    product_of: Annotated[tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject")] = ()
+    product_of: Annotated[
+        tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject"), Inline()
+    ] = ()
     id: Annotated[str | None, IdentitySkip(), Indexed()] = field(default=None, compare=False)
     immutable_id: Annotated[str | None, IdentitySkip(), Unique()] = field(default=None, compare=False)
     last_modified: Annotated[datetime.datetime | None, IdentitySkip()] = field(default=None, compare=False)
@@ -2200,7 +2305,9 @@ class PhononBandStructureRecord(TypedRecord):
     qpoint_label_indices: tuple[int, ...]
     qpoint_labels: tuple[str, ...]
     frequencies: tuple[float, ...]
-    product_of: Annotated[tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject")] = ()
+    product_of: Annotated[
+        tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject"), Inline()
+    ] = ()
     id: Annotated[str | None, IdentitySkip(), Indexed()] = field(default=None, compare=False)
     immutable_id: Annotated[str | None, IdentitySkip(), Unique()] = field(default=None, compare=False)
     last_modified: Annotated[datetime.datetime | None, IdentitySkip()] = field(default=None, compare=False)
@@ -2249,7 +2356,9 @@ class PhononDensityOfStatesRecord(TypedRecord):
 
     frequencies: tuple[float, ...]
     density: tuple[float, ...]
-    product_of: Annotated[tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject")] = ()
+    product_of: Annotated[
+        tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject"), Inline()
+    ] = ()
     id: Annotated[str | None, IdentitySkip(), Indexed()] = field(default=None, compare=False)
     immutable_id: Annotated[str | None, IdentitySkip(), Unique()] = field(default=None, compare=False)
     last_modified: Annotated[datetime.datetime | None, IdentitySkip()] = field(default=None, compare=False)
@@ -2299,7 +2408,9 @@ class QuasiharmonicThermodynamicsRecord(TypedRecord):
     total_helmholtz_free_energies: tuple[float, ...]
     bulk_moduli: tuple[float, ...]
     volumetric_thermal_expansions: tuple[float, ...]
-    product_of: Annotated[tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject")] = ()
+    product_of: Annotated[
+        tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject"), Inline()
+    ] = ()
     id: Annotated[str | None, IdentitySkip(), Indexed()] = field(default=None, compare=False)
     immutable_id: Annotated[str | None, IdentitySkip(), Unique()] = field(default=None, compare=False)
     last_modified: Annotated[datetime.datetime | None, IdentitySkip()] = field(default=None, compare=False)
@@ -2332,7 +2443,9 @@ class VibrationalEntropyRecord(TypedRecord):
     __httk_stored_properties__: ClassVar[Mapping[str, StoredPropertyProjection]] = __httk_typed_record__.projections()
 
     vibrational_entropy: float
-    product_of: Annotated[tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject")] = ()
+    product_of: Annotated[
+        tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject"), Inline()
+    ] = ()
     id: Annotated[str | None, IdentitySkip(), Indexed()] = field(default=None, compare=False)
     immutable_id: Annotated[str | None, IdentitySkip(), Unique()] = field(default=None, compare=False)
     last_modified: Annotated[datetime.datetime | None, IdentitySkip()] = field(default=None, compare=False)
@@ -2365,7 +2478,9 @@ class VibrationalHeatCapacityRecord(TypedRecord):
     __httk_stored_properties__: ClassVar[Mapping[str, StoredPropertyProjection]] = __httk_typed_record__.projections()
 
     vibrational_heat_capacity: float
-    product_of: Annotated[tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject")] = ()
+    product_of: Annotated[
+        tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject"), Inline()
+    ] = ()
     id: Annotated[str | None, IdentitySkip(), Indexed()] = field(default=None, compare=False)
     immutable_id: Annotated[str | None, IdentitySkip(), Unique()] = field(default=None, compare=False)
     last_modified: Annotated[datetime.datetime | None, IdentitySkip()] = field(default=None, compare=False)
@@ -2398,7 +2513,9 @@ class VibrationalInternalEnergyRecord(TypedRecord):
     __httk_stored_properties__: ClassVar[Mapping[str, StoredPropertyProjection]] = __httk_typed_record__.projections()
 
     vibrational_internal_energy: float
-    product_of: Annotated[tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject")] = ()
+    product_of: Annotated[
+        tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject"), Inline()
+    ] = ()
     id: Annotated[str | None, IdentitySkip(), Indexed()] = field(default=None, compare=False)
     immutable_id: Annotated[str | None, IdentitySkip(), Unique()] = field(default=None, compare=False)
     last_modified: Annotated[datetime.datetime | None, IdentitySkip()] = field(default=None, compare=False)
@@ -2447,7 +2564,9 @@ class VibrationalThermodynamicsRecord(TypedRecord):
     internal_energies: tuple[float, ...]
     entropies: tuple[float, ...]
     heat_capacities: tuple[float, ...]
-    product_of: Annotated[tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject")] = ()
+    product_of: Annotated[
+        tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject"), Inline()
+    ] = ()
     id: Annotated[str | None, IdentitySkip(), Indexed()] = field(default=None, compare=False)
     immutable_id: Annotated[str | None, IdentitySkip(), Unique()] = field(default=None, compare=False)
     last_modified: Annotated[datetime.datetime | None, IdentitySkip()] = field(default=None, compare=False)
@@ -2480,7 +2599,9 @@ class VolumetricThermalExpansionRecord(TypedRecord):
     __httk_stored_properties__: ClassVar[Mapping[str, StoredPropertyProjection]] = __httk_typed_record__.projections()
 
     volumetric_thermal_expansion: float
-    product_of: Annotated[tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject")] = ()
+    product_of: Annotated[
+        tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject"), Inline()
+    ] = ()
     id: Annotated[str | None, IdentitySkip(), Indexed()] = field(default=None, compare=False)
     immutable_id: Annotated[str | None, IdentitySkip(), Unique()] = field(default=None, compare=False)
     last_modified: Annotated[datetime.datetime | None, IdentitySkip()] = field(default=None, compare=False)
@@ -2513,7 +2634,9 @@ class ZeroPointEnergyRecord(TypedRecord):
     __httk_stored_properties__: ClassVar[Mapping[str, StoredPropertyProjection]] = __httk_typed_record__.projections()
 
     zero_point_energy: float
-    product_of: Annotated[tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject")] = ()
+    product_of: Annotated[
+        tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject"), Inline()
+    ] = ()
     id: Annotated[str | None, IdentitySkip(), Indexed()] = field(default=None, compare=False)
     immutable_id: Annotated[str | None, IdentitySkip(), Unique()] = field(default=None, compare=False)
     last_modified: Annotated[datetime.datetime | None, IdentitySkip()] = field(default=None, compare=False)
@@ -2547,7 +2670,9 @@ class DiffusionCoefficientRecord(TypedRecord):
     __httk_stored_properties__: ClassVar[Mapping[str, StoredPropertyProjection]] = __httk_typed_record__.projections()
 
     diffusion_coefficient: float
-    product_of: Annotated[tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject")] = ()
+    product_of: Annotated[
+        tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject"), Inline()
+    ] = ()
     id: Annotated[str | None, IdentitySkip(), Indexed()] = field(default=None, compare=False)
     immutable_id: Annotated[str | None, IdentitySkip(), Unique()] = field(default=None, compare=False)
     last_modified: Annotated[datetime.datetime | None, IdentitySkip()] = field(default=None, compare=False)
@@ -2579,7 +2704,9 @@ class DiffusionPrefactorRecord(TypedRecord):
     __httk_stored_properties__: ClassVar[Mapping[str, StoredPropertyProjection]] = __httk_typed_record__.projections()
 
     diffusion_prefactor: float
-    product_of: Annotated[tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject")] = ()
+    product_of: Annotated[
+        tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject"), Inline()
+    ] = ()
     id: Annotated[str | None, IdentitySkip(), Indexed()] = field(default=None, compare=False)
     immutable_id: Annotated[str | None, IdentitySkip(), Unique()] = field(default=None, compare=False)
     last_modified: Annotated[datetime.datetime | None, IdentitySkip()] = field(default=None, compare=False)
@@ -2621,7 +2748,9 @@ class DiffusionRunningIntegralRecord(TypedRecord):
 
     lag_times: tuple[float, ...]
     diffusion_tensors: tuple[float, ...]
-    product_of: Annotated[tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject")] = ()
+    product_of: Annotated[
+        tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject"), Inline()
+    ] = ()
     id: Annotated[str | None, IdentitySkip(), Indexed()] = field(default=None, compare=False)
     immutable_id: Annotated[str | None, IdentitySkip(), Unique()] = field(default=None, compare=False)
     last_modified: Annotated[datetime.datetime | None, IdentitySkip()] = field(default=None, compare=False)
@@ -2654,7 +2783,9 @@ class DiffusionTensorRecord(TypedRecord):
     __httk_stored_properties__: ClassVar[Mapping[str, StoredPropertyProjection]] = __httk_typed_record__.projections()
 
     diffusion_tensor: tuple[float, ...]
-    product_of: Annotated[tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject")] = ()
+    product_of: Annotated[
+        tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject"), Inline()
+    ] = ()
     id: Annotated[str | None, IdentitySkip(), Indexed()] = field(default=None, compare=False)
     immutable_id: Annotated[str | None, IdentitySkip(), Unique()] = field(default=None, compare=False)
     last_modified: Annotated[datetime.datetime | None, IdentitySkip()] = field(default=None, compare=False)
@@ -2699,7 +2830,9 @@ class MeanSquaredDisplacementRecord(TypedRecord):
     lag_times: tuple[float, ...]
     msd: tuple[float, ...]
     origin_counts: tuple[int, ...] | None = None
-    product_of: Annotated[tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject")] = ()
+    product_of: Annotated[
+        tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject"), Inline()
+    ] = ()
     id: Annotated[str | None, IdentitySkip(), Indexed()] = field(default=None, compare=False)
     immutable_id: Annotated[str | None, IdentitySkip(), Unique()] = field(default=None, compare=False)
     last_modified: Annotated[datetime.datetime | None, IdentitySkip()] = field(default=None, compare=False)
@@ -2732,7 +2865,9 @@ class ShearViscosityRecord(TypedRecord):
     __httk_stored_properties__: ClassVar[Mapping[str, StoredPropertyProjection]] = __httk_typed_record__.projections()
 
     shear_viscosity: float
-    product_of: Annotated[tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject")] = ()
+    product_of: Annotated[
+        tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject"), Inline()
+    ] = ()
     id: Annotated[str | None, IdentitySkip(), Indexed()] = field(default=None, compare=False)
     immutable_id: Annotated[str | None, IdentitySkip(), Unique()] = field(default=None, compare=False)
     last_modified: Annotated[datetime.datetime | None, IdentitySkip()] = field(default=None, compare=False)
@@ -2774,7 +2909,9 @@ class ShearViscosityRunningIntegralRecord(TypedRecord):
 
     lag_times: tuple[float, ...]
     shear_viscosities: tuple[float, ...]
-    product_of: Annotated[tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject")] = ()
+    product_of: Annotated[
+        tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject"), Inline()
+    ] = ()
     id: Annotated[str | None, IdentitySkip(), Indexed()] = field(default=None, compare=False)
     immutable_id: Annotated[str | None, IdentitySkip(), Unique()] = field(default=None, compare=False)
     last_modified: Annotated[datetime.datetime | None, IdentitySkip()] = field(default=None, compare=False)
@@ -2807,7 +2944,9 @@ class ThermalConductivityRecord(TypedRecord):
     __httk_stored_properties__: ClassVar[Mapping[str, StoredPropertyProjection]] = __httk_typed_record__.projections()
 
     thermal_conductivity: float
-    product_of: Annotated[tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject")] = ()
+    product_of: Annotated[
+        tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject"), Inline()
+    ] = ()
     id: Annotated[str | None, IdentitySkip(), Indexed()] = field(default=None, compare=False)
     immutable_id: Annotated[str | None, IdentitySkip(), Unique()] = field(default=None, compare=False)
     last_modified: Annotated[datetime.datetime | None, IdentitySkip()] = field(default=None, compare=False)
@@ -2848,7 +2987,9 @@ class ThermalConductivityRunningIntegralRecord(TypedRecord):
 
     lag_times: tuple[float, ...]
     thermal_conductivity_tensors: tuple[float, ...]
-    product_of: Annotated[tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject")] = ()
+    product_of: Annotated[
+        tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject"), Inline()
+    ] = ()
     id: Annotated[str | None, IdentitySkip(), Indexed()] = field(default=None, compare=False)
     immutable_id: Annotated[str | None, IdentitySkip(), Unique()] = field(default=None, compare=False)
     last_modified: Annotated[datetime.datetime | None, IdentitySkip()] = field(default=None, compare=False)
@@ -2881,7 +3022,9 @@ class ThermalConductivityTensorRecord(TypedRecord):
     __httk_stored_properties__: ClassVar[Mapping[str, StoredPropertyProjection]] = __httk_typed_record__.projections()
 
     thermal_conductivity_tensor: tuple[float, ...]
-    product_of: Annotated[tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject")] = ()
+    product_of: Annotated[
+        tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject"), Inline()
+    ] = ()
     id: Annotated[str | None, IdentitySkip(), Indexed()] = field(default=None, compare=False)
     immutable_id: Annotated[str | None, IdentitySkip(), Unique()] = field(default=None, compare=False)
     last_modified: Annotated[datetime.datetime | None, IdentitySkip()] = field(default=None, compare=False)
@@ -2926,7 +3069,9 @@ class VelocityAutocorrelationRecord(TypedRecord):
     lag_times: tuple[float, ...]
     vacf: tuple[float, ...]
     origin_counts: tuple[int, ...] | None = None
-    product_of: Annotated[tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject")] = ()
+    product_of: Annotated[
+        tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject"), Inline()
+    ] = ()
     id: Annotated[str | None, IdentitySkip(), Indexed()] = field(default=None, compare=False)
     immutable_id: Annotated[str | None, IdentitySkip(), Unique()] = field(default=None, compare=False)
     last_modified: Annotated[datetime.datetime | None, IdentitySkip()] = field(default=None, compare=False)
@@ -2986,7 +3131,9 @@ class EnergyPredictionErrorsRecord(TypedRecord):
     maximum_absolute_error: float
     percentile95_absolute_error: float
     residuals: tuple[float, ...]
-    product_of: Annotated[tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject")] = ()
+    product_of: Annotated[
+        tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject"), Inline()
+    ] = ()
     id: Annotated[str | None, IdentitySkip(), Indexed()] = field(default=None, compare=False)
     immutable_id: Annotated[str | None, IdentitySkip(), Unique()] = field(default=None, compare=False)
     last_modified: Annotated[datetime.datetime | None, IdentitySkip()] = field(default=None, compare=False)
@@ -3067,7 +3214,9 @@ class ForcePredictionErrorsRecord(TypedRecord):
     per_species_component_rmse: tuple[float, ...]
     per_species_component_maximum_absolute_error: tuple[float, ...]
     per_species_component_percentile95_absolute_error: tuple[float, ...]
-    product_of: Annotated[tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject")] = ()
+    product_of: Annotated[
+        tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject"), Inline()
+    ] = ()
     id: Annotated[str | None, IdentitySkip(), Indexed()] = field(default=None, compare=False)
     immutable_id: Annotated[str | None, IdentitySkip(), Unique()] = field(default=None, compare=False)
     last_modified: Annotated[datetime.datetime | None, IdentitySkip()] = field(default=None, compare=False)
@@ -3123,7 +3272,9 @@ class NveEnergyDriftRecord(TypedRecord):
     start: float
     stop: float
     samples: int
-    product_of: Annotated[tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject")] = ()
+    product_of: Annotated[
+        tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject"), Inline()
+    ] = ()
     id: Annotated[str | None, IdentitySkip(), Indexed()] = field(default=None, compare=False)
     immutable_id: Annotated[str | None, IdentitySkip(), Unique()] = field(default=None, compare=False)
     last_modified: Annotated[datetime.datetime | None, IdentitySkip()] = field(default=None, compare=False)
@@ -3176,7 +3327,9 @@ class StressPredictionErrorsRecord(TypedRecord):
     component_maximum_absolute_error: tuple[float, ...]
     component_percentile95_absolute_error: tuple[float, ...]
     residuals: tuple[float, ...]
-    product_of: Annotated[tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject")] = ()
+    product_of: Annotated[
+        tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject"), Inline()
+    ] = ()
     id: Annotated[str | None, IdentitySkip(), Indexed()] = field(default=None, compare=False)
     immutable_id: Annotated[str | None, IdentitySkip(), Unique()] = field(default=None, compare=False)
     last_modified: Annotated[datetime.datetime | None, IdentitySkip()] = field(default=None, compare=False)
@@ -3213,7 +3366,9 @@ class AtomicForceBiasRecord(TypedRecord):
     __httk_stored_properties__: ClassVar[Mapping[str, StoredPropertyProjection]] = __httk_typed_record__.projections()
 
     atomic_force_bias: tuple[float, ...]
-    product_of: Annotated[tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject")] = ()
+    product_of: Annotated[
+        tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject"), Inline()
+    ] = ()
     id: Annotated[str | None, IdentitySkip(), Indexed()] = field(default=None, compare=False)
     immutable_id: Annotated[str | None, IdentitySkip(), Unique()] = field(default=None, compare=False)
     last_modified: Annotated[datetime.datetime | None, IdentitySkip()] = field(default=None, compare=False)
@@ -3250,7 +3405,9 @@ class AtomicForceMaeRecord(TypedRecord):
     __httk_stored_properties__: ClassVar[Mapping[str, StoredPropertyProjection]] = __httk_typed_record__.projections()
 
     atomic_force_mae: tuple[float, ...]
-    product_of: Annotated[tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject")] = ()
+    product_of: Annotated[
+        tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject"), Inline()
+    ] = ()
     id: Annotated[str | None, IdentitySkip(), Indexed()] = field(default=None, compare=False)
     immutable_id: Annotated[str | None, IdentitySkip(), Unique()] = field(default=None, compare=False)
     last_modified: Annotated[datetime.datetime | None, IdentitySkip()] = field(default=None, compare=False)
@@ -3287,7 +3444,9 @@ class AtomicForceMaximumAbsoluteErrorRecord(TypedRecord):
     __httk_stored_properties__: ClassVar[Mapping[str, StoredPropertyProjection]] = __httk_typed_record__.projections()
 
     atomic_force_maximum_absolute_error: tuple[float, ...]
-    product_of: Annotated[tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject")] = ()
+    product_of: Annotated[
+        tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject"), Inline()
+    ] = ()
     id: Annotated[str | None, IdentitySkip(), Indexed()] = field(default=None, compare=False)
     immutable_id: Annotated[str | None, IdentitySkip(), Unique()] = field(default=None, compare=False)
     last_modified: Annotated[datetime.datetime | None, IdentitySkip()] = field(default=None, compare=False)
@@ -3324,7 +3483,9 @@ class AtomicForceRmseRecord(TypedRecord):
     __httk_stored_properties__: ClassVar[Mapping[str, StoredPropertyProjection]] = __httk_typed_record__.projections()
 
     atomic_force_rmse: tuple[float, ...]
-    product_of: Annotated[tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject")] = ()
+    product_of: Annotated[
+        tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject"), Inline()
+    ] = ()
     id: Annotated[str | None, IdentitySkip(), Indexed()] = field(default=None, compare=False)
     immutable_id: Annotated[str | None, IdentitySkip(), Unique()] = field(default=None, compare=False)
     last_modified: Annotated[datetime.datetime | None, IdentitySkip()] = field(default=None, compare=False)
@@ -3360,7 +3521,9 @@ class StressTensorBiasRecord(TypedRecord):
     __httk_stored_properties__: ClassVar[Mapping[str, StoredPropertyProjection]] = __httk_typed_record__.projections()
 
     stress_tensor_bias: tuple[float, ...]
-    product_of: Annotated[tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject")] = ()
+    product_of: Annotated[
+        tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject"), Inline()
+    ] = ()
     id: Annotated[str | None, IdentitySkip(), Indexed()] = field(default=None, compare=False)
     immutable_id: Annotated[str | None, IdentitySkip(), Unique()] = field(default=None, compare=False)
     last_modified: Annotated[datetime.datetime | None, IdentitySkip()] = field(default=None, compare=False)
@@ -3396,7 +3559,9 @@ class StressTensorMaeRecord(TypedRecord):
     __httk_stored_properties__: ClassVar[Mapping[str, StoredPropertyProjection]] = __httk_typed_record__.projections()
 
     stress_tensor_mae: tuple[float, ...]
-    product_of: Annotated[tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject")] = ()
+    product_of: Annotated[
+        tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject"), Inline()
+    ] = ()
     id: Annotated[str | None, IdentitySkip(), Indexed()] = field(default=None, compare=False)
     immutable_id: Annotated[str | None, IdentitySkip(), Unique()] = field(default=None, compare=False)
     last_modified: Annotated[datetime.datetime | None, IdentitySkip()] = field(default=None, compare=False)
@@ -3432,7 +3597,9 @@ class StressTensorMaximumAbsoluteErrorRecord(TypedRecord):
     __httk_stored_properties__: ClassVar[Mapping[str, StoredPropertyProjection]] = __httk_typed_record__.projections()
 
     stress_tensor_maximum_absolute_error: tuple[float, ...]
-    product_of: Annotated[tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject")] = ()
+    product_of: Annotated[
+        tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject"), Inline()
+    ] = ()
     id: Annotated[str | None, IdentitySkip(), Indexed()] = field(default=None, compare=False)
     immutable_id: Annotated[str | None, IdentitySkip(), Unique()] = field(default=None, compare=False)
     last_modified: Annotated[datetime.datetime | None, IdentitySkip()] = field(default=None, compare=False)
@@ -3468,7 +3635,9 @@ class StressTensorRmseRecord(TypedRecord):
     __httk_stored_properties__: ClassVar[Mapping[str, StoredPropertyProjection]] = __httk_typed_record__.projections()
 
     stress_tensor_rmse: tuple[float, ...]
-    product_of: Annotated[tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject")] = ()
+    product_of: Annotated[
+        tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject"), Inline()
+    ] = ()
     id: Annotated[str | None, IdentitySkip(), Indexed()] = field(default=None, compare=False)
     immutable_id: Annotated[str | None, IdentitySkip(), Unique()] = field(default=None, compare=False)
     last_modified: Annotated[datetime.datetime | None, IdentitySkip()] = field(default=None, compare=False)
@@ -3504,7 +3673,9 @@ class TotalEnergyRmseRecord(TypedRecord):
     __httk_stored_properties__: ClassVar[Mapping[str, StoredPropertyProjection]] = __httk_typed_record__.projections()
 
     total_energy_rmse: float
-    product_of: Annotated[tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject")] = ()
+    product_of: Annotated[
+        tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject"), Inline()
+    ] = ()
     id: Annotated[str | None, IdentitySkip(), Indexed()] = field(default=None, compare=False)
     immutable_id: Annotated[str | None, IdentitySkip(), Unique()] = field(default=None, compare=False)
     last_modified: Annotated[datetime.datetime | None, IdentitySkip()] = field(default=None, compare=False)
@@ -3541,7 +3712,9 @@ class TotalEnergyPerAtomBiasRecord(TypedRecord):
     __httk_stored_properties__: ClassVar[Mapping[str, StoredPropertyProjection]] = __httk_typed_record__.projections()
 
     total_energy_per_atom_bias: float
-    product_of: Annotated[tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject")] = ()
+    product_of: Annotated[
+        tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject"), Inline()
+    ] = ()
     id: Annotated[str | None, IdentitySkip(), Indexed()] = field(default=None, compare=False)
     immutable_id: Annotated[str | None, IdentitySkip(), Unique()] = field(default=None, compare=False)
     last_modified: Annotated[datetime.datetime | None, IdentitySkip()] = field(default=None, compare=False)
@@ -3578,7 +3751,9 @@ class TotalEnergyPerAtomMaeRecord(TypedRecord):
     __httk_stored_properties__: ClassVar[Mapping[str, StoredPropertyProjection]] = __httk_typed_record__.projections()
 
     total_energy_per_atom_mae: float
-    product_of: Annotated[tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject")] = ()
+    product_of: Annotated[
+        tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject"), Inline()
+    ] = ()
     id: Annotated[str | None, IdentitySkip(), Indexed()] = field(default=None, compare=False)
     immutable_id: Annotated[str | None, IdentitySkip(), Unique()] = field(default=None, compare=False)
     last_modified: Annotated[datetime.datetime | None, IdentitySkip()] = field(default=None, compare=False)
@@ -3615,7 +3790,9 @@ class TotalEnergyPerAtomMaximumAbsoluteErrorRecord(TypedRecord):
     __httk_stored_properties__: ClassVar[Mapping[str, StoredPropertyProjection]] = __httk_typed_record__.projections()
 
     total_energy_per_atom_maximum_absolute_error: float
-    product_of: Annotated[tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject")] = ()
+    product_of: Annotated[
+        tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject"), Inline()
+    ] = ()
     id: Annotated[str | None, IdentitySkip(), Indexed()] = field(default=None, compare=False)
     immutable_id: Annotated[str | None, IdentitySkip(), Unique()] = field(default=None, compare=False)
     last_modified: Annotated[datetime.datetime | None, IdentitySkip()] = field(default=None, compare=False)
@@ -3652,7 +3829,9 @@ class TotalEnergyPerAtomRmseRecord(TypedRecord):
     __httk_stored_properties__: ClassVar[Mapping[str, StoredPropertyProjection]] = __httk_typed_record__.projections()
 
     total_energy_per_atom_rmse: float
-    product_of: Annotated[tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject")] = ()
+    product_of: Annotated[
+        tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject"), Inline()
+    ] = ()
     id: Annotated[str | None, IdentitySkip(), Indexed()] = field(default=None, compare=False)
     immutable_id: Annotated[str | None, IdentitySkip(), Unique()] = field(default=None, compare=False)
     last_modified: Annotated[datetime.datetime | None, IdentitySkip()] = field(default=None, compare=False)
@@ -3689,7 +3868,9 @@ class HeatCapacityConstantPressureStandardErrorRecord(TypedRecord):
     __httk_stored_properties__: ClassVar[Mapping[str, StoredPropertyProjection]] = __httk_typed_record__.projections()
 
     heat_capacity_constant_pressure_standard_error: float
-    product_of: Annotated[tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject")] = ()
+    product_of: Annotated[
+        tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject"), Inline()
+    ] = ()
     id: Annotated[str | None, IdentitySkip(), Indexed()] = field(default=None, compare=False)
     immutable_id: Annotated[str | None, IdentitySkip(), Unique()] = field(default=None, compare=False)
     last_modified: Annotated[datetime.datetime | None, IdentitySkip()] = field(default=None, compare=False)
@@ -3726,7 +3907,9 @@ class HeatCapacityConstantVolumeStandardErrorRecord(TypedRecord):
     __httk_stored_properties__: ClassVar[Mapping[str, StoredPropertyProjection]] = __httk_typed_record__.projections()
 
     heat_capacity_constant_volume_standard_error: float
-    product_of: Annotated[tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject")] = ()
+    product_of: Annotated[
+        tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject"), Inline()
+    ] = ()
     id: Annotated[str | None, IdentitySkip(), Indexed()] = field(default=None, compare=False)
     immutable_id: Annotated[str | None, IdentitySkip(), Unique()] = field(default=None, compare=False)
     last_modified: Annotated[datetime.datetime | None, IdentitySkip()] = field(default=None, compare=False)
@@ -3763,7 +3946,9 @@ class IsothermalCompressibilityStandardErrorRecord(TypedRecord):
     __httk_stored_properties__: ClassVar[Mapping[str, StoredPropertyProjection]] = __httk_typed_record__.projections()
 
     isothermal_compressibility_standard_error: float
-    product_of: Annotated[tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject")] = ()
+    product_of: Annotated[
+        tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject"), Inline()
+    ] = ()
     id: Annotated[str | None, IdentitySkip(), Indexed()] = field(default=None, compare=False)
     immutable_id: Annotated[str | None, IdentitySkip(), Unique()] = field(default=None, compare=False)
     last_modified: Annotated[datetime.datetime | None, IdentitySkip()] = field(default=None, compare=False)
@@ -3800,7 +3985,9 @@ class VolumetricThermalExpansionStandardErrorRecord(TypedRecord):
     __httk_stored_properties__: ClassVar[Mapping[str, StoredPropertyProjection]] = __httk_typed_record__.projections()
 
     volumetric_thermal_expansion_standard_error: float
-    product_of: Annotated[tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject")] = ()
+    product_of: Annotated[
+        tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject"), Inline()
+    ] = ()
     id: Annotated[str | None, IdentitySkip(), Indexed()] = field(default=None, compare=False)
     immutable_id: Annotated[str | None, IdentitySkip(), Unique()] = field(default=None, compare=False)
     last_modified: Annotated[datetime.datetime | None, IdentitySkip()] = field(default=None, compare=False)
@@ -3837,7 +4024,9 @@ class ShearViscosityMeanRecord(TypedRecord):
     __httk_stored_properties__: ClassVar[Mapping[str, StoredPropertyProjection]] = __httk_typed_record__.projections()
 
     shear_viscosity_mean: float
-    product_of: Annotated[tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject")] = ()
+    product_of: Annotated[
+        tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject"), Inline()
+    ] = ()
     id: Annotated[str | None, IdentitySkip(), Indexed()] = field(default=None, compare=False)
     immutable_id: Annotated[str | None, IdentitySkip(), Unique()] = field(default=None, compare=False)
     last_modified: Annotated[datetime.datetime | None, IdentitySkip()] = field(default=None, compare=False)
@@ -3874,7 +4063,9 @@ class ThermalConductivityMeanRecord(TypedRecord):
     __httk_stored_properties__: ClassVar[Mapping[str, StoredPropertyProjection]] = __httk_typed_record__.projections()
 
     thermal_conductivity_mean: float
-    product_of: Annotated[tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject")] = ()
+    product_of: Annotated[
+        tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject"), Inline()
+    ] = ()
     id: Annotated[str | None, IdentitySkip(), Indexed()] = field(default=None, compare=False)
     immutable_id: Annotated[str | None, IdentitySkip(), Unique()] = field(default=None, compare=False)
     last_modified: Annotated[datetime.datetime | None, IdentitySkip()] = field(default=None, compare=False)
@@ -3911,7 +4102,9 @@ class ThermalConductivityTensorMeanRecord(TypedRecord):
     __httk_stored_properties__: ClassVar[Mapping[str, StoredPropertyProjection]] = __httk_typed_record__.projections()
 
     thermal_conductivity_tensor_mean: tuple[float, ...]
-    product_of: Annotated[tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject")] = ()
+    product_of: Annotated[
+        tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject"), Inline()
+    ] = ()
     id: Annotated[str | None, IdentitySkip(), Indexed()] = field(default=None, compare=False)
     immutable_id: Annotated[str | None, IdentitySkip(), Unique()] = field(default=None, compare=False)
     last_modified: Annotated[datetime.datetime | None, IdentitySkip()] = field(default=None, compare=False)
@@ -3948,7 +4141,9 @@ class ThermalConductivityTensorStandardErrorRecord(TypedRecord):
     __httk_stored_properties__: ClassVar[Mapping[str, StoredPropertyProjection]] = __httk_typed_record__.projections()
 
     thermal_conductivity_tensor_standard_error: tuple[float, ...]
-    product_of: Annotated[tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject")] = ()
+    product_of: Annotated[
+        tuple[RunEdge, ...], StrongLink("product_of", reverse="has_product", role="subject"), Inline()
+    ] = ()
     id: Annotated[str | None, IdentitySkip(), Indexed()] = field(default=None, compare=False)
     immutable_id: Annotated[str | None, IdentitySkip(), Unique()] = field(default=None, compare=False)
     last_modified: Annotated[datetime.datetime | None, IdentitySkip()] = field(default=None, compare=False)
